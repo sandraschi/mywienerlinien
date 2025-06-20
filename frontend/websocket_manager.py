@@ -169,16 +169,43 @@ class WebSocketManager:
         try:
             # This would integrate with the actual Wiener Linien API
             # For now, we'll simulate updates
-            from app import fetch_vehicle_data
+            from app import fetch_vehicle_data, get_dummy_vehicles
             
             # Get vehicle data for major stations
             major_stations = ['3052', '3058', '3062', '3071', '3080']  # Sample RBL numbers
             
             for rbl in major_stations:
-                vehicles = fetch_vehicle_data(rbl)
-                if vehicles:
-                    for vehicle in vehicles:
-                        self._process_vehicle_update(vehicle)
+                try:
+                    vehicles_data = fetch_vehicle_data(rbl)
+                    if vehicles_data and isinstance(vehicles_data, dict):
+                        # Handle the API response structure
+                        if 'data' in vehicles_data and 'monitors' in vehicles_data['data']:
+                            for monitor in vehicles_data['data']['monitors']:
+                                if 'lines' in monitor:
+                                    for line_data in monitor['lines']:
+                                        for vehicle in line_data.get('departures', {}).get('departure', []):
+                                            if 'vehicle' in vehicle:
+                                                vehicle_info = vehicle['vehicle']
+                                                vehicle_data = {
+                                                    'id': vehicle_info.get('name', f'vehicle_{rbl}_{len(self.vehicle_updates)}'),
+                                                    'line': line_data.get('name', ''),
+                                                    'type': line_data.get('type', 'unknown'),
+                                                    'lat': vehicle_info.get('location', {}).get('latitude', 0),
+                                                    'lng': vehicle_info.get('location', {}).get('longitude', 0),
+                                                    'direction': vehicle_info.get('direction', ''),
+                                                    'next_station': vehicle.get('departure', {}).get('locationStop', {}).get('name', ''),
+                                                    'delay': vehicle.get('departure', {}).get('departureTime', {}).get('timeReal', 0)
+                                                }
+                                                self._process_vehicle_update(vehicle_data)
+                except Exception as e:
+                    logger.error(f"Error fetching vehicle data for RBL {rbl}: {e}")
+                    continue
+                    
+            # If no real vehicles found, add some dummy vehicles for demonstration
+            if len(self.vehicle_updates) == 0:
+                dummy_vehicles = get_dummy_vehicles()
+                for vehicle in dummy_vehicles:
+                    self._process_vehicle_update(vehicle)
                         
         except Exception as e:
             logger.error(f"Error updating vehicle positions: {e}")
@@ -229,7 +256,20 @@ class WebSocketManager:
             from app import fetch_traffic_info
             
             traffic_info = fetch_traffic_info()
-            if traffic_info:
+            if traffic_info and isinstance(traffic_info, dict):
+                # Handle the traffic info response properly
+                # The API might return different structures, so we need to handle them
+                if 'data' in traffic_info and isinstance(traffic_info['data'], list):
+                    for disruption in traffic_info['data']:
+                        self._process_disruption_alert(disruption)
+                elif 'disruptions' in traffic_info and isinstance(traffic_info['disruptions'], list):
+                    for disruption in traffic_info['disruptions']:
+                        self._process_disruption_alert(disruption)
+                else:
+                    # If it's a single disruption object
+                    self._process_disruption_alert(traffic_info)
+            elif traffic_info and isinstance(traffic_info, list):
+                # If it's directly a list of disruptions
                 for disruption in traffic_info:
                     self._process_disruption_alert(disruption)
                     

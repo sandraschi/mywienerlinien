@@ -484,8 +484,9 @@ def handle_connect():
     # Get system status properly
     try:
         status_response = get_system_status()
-        if hasattr(status_response, 'json'):
-            system_status = status_response.json
+        # Flask response objects have a get_json() method
+        if hasattr(status_response, 'get_json'):
+            system_status = status_response.get_json()
         else:
             system_status = status_response
     except Exception as e:
@@ -511,22 +512,28 @@ def handle_disconnect():
 @socketio.on('join_room')
 def handle_join_room(data):
     """Handle room joining."""
-    room = data.get('room')
-    if room:
-        join_room(room)
-        logger.info(f"Client {request.sid} joined room: {room}")
+    if isinstance(data, dict):
+        room = data.get('room')
+        if room:
+            join_room(room)
+            logger.info(f"Client {request.sid} joined room: {room}")
 
 @socketio.on('leave_room')
 def handle_leave_room(data):
     """Handle room leaving."""
-    room = data.get('room')
-    if room:
-        leave_room(room)
-        logger.info(f"Client {request.sid} left room: {room}")
+    if isinstance(data, dict):
+        room = data.get('room')
+        if room:
+            leave_room(room)
+            logger.info(f"Client {request.sid} left room: {room}")
 
 @socketio.on('request_updates')
 def handle_request_updates(data):
     """Handle update requests."""
+    if not isinstance(data, dict):
+        logger.warning(f"Received non-dict data in request_updates: {type(data)}")
+        data = {}
+    
     update_type = data.get('type', 'all')
     client_id = request.sid
     
@@ -562,8 +569,8 @@ def handle_request_updates(data):
         # Send system status
         try:
             status_response = get_system_status()
-            if hasattr(status_response, 'json'):
-                status = status_response.json
+            if hasattr(status_response, 'get_json'):
+                status = status_response.get_json()
             else:
                 status = status_response
             emit('system_status', status)
