@@ -384,24 +384,50 @@ class DataLoader:
         return self._lines_cache
     
     def load_stations(self, force_reload: bool = False) -> List[Station]:
-        """Load station data from markdown file."""
+        """Load station data from all station files."""
         if not force_reload and self._stations_cache is not None:
             return self._stations_cache
         
-        try:
-            content = self._read_file('stations.md')
-            stations = self._parse_station_data(content)
-            
-            # Extract coordinates from routes file to populate station coordinates
-            self._populate_station_coordinates(stations)
-            
-            self._stations_cache = stations
-            logger.info(f"Loaded {len(stations)} stations")
-            return stations
-            
-        except Exception as e:
-            logger.error(f"Error loading stations: {e}")
-            return []
+        logger.info("Loading stations from all station files...")
+        
+        all_stations = []
+        
+        # Load from main stations.md (metro stations)
+        stations_content = self._read_file("stations.md")
+        if stations_content:
+            metro_stations = self._parse_station_data(stations_content)
+            all_stations.extend(metro_stations)
+            logger.info(f"Loaded {len(metro_stations)} metro stations")
+        
+        # Load from tramstations.md
+        tram_content = self._read_file("tramstations.md")
+        if tram_content:
+            tram_stations = self._parse_station_data(tram_content)
+            all_stations.extend(tram_stations)
+            logger.info(f"Loaded {len(tram_stations)} tram stations")
+        
+        # Load from busstations.md
+        bus_content = self._read_file("busstations.md")
+        if bus_content:
+            bus_stations = self._parse_station_data(bus_content)
+            all_stations.extend(bus_stations)
+            logger.info(f"Loaded {len(bus_stations)} bus stations")
+        
+        # Load from nightbusstations.md
+        nightbus_content = self._read_file("nightbusstations.md")
+        if nightbus_content:
+            nightbus_stations = self._parse_station_data(nightbus_content)
+            all_stations.extend(nightbus_stations)
+            logger.info(f"Loaded {len(nightbus_stations)} night bus stations")
+        
+        # Populate coordinates for stations that don't have them
+        self._populate_station_coordinates(all_stations)
+        
+        self._stations_cache = all_stations
+        self._last_loaded['stations'] = datetime.now()
+        
+        logger.info(f"Total stations loaded: {len(all_stations)}")
+        return all_stations
     
     def _populate_station_coordinates(self, stations: List[Station]):
         """Populate station coordinates from routes data."""

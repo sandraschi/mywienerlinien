@@ -208,32 +208,74 @@
 - **Line**: 5
 - **Type**: Tram
 - **Color**: #FF6600
-- **Length**: 6.2 km
+- **Length**: 8.5 km
 - **Stations**: 10
-- **Description**: Central connection through Ringstraße
+- **Description**: Connection through northern Vienna via Friedensbrücke
 - **Coordinates**: [
     [48.2181, 16.3900],  // Praterstern
     [48.2170, 16.3860],  // Heinestraße
     [48.2160, 16.3820],  // Taborstraße
     [48.2150, 16.3780],  // Karmeliterplatz
-    [48.2140, 16.3740],  // Schottenring
-    [48.2130, 16.3700],  // Schottentor
-    [48.2120, 16.3660],  // Landesgerichtsstraße
-    [48.2110, 16.3620],  // Lerchenfelder Straße
-    [48.2100, 16.3580],  // Kaiserstraße
-    [48.2090, 16.3540]   // Westbahnhof
+    [48.2322, 16.3622],  // Friedensbrücke
+    [48.2200, 16.3260],  // Julius-Tandler-Platz
+    [48.2403, 16.3583],  // Spittelau
+    [48.2483, 16.3544],  // Heiligenstadt
+    [48.2300, 16.3150],  // Nußdorfer Straße
+    [48.1967, 16.3531]   // Westbahnhof
   ]
 - **Stops**: [
     {"name": "Praterstern", "lat": 48.2181, "lng": 16.3900, "rbl": 3071},
     {"name": "Heinestraße", "lat": 48.2170, "lng": 16.3860, "rbl": 3072},
     {"name": "Taborstraße", "lat": 48.2160, "lng": 16.3820, "rbl": 3073},
     {"name": "Karmeliterplatz", "lat": 48.2150, "lng": 16.3780, "rbl": 3074},
-    {"name": "Schottenring", "lat": 48.2140, "lng": 16.3740, "rbl": 3075},
-    {"name": "Schottentor", "lat": 48.2130, "lng": 16.3700, "rbl": 3076},
-    {"name": "Landesgerichtsstraße", "lat": 48.2120, "lng": 16.3660, "rbl": 3077},
-    {"name": "Lerchenfelder Straße", "lat": 48.2110, "lng": 16.3620, "rbl": 3078},
-    {"name": "Kaiserstraße", "lat": 48.2100, "lng": 16.3580, "rbl": 3079},
-    {"name": "Westbahnhof", "lat": 48.2090, "lng": 16.3540, "rbl": 3080}
+    {"name": "Friedensbrücke", "lat": 48.2322, "lng": 16.3622, "rbl": 3075},
+    {"name": "Julius-Tandler-Platz", "lat": 48.2200, "lng": 16.3260, "rbl": 3076},
+    {"name": "Spittelau", "lat": 48.2403, "lng": 16.3583, "rbl": 3077},
+    {"name": "Heiligenstadt", "lat": 48.2483, "lng": 16.3544, "rbl": 3078},
+    {"name": "Nußdorfer Straße", "lat": 48.2300, "lng": 16.3150, "rbl": 3079},
+    {"name": "Westbahnhof", "lat": 48.1967, "lng": 16.3531, "rbl": 3080}
+  ]
+
+### Tram 6 Route - Burggasse-Stadthalle ↔ Geiereckstraße
+- **Line**: 6
+- **Type**: Tram
+- **Color**: #FF6600
+- **Length**: 7.8 km
+- **Stations**: 15
+- **Description**: West Vienna connection
+- **Coordinates**: [
+    [48.2110, 16.3620],  // Burggasse-Stadthalle
+    [48.2120, 16.3580],  // Thaliastraße
+    [48.2130, 16.3540],  // Josefstädter Straße
+    [48.2140, 16.3500],  // Alser Straße
+    [48.2150, 16.3460],  // Michelbeuern-AKH
+    [48.2160, 16.3420],  // Währinger Straße-Volksoper
+    [48.2170, 16.3380],  // Nußdorfer Straße
+    [48.2180, 16.3340],  // Spittelau
+    [48.2190, 16.3300],  // Friedensbrücke
+    [48.2200, 16.3260],  // Julius-Tandler-Platz
+    [48.2210, 16.3220],  // Heiligenstadt
+    [48.2220, 16.3180],  // Nußdorfer Straße
+    [48.2230, 16.3140],  // Kahlenberg
+    [48.2240, 16.3100],  // Leopoldsberg
+    [48.2250, 16.3060]   // Geiereckstraße
+  ]
+- **Stops**: [
+    {"name": "Burggasse-Stadthalle", "lat": 48.2110, "lng": 16.3620, "rbl": 3081},
+    {"name": "Thaliastraße", "lat": 48.2120, "lng": 16.3580, "rbl": 3082},
+    {"name": "Josefstädter Straße", "lat": 48.2130, "lng": 16.3540, "rbl": 3083},
+    {"name": "Alser Straße", "lat": 48.2140, "lng": 16.3500, "rbl": 3084},
+    {"name": "Michelbeuern-AKH", "lat": 48.2150, "lng": 16.3460, "rbl": 3085},
+    {"name": "Währinger Straße-Volksoper", "lat": 48.2160, "lng": 16.3420, "rbl": 3086},
+    {"name": "Nußdorfer Straße", "lat": 48.2170, "lng": 16.3380, "rbl": 3087},
+    {"name": "Spittelau", "lat": 48.2180, "lng": 16.3340, "rbl": 3088},
+    {"name": "Friedensbrücke", "lat": 48.2190, "lng": 16.3300, "rbl": 3089},
+    {"name": "Julius-Tandler-Platz", "lat": 48.2200, "lng": 16.3260, "rbl": 3090},
+    {"name": "Heiligenstadt", "lat": 48.2210, "lng": 16.3220, "rbl": 3091},
+    {"name": "Nußdorfer Straße", "lat": 48.2220, "lng": 16.3180, "rbl": 3092},
+    {"name": "Kahlenberg", "lat": 48.2230, "lng": 16.3140, "rbl": 3093},
+    {"name": "Leopoldsberg", "lat": 48.2240, "lng": 16.3100, "rbl": 3094},
+    {"name": "Geiereckstraße", "lat": 48.2250, "lng": 16.3060, "rbl": 3095}
   ]
 
 ## Bus Routes
