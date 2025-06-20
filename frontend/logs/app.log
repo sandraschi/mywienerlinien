@@ -1,0 +1,130 @@
+2025-06-20 15:35:32,732 - wiener_linien - INFO - <module>:387 - Starting Wiener Linien Live Map application
+2025-06-20 15:35:34,414 - wiener_linien - INFO - <module>:387 - Starting Wiener Linien Live Map application
+2025-06-20 15:36:04,384 - wiener_linien - INFO - get_lines:357 - Returning 71 lines
+2025-06-20 15:36:04,394 - wiener_linien - INFO - get_vehicles:204 - Fetching vehicles: type=None, line=None
+2025-06-20 15:36:05,301 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:05,680 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:06,064 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:06,457 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:07,014 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:07,016 - wiener_linien - INFO - get_vehicles:253 - Returning 0 vehicles (successful requests: 0, failed: 5)
+2025-06-20 15:36:13,393 - wiener_linien - INFO - get_vehicles:204 - Fetching vehicles: type=metro, line=None
+2025-06-20 15:36:13,803 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:14,207 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:14,609 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:14,995 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:15,431 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:15,432 - wiener_linien - INFO - get_vehicles:253 - Returning 0 vehicles (successful requests: 0, failed: 5)
+2025-06-20 15:36:17,217 - wiener_linien - INFO - get_vehicles:204 - Fetching vehicles: type=metro, line=U4
+2025-06-20 15:36:17,597 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:17,968 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:18,367 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:18,771 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:19,189 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:19,190 - wiener_linien - INFO - get_vehicles:253 - Returning 0 vehicles (successful requests: 0, failed: 5)
+2025-06-20 15:36:22,034 - wiener_linien - INFO - get_vehicles:204 - Fetching vehicles: type=metro, line=U4
+2025-06-20 15:36:22,413 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:22,824 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:23,281 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:23,676 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:24,045 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:24,046 - wiener_linien - INFO - get_vehicles:253 - Returning 0 vehicles (successful requests: 0, failed: 5)
+2025-06-20 15:36:37,042 - wiener_linien - INFO - get_vehicles:204 - Fetching vehicles: type=metro, line=U4
+2025-06-20 15:36:37,468 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:37,856 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:38,247 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:38,634 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:39,030 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:36:39,031 - wiener_linien - INFO - get_vehicles:253 - Returning 0 vehicles (successful requests: 0, failed: 5)
+2025-06-20 15:43:49,522 - wiener_linien - INFO - <module>:560 - Starting Wiener Linien Live Map application
+2025-06-20 15:43:51,183 - wiener_linien - INFO - <module>:560 - Starting Wiener Linien Live Map application
+2025-06-20 15:43:54,628 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=None, line=None, station=None
+2025-06-20 15:43:55,035 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:43:55,530 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:43:55,944 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:43:55,945 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:43:55,946 - wiener_linien - INFO - get_vehicles:396 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:43:56,267 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=None, line=None, station=None
+2025-06-20 15:43:56,661 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:43:57,047 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:43:57,454 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:43:57,455 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:43:57,455 - wiener_linien - INFO - get_vehicles:396 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:43:59,895 - wiener_linien - INFO - get_lines:501 - Returning 71 lines
+2025-06-20 15:44:01,585 - wiener_linien - INFO - get_stops:552 - Returning 36 stops
+2025-06-20 15:44:03,986 - wiener_linien - INFO - get_lines:501 - Returning 71 lines
+2025-06-20 15:44:03,995 - wiener_linien - INFO - get_stops:552 - Returning 36 stops
+2025-06-20 15:44:04,000 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=None, line=None, station=None
+2025-06-20 15:44:04,464 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:44:04,936 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:44:05,310 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:44:05,312 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:44:05,312 - wiener_linien - INFO - get_vehicles:396 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:45:07,810 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=None, line=None, station=None
+2025-06-20 15:45:08,236 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:45:08,627 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:45:09,022 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:45:09,023 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:45:09,024 - wiener_linien - INFO - get_vehicles:396 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:46:11,822 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=None, line=None, station=None
+2025-06-20 15:46:12,212 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:46:12,626 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:46:13,015 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:46:13,017 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:46:13,017 - wiener_linien - INFO - get_vehicles:396 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:47:11,829 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=None, line=None, station=None
+2025-06-20 15:47:12,224 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:47:12,598 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:47:12,985 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:47:12,986 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:47:12,986 - wiener_linien - INFO - get_vehicles:396 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:48:11,843 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=None, line=None, station=None
+2025-06-20 15:48:12,220 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:48:12,662 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:48:13,024 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:48:13,025 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:48:13,025 - wiener_linien - INFO - get_vehicles:396 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:49:11,844 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=None, line=None, station=None
+2025-06-20 15:49:12,253 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:12,632 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:12,991 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:12,992 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:49:12,993 - wiener_linien - INFO - get_vehicles:396 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:49:17,142 - wiener_linien - INFO - get_lines:501 - Returning 71 lines
+2025-06-20 15:49:17,149 - wiener_linien - INFO - get_stops:552 - Returning 36 stops
+2025-06-20 15:49:17,152 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=None, line=None, station=None
+2025-06-20 15:49:17,578 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:17,961 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:18,398 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:18,399 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:49:18,399 - wiener_linien - INFO - get_vehicles:396 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:49:38,513 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=None, line=None, station=1234
+2025-06-20 15:49:38,913 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:39,302 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:39,676 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:39,677 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:49:39,677 - wiener_linien - INFO - get_vehicles:396 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:49:45,632 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=tram, line=None, station=1234
+2025-06-20 15:49:46,011 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:46,439 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:46,817 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:46,819 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:49:46,819 - wiener_linien - INFO - get_vehicles:396 - Returning 3 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:49:52,035 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=tram, line=D, station=1234
+2025-06-20 15:49:52,419 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:52,810 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:53,199 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:49:53,200 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:49:53,200 - wiener_linien - INFO - get_vehicles:396 - Returning 1 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:50:02,101 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=tram, line=D, station=4034
+2025-06-20 15:50:02,488 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:50:02,856 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:50:03,236 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:50:03,237 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:50:03,238 - wiener_linien - INFO - get_vehicles:396 - Returning 1 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:50:18,417 - wiener_linien - INFO - get_vehicles:338 - Fetching vehicles: type=tram, line=D, station=4034
+2025-06-20 15:50:18,817 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:50:19,170 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:50:19,535 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:50:19,536 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:50:19,536 - wiener_linien - INFO - get_vehicles:396 - Returning 1 vehicles (successful requests: 0, failed: 3)

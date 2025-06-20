@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiener Linien Live Map</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 350px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .main-content {
+            flex: 1;
+            position: relative;
+        }
+        
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .control-section {
+            margin-bottom: 25px;
+        }
+        
+        .control-section h3 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-section h3 i {
+            color: #667eea;
+        }
+        
+        .dropdown {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .filter-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .status-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .status-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .status-label {
+            color: #666;
+        }
+        
+        .status-value {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .status-value.online {
+            color: #28a745;
+        }
+        
+        .status-value.offline {
+            color: #dc3545;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .vehicle-legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 2px solid #333;
+        }
+        
+        .legend-color.metro { background: #FF0000; }
+        .legend-color.tram { background: #FF0000; }
+        .legend-color.bus { background: #0000FF; }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 40vh;
+            }
+            
+            .main-content {
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="header">
+                <h1><i class="fas fa-subway"></i> Wiener Linien Live Map</h1>
+                <p>Real-time public transport tracking</p>
+            </div>
+            
+            <!-- Vehicle Type Filter -->
+            <div class="control-section">
+                <h3><i class="fas fa-filter"></i> Vehicle Type</h3>
+                <select id="vehicleTypeFilter" class="dropdown">
+                    <option value="all">All Vehicles</option>
+                    <option value="metro">U-Bahn (Metro)</option>
+                    <option value="tram">Tram</option>
+                    <option value="bus">Bus</option>
+                </select>
+            </div>
+            
+            <!-- Line Selection -->
+            <div class="control-section">
+                <h3><i class="fas fa-route"></i> Select Line</h3>
+                <select id="lineFilter" class="dropdown">
+                    <option value="">All Lines</option>
+                </select>
+                <div class="filter-buttons" id="quickFilters">
+                    <button class="filter-btn" data-type="metro">U-Bahn</button>
+                    <button class="filter-btn" data-type="tram">Tram</button>
+                    <button class="filter-btn" data-type="bus">Bus</button>
+                </div>
+            </div>
+            
+            <!-- Station Selection -->
+            <div class="control-section">
+                <h3><i class="fas fa-map-marker-alt"></i> Select Station</h3>
+                <select id="stationFilter" class="dropdown">
+                    <option value="">All Stations</option>
+                </select>
+            </div>
+            
+            <!-- Refresh Info -->
+            <div class="control-section">
+                <h3><i class="fas fa-clock"></i> Auto-Refresh</h3>
+                <p style="color: #666; font-size: 12px; margin: 0;">
+                    Data refreshes every 60 seconds to respect API limits and ensure smooth performance.
+                </p>
+            </div>
+            
+            <!-- Dummy Data Notice -->
+            <div class="control-section" id="dummyNotice" style="display: none;">
+                <h3><i class="fas fa-info-circle"></i> Demo Mode</h3>
+                <p style="color: #856404; font-size: 12px; margin: 0; background: #fff3cd; padding: 8px; border-radius: 4px;">
+                    Showing dummy vehicles for demonstration. Real-time data will appear when available.
+                </p>
+            </div>
+            
+            <!-- Status Section -->
+            <div class="status-section">
+                <div class="status-item">
+                    <span class="status-label">API Status:</span>
+                    <span class="status-value" id="apiStatus">Checking...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Vehicles:</span>
+                    <span class="status-value" id="vehicleCount">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Last Update:</span>
+                    <span class="status-value" id="lastUpdate">Never</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Auto-refresh:</span>
+                    <span class="status-value" id="autoRefresh">60s</span>
+                </div>
+            </div>
+            
+            <!-- Loading Indicator -->
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                <p>Loading vehicle data...</p>
+            </div>
+            
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="errorText">An error occurred</span>
+            </div>
+        </div>
+        
+        <!-- Main Map Area -->
+        <div class="main-content">
+            <div id="map"></div>
+            
+            <!-- Vehicle Legend -->
+            <div class="vehicle-legend">
+                <h4 style="margin-bottom: 10px; font-size: 14px;">Vehicle Types</h4>
+                <div class="legend-item">
+                    <div class="legend-color metro"></div>
+                    <span>U-Bahn</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color tram"></div>
+                    <span>Tram</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color bus"></div>
+                    <span>Bus</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+            crossorigin=""></script>
+    
+    <script>
+        // Global variables
+        let map;
+        let vehicleMarkers = new Map();
+        let allLines = [];
+        let allStops = [];
+        let currentFilters = {
+            vehicleType: 'all',
+            line: '',
+            station: ''
+        };
+        let refreshInterval;
+        let isInitialized = false;
+
+        // Vienna center coordinates
+        const VIENNA_CENTER = [48.2082, 16.3738];
+
+        // Initialize the application
+        async function initializeApp() {
+            try {
+                showLoading(true);
+                
+                // Initialize map
+                initializeMap();
+                
+                // Load lines data
+                await loadLines();
+                
+                // Load stops data
+                await loadStops();
+                
+                // Load initial vehicle data
+                await loadVehicles();
+                
+                // Start auto-refresh
+                startAutoRefresh();
+                
+                isInitialized = true;
+                updateStatus('online');
+                
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showError('Failed to initialize application: ' + error.message);
+                updateStatus('offline');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Initialize Leaflet map
+        function initializeMap() {
+            map = L.map('map').setView(VIENNA_CENTER, 13);
+            
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+            }).addTo(map);
+            
+            console.log('Map initialized');
+        }
+
+        // Load all available lines
+        async function loadLines() {
+            try {
+                const response = await fetch('/api/lines');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                allLines = data.lines || [];
+                
+                // Populate line dropdown
+                populateLineDropdown();
+                
+                console.log(`Loaded ${allLines.length} lines`);
+                
+            } catch (error) {
+                console.error('Error loading lines:', error);
+                throw error;
+            }
+        }
+
+        // Populate line dropdown
+        function populateLineDropdown() {
+            const lineFilter = document.getElementById('lineFilter');
+            lineFilter.innerHTML = '<option value="">All Lines</option>';
+            
+            // Group lines by type
+            const metroLines = allLines.filter(line => line.type === 'metro');
+            const tramLines = allLines.filter(line => line.type === 'tram');
+            const busLines = allLines.filter(line => line.type === 'bus');
+            
+            // Add metro lines
+            if (metroLines.length > 0) {
+                const metroGroup = document.createElement('optgroup');
+                metroGroup.label = 'U-Bahn (Metro)';
+                metroLines.forEach(line => {
+                    const option = document.createElement('option');
+                    option.value = line.name;
+                    option.textContent = `${line.name} - ${line.towards}`;
+                    metroGroup.appendChild(option);
+                });
+                lineFilter.appendChild(metroGroup);
+            }
+            
+            // Add tram lines
+            if (tramLines.length > 0) {
+                const tramGroup = document.createElement('optgroup');
+                tramGroup.label = 'Tram';
+                tramLines.forEach(line => {
+                    const option = document.createElement('option');
+                    option.value = line.name;
+                    option.textContent = `${line.name} - ${line.towards}`;
+                    tramGroup.appendChild(option);
+                });
+                lineFilter.appendChild(tramGroup);
+            }
+            
+            // Add bus lines
+            if (busLines.length > 0) {
+                const busGroup = document.createElement('optgroup');
+                busGroup.label = 'Bus';
+                busLines.forEach(line => {
+                    const option = document.createElement('option');
+                    option.value = line.name;
+                    option.textContent = `${line.name} - ${line.towards}`;
+                    busGroup.appendChild(option);
+                });
+                lineFilter.appendChild(busGroup);
+            }
+        }
+
+        // Load all available stops
+        async function loadStops() {
+            try {
+                const response = await fetch('/api/stops');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                allStops = data.stops || [];
+                
+                // Populate station dropdown
+                populateStationDropdown();
+                
+                console.log(`Loaded ${allStops.length} stops`);
+                
+            } catch (error) {
+                console.error('Error loading stops:', error);
+                throw error;
+            }
+        }
+
+        // Populate station dropdown
+        function populateStationDropdown() {
+            const stationFilter = document.getElementById('stationFilter');
+            stationFilter.innerHTML = '<option value="">All Stations</option>';
+            
+            // Group stops by type
+            const metroStops = allStops.filter(stop => stop.type === 'metro');
+            const tramStops = allStops.filter(stop => stop.type === 'tram');
+            const busStops = allStops.filter(stop => stop.type === 'bus');
+            
+            // Add metro stops
+            if (metroStops.length > 0) {
+                const metroGroup = document.createElement('optgroup');
+                metroGroup.label = 'U-Bahn (Metro) Stations';
+                metroStops.forEach(stop => {
+                    const option = document.createElement('option');
+                    option.value = stop.id;
+                    option.textContent = stop.name;
+                    metroGroup.appendChild(option);
+                });
+                stationFilter.appendChild(metroGroup);
+            }
+            
+            // Add tram stops
+            if (tramStops.length > 0) {
+                const tramGroup = document.createElement('optgroup');
+                tramGroup.label = 'Tram Stations';
+                tramStops.forEach(stop => {
+                    const option = document.createElement('option');
+                    option.value = stop.id;
+                    option.textContent = stop.name;
+                    tramGroup.appendChild(option);
+                });
+                stationFilter.appendChild(tramGroup);
+            }
+            
+            // Add bus stops
+            if (busStops.length > 0) {
+                const busGroup = document.createElement('optgroup');
+                busGroup.label = 'Bus Stops';
+                busStops.forEach(stop => {
+                    const option = document.createElement('option');
+                    option.value = stop.id;
+                    option.textContent = stop.name;
+                    busGroup.appendChild(option);
+                });
+                stationFilter.appendChild(busGroup);
+            }
+        }
+
+        // Load vehicle data
+        async function loadVehicles() {
+            try {
+                showLoading(true);
+                hideError();
+                
+                // Build API URL with filters
+                const params = new URLSearchParams();
+                if (currentFilters.vehicleType !== 'all') {
+                    params.append('type', currentFilters.vehicleType);
+                }
+                if (currentFilters.line) {
+                    params.append('line', currentFilters.line);
+                }
+                if (currentFilters.station) {
+                    params.append('station', currentFilters.station);
+                }
+                
+                const url = `/api/vehicles${params.toString() ? '?' + params.toString() : ''}`;
+                
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Update vehicle markers
+                updateVehicleMarkers(data.vehicles || []);
+                
+                // Update status
+                updateVehicleCount(data.total_vehicles || 0);
+                updateLastUpdate();
+                
+                // Show/hide dummy data notice
+                const dummyNotice = document.getElementById('dummyNotice');
+                if (data.has_dummy_data) {
+                    dummyNotice.style.display = 'block';
+                } else {
+                    dummyNotice.style.display = 'none';
+                }
+                
+                console.log(`Loaded ${data.total_vehicles || 0} vehicles`);
+                
+            } catch (error) {
+                console.error('Error loading vehicles:', error);
+                showError('Failed to load vehicle data: ' + error.message);
+                updateStatus('offline');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Update vehicle markers on map
+        function updateVehicleMarkers(vehicles) {
+            // Clear existing markers
+            vehicleMarkers.forEach(marker => {
+                map.removeLayer(marker);
+            });
+            vehicleMarkers.clear();
+            
+            // Add new markers
+            vehicles.forEach(vehicle => {
+                const marker = createVehicleMarker(vehicle);
+                if (marker) {
+                    vehicleMarkers.set(vehicle.id, marker);
+                    marker.addTo(map);
+                }
+            });
+        }
+
+        // Create vehicle marker
+        function createVehicleMarker(vehicle) {
+            try {
+                const icon = getVehicleIcon(vehicle.type);
+                const marker = L.marker([vehicle.lat, vehicle.lng], { icon: icon });
+                
+                // Create popup content
+                const popupContent = `
+                    <div style="text-align: center; min-width: 200px;">
+                        <h4 style="margin: 0 0 10px 0; color: #333;">
+                            <i class="fas fa-${getVehicleIconClass(vehicle.type)}"></i>
+                            ${vehicle.line}
+                        </h4>
+                        <p style="margin: 5px 0; color: #666;">
+                            <strong>Type:</strong> ${vehicle.type.toUpperCase()}
+                        </p>
+                        <p style="margin: 5px 0; color: #666;">
+                            <strong>Towards:</strong> ${vehicle.towards || 'Unknown'}
+                        </p>
+                        <p style="margin: 5px 0; color: #666;">
+                            <strong>Platform:</strong> ${vehicle.platform || 'Unknown'}
+                        </p>
+                        <p style="margin: 5px 0; color: #666;">
+                            <strong>Countdown:</strong> ${vehicle.countdown || 0} min
+                        </p>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                return marker;
+                
+            } catch (error) {
+                console.error('Error creating marker for vehicle:', vehicle, error);
+                return null;
+            }
+        }
+
+        // Get vehicle icon
+        function getVehicleIcon(type) {
+            const iconSize = [25, 41];
+            const iconAnchor = [12, 41];
+            const popupAnchor = [1, -34];
+            
+            let iconUrl;
+            switch (type) {
+                case 'metro':
+                    iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
+                    break;
+                case 'tram':
+                    iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
+                    break;
+                case 'bus':
+                    iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png';
+                    break;
+                default:
+                    iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png';
+            }
+            
+            return L.icon({
+                iconUrl: iconUrl,
+                iconSize: iconSize,
+                iconAnchor: iconAnchor,
+                popupAnchor: popupAnchor
+            });
+        }
+
+        // Get vehicle icon class for Font Awesome
+        function getVehicleIconClass(type) {
+            switch (type) {
+                case 'metro':
+                    return 'subway';
+                case 'tram':
+                    return 'train';
+                case 'bus':
+                    return 'bus';
+                default:
+                    return 'question';
+            }
+        }
+
+        // Start auto-refresh
+        function startAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+            
+            refreshInterval = setInterval(() => {
+                if (isInitialized) {
+                    loadVehicles();
+                }
+            }, 60000); // 60 seconds
+        }
+
+        // Update status indicators
+        function updateStatus(status) {
+            const statusElement = document.getElementById('apiStatus');
+            statusElement.textContent = status === 'online' ? 'Online' : 'Offline';
+            statusElement.className = `status-value ${status}`;
+        }
+
+        function updateVehicleCount(count) {
+            document.getElementById('vehicleCount').textContent = count;
+        }
+
+        function updateLastUpdate() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = now.toLocaleTimeString();
+        }
+
+        // Show/hide loading indicator
+        function showLoading(show) {
+            const loading = document.getElementById('loadingIndicator');
+            if (show) {
+                loading.classList.add('show');
+            } else {
+                loading.classList.remove('show');
+            }
+        }
+
+        // Show/hide error message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        function hideError() {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.classList.remove('show');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize app
+            initializeApp();
+            
+            // Vehicle type filter
+            document.getElementById('vehicleTypeFilter').addEventListener('change', function(e) {
+                currentFilters.vehicleType = e.target.value;
+                loadVehicles();
+            });
+            
+            // Line filter
+            document.getElementById('lineFilter').addEventListener('change', function(e) {
+                currentFilters.line = e.target.value;
+                loadVehicles();
+            });
+            
+            // Station filter
+            document.getElementById('stationFilter').addEventListener('change', function(e) {
+                currentFilters.station = e.target.value;
+                loadVehicles();
+            });
+            
+            // Quick filter buttons
+            document.getElementById('quickFilters').addEventListener('click', function(e) {
+                if (e.target.classList.contains('filter-btn')) {
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    e.target.classList.add('active');
+                    
+                    // Update vehicle type filter
+                    const type = e.target.dataset.type;
+                    currentFilters.vehicleType = type;
+                    document.getElementById('vehicleTypeFilter').value = type;
+                    loadVehicles();
+                }
+            });
+        });
+
+        // Handle page visibility changes to pause/resume updates
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                if (refreshInterval) {
+                    clearInterval(refreshInterval);
+                    refreshInterval = null;
+                }
+            } else {
+                if (!refreshInterval && isInitialized) {
+                    startAutoRefresh();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
