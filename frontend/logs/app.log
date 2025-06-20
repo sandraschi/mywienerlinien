@@ -128,3 +128,119 @@
 2025-06-20 15:50:19,535 - wiener_linien - ERROR - make_api_request:134 - HTTP error 418: <h1>Forbidden</h1>
 2025-06-20 15:50:19,536 - wiener_linien - INFO - get_vehicles:383 - No real vehicles found, adding dummy vehicles
 2025-06-20 15:50:19,536 - wiener_linien - INFO - get_vehicles:396 - Returning 1 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:51:06,359 - wiener_linien - INFO - <module>:560 - Starting Wiener Linien Live Map application
+2025-06-20 15:53:22,981 - wiener_linien - INFO - <module>:560 - Starting Wiener Linien Live Map application
+2025-06-20 15:53:24,372 - wiener_linien - INFO - <module>:560 - Starting Wiener Linien Live Map application
+2025-06-20 15:54:34,893 - wiener_linien - INFO - <module>:624 - Starting Wiener Linien Live Map application
+2025-06-20 15:55:07,338 - wiener_linien - INFO - <module>:649 - Starting Wiener Linien Live Map application
+2025-06-20 15:55:45,815 - wiener_linien - INFO - <module>:649 - Starting Wiener Linien Live Map application
+2025-06-20 15:55:47,233 - wiener_linien - INFO - <module>:649 - Starting Wiener Linien Live Map application
+2025-06-20 15:56:05,113 - wiener_linien - INFO - <module>:649 - Starting Wiener Linien Live Map application
+2025-06-20 15:56:05,678 - wiener_linien - INFO - get_routes:641 - Returning 2 routes
+2025-06-20 15:56:06,766 - wiener_linien - INFO - <module>:649 - Starting Wiener Linien Live Map application
+2025-06-20 15:56:08,910 - wiener_linien - INFO - get_routes:633 - Returning route for line D
+2025-06-20 15:56:11,385 - wiener_linien - INFO - get_lines:565 - Returning 71 lines
+2025-06-20 15:56:11,432 - wiener_linien - INFO - get_stops:616 - Returning 36 stops
+2025-06-20 15:56:11,447 - wiener_linien - INFO - get_vehicles:402 - Fetching vehicles: type=None, line=None, station=None
+2025-06-20 15:56:11,894 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:56:12,297 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:56:12,717 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:56:12,718 - wiener_linien - INFO - get_vehicles:447 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:56:12,719 - wiener_linien - INFO - get_vehicles:460 - Returning 9 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:56:21,664 - wiener_linien - INFO - get_vehicles:402 - Fetching vehicles: type=tram, line=None, station=None
+2025-06-20 15:56:22,088 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:56:22,490 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:56:22,877 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:56:22,879 - wiener_linien - INFO - get_vehicles:447 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:56:22,879 - wiener_linien - INFO - get_vehicles:460 - Returning 3 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:56:34,188 - wiener_linien - INFO - get_vehicles:402 - Fetching vehicles: type=tram, line=D, station=None
+2025-06-20 15:56:34,664 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:56:35,065 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:56:35,519 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:56:35,520 - wiener_linien - INFO - get_vehicles:447 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:56:35,520 - wiener_linien - INFO - get_vehicles:460 - Returning 1 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:57:12,796 - wiener_linien - INFO - get_vehicles:402 - Fetching vehicles: type=tram, line=D, station=None
+2025-06-20 15:57:13,218 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:57:13,629 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:57:14,024 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:57:14,025 - wiener_linien - INFO - get_vehicles:447 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:57:14,025 - wiener_linien - INFO - get_vehicles:460 - Returning 1 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:57:53,132 - wiener_linien - INFO - get_routes:633 - Returning route for line D
+2025-06-20 15:58:12,810 - wiener_linien - INFO - get_vehicles:402 - Fetching vehicles: type=tram, line=D, station=None
+2025-06-20 15:58:13,247 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:58:13,658 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:58:14,048 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:58:14,049 - wiener_linien - INFO - get_vehicles:447 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:58:14,049 - wiener_linien - INFO - get_vehicles:460 - Returning 1 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:59:12,805 - wiener_linien - INFO - get_vehicles:402 - Fetching vehicles: type=tram, line=D, station=None
+2025-06-20 15:59:13,201 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:59:13,585 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:59:13,970 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:59:13,972 - wiener_linien - INFO - get_vehicles:447 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:59:13,972 - wiener_linien - INFO - get_vehicles:460 - Returning 1 vehicles (successful requests: 0, failed: 3)
+2025-06-20 15:59:57,883 - wiener_linien - INFO - get_vehicles:402 - Fetching vehicles: type=tram, line=D, station=3052
+2025-06-20 15:59:58,286 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:59:58,644 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:59:59,040 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 15:59:59,041 - wiener_linien - INFO - get_vehicles:447 - No real vehicles found, adding dummy vehicles
+2025-06-20 15:59:59,041 - wiener_linien - INFO - get_vehicles:460 - Returning 1 vehicles (successful requests: 0, failed: 3)
+2025-06-20 16:00:12,888 - wiener_linien - INFO - get_vehicles:402 - Fetching vehicles: type=tram, line=D, station=3052
+2025-06-20 16:00:13,293 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 16:00:13,722 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 16:00:14,091 - wiener_linien - ERROR - make_api_request:198 - HTTP error 418: <h1>Forbidden</h1>
+2025-06-20 16:00:14,092 - wiener_linien - INFO - get_vehicles:447 - No real vehicles found, adding dummy vehicles
+2025-06-20 16:00:14,092 - wiener_linien - INFO - get_vehicles:460 - Returning 1 vehicles (successful requests: 0, failed: 3)
+2025-06-20 16:07:50,414 - wiener_linien - INFO - <module>:634 - Starting Wiener Linien Live Map application
+2025-06-20 16:07:50,893 - wiener_linien - INFO - <module>:634 - Starting Wiener Linien Live Map application
+2025-06-20 16:08:50,388 - wiener_linien - INFO - <module>:634 - Starting Wiener Linien Live Map application
+2025-06-20 16:08:50,929 - wiener_linien - INFO - <module>:634 - Starting Wiener Linien Live Map application
+2025-06-20 16:09:15,352 - wiener_linien - INFO - <module>:634 - Starting Wiener Linien Live Map application
+2025-06-20 16:09:15,818 - wiener_linien - INFO - <module>:634 - Starting Wiener Linien Live Map application
+2025-06-20 16:11:28,995 - wiener_linien - INFO - <module>:634 - Starting Wiener Linien Live Map application
+2025-06-20 16:11:29,452 - wiener_linien - INFO - <module>:634 - Starting Wiener Linien Live Map application
+2025-06-20 16:11:56,893 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:11:57,442 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:12:50,392 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:12:50,966 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:17:48,784 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:17:50,445 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:17:50,920 - wiener_linien - INFO - get_routes:660 - Returning 2 routes
+2025-06-20 16:24:19,547 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:24:19,566 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:24:19,992 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:24:20,980 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:24:21,002 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:24:21,409 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:24:24,378 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:24:24,405 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:24:24,828 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:13,873 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:13,900 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:14,304 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:17,277 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:17,313 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:17,733 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:51,231 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:51,803 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:51,841 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:53,251 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:53,288 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:25:53,674 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:32,752 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:32,788 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:33,164 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:51,610 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:52,249 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:52,279 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:53,045 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:53,673 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:53,707 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:56,460 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:57,135 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:26:57,169 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:28:17,717 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:28:17,750 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:28:18,033 - wiener_linien - INFO - <module>:668 - Starting Wiener Linien Live Map application
+2025-06-20 16:28:21,690 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 16:28:21,691 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 16:28:21,694 - disruption_alerts - INFO - Disruption monitoring started

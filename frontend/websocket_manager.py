@@ -1,0 +1,388 @@
+"""
+WebSocket Manager for Wiener Linien Live Map
+
+This module provides WebSocket support for real-time updates,
+disruption alerts, and live vehicle tracking.
+"""
+
+import asyncio
+import json
+import logging
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional, Callable, Any
+from dataclasses import dataclass, asdict
+from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask import request
+import threading
+import time
+
+logger = logging.getLogger(__name__)
+
+@dataclass
+class DisruptionAlert:
+    """Represents a disruption alert."""
+    id: str
+    line: str
+    type: str
+    severity: str
+    title: str
+    description: str
+    affected_stations: List[str]
+    start_time: datetime
+    end_time: Optional[datetime]
+    status: str
+    created_at: datetime
+
+@dataclass
+class VehicleUpdate:
+    """Represents a vehicle position update."""
+    vehicle_id: str
+    line: str
+    type: str
+    lat: float
+    lng: float
+    direction: str
+    next_station: str
+    delay: int
+    timestamp: datetime
+
+class WebSocketManager:
+    """Manages WebSocket connections and real-time updates."""
+    
+    def __init__(self, socketio: SocketIO):
+        """Initialize the WebSocket manager."""
+        self.socketio = socketio
+        self.connected_clients = {}
+        self.disruption_alerts = {}
+        self.vehicle_updates = {}
+        self.update_callbacks = []
+        self.alert_callbacks = []
+        self.running = False
+        self.update_thread = None
+        
+        # Register event handlers
+        self._register_handlers()
+    
+    def _register_handlers(self):
+        """Register WebSocket event handlers."""
+        
+        @self.socketio.on('connect')
+        def handle_connect():
+            """Handle client connection."""
+            client_id = request.sid
+            self.connected_clients[client_id] = {
+                'connected_at': datetime.now(),
+                'rooms': set(),
+                'filters': {}
+            }
+            logger.info(f"Client connected: {client_id}")
+            emit('connected', {'client_id': client_id, 'timestamp': datetime.now().isoformat()})
+        
+        @self.socketio.on('disconnect')
+        def handle_disconnect():
+            """Handle client disconnection."""
+            client_id = request.sid
+            if client_id in self.connected_clients:
+                del self.connected_clients[client_id]
+            logger.info(f"Client disconnected: {client_id}")
+        
+        @self.socketio.on('join_room')
+        def handle_join_room(data):
+            """Handle room joining."""
+            client_id = request.sid
+            room = data.get('room')
+            if room and client_id in self.connected_clients:
+                join_room(room)
+                self.connected_clients[client_id]['rooms'].add(room)
+                logger.info(f"Client {client_id} joined room: {room}")
+        
+        @self.socketio.on('leave_room')
+        def handle_leave_room(data):
+            """Handle room leaving."""
+            client_id = request.sid
+            room = data.get('room')
+            if room and client_id in self.connected_clients:
+                leave_room(room)
+                self.connected_clients[client_id]['rooms'].discard(room)
+                logger.info(f"Client {client_id} left room: {room}")
+        
+        @self.socketio.on('set_filters')
+        def handle_set_filters(data):
+            """Handle filter updates."""
+            client_id = request.sid
+            if client_id in self.connected_clients:
+                self.connected_clients[client_id]['filters'] = data
+                logger.info(f"Client {client_id} updated filters: {data}")
+        
+        @self.socketio.on('request_updates')
+        def handle_request_updates(data):
+            """Handle update requests."""
+            client_id = request.sid
+            update_type = data.get('type', 'all')
+            
+            if update_type == 'vehicles' or update_type == 'all':
+                self._send_vehicle_updates(client_id)
+            
+            if update_type == 'disruptions' or update_type == 'all':
+                self._send_disruption_alerts(client_id)
+            
+            if update_type == 'status' or update_type == 'all':
+                self._send_system_status(client_id)
+    
+    def start(self):
+        """Start the WebSocket manager."""
+        if not self.running:
+            self.running = True
+            self.update_thread = threading.Thread(target=self._update_loop, daemon=True)
+            self.update_thread.start()
+            logger.info("WebSocket manager started")
+    
+    def stop(self):
+        """Stop the WebSocket manager."""
+        self.running = False
+        if self.update_thread:
+            self.update_thread.join(timeout=5)
+        logger.info("WebSocket manager stopped")
+    
+    def _update_loop(self):
+        """Main update loop for real-time data."""
+        while self.running:
+            try:
+                # Update vehicle positions
+                self._update_vehicle_positions()
+                
+                # Check for new disruptions
+                self._check_disruptions()
+                
+                # Send periodic updates to all clients
+                self._broadcast_updates()
+                
+                # Sleep for update interval
+                time.sleep(30)  # 30-second update interval
+                
+            except Exception as e:
+                logger.error(f"Error in update loop: {e}")
+                time.sleep(5)
+    
+    def _update_vehicle_positions(self):
+        """Update vehicle positions from API."""
+        try:
+            # This would integrate with the actual Wiener Linien API
+            # For now, we'll simulate updates
+            from app import fetch_vehicle_data
+            
+            # Get vehicle data for major stations
+            major_stations = ['3052', '3058', '3062', '3071', '3080']  # Sample RBL numbers
+            
+            for rbl in major_stations:
+                vehicles = fetch_vehicle_data(rbl)
+                if vehicles:
+                    for vehicle in vehicles:
+                        self._process_vehicle_update(vehicle)
+                        
+        except Exception as e:
+            logger.error(f"Error updating vehicle positions: {e}")
+    
+    def _process_vehicle_update(self, vehicle_data: Dict[str, Any]):
+        """Process a vehicle update."""
+        try:
+            vehicle_id = vehicle_data.get('id', 'unknown')
+            
+            update = VehicleUpdate(
+                vehicle_id=vehicle_id,
+                line=vehicle_data.get('line', ''),
+                type=vehicle_data.get('type', ''),
+                lat=vehicle_data.get('lat', 0.0),
+                lng=vehicle_data.get('lng', 0.0),
+                direction=vehicle_data.get('direction', ''),
+                next_station=vehicle_data.get('next_station', ''),
+                delay=vehicle_data.get('delay', 0),
+                timestamp=datetime.now()
+            )
+            
+            self.vehicle_updates[vehicle_id] = update
+            
+            # Notify callbacks
+            for callback in self.update_callbacks:
+                try:
+                    callback('vehicle', update)
+                except Exception as e:
+                    logger.error(f"Error in vehicle update callback: {e}")
+                    
+        except Exception as e:
+            logger.error(f"Error processing vehicle update: {e}")
+    
+    def _check_disruptions(self):
+        """Check for new disruptions."""
+        try:
+            # This would integrate with the actual Wiener Linien API
+            # For now, we'll simulate disruption checks
+            from app import fetch_traffic_info
+            
+            traffic_info = fetch_traffic_info()
+            if traffic_info:
+                for disruption in traffic_info:
+                    self._process_disruption_alert(disruption)
+                    
+        except Exception as e:
+            logger.error(f"Error checking disruptions: {e}")
+    
+    def _process_disruption_alert(self, disruption_data: Dict[str, Any]):
+        """Process a disruption alert."""
+        try:
+            disruption_id = disruption_data.get('id', str(datetime.now().timestamp()))
+            
+            # Check if this is a new disruption
+            if disruption_id not in self.disruption_alerts:
+                alert = DisruptionAlert(
+                    id=disruption_id,
+                    line=disruption_data.get('line', ''),
+                    type=disruption_data.get('type', ''),
+                    severity=disruption_data.get('severity', 'medium'),
+                    title=disruption_data.get('title', 'Service Disruption'),
+                    description=disruption_data.get('description', ''),
+                    affected_stations=disruption_data.get('affected_stations', []),
+                    start_time=datetime.fromisoformat(disruption_data.get('start_time', datetime.now().isoformat())),
+                    end_time=datetime.fromisoformat(disruption_data.get('end_time', '')) if disruption_data.get('end_time') else None,
+                    status=disruption_data.get('status', 'active'),
+                    created_at=datetime.now()
+                )
+                
+                self.disruption_alerts[disruption_id] = alert
+                
+                # Broadcast to all clients
+                self._broadcast_disruption_alert(alert)
+                
+                # Notify callbacks
+                for callback in self.alert_callbacks:
+                    try:
+                        callback(alert)
+                    except Exception as e:
+                        logger.error(f"Error in disruption alert callback: {e}")
+                        
+        except Exception as e:
+            logger.error(f"Error processing disruption alert: {e}")
+    
+    def _broadcast_updates(self):
+        """Broadcast updates to all connected clients."""
+        try:
+            # Send vehicle updates
+            vehicle_data = [asdict(update) for update in self.vehicle_updates.values()]
+            self.socketio.emit('vehicle_updates', {
+                'vehicles': vehicle_data,
+                'timestamp': datetime.now().isoformat()
+            })
+            
+            # Send system status
+            status_data = {
+                'connected_clients': len(self.connected_clients),
+                'active_disruptions': len([d for d in self.disruption_alerts.values() if d.status == 'active']),
+                'vehicle_count': len(self.vehicle_updates),
+                'timestamp': datetime.now().isoformat()
+            }
+            self.socketio.emit('system_status', status_data)
+            
+        except Exception as e:
+            logger.error(f"Error broadcasting updates: {e}")
+    
+    def _broadcast_disruption_alert(self, alert: DisruptionAlert):
+        """Broadcast a disruption alert to all clients."""
+        try:
+            alert_data = asdict(alert)
+            alert_data['start_time'] = alert.start_time.isoformat()
+            if alert.end_time:
+                alert_data['end_time'] = alert.end_time.isoformat()
+            alert_data['created_at'] = alert.created_at.isoformat()
+            
+            self.socketio.emit('disruption_alert', alert_data)
+            logger.info(f"Broadcasted disruption alert: {alert.id}")
+            
+        except Exception as e:
+            logger.error(f"Error broadcasting disruption alert: {e}")
+    
+    def _send_vehicle_updates(self, client_id: str):
+        """Send vehicle updates to a specific client."""
+        try:
+            vehicle_data = [asdict(update) for update in self.vehicle_updates.values()]
+            self.socketio.emit('vehicle_updates', {
+                'vehicles': vehicle_data,
+                'timestamp': datetime.now().isoformat()
+            }, room=client_id)
+            
+        except Exception as e:
+            logger.error(f"Error sending vehicle updates to {client_id}: {e}")
+    
+    def _send_disruption_alerts(self, client_id: str):
+        """Send disruption alerts to a specific client."""
+        try:
+            active_alerts = [asdict(alert) for alert in self.disruption_alerts.values() if alert.status == 'active']
+            for alert in active_alerts:
+                alert['start_time'] = alert['start_time'].isoformat()
+                if alert['end_time']:
+                    alert['end_time'] = alert['end_time'].isoformat()
+                alert['created_at'] = alert['created_at'].isoformat()
+            
+            self.socketio.emit('disruption_alerts', {
+                'alerts': active_alerts,
+                'timestamp': datetime.now().isoformat()
+            }, room=client_id)
+            
+        except Exception as e:
+            logger.error(f"Error sending disruption alerts to {client_id}: {e}")
+    
+    def _send_system_status(self, client_id: str):
+        """Send system status to a specific client."""
+        try:
+            status_data = {
+                'connected_clients': len(self.connected_clients),
+                'active_disruptions': len([d for d in self.disruption_alerts.values() if d.status == 'active']),
+                'vehicle_count': len(self.vehicle_updates),
+                'timestamp': datetime.now().isoformat()
+            }
+            self.socketio.emit('system_status', status_data, room=client_id)
+            
+        except Exception as e:
+            logger.error(f"Error sending system status to {client_id}: {e}")
+    
+    def add_update_callback(self, callback: Callable[[str, Any], None]):
+        """Add a callback for vehicle updates."""
+        self.update_callbacks.append(callback)
+    
+    def add_alert_callback(self, callback: Callable[[DisruptionAlert], None]):
+        """Add a callback for disruption alerts."""
+        self.alert_callbacks.append(callback)
+    
+    def get_connected_clients_count(self) -> int:
+        """Get the number of connected clients."""
+        return len(self.connected_clients)
+    
+    def get_active_disruptions_count(self) -> int:
+        """Get the number of active disruptions."""
+        return len([d for d in self.disruption_alerts.values() if d.status == 'active'])
+    
+    def get_vehicle_count(self) -> int:
+        """Get the number of tracked vehicles."""
+        return len(self.vehicle_updates)
+    
+    def get_system_status(self) -> Dict[str, Any]:
+        """Get the current system status."""
+        return {
+            'connected_clients': self.get_connected_clients_count(),
+            'active_disruptions': self.get_active_disruptions_count(),
+            'vehicle_count': self.get_vehicle_count(),
+            'timestamp': datetime.now().isoformat()
+        }
+
+# Global WebSocket manager instance
+websocket_manager = None
+
+def init_websocket_manager(socketio: SocketIO):
+    """Initialize the global WebSocket manager."""
+    global websocket_manager
+    websocket_manager = WebSocketManager(socketio)
+    websocket_manager.start()
+    return websocket_manager
+
+def get_websocket_manager() -> Optional[WebSocketManager]:
+    """Get the global WebSocket manager instance."""
+    return websocket_manager 

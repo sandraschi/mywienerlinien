@@ -13,6 +13,12 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
     <style>
         * {
             margin: 0;
@@ -131,6 +137,57 @@
         .filter-btn.active {
             background: #667eea;
             color: white;
+        }
+        
+        .route-btn {
+            padding: 12px 16px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .route-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .route-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .route-info {
+            background: #e3f2fd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            border-left: 4px solid #2196f3;
+            display: none;
+        }
+        
+        .route-info.show {
+            display: block;
+        }
+        
+        .route-info h4 {
+            color: #1976d2;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .route-info p {
+            color: #424242;
+            font-size: 12px;
+            margin: 0;
         }
         
         .status-section {
@@ -261,126 +318,140 @@
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="header">
-                <h1><i class="fas fa-subway"></i> Wiener Linien Live Map</h1>
-                <p>Real-time public transport tracking</p>
+        <!-- Header -->
+        <header class="header">
+            <h1>Wiener Linien Live Map</h1>
+            <div class="header-info">
+                <div class="connection-status" id="connection-status">Connecting...</div>
+                <div class="vehicle-count">Vehicles: <span id="vehicle-count">0</span></div>
             </div>
-            
-            <!-- Vehicle Type Filter -->
-            <div class="control-section">
-                <h3><i class="fas fa-filter"></i> Vehicle Type</h3>
-                <select id="vehicleTypeFilter" class="dropdown">
-                    <option value="all">All Vehicles</option>
-                    <option value="metro">U-Bahn (Metro)</option>
-                    <option value="tram">Tram</option>
-                    <option value="bus">Bus</option>
-                </select>
-            </div>
-            
-            <!-- Line Selection -->
-            <div class="control-section">
-                <h3><i class="fas fa-route"></i> Select Line</h3>
-                <select id="lineFilter" class="dropdown">
-                    <option value="">All Lines</option>
-                </select>
-                <div class="filter-buttons" id="quickFilters">
-                    <button class="filter-btn" data-type="metro">U-Bahn</button>
-                    <button class="filter-btn" data-type="tram">Tram</button>
-                    <button class="filter-btn" data-type="bus">Bus</button>
-                </div>
-            </div>
-            
-            <!-- Station Selection -->
-            <div class="control-section">
-                <h3><i class="fas fa-map-marker-alt"></i> Select Station</h3>
-                <select id="stationFilter" class="dropdown">
-                    <option value="">All Stations</option>
-                </select>
-            </div>
-            
-            <!-- Refresh Info -->
-            <div class="control-section">
-                <h3><i class="fas fa-clock"></i> Auto-Refresh</h3>
-                <p style="color: #666; font-size: 12px; margin: 0;">
-                    Data refreshes every 60 seconds to respect API limits and ensure smooth performance.
-                </p>
-            </div>
-            
-            <!-- Dummy Data Notice -->
-            <div class="control-section" id="dummyNotice" style="display: none;">
-                <h3><i class="fas fa-info-circle"></i> Demo Mode</h3>
-                <p style="color: #856404; font-size: 12px; margin: 0; background: #fff3cd; padding: 8px; border-radius: 4px;">
-                    Showing dummy vehicles for demonstration. Real-time data will appear when available.
-                </p>
-            </div>
-            
-            <!-- Status Section -->
-            <div class="status-section">
-                <div class="status-item">
-                    <span class="status-label">API Status:</span>
-                    <span class="status-value" id="apiStatus">Checking...</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Vehicles:</span>
-                    <span class="status-value" id="vehicleCount">0</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Last Update:</span>
-                    <span class="status-value" id="lastUpdate">Never</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label">Auto-refresh:</span>
-                    <span class="status-value" id="autoRefresh">60s</span>
-                </div>
-            </div>
-            
-            <!-- Loading Indicator -->
-            <div class="loading" id="loadingIndicator">
-                <div class="spinner"></div>
-                <p>Loading vehicle data...</p>
-            </div>
-            
-            <!-- Error Message -->
-            <div class="error-message" id="errorMessage">
-                <i class="fas fa-exclamation-triangle"></i>
-                <span id="errorText">An error occurred</span>
-            </div>
-        </div>
-        
-        <!-- Main Map Area -->
+        </header>
+
+        <!-- Main Content -->
         <div class="main-content">
-            <div id="map"></div>
-            
-            <!-- Vehicle Legend -->
-            <div class="vehicle-legend">
-                <h4 style="margin-bottom: 10px; font-size: 14px;">Vehicle Types</h4>
-                <div class="legend-item">
-                    <div class="legend-color metro"></div>
-                    <span>U-Bahn</span>
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Filters Section -->
+                <section class="filters-section">
+                    <h3>Filters</h3>
+                    
+                    <!-- Vehicle Type Filter -->
+                    <div class="filter-group">
+                        <label for="vehicle-type-select">Vehicle Type:</label>
+                        <select id="vehicle-type-select" onchange="onVehicleTypeChange()">
+                            <option value="all">All Types</option>
+                            <option value="metro">Metro (U-Bahn)</option>
+                            <option value="tram">Tram</option>
+                            <option value="bus">Bus</option>
+                            <option value="night_bus">Night Bus</option>
+                        </select>
+                    </div>
+
+                    <!-- Line Filter -->
+                    <div class="filter-group">
+                        <label for="line-select">Line:</label>
+                        <select id="line-select" onchange="onLineChange()">
+                            <option value="">All Lines</option>
+                            <!-- Populated by JavaScript -->
+                        </select>
+                    </div>
+
+                    <!-- Station Filter -->
+                    <div class="filter-group">
+                        <label for="station-select">Station:</label>
+                        <select id="station-select" onchange="onStationChange()">
+                            <option value="">All Stations</option>
+                            <!-- Populated by JavaScript -->
+                        </select>
+                    </div>
+                </section>
+
+                <!-- Controls Section -->
+                <section class="controls-section">
+                    <h3>Map Controls</h3>
+                    
+                    <div class="control-group">
+                        <button id="toggle-routes" onclick="toggleRoutes()" class="control-button">
+                            Show Routes
+                        </button>
+                    </div>
+                    
+                    <div class="control-group">
+                        <button id="toggle-stops" onclick="toggleStops()" class="control-button">
+                            Show Stops
+                        </button>
+                    </div>
+                    
+                    <div class="control-group">
+                        <button onclick="refreshVehicleData()" class="control-button">
+                            Refresh Data
+                        </button>
+                    </div>
+                </section>
+
+                <!-- System Status Section -->
+                <section class="status-section">
+                    <h3>System Status</h3>
+                    <div id="system-status" class="status-content">
+                        <div class="status-item">
+                            <span class="label">Connected Clients:</span>
+                            <span class="value">-</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">Active Disruptions:</span>
+                            <span class="value">-</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">Tracked Vehicles:</span>
+                            <span class="value">-</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">Last Updated:</span>
+                            <span class="value">-</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Disruptions Section -->
+                <section class="disruptions-section">
+                    <h3>Service Disruptions</h3>
+                    <div id="disruption-container" class="disruption-content">
+                        <p>No active disruptions</p>
+                    </div>
+                </section>
+            </aside>
+
+            <!-- Map Container -->
+            <main class="map-container">
+                <div id="map"></div>
+                
+                <!-- Loading Overlay -->
+                <div class="loading-overlay" id="loading-overlay">
+                    <div class="loading-spinner"></div>
+                    <p>Loading data...</p>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-color tram"></div>
-                    <span>Tram</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color bus"></div>
-                    <span>Bus</span>
-                </div>
-            </div>
+            </main>
         </div>
+
+        <!-- Messages -->
+        <div id="error-message" class="message error-message" style="display: none;"></div>
+        <div id="success-message" class="message success-message" style="display: none;"></div>
     </div>
 
-    <!-- Leaflet JS -->
+    <!-- Leaflet JavaScript -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
             crossorigin=""></script>
     
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+
     <script>
         // Global variables
         let map;
         let vehicleMarkers = new Map();
+        let routeLayers = new Map();
+        let stopMarkers = new Map();
         let allLines = [];
         let allStops = [];
         let currentFilters = {
@@ -463,7 +534,7 @@
 
         // Populate line dropdown
         function populateLineDropdown() {
-            const lineFilter = document.getElementById('lineFilter');
+            const lineFilter = document.getElementById('line-select');
             lineFilter.innerHTML = '<option value="">All Lines</option>';
             
             // Group lines by type
@@ -535,7 +606,7 @@
 
         // Populate station dropdown
         function populateStationDropdown() {
-            const stationFilter = document.getElementById('stationFilter');
+            const stationFilter = document.getElementById('station-select');
             stationFilter.innerHTML = '<option value="">All Stations</option>';
             
             // Group stops by type
@@ -759,7 +830,7 @@
         }
 
         function updateVehicleCount(count) {
-            document.getElementById('vehicleCount').textContent = count;
+            document.getElementById('vehicle-count').textContent = count;
         }
 
         function updateLastUpdate() {
@@ -804,6 +875,7 @@
             // Line filter
             document.getElementById('lineFilter').addEventListener('change', function(e) {
                 currentFilters.line = e.target.value;
+                checkRouteAvailability(e.target.value);
                 loadVehicles();
             });
             
@@ -811,6 +883,24 @@
             document.getElementById('stationFilter').addEventListener('change', function(e) {
                 currentFilters.station = e.target.value;
                 loadVehicles();
+            });
+            
+            // Show route button
+            document.getElementById('showRouteBtn').addEventListener('click', function() {
+                const lineName = currentFilters.line;
+                if (lineName) {
+                    if (this.classList.contains('active')) {
+                        // Hide route
+                        hideRoute();
+                        this.classList.remove('active');
+                        this.innerHTML = '<i class="fas fa-map-marked-alt"></i> Show Route';
+                    } else {
+                        // Show route
+                        loadAndDisplayRoute(lineName);
+                        this.classList.add('active');
+                        this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Route';
+                    }
+                }
             });
             
             // Quick filter buttons
@@ -846,6 +936,139 @@
                 }
             }
         });
+
+        // Load and display route for a specific line
+        async function loadAndDisplayRoute(lineName) {
+            try {
+                if (!lineName) {
+                    hideRoute();
+                    return;
+                }
+                
+                const response = await fetch(`/api/routes?line=${lineName}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.routes && data.routes.length > 0) {
+                    displayRoute(data.routes[0]);
+                } else {
+                    hideRoute();
+                }
+                
+            } catch (error) {
+                console.error('Error loading route:', error);
+                hideRoute();
+            }
+        }
+
+        // Display route on map
+        function displayRoute(route) {
+            // Clear existing route
+            hideRoute();
+            
+            if (!route || !route.coordinates || route.coordinates.length < 2) {
+                return;
+            }
+            
+            try {
+                // Create polyline for the route
+                const routePolyline = L.polyline(route.coordinates, {
+                    color: route.color || '#FF0000',
+                    weight: 4,
+                    opacity: 0.8
+                });
+                
+                // Add to map
+                routePolyline.addTo(map);
+                routeLayers.set(route.name, routePolyline);
+                
+                // Add stop markers if available
+                if (route.stops && route.stops.length > 0) {
+                    route.stops.forEach((stop, index) => {
+                        // Create stop marker
+                        const stopIcon = L.divIcon({
+                            className: 'stop-marker',
+                            html: `<div style="background: ${route.color || '#FF0000'}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`,
+                            iconSize: [12, 12],
+                            iconAnchor: [6, 6]
+                        });
+                        
+                        const stopMarker = L.marker([stop.lat, stop.lng], { icon: stopIcon });
+                        
+                        // Add popup with stop name
+                        const popupContent = `
+                            <div style="text-align: center; min-width: 120px;">
+                                <h4 style="margin: 0 0 5px 0; color: #333; font-size: 14px;">
+                                    <i class="fas fa-map-marker-alt"></i> ${stop.name}
+                                </h4>
+                                <p style="margin: 0; color: #666; font-size: 12px;">
+                                    Stop ${index + 1} on ${route.name}
+                                </p>
+                            </div>
+                        `;
+                        
+                        stopMarker.bindPopup(popupContent);
+                        stopMarker.addTo(map);
+                        stopMarkers.set(`${route.name}-${index}`, stopMarker);
+                    });
+                }
+                
+                // Fit map to show the entire route
+                map.fitBounds(routePolyline.getBounds(), { padding: [20, 20] });
+                
+                // Update route info
+                const routeInfo = document.getElementById('routeInfo');
+                const routeDescription = document.getElementById('routeDescription');
+                
+                const stopCount = route.stops ? route.stops.length : 0;
+                routeDescription.textContent = `${route.description} (${stopCount} stops)`;
+                routeInfo.classList.add('show');
+                
+                console.log(`Displayed route for ${route.name} with ${stopCount} stops`);
+                
+            } catch (error) {
+                console.error('Error displaying route:', error);
+            }
+        }
+
+        // Hide route from map
+        function hideRoute() {
+            // Clear route polylines
+            routeLayers.forEach((layer, name) => {
+                map.removeLayer(layer);
+            });
+            routeLayers.clear();
+            
+            // Clear stop markers
+            stopMarkers.forEach((marker, key) => {
+                map.removeLayer(marker);
+            });
+            stopMarkers.clear();
+            
+            // Hide route info
+            const routeInfo = document.getElementById('routeInfo');
+            routeInfo.classList.remove('show');
+            
+            console.log('Hidden route and stop markers');
+        }
+
+        // Check if selected line has route data
+        function checkRouteAvailability(lineName) {
+            const showRouteBtn = document.getElementById('showRouteBtn');
+            
+            // Check if it's a tram line with route data
+            if (lineName && (lineName === 'D' || lineName === '5')) {
+                showRouteBtn.style.display = 'flex';
+                showRouteBtn.textContent = 'Show Route';
+                showRouteBtn.classList.remove('active');
+            } else {
+                showRouteBtn.style.display = 'none';
+                hideRoute();
+            }
+        }
     </script>
 </body>
 </html>

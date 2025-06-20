@@ -1,286 +1,532 @@
 /**
- * Wiener Linien Live Map - Map and Vehicle Tracking
- * Part of the Annoyinator Barnacle Projects
+ * Wiener Linien Live Map - Frontend JavaScript
+ * 
+ * This file handles the interactive map functionality, real-time updates,
+ * and WebSocket connections for live vehicle tracking and disruption alerts.
  */
 
-// Store vehicle markers by ID for updating positions
-const vehicleMarkers = {};
-
-// Store previous positions for smooth transitions
-const previousPositions = {};
-
-// Initialize map centered on Vienna
-const map = L.map('map').setView([48.2082, 16.3738], 13);
-
-// Add OpenStreetMap tiles
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-}).addTo(map);
-
-// Vehicle icons for different transport types
-const vehicleIcons = {
-    metro: L.icon({
-        iconUrl: '/static/images/metro.png',
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-        popupAnchor: [0, -12],
-        className: 'vehicle-marker metro'
-    }),
-    tram: L.icon({
-        iconUrl: '/static/images/tram.png',
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-        popupAnchor: [0, -12],
-        className: 'vehicle-marker tram'
-    }),
-    bus: L.icon({
-        iconUrl: '/static/images/bus.png',
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-        popupAnchor: [0, -12],
-        className: 'vehicle-marker bus'
-    }),
-    unknown: L.icon({
-        iconUrl: '/static/images/unknown.png',
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-        popupAnchor: [0, -12],
-        className: 'vehicle-marker'
-    })
+// Global variables
+let map;
+let vehicleMarkers = new Map();
+let routePolylines = new Map();
+let stopMarkers = new Map();
+let disruptionAlerts = new Map();
+let socket;
+let currentFilters = {
+    vehicleType: 'all',
+    line: null,
+    station: null
 };
 
-// Fallback to colored markers if custom icons aren't available
-const fallbackIcons = {
-    metro: L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        className: 'vehicle-marker metro'
-    }),
-    tram: L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        className: 'vehicle-marker tram'
-    }),
-    bus: L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        className: 'vehicle-marker bus'
-    }),
-    unknown: L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        className: 'vehicle-marker'
-    })
-};
-
-// Get appropriate icon for vehicle type
-function getVehicleIcon(type) {
-    return vehicleIcons[type] || vehicleIcons.unknown;
+// WebSocket connection
+function initializeWebSocket() {
+    // Connect to WebSocket server
+    socket = io();
+    
+    // Connection events
+    socket.on('connect', function() {
+        console.log('Connected to WebSocket server');
+        updateConnectionStatus('Connected', 'success');
+        
+        // Request initial data
+        socket.emit('request_updates', { type: 'all' });
+    });
+    
+    socket.on('disconnect', function() {
+        console.log('Disconnected from WebSocket server');
+        updateConnectionStatus('Disconnected', 'error');
+    });
+    
+    // Real-time updates
+    socket.on('vehicle_updates', function(data) {
+        console.log('Received vehicle updates:', data.vehicles.length);
+        updateVehicleMarkers(data.vehicles);
+    });
+    
+    socket.on('disruption_alert', function(alert) {
+        console.log('Received disruption alert:', alert);
+        handleDisruptionAlert(alert);
+    });
+    
+    socket.on('disruption_alerts', function(data) {
+        console.log('Received disruption alerts:', data.alerts.length);
+        updateDisruptionAlerts(data.alerts);
+    });
+    
+    socket.on('system_status', function(status) {
+        console.log('Received system status:', status);
+        updateSystemStatus(status);
+    });
 }
 
-// Format popup content for a vehicle
-function formatVehiclePopup(vehicle) {
-    return `
-        <div class="vehicle-popup-header">Line ${vehicle.line}</div>
-        <div class="vehicle-popup-info">
-            <div>Type: ${vehicle.type}</div>
-            <div>Speed: ${Math.round(vehicle.speed || 0)} km/h</div>
-            <div>Direction: ${Math.round(vehicle.heading || 0)}°</div>
-            <div>Last updated: ${new Date(vehicle.timestamp * 1000).toLocaleTimeString()}</div>
-        </div>
-    `;
+// Initialize the map
+function initializeMap() {
+    // Create map centered on Vienna
+    map = L.map('map').setView([48.2082, 16.3738], 13);
+    
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    // Initialize WebSocket connection
+    initializeWebSocket();
+    
+    // Load initial data
+    loadInitialData();
+    
+    // Set up periodic refresh
+    setInterval(refreshVehicleData, 60000); // Refresh every 60 seconds
+}
+
+// Load initial data
+async function loadInitialData() {
+    try {
+        // Load lines, stations, and routes
+        await Promise.all([
+            loadLines(),
+            loadStations(),
+            loadRoutes()
+        ]);
+        
+        // Load initial vehicle data
+        await loadVehicleData();
+        
+        console.log('Initial data loaded successfully');
+    } catch (error) {
+        console.error('Error loading initial data:', error);
+        showError('Failed to load initial data');
+    }
+}
+
+// Load transport lines
+async function loadLines() {
+    try {
+        const response = await fetch('/api/lines');
+        const data = await response.json();
+        
+        if (data.lines) {
+            populateLineDropdown(data.lines);
+        }
+    } catch (error) {
+        console.error('Error loading lines:', error);
+    }
+}
+
+// Load stations
+async function loadStations() {
+    try {
+        const response = await fetch('/api/stations');
+        const data = await response.json();
+        
+        if (data.stations) {
+            populateStationDropdown(data.stations);
+        }
+    } catch (error) {
+        console.error('Error loading stations:', error);
+    }
+}
+
+// Load routes
+async function loadRoutes() {
+    try {
+        const response = await fetch('/api/routes');
+        const data = await response.json();
+        
+        if (data.routes) {
+            displayRoutes(data.routes);
+        }
+    } catch (error) {
+        console.error('Error loading routes:', error);
+    }
+}
+
+// Load vehicle data
+async function loadVehicleData() {
+    try {
+        const params = new URLSearchParams();
+        if (currentFilters.vehicleType !== 'all') {
+            params.append('type', currentFilters.vehicleType);
+        }
+        if (currentFilters.line) {
+            params.append('line', currentFilters.line);
+        }
+        if (currentFilters.station) {
+            params.append('station', currentFilters.station);
+        }
+        
+        const response = await fetch(`/api/vehicles?${params}`);
+        const data = await response.json();
+        
+        if (data.vehicles) {
+            updateVehicleMarkers(data.vehicles);
+        }
+    } catch (error) {
+        console.error('Error loading vehicle data:', error);
+        showError('Failed to load vehicle data');
+    }
+}
+
+// Refresh vehicle data
+function refreshVehicleData() {
+    loadVehicleData();
 }
 
 // Update vehicle markers on the map
-function updateVehicles(vehicles) {
-    const currentIds = new Set();
+function updateVehicleMarkers(vehicles) {
+    // Clear existing markers
+    vehicleMarkers.forEach(marker => map.removeLayer(marker));
+    vehicleMarkers.clear();
     
-    // Update or add markers for each vehicle
+    // Add new markers
     vehicles.forEach(vehicle => {
-        const id = vehicle.id;
-        currentIds.add(id);
-        
-        // Store previous position for animation
-        if (!previousPositions[id] && vehicle.lat && vehicle.lng) {
-            previousPositions[id] = [vehicle.lat, vehicle.lng];
-        }
-        
-        if (vehicleMarkers[id]) {
-            // Update existing marker
-            const marker = vehicleMarkers[id];
-            
-            // Only move if position changed
-            if (marker.getLatLng().lat !== vehicle.lat || marker.getLatLng().lng !== vehicle.lng) {
-                marker.setLatLng([vehicle.lat, vehicle.lng]);
-                
-                // Update rotation if available
-                if (vehicle.heading !== undefined) {
-                    marker.setRotationAngle(vehicle.heading);
-                }
-            }
-            
-            // Update popup content
-            marker.setPopupContent(formatVehiclePopup(vehicle));
-            
-        } else {
-            // Create new marker
-            const icon = getVehicleIcon(vehicle.type);
-            const marker = L.marker([vehicle.lat, vehicle.lng], {
-                icon: icon,
-                rotationAngle: vehicle.heading || 0
-            }).addTo(map);
-            
-            // Add popup
-            marker.bindPopup(formatVehiclePopup(vehicle));
-            
-            // Store marker
-            vehicleMarkers[id] = marker;
-        }
-        
-        // Update previous position
-        previousPositions[id] = [vehicle.lat, vehicle.lng];
+        const marker = createVehicleMarker(vehicle);
+        vehicleMarkers.set(vehicle.id, marker);
+        marker.addTo(map);
     });
     
-    // Remove markers for vehicles no longer in the data
-    Object.keys(vehicleMarkers).forEach(id => {
-        if (!currentIds.has(id)) {
-            map.removeLayer(vehicleMarkers[id]);
-            delete vehicleMarkers[id];
-            delete previousPositions[id];
-        }
-    });
-    
-    // Update last update time
-    document.getElementById('last-update').textContent = 'Last update: ' + new Date().toLocaleTimeString();
+    updateVehicleCount(vehicles.length);
 }
 
-// Fetch vehicles from API
-function fetchVehicles(filters = { lines: ['5'], types: ['tram'] }) {
-    // Show loading indicator
-    document.querySelector('.loading-overlay').classList.add('active');
+// Create a vehicle marker
+function createVehicleMarker(vehicle) {
+    const icon = getVehicleIcon(vehicle.type, vehicle.line);
+    const marker = L.marker([vehicle.lat, vehicle.lng], { icon: icon });
     
-    // Build API URL with filters
-    let url = '/api/vehicles';
-    const params = new URLSearchParams();
-    params.append('real', '1');
+    // Create popup content
+    const popupContent = `
+        <div class="vehicle-popup">
+            <h4>${vehicle.line}</h4>
+            <p><strong>Type:</strong> ${vehicle.type}</p>
+            <p><strong>Direction:</strong> ${vehicle.direction}</p>
+            <p><strong>Next Station:</strong> ${vehicle.next_station}</p>
+            <p><strong>Delay:</strong> ${vehicle.delay} min</p>
+            <p><strong>Updated:</strong> ${new Date(vehicle.timestamp).toLocaleTimeString()}</p>
+        </div>
+    `;
     
-    if (filters.types && filters.types.length > 0 && !filters.types.includes('all')) {
-        params.append('type', filters.types.join(','));
+    marker.bindPopup(popupContent);
+    
+    return marker;
+}
+
+// Get vehicle icon based on type and line
+function getVehicleIcon(type, line) {
+    const iconSize = [20, 20];
+    const iconAnchor = [10, 10];
+    
+    let iconUrl;
+    let color;
+    
+    switch (type) {
+        case 'metro':
+            color = '#FF0000';
+            break;
+        case 'tram':
+            color = '#FF6600';
+            break;
+        case 'bus':
+            color = '#0066CC';
+            break;
+        case 'night_bus':
+            color = '#333333';
+            break;
+        default:
+            color = '#999999';
     }
     
-    if (filters.lines && filters.lines.length > 0) {
-        params.append('line', filters.lines.join(','));
+    // Create custom icon with line number
+    return L.divIcon({
+        className: 'vehicle-marker',
+        html: `<div style="background-color: ${color}; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">${line}</div>`,
+        iconSize: iconSize,
+        iconAnchor: iconAnchor
+    });
+}
+
+// Display routes on the map
+function displayRoutes(routes) {
+    // Clear existing routes
+    routePolylines.forEach(polyline => map.removeLayer(polyline));
+    routePolylines.clear();
+    
+    routes.forEach(route => {
+        if (route.coordinates && route.coordinates.length > 0) {
+            const polyline = L.polyline(route.coordinates, {
+                color: route.color,
+                weight: 4,
+                opacity: 0.7
+            }).addTo(map);
+            
+            routePolylines.set(route.name, polyline);
+            
+            // Add stops if available
+            if (route.stops) {
+                route.stops.forEach(stop => {
+                    const stopMarker = L.circleMarker([stop.lat, stop.lng], {
+                        radius: 6,
+                        fillColor: route.color,
+                        color: '#fff',
+                        weight: 2,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    }).addTo(map);
+                    
+                    stopMarker.bindPopup(`
+                        <div class="stop-popup">
+                            <h4>${stop.name}</h4>
+                            <p><strong>Line:</strong> ${route.name}</p>
+                            <p><strong>RBL:</strong> ${stop.rbl}</p>
+                        </div>
+                    `);
+                    
+                    stopMarkers.set(`${route.name}-${stop.rbl}`, stopMarker);
+                });
+            }
+        }
+    });
+}
+
+// Handle disruption alerts
+function handleDisruptionAlert(alert) {
+    // Store the alert
+    disruptionAlerts.set(alert.id, alert);
+    
+    // Show notification
+    showDisruptionNotification(alert);
+    
+    // Update disruption display
+    updateDisruptionDisplay();
+}
+
+// Update disruption alerts
+function updateDisruptionAlerts(alerts) {
+    disruptionAlerts.clear();
+    alerts.forEach(alert => {
+        disruptionAlerts.set(alert.id, alert);
+    });
+    updateDisruptionDisplay();
+}
+
+// Show disruption notification
+function showDisruptionNotification(alert) {
+    const notification = document.createElement('div');
+    notification.className = `disruption-notification ${alert.severity}`;
+    notification.innerHTML = `
+        <div class="notification-header">
+            <h4>${alert.title}</h4>
+            <button onclick="this.parentElement.parentElement.remove()">×</button>
+        </div>
+        <div class="notification-content">
+            <p><strong>Line:</strong> ${alert.line}</p>
+            <p><strong>Type:</strong> ${alert.type}</p>
+            <p>${alert.description}</p>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 10 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.remove();
+        }
+    }, 10000);
+}
+
+// Update disruption display
+function updateDisruptionDisplay() {
+    const container = document.getElementById('disruption-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    if (disruptionAlerts.size === 0) {
+        container.innerHTML = '<p>No active disruptions</p>';
+        return;
     }
     
-    if (params.toString()) {
-        url += '?' + params.toString();
+    disruptionAlerts.forEach(alert => {
+        const alertElement = document.createElement('div');
+        alertElement.className = `disruption-item ${alert.severity}`;
+        alertElement.innerHTML = `
+            <h4>${alert.title}</h4>
+            <p><strong>Line:</strong> ${alert.line}</p>
+            <p><strong>Type:</strong> ${alert.type}</p>
+            <p>${alert.description}</p>
+            <small>Started: ${new Date(alert.start_time).toLocaleString()}</small>
+        `;
+        container.appendChild(alertElement);
+    });
+}
+
+// Update system status
+function updateSystemStatus(status) {
+    const statusElement = document.getElementById('system-status');
+    if (statusElement) {
+        statusElement.innerHTML = `
+            <div class="status-item">
+                <span class="label">Connected Clients:</span>
+                <span class="value">${status.websocket_clients}</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Active Disruptions:</span>
+                <span class="value">${status.active_disruptions}</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Tracked Vehicles:</span>
+                <span class="value">${status.vehicle_count}</span>
+            </div>
+            <div class="status-item">
+                <span class="label">Last Updated:</span>
+                <span class="value">${new Date(status.timestamp).toLocaleTimeString()}</span>
+            </div>
+        `;
     }
+}
+
+// Update connection status
+function updateConnectionStatus(status, type) {
+    const statusElement = document.getElementById('connection-status');
+    if (statusElement) {
+        statusElement.textContent = status;
+        statusElement.className = `connection-status ${type}`;
+    }
+}
+
+// Update vehicle count
+function updateVehicleCount(count) {
+    const countElement = document.getElementById('vehicle-count');
+    if (countElement) {
+        countElement.textContent = count;
+    }
+}
+
+// Populate line dropdown
+function populateLineDropdown(lines) {
+    const select = document.getElementById('line-select');
+    if (!select) return;
     
-    // Fetch vehicle data
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.error) {
-                console.error('API Error:', data.error);
-                showError(data.error);
-                return;
-            }
-            
-            // Update vehicles on map
-            updateVehicles(data.vehicles || []);
-            
-            // Show raw API data if present
-            if (data.raw_api_data) {
-                let debugPanel = document.getElementById('debug-panel');
-                if (!debugPanel) {
-                    debugPanel = document.createElement('pre');
-                    debugPanel.id = 'debug-panel';
-                    debugPanel.style.position = 'fixed';
-                    debugPanel.style.bottom = '0';
-                    debugPanel.style.left = '0';
-                    debugPanel.style.maxHeight = '30vh';
-                    debugPanel.style.overflow = 'auto';
-                    debugPanel.style.background = 'rgba(0,0,0,0.8)';
-                    debugPanel.style.color = '#fff';
-                    debugPanel.style.zIndex = '10000';
-                    debugPanel.style.fontSize = '12px';
-                    debugPanel.style.width = '100vw';
-                    document.body.appendChild(debugPanel);
-                }
-                debugPanel.textContent = JSON.stringify(data.raw_api_data, null, 2);
-            } else {
-                let debugPanel = document.getElementById('debug-panel');
-                if (debugPanel) debugPanel.textContent = '';
-            }
-            
-            // Hide any previous error
-            hideError();
-        })
-        .catch(error => {
-            console.error('Error fetching vehicles:', error);
-            showError(`Failed to fetch vehicle data: ${error.message}`);
-        })
-        .finally(() => {
-            // Hide loading indicator
-            document.querySelector('.loading-overlay').classList.remove('active');
-        });
+    select.innerHTML = '<option value="">All Lines</option>';
+    
+    lines.forEach(line => {
+        const option = document.createElement('option');
+        option.value = line.name;
+        option.textContent = `${line.name} - ${line.description}`;
+        select.appendChild(option);
+    });
+}
+
+// Populate station dropdown
+function populateStationDropdown(stations) {
+    const select = document.getElementById('station-select');
+    if (!select) return;
+    
+    select.innerHTML = '<option value="">All Stations</option>';
+    
+    stations.forEach(station => {
+        const option = document.createElement('option');
+        option.value = station.rbl;
+        option.textContent = `${station.name} (${station.type})`;
+        select.appendChild(option);
+    });
+}
+
+// Filter change handlers
+function onVehicleTypeChange() {
+    const select = document.getElementById('vehicle-type-select');
+    currentFilters.vehicleType = select.value;
+    loadVehicleData();
+}
+
+function onLineChange() {
+    const select = document.getElementById('line-select');
+    currentFilters.line = select.value || null;
+    loadVehicleData();
+}
+
+function onStationChange() {
+    const select = document.getElementById('station-select');
+    currentFilters.station = select.value || null;
+    loadVehicleData();
+}
+
+// Toggle route display
+function toggleRoutes() {
+    const button = document.getElementById('toggle-routes');
+    const isVisible = button.textContent.includes('Hide');
+    
+    routePolylines.forEach(polyline => {
+        if (isVisible) {
+            map.removeLayer(polyline);
+        } else {
+            polyline.addTo(map);
+        }
+    });
+    
+    button.textContent = isVisible ? 'Show Routes' : 'Hide Routes';
+}
+
+// Toggle stop markers
+function toggleStops() {
+    const button = document.getElementById('toggle-stops');
+    const isVisible = button.textContent.includes('Hide');
+    
+    stopMarkers.forEach(marker => {
+        if (isVisible) {
+            map.removeLayer(marker);
+        } else {
+            marker.addTo(map);
+        }
+    });
+    
+    button.textContent = isVisible ? 'Show Stops' : 'Hide Stops';
 }
 
 // Show error message
 function showError(message) {
-    const errorElement = document.getElementById('error-message');
-    errorElement.textContent = message;
-    errorElement.style.display = 'block';
+    const errorDiv = document.getElementById('error-message');
+    if (errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 5000);
+    }
 }
 
-// Hide error message
-function hideError() {
-    const errorElement = document.getElementById('error-message');
-    errorElement.style.display = 'none';
+// Show success message
+function showSuccess(message) {
+    const successDiv = document.getElementById('success-message');
+    if (successDiv) {
+        successDiv.textContent = message;
+        successDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            successDiv.style.display = 'none';
+        }, 3000);
+    }
 }
 
-// Initialize the map and start fetching data
-function initMap() {
-    // Initial vehicle fetch
-    fetchVehicles();
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeMap();
     
-    // Set up periodic refresh
-    setInterval(() => {
-        const filters = {
-            types: getActiveVehicleTypes(),
-            lines: getActiveLines()
-        };
-        fetchVehicles(filters);
-    }, 30000); // Refresh every 30 seconds
-}
-
-// Get currently selected vehicle types
-function getActiveVehicleTypes() {
-    return Array.from(
-        document.querySelectorAll('.vehicle-type-filter:checked')
-    ).map(checkbox => checkbox.value);
-}
-
-// Get currently selected lines
-function getActiveLines() {
-    return Array.from(
-        document.querySelectorAll('.line-button.active')
-    ).map(button => button.dataset.lineId);
-}
-
-// When DOM is loaded, initialize map
-document.addEventListener('DOMContentLoaded', initMap);
+    // Set up event listeners
+    const vehicleTypeSelect = document.getElementById('vehicle-type-select');
+    const lineSelect = document.getElementById('line-select');
+    const stationSelect = document.getElementById('station-select');
+    
+    if (vehicleTypeSelect) {
+        vehicleTypeSelect.addEventListener('change', onVehicleTypeChange);
+    }
+    if (lineSelect) {
+        lineSelect.addEventListener('change', onLineChange);
+    }
+    if (stationSelect) {
+        stationSelect.addEventListener('change', onStationChange);
+    }
+    
+    console.log('Wiener Linien Live Map initialized');
+});

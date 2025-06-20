@@ -3,67 +3,277 @@
  * Part of the Annoyinator Barnacle Projects
  */
 
-/* Custom marker styles */
-.vehicle-marker {
-    transition: transform 1s linear;
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.vehicle-marker.metro {
-    filter: hue-rotate(240deg);
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
 }
 
-.vehicle-marker.tram {
-    filter: hue-rotate(0deg);
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.vehicle-marker.bus {
-    filter: hue-rotate(120deg);
+/* Header */
+.header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Popup styles */
-.leaflet-popup-content {
-    font-family: Arial, sans-serif;
+.header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
 }
 
-.vehicle-popup-header {
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 5px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #eee;
+.header-info {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
 }
 
-.vehicle-popup-info {
-    font-size: 14px;
-    line-height: 1.4;
+.connection-status {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-/* Loading indicator */
+.connection-status.success {
+    background-color: #28a745;
+    color: white;
+}
+
+.connection-status.error {
+    background-color: #dc3545;
+    color: white;
+}
+
+.connection-status.connecting {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.vehicle-count {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 350px;
+    background: white;
+    border-right: 1px solid #e0e0e0;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.sidebar section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #e9ecef;
+}
+
+.sidebar h3 {
+    color: #495057;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Filter Groups */
+.filter-group {
+    margin-bottom: 1rem;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: white;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Control Groups */
+.control-group {
+    margin-bottom: 1rem;
+}
+
+.control-button {
+    width: 100%;
+    padding: 0.75rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.control-button:hover {
+    background: #0056b3;
+}
+
+.control-button:active {
+    transform: translateY(1px);
+}
+
+/* Status Section */
+.status-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.status-item:last-child {
+    border-bottom: none;
+}
+
+.status-item .label {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.status-item .value {
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Disruptions Section */
+.disruption-content {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.disruption-item {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    border-left: 4px solid;
+    background: white;
+}
+
+.disruption-item.low {
+    border-left-color: #28a745;
+    background: #d4edda;
+}
+
+.disruption-item.medium {
+    border-left-color: #ffc107;
+    background: #fff3cd;
+}
+
+.disruption-item.high {
+    border-left-color: #fd7e14;
+    background: #ffeaa7;
+}
+
+.disruption-item.critical {
+    border-left-color: #dc3545;
+    background: #f8d7da;
+}
+
+.disruption-item h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #495057;
+}
+
+.disruption-item p {
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.disruption-item small {
+    color: #adb5bd;
+    font-size: 0.8rem;
+}
+
+/* Map Container */
+.map-container {
+    flex: 1;
+    position: relative;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Loading Overlay */
 .loading-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.9);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    visibility: hidden;
-}
-
-.loading-overlay.active {
-    visibility: visible;
 }
 
 .loading-spinner {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
     animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
 }
 
 @keyframes spin {
@@ -71,11 +281,232 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Responsive adjustments */
+/* Messages */
+.message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+    z-index: 1001;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Disruption Notifications */
+.disruption-notification {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1001;
+    max-width: 400px;
+    border-left: 4px solid;
+}
+
+.disruption-notification.low {
+    border-left-color: #28a745;
+}
+
+.disruption-notification.medium {
+    border-left-color: #ffc107;
+}
+
+.disruption-notification.high {
+    border-left-color: #fd7e14;
+}
+
+.disruption-notification.critical {
+    border-left-color: #dc3545;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.notification-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #495057;
+}
+
+.notification-header button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #6c757d;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-header button:hover {
+    color: #495057;
+}
+
+.notification-content {
+    padding: 1rem;
+}
+
+.notification-content p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.notification-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Vehicle Markers */
+.vehicle-marker {
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Popups */
+.vehicle-popup {
+    min-width: 200px;
+}
+
+.vehicle-popup h4 {
+    margin-bottom: 0.5rem;
+    color: #495057;
+    font-size: 1.1rem;
+}
+
+.vehicle-popup p {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.stop-popup {
+    min-width: 180px;
+}
+
+.stop-popup h4 {
+    margin-bottom: 0.5rem;
+    color: #495057;
+    font-size: 1rem;
+}
+
+.stop-popup p {
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .control-panel {
-        max-width: 80%;
-        max-height: 40%;
+    .container {
+        height: 100vh;
+    }
+    
+    .header {
+        padding: 0.75rem 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .header-info {
+        gap: 1rem;
+    }
+    
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 40vh;
         overflow-y: auto;
+    }
+    
+    .map-container {
+        flex: 1;
+        min-height: 60vh;
+    }
+    
+    .message {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+    
+    .disruption-notification {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        padding: 0.75rem;
+        gap: 1rem;
+    }
+    
+    .sidebar section {
+        padding: 0.75rem;
+    }
+    
+    .header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .connection-status,
+    .vehicle-count {
+        font-size: 0.8rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .sidebar,
+    .header,
+    .loading-overlay,
+    .message,
+    .disruption-notification {
+        display: none !important;
+    }
+    
+    .map-container {
+        position: static;
+        height: 100vh;
+    }
+    
+    #map {
+        height: 100vh;
     }
 }

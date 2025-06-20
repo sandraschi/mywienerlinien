@@ -1,561 +1,590 @@
 """
-Wiener Linien Public Transport Map Display
------------------------------------------
-A Flask application that displays real-time vehicle positions for Vienna's public transport
-using the official Wiener Linien API.
+Wiener Linien Live Map - Main Application
 
-Note: As of 2024, no API key is required for the Wiener Linien API.
+A Flask-based web application for real-time visualization of Vienna's public transport system.
+Features include live vehicle tracking, route display, and disruption alerts.
 """
 
 import os
 import json
-import time
 import logging
-import requests
-from typing import Dict, List, Optional, Tuple
-from flask import Flask, render_template, jsonify, request
-from flask_caching import Cache
-from dotenv import load_dotenv
+import time
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional, Any
+from functools import wraps
 
-# Load environment variables from .env file
-load_dotenv()
+from flask import Flask, render_template, jsonify, request, Response
+from flask_caching import Cache
+from flask_socketio import SocketIO, emit
+import requests
+
+# Import our custom modules
+from data_loader import data_loader
+from websocket_manager import init_websocket_manager, get_websocket_manager
+from disruption_alerts import disruption_monitor
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('logs/app.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger('wiener_linien')
 
 # Initialize Flask app
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'wiener-linien-secret-key-2024'
+app.config['CACHE_TYPE'] = 'SimpleCache'
+app.config['CACHE_DEFAULT_TIMEOUT'] = 15
 
-# Configure cache - store API responses for 60 seconds to respect rate limits
-cache = Cache(app, config={
-    'CACHE_TYPE': 'SimpleCache',
-    'CACHE_DEFAULT_TIMEOUT': 60
-})
+# Initialize cache
+cache = Cache(app)
 
-# Base URL for Wiener Linien API
-API_BASE_URL = 'https://www.wienerlinien.at/ogd_realtime'
+# Initialize SocketIO for WebSocket support
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
-# Vienna center coordinates
-VIENNA_CENTER = (48.2082, 16.3738)
+# Initialize WebSocket manager
+websocket_manager = init_websocket_manager(socketio)
 
-# Vehicle types and their icons
-VEHICLE_TYPES = {
-    'ptBusCity': 'bus',
-    'ptBusNight': 'bus', 
-    'ptTram': 'tram',
-    'ptTramWLB': 'tram',
-    'ptMetro': 'metro',
-    'ptTrainS': 'train'
-}
+# Start disruption monitoring
+disruption_monitor.start_monitoring()
 
-# Known RBL numbers for Vienna stops (major stops)
-VIENNA_RBL_STOPS = [
-    '4011',  # Staatsoper
-    '4025',  # Hauptbahnhof Ost
-    '4009',  # Schottentor
-    '3047',  # Westbahnhof
-    '3043',  # Praterstern
-    '3052',  # Kaiserstraße/Westbahnstraße
-    '1234',  # Flotowgasse
-    '3047',  # Westbahnhof
-    '3043',  # Praterstern
-    '3052',  # Kaiserstraße/Westbahnstraße
-    '4011',  # Staatsoper
-    '4025',  # Hauptbahnhof Ost
-    '4009',  # Schottentor
-]
+# API configuration
+API_BASE_URL = "https://www.wienerlinien.at/ogd_realtime"
+API_TIMEOUT = 10
 
-# Setup logging
-def setup_logger():
-    """Setup application logger following rulebook guidelines."""
-    logger = logging.getLogger('wiener_linien')
-    logger.setLevel(logging.INFO)
-    
-    # Prevent duplicate handlers
-    if logger.handlers:
-        return logger
-    
-    # Console handler
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)
-    console_formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
-    console_handler.setFormatter(console_formatter)
-    logger.addHandler(console_handler)
-    
-    # File handler
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
-    file_handler = logging.FileHandler('logs/app.log')
-    file_handler.setLevel(logging.INFO)
-    file_formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s'
-    )
-    file_handler.setFormatter(file_formatter)
-    logger.addHandler(file_handler)
-    
-    return logger
+# Rate limiting
+last_api_call = {}
+RATE_LIMIT_SECONDS = 15
 
-logger = setup_logger()
+def rate_limit(func):
+    """Decorator to enforce rate limiting."""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        func_name = func.__name__
+        current_time = time.time()
+        
+        if func_name in last_api_call:
+            time_since_last = current_time - last_api_call[func_name]
+            if time_since_last < RATE_LIMIT_SECONDS:
+                sleep_time = RATE_LIMIT_SECONDS - time_since_last
+                logger.debug(f"Rate limiting: sleeping for {sleep_time:.2f} seconds")
+                time.sleep(sleep_time)
+        
+        last_api_call[func_name] = time.time()
+        return func(*args, **kwargs)
+    return wrapper
 
-@app.route('/')
-def index():
-    """Render the main map page."""
+@rate_limit
+def fetch_vehicle_data(rbl_number: str) -> Optional[Dict[str, Any]]:
+    """Fetch vehicle data from Wiener Linien API."""
     try:
-        return render_template('index.html')
-    except Exception as e:
-        logger.error("Error rendering index page: %s", str(e), exc_info=True)
-        return "Error loading page", 500
-
-def get_vehicle_type(wl_type: str) -> str:
-    """Map Wiener Linien vehicle types to our simplified types."""
-    return VEHICLE_TYPES.get(wl_type, 'unknown')
-
-def validate_rbl_number(rbl: str) -> bool:
-    """Validate RBL number format."""
-    if not rbl or not rbl.isdigit():
-        return False
-    return True
-
-def make_api_request(url: str, params: Dict = None, timeout: int = 10) -> Optional[requests.Response]:
-    """Make a properly configured API request with error handling."""
-    headers = {
-        'User-Agent': 'WienerLinienMap/1.0 (https://github.com/your-repo)',
-        'Accept': 'application/json'
-    }
-    
-    try:
-        logger.debug("Making API request to %s with params %s", url, params)
-        response = requests.get(url, params=params, headers=headers, timeout=timeout)
+        url = f"{API_BASE_URL}/monitor"
+        params = {'rbl': rbl_number}
+        
+        response = requests.get(url, params=params, timeout=API_TIMEOUT)
         response.raise_for_status()
-        return response
-    except requests.exceptions.Timeout:
-        logger.warning("API request timed out after %d seconds", timeout)
-        return None
-    except requests.exceptions.HTTPError as e:
-        logger.error("HTTP error %d: %s", e.response.status_code, e.response.text)
-        return None
-    except requests.exceptions.ConnectionError:
-        logger.error("Failed to connect to API server")
+        
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        logger.error(f"API request failed for RBL {rbl_number}: {e}")
         return None
     except Exception as e:
-        logger.error("Unexpected error in API request: %s", str(e), exc_info=True)
+        logger.error(f"Error processing API response for RBL {rbl_number}: {e}")
         return None
 
-def parse_vehicle_data(monitor_data: Dict) -> List[Dict]:
-    """Parse vehicle data from monitor response."""
-    vehicles = []
-    
+@rate_limit
+def fetch_traffic_info() -> Optional[Dict[str, Any]]:
+    """Fetch traffic information from Wiener Linien API."""
     try:
-        # Get stop coordinates
-        stop_coords = monitor_data.get('locationStop', {}).get('geometry', {}).get('coordinates', [])
-        if not stop_coords or len(stop_coords) < 2:
-            logger.warning("Invalid stop coordinates in monitor data")
-            return vehicles
+        url = f"{API_BASE_URL}/trafficInfo"
+        response = requests.get(url, timeout=API_TIMEOUT)
+        response.raise_for_status()
         
-        stop_lng, stop_lat = stop_coords[0], stop_coords[1]
-        
-        # Parse lines and departures
-        lines = monitor_data.get('lines', [])
-        for line in lines:
-            line_name = line.get('name', 'Unknown')
-            line_type = line.get('type', 'unknown')
-            vehicle_type = get_vehicle_type(line_type)
-            
-            # Parse departures
-            departures = line.get('departures', {}).get('departure', [])
-            for departure in departures:
-                try:
-                    # Create vehicle object
-                    vehicle = {
-                        'id': f"{line_name}-{departure.get('departureTime', {}).get('countdown', 0)}",
-                        'type': vehicle_type,
-                        'line': line_name,
-                        'lat': stop_lat,
-                        'lng': stop_lng,
-                        'heading': 0,  # Default heading
-                        'speed': 0,    # Default speed
-                        'timestamp': int(time.time()),
-                        'towards': line.get('towards', 'Unknown'),
-                        'countdown': departure.get('departureTime', {}).get('countdown', 0),
-                        'platform': line.get('platform', 'Unknown')
-                    }
-                    vehicles.append(vehicle)
-                except Exception as e:
-                    logger.warning("Error parsing departure: %s", str(e))
-                    continue
-                    
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error fetching traffic info: {e}")
+        return None
     except Exception as e:
-        logger.error("Error parsing vehicle data: %s", str(e), exc_info=True)
-    
-    return vehicles
+        logger.error(f"Error processing traffic info: {e}")
+        return None
 
-def get_dummy_vehicles() -> List[Dict]:
-    """Get dummy vehicles for demonstration purposes."""
-    center_lat, center_lng = VIENNA_CENTER
-    current_time = int(time.time())
-    
-    # Create realistic dummy vehicles around Vienna
-    dummy_vehicles = [
-        # U-Bahn vehicles
-        {
-            'id': 'dummy-u1-1',
-            'type': 'metro',
-            'line': 'U1',
-            'lat': center_lat - 0.008,
-            'lng': center_lng - 0.005,
-            'heading': 45,
-            'speed': 35,
-            'timestamp': current_time,
-            'towards': 'Leopoldau',
-            'countdown': 2,
-            'platform': '1'
-        },
-        {
-            'id': 'dummy-u4-1',
-            'type': 'metro',
-            'line': 'U4',
-            'lat': center_lat + 0.006,
-            'lng': center_lng - 0.012,
-            'heading': 180,
-            'speed': 32,
-            'timestamp': current_time,
-            'towards': 'Heiligenstadt',
-            'countdown': 5,
-            'platform': '2'
-        },
-        {
-            'id': 'dummy-u6-1',
-            'type': 'metro',
-            'line': 'U6',
-            'lat': center_lat + 0.012,
-            'lng': center_lng + 0.008,
-            'heading': 90,
-            'speed': 30,
-            'timestamp': current_time,
-            'towards': 'Siebenhirten',
-            'countdown': 1,
-            'platform': '1'
-        },
+@rate_limit
+def fetch_news() -> Optional[Dict[str, Any]]:
+    """Fetch news and announcements from Wiener Linien API."""
+    try:
+        url = f"{API_BASE_URL}/news"
+        response = requests.get(url, timeout=API_TIMEOUT)
+        response.raise_for_status()
         
-        # Tram vehicles
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error fetching news: {e}")
+        return None
+    except Exception as e:
+        logger.error(f"Error processing news: {e}")
+        return None
+
+def get_dummy_vehicles(vehicle_type: Optional[str] = None, line: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Generate dummy vehicle data for demonstration."""
+    dummy_vehicles = [
         {
-            'id': 'dummy-d-1',
+            'id': 'tram_d_001',
             'type': 'tram',
             'line': 'D',
-            'lat': center_lat + 0.004,
-            'lng': center_lng + 0.007,
-            'heading': 90,
-            'speed': 18,
-            'timestamp': current_time,
-            'towards': 'Nußdorf',
-            'countdown': 3,
-            'platform': '1'
+            'lat': 48.2027,
+            'lng': 16.3680,
+            'direction': 'Nußdorf',
+            'next_station': 'Karlsplatz',
+            'delay': 0,
+            'timestamp': datetime.now().isoformat()
         },
         {
-            'id': 'dummy-1-1',
-            'type': 'tram',
-            'line': '1',
-            'lat': center_lat - 0.006,
-            'lng': center_lng + 0.003,
-            'heading': 270,
-            'speed': 20,
-            'timestamp': current_time,
-            'towards': 'Prater',
-            'countdown': 7,
-            'platform': '2'
-        },
-        {
-            'id': 'dummy-5-1',
+            'id': 'tram_5_001',
             'type': 'tram',
             'line': '5',
-            'lat': center_lat - 0.003,
-            'lng': center_lng - 0.009,
-            'heading': 135,
-            'speed': 16,
-            'timestamp': current_time,
-            'towards': 'Westbahnhof',
-            'countdown': 4,
-            'platform': '1'
-        },
-        
-        # Bus vehicles
-        {
-            'id': 'dummy-13a-1',
-            'type': 'bus',
-            'line': '13A',
-            'lat': center_lat,
-            'lng': center_lng + 0.01,
-            'heading': 0,
-            'speed': 22,
-            'timestamp': current_time,
-            'towards': 'Hütteldorf',
-            'countdown': 6,
-            'platform': 'A'
+            'lat': 48.2140,
+            'lng': 16.3720,
+            'direction': 'Westbahnhof',
+            'next_station': 'Schottentor',
+            'delay': 2,
+            'timestamp': datetime.now().isoformat()
         },
         {
-            'id': 'dummy-26a-1',
+            'id': 'bus_1a_001',
             'type': 'bus',
-            'line': '26A',
-            'lat': center_lat + 0.008,
-            'lng': center_lng - 0.004,
-            'heading': 315,
-            'speed': 25,
-            'timestamp': current_time,
-            'towards': 'Kagran U',
-            'countdown': 2,
-            'platform': 'B'
+            'line': '1A',
+            'lat': 48.2089,
+            'lng': 16.3717,
+            'direction': 'Kaisermühlen',
+            'next_station': 'Stephansplatz',
+            'delay': 0,
+            'timestamp': datetime.now().isoformat()
         },
         {
-            'id': 'dummy-35a-1',
-            'type': 'bus',
-            'line': '35A',
-            'lat': center_lat - 0.005,
-            'lng': center_lng - 0.008,
-            'heading': 45,
-            'speed': 19,
-            'timestamp': current_time,
-            'towards': 'Salmannsdorf',
-            'countdown': 8,
-            'platform': 'C'
+            'id': 'metro_u1_001',
+            'type': 'metro',
+            'line': 'U1',
+            'lat': 48.2459,
+            'lng': 16.4269,
+            'direction': 'Reumannplatz',
+            'next_station': 'Stephansplatz',
+            'delay': 1,
+            'timestamp': datetime.now().isoformat()
+        },
+        {
+            'id': 'metro_u2_001',
+            'type': 'metro',
+            'line': 'U2',
+            'lat': 48.2090,
+            'lng': 16.4620,
+            'direction': 'Karlsplatz',
+            'next_station': 'Schottentor',
+            'delay': 0,
+            'timestamp': datetime.now().isoformat()
+        },
+        {
+            'id': 'metro_u3_001',
+            'type': 'metro',
+            'line': 'U3',
+            'lat': 48.2100,
+            'lng': 16.2660,
+            'direction': 'Simmering',
+            'next_station': 'Stephansplatz',
+            'delay': 3,
+            'timestamp': datetime.now().isoformat()
+        },
+        {
+            'id': 'metro_u4_001',
+            'type': 'metro',
+            'line': 'U4',
+            'lat': 48.1890,
+            'lng': 16.2220,
+            'direction': 'Heiligenstadt',
+            'next_station': 'Karlsplatz',
+            'delay': 0,
+            'timestamp': datetime.now().isoformat()
+        },
+        {
+            'id': 'metro_u6_001',
+            'type': 'metro',
+            'line': 'U6',
+            'lat': 48.1500,
+            'lng': 16.2660,
+            'direction': 'Floridsdorf',
+            'next_station': 'Westbahnhof',
+            'delay': 2,
+            'timestamp': datetime.now().isoformat()
+        },
+        {
+            'id': 'night_bus_n25_001',
+            'type': 'night_bus',
+            'line': 'N25',
+            'lat': 48.2089,
+            'lng': 16.3717,
+            'direction': 'Floridsdorf',
+            'next_station': 'Ring',
+            'delay': 0,
+            'timestamp': datetime.now().isoformat()
         }
     ]
     
+    # Filter by vehicle type if specified
+    if vehicle_type and vehicle_type != 'all':
+        dummy_vehicles = [v for v in dummy_vehicles if v['type'] == vehicle_type]
+    
+    # Filter by line if specified
+    if line:
+        dummy_vehicles = [v for v in dummy_vehicles if v['line'] == line]
+    
     return dummy_vehicles
 
-@cache.cached(timeout=60)
+@app.route('/')
+def index():
+    """Main page route."""
+    return render_template('index.html')
+
 @app.route('/api/vehicles')
 def get_vehicles():
-    """
-    Fetch real-time vehicle positions from Wiener Linien API.
-    
-    This endpoint is cached for 60 seconds to comply with fair use policy.
-    """
+    """API endpoint for vehicle positions."""
     try:
-        # Get filter parameters
-        vehicle_type = request.args.get('type')
-        line_filter = request.args.get('line')
-        station_filter = request.args.get('station')
+        vehicle_type = request.args.get('type', 'all')
+        line = request.args.get('line')
+        station = request.args.get('station')
         
-        logger.info("Fetching vehicles: type=%s, line=%s, station=%s", vehicle_type, line_filter, station_filter)
+        logger.info(f"Fetching vehicles: type={vehicle_type}, line={line}, station={station}")
         
-        all_vehicles = []
+        vehicles = []
         successful_requests = 0
         failed_requests = 0
         
-        # Try to get real data first
-        try:
-            # Rotate through RBL stops to get comprehensive data
-            for i, rbl in enumerate(VIENNA_RBL_STOPS[:3]):  # Limit to 3 stops to respect rate limits
-                try:
-                    # Make API request
-                    url = f"{API_BASE_URL}/monitor"
-                    params = {'rbl': rbl}
-                    
-                    response = make_api_request(url, params)
-                    if not response:
-                        failed_requests += 1
-                        continue
-                    
-                    # Parse response
-                    data = response.json()
-                    if 'data' not in data or 'monitors' not in data['data']:
-                        logger.warning("Invalid API response structure for RBL %s", rbl)
-                        failed_requests += 1
-                        continue
-                    
-                    # Parse vehicles from monitors
-                    monitors = data['data']['monitors']
-                    for monitor in monitors:
-                        vehicles = parse_vehicle_data(monitor)
-                        all_vehicles.extend(vehicles)
-                    
+        # Get stations to query
+        stations_to_query = []
+        if station:
+            # Query specific station
+            stations_to_query = [station]
+        else:
+            # Query major stations
+            all_stations = data_loader.load_stations()
+            major_stations = [s.rbl for s in all_stations if s.rbl and len(s.rbl) == 4]
+            stations_to_query = major_stations[:5]  # Limit to 5 stations
+        
+        # Fetch real vehicle data
+        for rbl in stations_to_query:
+            try:
+                data = fetch_vehicle_data(rbl)
+                if data and 'data' in data and 'monitors' in data['data']:
+                    for monitor in data['data']['monitors']:
+                        if 'lines' in monitor:
+                            for line_data in monitor['lines']:
+                                for vehicle in line_data.get('departures', {}).get('departure', []):
+                                    if 'vehicle' in vehicle:
+                                        vehicle_info = vehicle['vehicle']
+                                        vehicles.append({
+                                            'id': vehicle_info.get('name', f'vehicle_{len(vehicles)}'),
+                                            'type': line_data.get('type', 'unknown'),
+                                            'line': line_data.get('name', ''),
+                                            'lat': vehicle_info.get('location', {}).get('latitude', 0),
+                                            'lng': vehicle_info.get('location', {}).get('longitude', 0),
+                                            'direction': vehicle_info.get('direction', ''),
+                                            'next_station': vehicle.get('departure', {}).get('locationStop', {}).get('name', ''),
+                                            'delay': vehicle.get('departure', {}).get('departureTime', {}).get('timeReal', 0),
+                                            'timestamp': datetime.now().isoformat()
+                                        })
                     successful_requests += 1
-                    logger.debug("Successfully fetched data for RBL %s: %d vehicles", rbl, len(vehicles))
-                    
-                except Exception as e:
-                    logger.error("Error processing RBL %s: %s", rbl, str(e))
+                else:
                     failed_requests += 1
-                    continue
-        except Exception as e:
-            logger.warning("Failed to fetch real data: %s", str(e))
+            except Exception as e:
+                logger.error(f"Error fetching data for RBL {rbl}: {e}")
+                failed_requests += 1
         
-        # If no real data, add dummy vehicles
-        if not all_vehicles:
+        # If no real vehicles found, add dummy vehicles
+        if not vehicles:
             logger.info("No real vehicles found, adding dummy vehicles")
-            all_vehicles = get_dummy_vehicles()
+            vehicles = get_dummy_vehicles(vehicle_type, line)
         
-        # Apply filters
-        filtered_vehicles = all_vehicles
-        
+        # Filter vehicles based on parameters
         if vehicle_type and vehicle_type != 'all':
-            filtered_vehicles = [v for v in filtered_vehicles if v['type'] == vehicle_type]
+            vehicles = [v for v in vehicles if v['type'] == vehicle_type]
         
-        if line_filter:
-            line_list = line_filter.split(',')
-            filtered_vehicles = [v for v in filtered_vehicles if v['line'] in line_list]
+        if line:
+            vehicles = [v for v in vehicles if v['line'] == line]
         
-        logger.info("Returning %d vehicles (successful requests: %d, failed: %d)", 
-                   len(filtered_vehicles), successful_requests, failed_requests)
+        logger.info(f"Returning {len(vehicles)} vehicles (successful requests: {successful_requests}, failed: {failed_requests})")
         
         return jsonify({
-            'vehicles': filtered_vehicles,
-            'total_vehicles': len(filtered_vehicles),
+            'vehicles': vehicles,
+            'timestamp': datetime.now().isoformat(),
             'successful_requests': successful_requests,
-            'failed_requests': failed_requests,
-            'timestamp': int(time.time()),
-            'has_dummy_data': len(all_vehicles) > 0 and successful_requests == 0
+            'failed_requests': failed_requests
         })
         
     except Exception as e:
-        logger.error("Unexpected error in get_vehicles: %s", str(e), exc_info=True)
+        logger.error(f"Error in get_vehicles: {e}", exc_info=True)
         return jsonify({'error': 'Internal server error'}), 500
 
 @app.route('/api/lines')
 def get_lines():
-    """Get all available lines with their types and colors."""
+    """API endpoint for transport lines."""
     try:
-        # Define Vienna's major transport lines
-        lines = [
-            # U-Bahn (Metro) lines
-            {'id': 'U1', 'name': 'U1', 'type': 'metro', 'color': '#FF0000', 'towards': 'Reumannplatz - Leopoldau'},
-            {'id': 'U2', 'name': 'U2', 'type': 'metro', 'color': '#9B26B6', 'towards': 'Karlsplatz - Seestadt'},
-            {'id': 'U3', 'name': 'U3', 'type': 'metro', 'color': '#FF8000', 'towards': 'Ottakring - Simmering'},
-            {'id': 'U4', 'name': 'U4', 'type': 'metro', 'color': '#00FF00', 'towards': 'Hütteldorf - Heiligenstadt'},
-            {'id': 'U6', 'name': 'U6', 'type': 'metro', 'color': '#8B4513', 'towards': 'Siebenhirten - Floridsdorf'},
-            
-            # Tram lines
-            {'id': 'D', 'name': 'D', 'type': 'tram', 'color': '#FF0000', 'towards': 'Hauptbahnhof - Nußdorf'},
-            {'id': '1', 'name': '1', 'type': 'tram', 'color': '#FF0000', 'towards': 'Stefan-Fadinger-Platz - Prater'},
-            {'id': '2', 'name': '2', 'type': 'tram', 'color': '#FF0000', 'towards': 'Dornbach - Friedrich-Engels-Platz'},
-            {'id': '5', 'name': '5', 'type': 'tram', 'color': '#FF0000', 'towards': 'Praterstern - Westbahnhof'},
-            {'id': '6', 'name': '6', 'type': 'tram', 'color': '#FF0000', 'towards': 'Burggasse - Geiereckstraße'},
-            {'id': '9', 'name': '9', 'type': 'tram', 'color': '#FF0000', 'towards': 'Gersthof - Westbahnhof'},
-            {'id': '10', 'name': '10', 'type': 'tram', 'color': '#FF0000', 'towards': 'Dornbach - Hauptbahnhof'},
-            {'id': '11', 'name': '11', 'type': 'tram', 'color': '#FF0000', 'towards': 'Kaiserebersdorf - Otto-Probst-Platz'},
-            {'id': '18', 'name': '18', 'type': 'tram', 'color': '#FF0000', 'towards': 'Burggasse - Schlachthausgasse'},
-            {'id': '25', 'name': '25', 'type': 'tram', 'color': '#FF0000', 'towards': 'Aspern - Floridsdorf'},
-            {'id': '26', 'name': '26', 'type': 'tram', 'color': '#FF0000', 'towards': 'Hausfeldstraße - Strebersdorf'},
-            {'id': '30', 'name': '30', 'type': 'tram', 'color': '#FF0000', 'towards': 'Floridsdorf - Stammersdorf'},
-            {'id': '31', 'name': '31', 'type': 'tram', 'color': '#FF0000', 'towards': 'Schottenring - Stammersdorf'},
-            {'id': '33', 'name': '33', 'type': 'tram', 'color': '#FF0000', 'towards': 'Josefstädter Straße - Friedrich-Engels-Platz'},
-            {'id': '37', 'name': '37', 'type': 'tram', 'color': '#FF0000', 'towards': 'Hohe Warte - Schottentor'},
-            {'id': '38', 'name': '38', 'type': 'tram', 'color': '#FF0000', 'towards': 'Grinzing - Schottentor'},
-            {'id': '40', 'name': '40', 'type': 'tram', 'color': '#FF0000', 'towards': 'Gerichtsgasse - Schottentor'},
-            {'id': '41', 'name': '41', 'type': 'tram', 'color': '#FF0000', 'towards': 'Pötzleinsdorf - Schottentor'},
-            {'id': '42', 'name': '42', 'type': 'tram', 'color': '#FF0000', 'towards': 'Antonigasse - Schottentor'},
-            {'id': '43', 'name': '43', 'type': 'tram', 'color': '#FF0000', 'towards': 'Neuwaldegg - Schottentor'},
-            {'id': '44', 'name': '44', 'type': 'tram', 'color': '#FF0000', 'towards': 'Dornbach - Schottentor'},
-            {'id': '46', 'name': '46', 'type': 'tram', 'color': '#FF0000', 'towards': 'Ring - Joachimsthalerplatz'},
-            {'id': '49', 'name': '49', 'type': 'tram', 'color': '#FF0000', 'towards': 'Ring - Hütteldorf'},
-            {'id': '52', 'name': '52', 'type': 'tram', 'color': '#FF0000', 'towards': 'Westbahnhof - Baumgarten'},
-            {'id': '60', 'name': '60', 'type': 'tram', 'color': '#FF0000', 'towards': 'Raxstraße - Hietzing'},
-            {'id': '62', 'name': '62', 'type': 'tram', 'color': '#FF0000', 'towards': 'Lainz - Meidling'},
-            {'id': '67', 'name': '67', 'type': 'tram', 'color': '#FF0000', 'towards': 'Ottakring - Hütteldorf'},
-            {'id': '71', 'name': '71', 'type': 'tram', 'color': '#FF0000', 'towards': 'Börsegasse - Kaiserebersdorf'},
-            
-            # Bus lines (major ones)
-            {'id': '13A', 'name': '13A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Alser Straße - Hütteldorf'},
-            {'id': '14A', 'name': '14A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Penzing - Hütteldorf'},
-            {'id': '15A', 'name': '15A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Ottakring - Hütteldorf'},
-            {'id': '16A', 'name': '16A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Ottakring - Hernals'},
-            {'id': '17A', 'name': '17A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Neulerchenfeld - Hernals'},
-            {'id': '18A', 'name': '18A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Burggasse - Hernals'},
-            {'id': '19A', 'name': '19A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Grinzing - Heiligenstadt'},
-            {'id': '20A', 'name': '20A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Heiligenstadt - Grinzing'},
-            {'id': '21A', 'name': '21A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Floridsdorf - Stammersdorf'},
-            {'id': '22A', 'name': '22A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Aspern'},
-            {'id': '23A', 'name': '23A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Essling'},
-            {'id': '24A', 'name': '24A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Breitenlee'},
-            {'id': '25A', 'name': '25A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Hirschstetten'},
-            {'id': '26A', 'name': '26A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Aspern'},
-            {'id': '27A', 'name': '27A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Essling'},
-            {'id': '28A', 'name': '28A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Breitenlee'},
-            {'id': '29A', 'name': '29A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Hirschstetten'},
-            {'id': '30A', 'name': '30A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Aspern'},
-            {'id': '31A', 'name': '31A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Essling'},
-            {'id': '32A', 'name': '32A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Breitenlee'},
-            {'id': '33A', 'name': '33A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Hirschstetten'},
-            {'id': '34A', 'name': '34A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Aspern'},
-            {'id': '35A', 'name': '35A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Essling'},
-            {'id': '36A', 'name': '36A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Breitenlee'},
-            {'id': '37A', 'name': '37A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Hirschstetten'},
-            {'id': '38A', 'name': '38A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Aspern'},
-            {'id': '39A', 'name': '39A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Essling'},
-            {'id': '40A', 'name': '40A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Breitenlee'},
-            {'id': '41A', 'name': '41A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Hirschstetten'},
-            {'id': '42A', 'name': '42A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Aspern'},
-            {'id': '43A', 'name': '43A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Essling'},
-            {'id': '44A', 'name': '44A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Breitenlee'},
-            {'id': '45A', 'name': '45A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Hirschstetten'},
-            {'id': '46A', 'name': '46A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Aspern'},
-            {'id': '47A', 'name': '47A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Essling'},
-            {'id': '48A', 'name': '48A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Breitenlee'},
-            {'id': '49A', 'name': '49A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Hirschstetten'},
-            {'id': '50A', 'name': '50A', 'type': 'bus', 'color': '#0000FF', 'towards': 'Kagran - Aspern'},
-        ]
+        lines = data_loader.load_lines()
+        line_data = []
         
-        # Filter by type if specified
-        vehicle_type = request.args.get('type')
-        if vehicle_type and vehicle_type != 'all':
-            lines = [line for line in lines if line['type'] == vehicle_type]
+        for line in lines:
+            line_data.append({
+                'name': line.name,
+                'type': line.type,
+                'color': line.color,
+                'description': line.description,
+                'frequency': line.frequency,
+                'operating_hours': line.operating_hours
+            })
         
-        logger.info("Returning %d lines", len(lines))
-        return jsonify({'lines': lines})
+        logger.info(f"Returning {len(line_data)} lines")
+        return jsonify({'lines': line_data})
         
     except Exception as e:
-        logger.error("Error in get_lines: %s", str(e), exc_info=True)
+        logger.error(f"Error in get_lines: {e}", exc_info=True)
         return jsonify({'error': 'Internal server error'}), 500
 
-@app.route('/api/stops')
-def get_stops():
-    """Get all major stops in Vienna."""
+@app.route('/api/stations')
+def get_stations():
+    """API endpoint for stations."""
     try:
-        # Define major Vienna stops
-        stops = [
-            {'id': '4011', 'name': 'Staatsoper', 'lat': 48.2038, 'lng': 16.3697, 'type': 'metro'},
-            {'id': '4025', 'name': 'Hauptbahnhof Ost', 'lat': 48.1858, 'lng': 16.3789, 'type': 'metro'},
-            {'id': '4009', 'name': 'Schottentor', 'lat': 48.2167, 'lng': 16.3667, 'type': 'metro'},
-            {'id': '3047', 'name': 'Westbahnhof', 'lat': 48.1967, 'lng': 16.3378, 'type': 'metro'},
-            {'id': '3043', 'name': 'Praterstern', 'lat': 48.2189, 'lng': 16.3917, 'type': 'metro'},
-            {'id': '3052', 'name': 'Kaiserstraße/Westbahnstraße', 'lat': 48.2017, 'lng': 16.3417, 'type': 'tram'},
-            {'id': '1234', 'name': 'Flotowgasse', 'lat': 48.2406, 'lng': 16.3391, 'type': 'bus'},
-            {'id': '4012', 'name': 'Stephansplatz', 'lat': 48.2085, 'lng': 16.3731, 'type': 'metro'},
-            {'id': '4013', 'name': 'Karlsplatz', 'lat': 48.2008, 'lng': 16.3697, 'type': 'metro'},
-            {'id': '4014', 'name': 'Museumsquartier', 'lat': 48.2038, 'lng': 16.3617, 'type': 'metro'},
-            {'id': '4015', 'name': 'Volkstheater', 'lat': 48.2038, 'lng': 16.3617, 'type': 'metro'},
-            {'id': '4016', 'name': 'Rathaus', 'lat': 48.2108, 'lng': 16.3567, 'type': 'metro'},
-            {'id': '4017', 'name': 'Schottentor', 'lat': 48.2167, 'lng': 16.3667, 'type': 'metro'},
-            {'id': '4018', 'name': 'Herrengasse', 'lat': 48.2108, 'lng': 16.3667, 'type': 'metro'},
-            {'id': '4019', 'name': 'Stephansplatz', 'lat': 48.2085, 'lng': 16.3731, 'type': 'metro'},
-            {'id': '4020', 'name': 'Schwedenplatz', 'lat': 48.2138, 'lng': 16.3789, 'type': 'metro'},
-            {'id': '4021', 'name': 'Landstraße', 'lat': 48.2085, 'lng': 16.3831, 'type': 'metro'},
-            {'id': '4022', 'name': 'Wien Mitte', 'lat': 48.2085, 'lng': 16.3831, 'type': 'metro'},
-            {'id': '4023', 'name': 'Stadtpark', 'lat': 48.2008, 'lng': 16.3789, 'type': 'metro'},
-            {'id': '4024', 'name': 'Kettenbrückengasse', 'lat': 48.2008, 'lng': 16.3617, 'type': 'metro'},
-            {'id': '4025', 'name': 'Neubaugasse', 'lat': 48.2008, 'lng': 16.3567, 'type': 'metro'},
-            {'id': '4026', 'name': 'Westbahnhof', 'lat': 48.1967, 'lng': 16.3378, 'type': 'metro'},
-            {'id': '4027', 'name': 'Burggasse-Stadthalle', 'lat': 48.2008, 'lng': 16.3378, 'type': 'metro'},
-            {'id': '4028', 'name': 'Thaliastraße', 'lat': 48.2108, 'lng': 16.3378, 'type': 'metro'},
-            {'id': '4029', 'name': 'Alser Straße', 'lat': 48.2208, 'lng': 16.3378, 'type': 'metro'},
-            {'id': '4030', 'name': 'Josefstädter Straße', 'lat': 48.2108, 'lng': 16.3567, 'type': 'metro'},
-            {'id': '4031', 'name': 'Althanstraße', 'lat': 48.2208, 'lng': 16.3567, 'type': 'metro'},
-            {'id': '4032', 'name': 'Heiligenstadt', 'lat': 48.2308, 'lng': 16.3567, 'type': 'metro'},
-            {'id': '4033', 'name': 'Spittelau', 'lat': 48.2308, 'lng': 16.3667, 'type': 'metro'},
-            {'id': '4034', 'name': 'Friedensbrücke', 'lat': 48.2308, 'lng': 16.3789, 'type': 'metro'},
-            {'id': '4035', 'name': 'Rossauer Lände', 'lat': 48.2208, 'lng': 16.3789, 'type': 'metro'},
-            {'id': '4036', 'name': 'Schottenring', 'lat': 48.2208, 'lng': 16.3789, 'type': 'metro'},
-            {'id': '4037', 'name': 'Schottentor', 'lat': 48.2167, 'lng': 16.3667, 'type': 'metro'},
-            {'id': '4038', 'name': 'Rathaus', 'lat': 48.2108, 'lng': 16.3567, 'type': 'metro'},
-            {'id': '4039', 'name': 'Volkstheater', 'lat': 48.2038, 'lng': 16.3617, 'type': 'metro'},
-            {'id': '4040', 'name': 'Museumsquartier', 'lat': 48.2038, 'lng': 16.3617, 'type': 'metro'},
-        ]
+        stations = data_loader.load_stations()
+        station_data = []
         
-        logger.info("Returning %d stops", len(stops))
-        return jsonify({'stops': stops})
+        for station in stations:
+            station_data.append({
+                'name': station.name,
+                'rbl': station.rbl,
+                'type': station.type,
+                'zone': station.zone,
+                'lat': station.lat,
+                'lng': station.lng
+            })
+        
+        logger.info(f"Returning {len(station_data)} stations")
+        return jsonify({'stations': station_data})
         
     except Exception as e:
-        logger.error("Error in get_stops: %s", str(e), exc_info=True)
+        logger.error(f"Error in get_stations: {e}", exc_info=True)
         return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/routes')
+def get_routes():
+    """API endpoint for routes."""
+    try:
+        line_filter = request.args.get('line')
+        routes = data_loader.load_routes()
+        
+        if line_filter:
+            routes = [r for r in routes if r.line == line_filter]
+            logger.info(f"Returning route for line {line_filter}")
+        else:
+            logger.info(f"Returning {len(routes)} routes")
+        
+        route_data = []
+        for route in routes:
+            route_data.append({
+                'name': route.line,
+                'type': route.type,
+                'color': route.color,
+                'description': route.description,
+                'coordinates': route.coordinates,
+                'stops': route.stops
+            })
+        
+        return jsonify({'routes': route_data})
+        
+    except Exception as e:
+        logger.error(f"Error in get_routes: {e}", exc_info=True)
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/disruptions')
+def get_disruptions():
+    """API endpoint for service disruptions."""
+    try:
+        line_filter = request.args.get('line')
+        severity_filter = request.args.get('severity')
+        
+        if line_filter:
+            disruptions = disruption_monitor.get_disruptions_by_line(line_filter)
+        elif severity_filter:
+            from disruption_alerts import DisruptionSeverity
+            severity = DisruptionSeverity(severity_filter)
+            disruptions = disruption_monitor.get_disruptions_by_severity(severity)
+        else:
+            disruptions = disruption_monitor.get_active_disruptions()
+        
+        disruption_data = []
+        for disruption in disruptions:
+            disruption_data.append({
+                'id': disruption.id,
+                'line': disruption.line,
+                'type': disruption.type.value,
+                'severity': disruption.severity.value,
+                'status': disruption.status.value,
+                'title': disruption.title,
+                'description': disruption.description,
+                'affected_stations': disruption.affected_stations,
+                'affected_lines': disruption.affected_lines,
+                'start_time': disruption.start_time.isoformat(),
+                'end_time': disruption.end_time.isoformat() if disruption.end_time else None,
+                'created_at': disruption.created_at.isoformat(),
+                'updated_at': disruption.updated_at.isoformat()
+            })
+        
+        logger.info(f"Returning {len(disruption_data)} disruptions")
+        return jsonify({'disruptions': disruption_data})
+        
+    except Exception as e:
+        logger.error(f"Error in get_disruptions: {e}", exc_info=True)
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/disruptions/summary')
+def get_disruption_summary():
+    """API endpoint for disruption summary."""
+    try:
+        summary = disruption_monitor.get_disruption_summary()
+        return jsonify(summary)
+        
+    except Exception as e:
+        logger.error(f"Error in get_disruption_summary: {e}", exc_info=True)
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/status')
+def get_system_status():
+    """API endpoint for system status."""
+    try:
+        ws_manager = get_websocket_manager()
+        status = {
+            'websocket_clients': ws_manager.get_connected_clients_count() if ws_manager else 0,
+            'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+            'vehicle_count': ws_manager.get_vehicle_count() if ws_manager else 0,
+            'data_cache_status': data_loader.get_cache_status(),
+            'last_api_check': disruption_monitor.last_check.isoformat() if disruption_monitor.last_check else None,
+            'timestamp': datetime.now().isoformat()
+        }
+        return jsonify(status)
+        
+    except Exception as e:
+        logger.error(f"Error in get_system_status: {e}", exc_info=True)
+        return jsonify({'error': 'Internal server error'}), 500
+
+# WebSocket event handlers
+@socketio.on('connect')
+def handle_connect():
+    """Handle client connection."""
+    logger.info(f"Client connected: {request.sid}")
+    emit('connected', {
+        'client_id': request.sid,
+        'timestamp': datetime.now().isoformat(),
+        'system_status': get_system_status().json
+    })
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    """Handle client disconnection."""
+    logger.info(f"Client disconnected: {request.sid}")
+
+@socketio.on('join_room')
+def handle_join_room(data):
+    """Handle room joining."""
+    room = data.get('room')
+    if room:
+        join_room(room)
+        logger.info(f"Client {request.sid} joined room: {room}")
+
+@socketio.on('leave_room')
+def handle_leave_room(data):
+    """Handle room leaving."""
+    room = data.get('room')
+    if room:
+        leave_room(room)
+        logger.info(f"Client {request.sid} left room: {room}")
+
+@socketio.on('request_updates')
+def handle_request_updates(data):
+    """Handle update requests."""
+    update_type = data.get('type', 'all')
+    client_id = request.sid
+    
+    if update_type in ['vehicles', 'all']:
+        # Send current vehicle data
+        vehicles = get_dummy_vehicles()
+        emit('vehicle_updates', {
+            'vehicles': vehicles,
+            'timestamp': datetime.now().isoformat()
+        })
+    
+    if update_type in ['disruptions', 'all']:
+        # Send current disruption data
+        disruptions = disruption_monitor.get_active_disruptions()
+        disruption_data = []
+        for disruption in disruptions:
+            disruption_data.append({
+                'id': disruption.id,
+                'line': disruption.line,
+                'type': disruption.type.value,
+                'severity': disruption.severity.value,
+                'title': disruption.title,
+                'description': disruption.description,
+                'start_time': disruption.start_time.isoformat(),
+                'created_at': disruption.created_at.isoformat()
+            })
+        emit('disruption_alerts', {
+            'alerts': disruption_data,
+            'timestamp': datetime.now().isoformat()
+        })
+    
+    if update_type in ['status', 'all']:
+        # Send system status
+        status = get_system_status().json
+        emit('system_status', status)
+
+# Disruption alert callback
+def on_disruption_alert(disruption, event_type):
+    """Handle disruption alerts."""
+    try:
+        alert_data = {
+            'id': disruption.id,
+            'line': disruption.line,
+            'type': disruption.type.value,
+            'severity': disruption.severity.value,
+            'title': disruption.title,
+            'description': disruption.description,
+            'start_time': disruption.start_time.isoformat(),
+            'created_at': disruption.created_at.isoformat(),
+            'event_type': event_type
+        }
+        
+        # Broadcast to all connected clients
+        socketio.emit('disruption_alert', alert_data)
+        logger.info(f"Broadcasted disruption alert: {disruption.id} ({event_type})")
+        
+    except Exception as e:
+        logger.error(f"Error handling disruption alert: {e}")
+
+# Register disruption alert callback
+disruption_monitor.subscribe(on_disruption_alert)
+
+@app.before_first_request
+def initialize_app():
+    """Initialize the application on first request."""
+    logger.info("Starting Wiener Linien Live Map application")
+    
+    # Ensure logs directory exists
+    os.makedirs('logs', exist_ok=True)
+    
+    # Pre-load data
+    data_loader.load_lines()
+    data_loader.load_stations()
+    data_loader.load_routes()
 
 if __name__ == '__main__':
     logger.info("Starting Wiener Linien Live Map application")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
