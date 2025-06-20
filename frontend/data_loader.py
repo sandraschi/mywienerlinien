@@ -173,6 +173,10 @@ class DataLoader:
                     if key and value:
                         properties[key] = value
             
+            # Debug logging
+            if line_name in ['U1', 'D', '7A', 'N25']:  # Log a few sample lines
+                logger.debug(f"Line {line_name} properties: {properties}")
+            
             return Line(
                 name=line_name,
                 type=line_type,
@@ -193,17 +197,17 @@ class DataLoader:
         if line_name.startswith('U'):
             return 'Metro'
         elif line_name.startswith('N'):
-            return 'Night Bus'
-        elif line_name.isdigit() or line_name in ['D', '1', '5', '6', '18', '25', '26', '31', '33', '37', '38', '40', '41', '42', '43', '44', '46', '49', '52', '58', '60', '62', '67', '71']:
+            return 'NightBus'
+        elif line_name.isdigit() or line_name in ['D', 'O', '1', '2', '5', '6', '9', '10', '11', '18', '25', '26', '30', '31', '33', '37', '38', '40', '41', '42', '43', '44', '46', '49', '52', '60', '62', '67', '71']:
             return 'Tram'
         elif line_name.endswith('A'):
             return 'Bus'
         else:
-            return 'Bus'
+            return 'Unknown'
     
     def _parse_property_line(self, line: str) -> tuple[Optional[str], Optional[str]]:
-        """Parse a property line in the format '**Key**: Value'."""
-        match = re.match(r'\*\*([^*]+)\*\*:\s*(.+)', line)
+        """Parse a property line in the format '- **Key**: Value'."""
+        match = re.match(r'-\s*\*\*([^*]+)\*\*:\s*(.+)', line)
         if match:
             return match.group(1).strip(), match.group(2).strip()
         return None, None

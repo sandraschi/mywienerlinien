@@ -68,7 +68,7 @@ class WebSocketManager:
         """Register WebSocket event handlers."""
         
         @self.socketio.on('connect')
-        def handle_connect():
+        def handle_connect(auth=None):
             """Handle client connection."""
             client_id = request.sid
             self.connected_clients[client_id] = {
@@ -91,27 +91,29 @@ class WebSocketManager:
         def handle_join_room(data):
             """Handle room joining."""
             client_id = request.sid
-            room = data.get('room')
-            if room and client_id in self.connected_clients:
-                join_room(room)
-                self.connected_clients[client_id]['rooms'].add(room)
-                logger.info(f"Client {client_id} joined room: {room}")
+            if isinstance(data, dict):
+                room = data.get('room')
+                if room and client_id in self.connected_clients:
+                    join_room(room)
+                    self.connected_clients[client_id]['rooms'].add(room)
+                    logger.info(f"Client {client_id} joined room: {room}")
         
         @self.socketio.on('leave_room')
         def handle_leave_room(data):
             """Handle room leaving."""
             client_id = request.sid
-            room = data.get('room')
-            if room and client_id in self.connected_clients:
-                leave_room(room)
-                self.connected_clients[client_id]['rooms'].discard(room)
-                logger.info(f"Client {client_id} left room: {room}")
+            if isinstance(data, dict):
+                room = data.get('room')
+                if room and client_id in self.connected_clients:
+                    leave_room(room)
+                    self.connected_clients[client_id]['rooms'].discard(room)
+                    logger.info(f"Client {client_id} left room: {room}")
         
         @self.socketio.on('set_filters')
         def handle_set_filters(data):
             """Handle filter updates."""
             client_id = request.sid
-            if client_id in self.connected_clients:
+            if client_id in self.connected_clients and isinstance(data, dict):
                 self.connected_clients[client_id]['filters'] = data
                 logger.info(f"Client {client_id} updated filters: {data}")
         
@@ -119,6 +121,8 @@ class WebSocketManager:
         def handle_request_updates(data):
             """Handle update requests."""
             client_id = request.sid
+            if not isinstance(data, dict):
+                data = {}
             update_type = data.get('type', 'all')
             
             if update_type == 'vehicles' or update_type == 'all':
@@ -206,7 +210,8 @@ class WebSocketManager:
             if len(self.vehicle_updates) == 0:
                 dummy_vehicles = get_dummy_vehicles()
                 for vehicle in dummy_vehicles:
-                    self._process_vehicle_update(vehicle)
+                    if isinstance(vehicle, dict):
+                        self._process_vehicle_update(vehicle)
                         
         except Exception as e:
             logger.error(f"Error updating vehicle positions: {e}")
@@ -229,11 +234,11 @@ class WebSocketManager:
                 vehicle_id=vehicle_id,
                 line=vehicle_data.get('line', ''),
                 type=vehicle_data.get('type', ''),
-                lat=vehicle_data.get('lat', 0.0),
-                lng=vehicle_data.get('lng', 0.0),
+                lat=float(vehicle_data.get('lat', 0.0)),
+                lng=float(vehicle_data.get('lng', 0.0)),
                 direction=vehicle_data.get('direction', ''),
                 next_station=vehicle_data.get('next_station', ''),
-                delay=vehicle_data.get('delay', 0),
+                delay=int(vehicle_data.get('delay', 0)),
                 timestamp=datetime.now()
             )
             
@@ -286,7 +291,8 @@ class WebSocketManager:
             # Randomly create disruptions (30% chance every check)
             if random.random() < 0.3:
                 disruption_data = random.choice(possible_disruptions)
-                self._process_disruption_alert(disruption_data)
+                if isinstance(disruption_data, dict):
+                    self._process_disruption_alert(disruption_data)
                     
         except Exception as e:
             logger.error(f"Error checking disruptions: {e}")
@@ -355,8 +361,14 @@ class WebSocketManager:
     def _broadcast_updates(self):
         """Broadcast updates to all connected clients."""
         try:
-            # Send vehicle updates
-            vehicle_data = [asdict(update) for update in self.vehicle_updates.values()]
+            # Send vehicle updates with proper datetime serialization
+            vehicle_data = []
+            for update in self.vehicle_updates.values():
+                vehicle_dict = asdict(update)
+                # Convert datetime objects to ISO format strings
+                vehicle_dict['timestamp'] = vehicle_dict['timestamp'].isoformat()
+                vehicle_data.append(vehicle_dict)
+            
             self.socketio.emit('vehicle_updates', {
                 'vehicles': vehicle_data,
                 'timestamp': datetime.now().isoformat()

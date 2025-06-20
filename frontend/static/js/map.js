@@ -227,7 +227,7 @@ function getVehicleIcon(type, line) {
     let iconUrl;
     let color;
     
-    switch (type) {
+    switch (type.toLowerCase()) {
         case 'metro':
             color = '#FF0000';
             break;
@@ -237,8 +237,9 @@ function getVehicleIcon(type, line) {
         case 'bus':
             color = '#0066CC';
             break;
+        case 'nightbus':
         case 'night_bus':
-            color = '#333333';
+            color = '#000066';
             break;
         default:
             color = '#999999';

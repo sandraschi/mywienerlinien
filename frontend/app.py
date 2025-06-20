@@ -56,9 +56,19 @@ disruption_monitor.start_monitoring()
 API_BASE_URL = "https://www.wienerlinien.at/ogd_realtime"
 API_TIMEOUT = 10
 
-# Rate limiting
+# Rate limiting - increased to avoid 403 errors
 last_api_call = {}
-RATE_LIMIT_SECONDS = 15
+RATE_LIMIT_SECONDS = 30  # Increased from 15 to 30 seconds
+
+# API headers to avoid 403 errors
+API_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
+    'Upgrade-Insecure-Requests': '1'
+}
 
 def rate_limit(func):
     """Decorator to enforce rate limiting."""
@@ -85,7 +95,7 @@ def fetch_vehicle_data(rbl_number: str) -> Optional[Dict[str, Any]]:
         url = f"{API_BASE_URL}/monitor"
         params = {'rbl': rbl_number}
         
-        response = requests.get(url, params=params, timeout=API_TIMEOUT)
+        response = requests.get(url, params=params, timeout=API_TIMEOUT, headers=API_HEADERS)
         response.raise_for_status()
         
         return response.json()
@@ -101,7 +111,7 @@ def fetch_traffic_info() -> Optional[Dict[str, Any]]:
     """Fetch traffic information from Wiener Linien API."""
     try:
         url = f"{API_BASE_URL}/trafficInfo"
-        response = requests.get(url, timeout=API_TIMEOUT)
+        response = requests.get(url, timeout=API_TIMEOUT, headers=API_HEADERS)
         response.raise_for_status()
         
         return response.json()
@@ -117,7 +127,7 @@ def fetch_news() -> Optional[Dict[str, Any]]:
     """Fetch news and announcements from Wiener Linien API."""
     try:
         url = f"{API_BASE_URL}/news"
-        response = requests.get(url, timeout=API_TIMEOUT)
+        response = requests.get(url, timeout=API_TIMEOUT, headers=API_HEADERS)
         response.raise_for_status()
         
         return response.json()
@@ -127,6 +137,25 @@ def fetch_news() -> Optional[Dict[str, Any]]:
     except Exception as e:
         logger.error(f"Error processing news: {e}")
         return None
+
+def _calculate_delay(departure_time):
+    """Calculate delay in minutes from departure time information."""
+    try:
+        planned_time = departure_time.get('timePlanned')
+        real_time = departure_time.get('timeReal')
+        
+        if planned_time and real_time:
+            # Parse ISO format times
+            planned = datetime.fromisoformat(planned_time.replace('Z', '+00:00'))
+            real = datetime.fromisoformat(real_time.replace('Z', '+00:00'))
+            
+            # Calculate delay in minutes
+            delay_seconds = (real - planned).total_seconds()
+            return int(delay_seconds / 60)
+        else:
+            return 0
+    except Exception:
+        return 0
 
 def get_dummy_vehicles(vehicle_type: Optional[str] = None, line: Optional[str] = None) -> List[Dict[str, Any]]:
     """Generate dummy vehicle data for demonstration."""
@@ -280,20 +309,36 @@ def get_vehicles():
                     for monitor in data['data']['monitors']:
                         if 'lines' in monitor:
                             for line_data in monitor['lines']:
-                                for vehicle in line_data.get('departures', {}).get('departure', []):
-                                    if 'vehicle' in vehicle:
-                                        vehicle_info = vehicle['vehicle']
-                                        vehicles.append({
-                                            'id': vehicle_info.get('name', f'vehicle_{len(vehicles)}'),
-                                            'type': line_data.get('type', 'unknown'),
-                                            'line': line_data.get('name', ''),
-                                            'lat': vehicle_info.get('location', {}).get('latitude', 0),
-                                            'lng': vehicle_info.get('location', {}).get('longitude', 0),
-                                            'direction': vehicle_info.get('direction', ''),
-                                            'next_station': vehicle.get('departure', {}).get('locationStop', {}).get('name', ''),
-                                            'delay': vehicle.get('departure', {}).get('departureTime', {}).get('timeReal', 0),
-                                            'timestamp': datetime.now().isoformat()
-                                        })
+                                # Get line information
+                                line_name = line_data.get('name', '')
+                                line_type = line_data.get('type', 'unknown')
+                                
+                                # Process departures to get vehicle positions
+                                departures = line_data.get('departures', {}).get('departure', [])
+                                if not isinstance(departures, list):
+                                    departures = [departures] if departures else []
+                                
+                                for departure in departures:
+                                    if 'vehicle' in departure:
+                                        vehicle_info = departure['vehicle']
+                                        departure_time = departure.get('departureTime', {})
+                                        
+                                        # Create vehicle entry
+                                        vehicle_entry = {
+                                            'id': f"{line_name}_{rbl}_{len(vehicles)}",
+                                            'type': line_type.replace('pt', '').lower(),  # Convert ptTram to tram
+                                            'line': line_name,
+                                            'lat': monitor.get('locationStop', {}).get('geometry', {}).get('coordinates', [0, 0])[1],
+                                            'lng': monitor.get('locationStop', {}).get('geometry', {}).get('coordinates', [0, 0])[0],
+                                            'direction': vehicle_info.get('towards', ''),
+                                            'next_station': monitor.get('locationStop', {}).get('properties', {}).get('title', ''),
+                                            'delay': _calculate_delay(departure_time),
+                                            'timestamp': datetime.now().isoformat(),
+                                            'countdown': departure_time.get('countdown', 0),
+                                            'platform': vehicle_info.get('platform', ''),
+                                            'barrier_free': vehicle_info.get('barrierFree', False)
+                                        }
+                                        vehicles.append(vehicle_entry)
                     successful_requests += 1
                 else:
                     failed_requests += 1
@@ -461,9 +506,10 @@ def get_system_status():
     """API endpoint for system status."""
     try:
         ws_manager = get_websocket_manager()
+        active_disruptions = disruption_monitor.get_active_disruptions()
         status = {
             'websocket_clients': ws_manager.get_connected_clients_count() if ws_manager else 0,
-            'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+            'active_disruptions': len(active_disruptions),
             'vehicle_count': ws_manager.get_vehicle_count() if ws_manager else 0,
             'data_cache_status': data_loader.get_cache_status(),
             'last_api_check': disruption_monitor.last_check.isoformat() if disruption_monitor.last_check else None,
@@ -477,18 +523,28 @@ def get_system_status():
 
 # WebSocket event handlers
 @socketio.on('connect')
-def handle_connect():
+def handle_connect(auth=None):
     """Handle client connection."""
     logger.info(f"Client connected: {request.sid}")
     
     # Get system status properly
     try:
         status_response = get_system_status()
-        # Flask response objects have a get_json() method
+        # Extract JSON from Flask response
         if hasattr(status_response, 'get_json'):
             system_status = status_response.get_json()
-        else:
+        elif hasattr(status_response, 'json'):
+            system_status = status_response.json
+        elif isinstance(status_response, dict):
             system_status = status_response
+        else:
+            # Fallback to basic status
+            system_status = {
+                'websocket_clients': 0,
+                'active_disruptions': 0,
+                'vehicle_count': 0,
+                'timestamp': datetime.now().isoformat()
+            }
     except Exception as e:
         logger.error(f"Error getting system status: {e}")
         system_status = {
@@ -569,10 +625,21 @@ def handle_request_updates(data):
         # Send system status
         try:
             status_response = get_system_status()
+            # Extract JSON from Flask response
             if hasattr(status_response, 'get_json'):
                 status = status_response.get_json()
-            else:
+            elif hasattr(status_response, 'json'):
+                status = status_response.json
+            elif isinstance(status_response, dict):
                 status = status_response
+            else:
+                # Fallback to basic status
+                status = {
+                    'websocket_clients': 0,
+                    'active_disruptions': 0,
+                    'vehicle_count': 0,
+                    'timestamp': datetime.now().isoformat()
+                }
             emit('system_status', status)
         except Exception as e:
             logger.error(f"Error getting system status: {e}")

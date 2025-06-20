@@ -47,16 +47,7 @@
 - **Frequency**: Every 3-6 minutes
 - **Operating Hours**: 5:00 AM - 1:00 AM
 
-## Tram Lines
-
-### D - Hauptbahnhof ↔ Nußdorf
-- **Type**: Tram
-- **Length**: 12.8 km
-- **Stations**: 19
-- **Color**: #FF0000
-- **Description**: Scenic route through historic districts
-- **Frequency**: Every 5-8 minutes
-- **Operating Hours**: 5:00 AM - 12:30 AM
+## Tram Lines (Straßenbahn)
 
 ### 1 - Praterstern ↔ Stefan-Fadinger-Platz
 - **Type**: Tram
@@ -65,6 +56,15 @@
 - **Color**: #FF6600
 - **Description**: Oldest tram line in Vienna (1865)
 - **Frequency**: Every 4-7 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 2 - Friedrich-Engels-Platz ↔ Dornbach
+- **Type**: Tram
+- **Length**: 7.3 km
+- **Stations**: 14
+- **Color**: #FF6600
+- **Description**: Northern Vienna connection
+- **Frequency**: Every 5-8 minutes
 - **Operating Hours**: 5:00 AM - 12:30 AM
 
 ### 5 - Praterstern ↔ Westbahnhof
@@ -82,6 +82,33 @@
 - **Stations**: 15
 - **Color**: #FF6600
 - **Description**: West Vienna connection
+- **Frequency**: Every 5-8 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 9 - Gersthof ↔ Ring/Volkstheater
+- **Type**: Tram
+- **Length**: 5.1 km
+- **Stations**: 10
+- **Color**: #FF6600
+- **Description**: Northern Vienna connection
+- **Frequency**: Every 5-8 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 10 - Dornbach ↔ Ring/Volkstheater
+- **Type**: Tram
+- **Length**: 4.8 km
+- **Stations**: 9
+- **Color**: #FF6600
+- **Description**: Northern Vienna connection
+- **Frequency**: Every 5-8 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 11 - Otto-Wagner-Platz ↔ Kaiserebersdorf
+- **Type**: Tram
+- **Length**: 8.2 km
+- **Stations**: 16
+- **Color**: #FF6600
+- **Description**: Southern Vienna connection
 - **Frequency**: Every 5-8 minutes
 - **Operating Hours**: 5:00 AM - 12:30 AM
 
@@ -107,6 +134,15 @@
 - **Type**: Tram
 - **Length**: 7.2 km
 - **Stations**: 14
+- **Color**: #FF6600
+- **Description**: Northern Vienna connection
+- **Frequency**: Every 5-8 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 30 - Floridsdorf ↔ Stammersdorf
+- **Type**: Tram
+- **Length**: 6.8 km
+- **Stations**: 13
 - **Color**: #FF6600
 - **Description**: Northern Vienna connection
 - **Frequency**: Every 5-8 minutes
@@ -204,8 +240,8 @@
 
 ### 49 - Ring/Volkstheater ↔ Hütteldorf
 - **Type**: Tram
-- **Length**: 8.1 km
-- **Stations**: 15
+- **Length**: 7.1 km
+- **Stations**: 14
 - **Color**: #FF6600
 - **Description**: Western Vienna connection
 - **Frequency**: Every 5-8 minutes
@@ -214,381 +250,678 @@
 ### 52 - Westbahnhof ↔ Baumgarten
 - **Type**: Tram
 - **Length**: 3.8 km
-- **Stations**: 7
+- **Stations**: 8
 - **Color**: #FF6600
 - **Description**: Western Vienna connection
 - **Frequency**: Every 5-8 minutes
 - **Operating Hours**: 5:00 AM - 12:30 AM
 
-### 58 - Westbahnhof ↔ Unter-St.-Veit
+### 60 - Westbahnhof ↔ Raxstraße
 - **Type**: Tram
-- **Length**: 5.4 km
-- **Stations**: 10
-- **Color**: #FF6600
-- **Description**: Western Vienna connection
-- **Frequency**: Every 5-8 minutes
-- **Operating Hours**: 5:00 AM - 12:30 AM
-
-### 60 - Westbahnhof ↔ Rodaun
-- **Type**: Tram
-- **Length**: 9.7 km
-- **Stations**: 18
-- **Color**: #FF6600
-- **Description**: Southern Vienna connection
-- **Frequency**: Every 5-8 minutes
-- **Operating Hours**: 5:00 AM - 12:30 AM
-
-### 62 - Oper ↔ Lainz
-- **Type**: Tram
-- **Length**: 7.3 km
-- **Stations**: 14
-- **Color**: #FF6600
-- **Description**: Southern Vienna connection
-- **Frequency**: Every 5-8 minutes
-- **Operating Hours**: 5:00 AM - 12:30 AM
-
-### 67 - Oper ↔ Otto-Wagner-Spital
-- **Type**: Tram
-- **Length**: 6.8 km
+- **Length**: 6.5 km
 - **Stations**: 13
 - **Color**: #FF6600
 - **Description**: Southern Vienna connection
 - **Frequency**: Every 5-8 minutes
 - **Operating Hours**: 5:00 AM - 12:30 AM
 
-### 71 - Börse ↔ Kaiserebersdorf
+### 62 - Oper/Karlsplatz ↔ Lainz
 - **Type**: Tram
-- **Length**: 8.9 km
-- **Stations**: 17
+- **Length**: 5.8 km
+- **Stations**: 12
 - **Color**: #FF6600
-- **Description**: Popular tourist route
+- **Description**: Southern Vienna connection
 - **Frequency**: Every 5-8 minutes
 - **Operating Hours**: 5:00 AM - 12:30 AM
 
-## Bus Lines
+### 67 - Oper/Karlsplatz ↔ Otto-Wagner-Platz
+- **Type**: Tram
+- **Length**: 4.2 km
+- **Stations**: 9
+- **Color**: #FF6600
+- **Description**: Southern Vienna connection
+- **Frequency**: Every 5-8 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
 
-### 1A - Stephansplatz ↔ Kaisermühlen
-- **Type**: Bus
-- **Length**: 8.2 km
-- **Stops**: 22
-- **Color**: #0066CC
-- **Description**: Airport connection
-- **Frequency**: Every 7-15 minutes
-- **Operating Hours**: 5:00 AM - 12:00 AM
+### 71 - Börsegasse ↔ Kaiserebersdorf
+- **Type**: Tram
+- **Length**: 7.1 km
+- **Stations**: 15
+- **Color**: #FF6600
+- **Description**: Southern Vienna connection
+- **Frequency**: Every 5-8 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
 
-### 2A - Schottentor ↔ Döbling
-- **Type**: Bus
-- **Length**: 6.5 km
-- **Stops**: 18
-- **Color**: #0066CC
+### D - Hauptbahnhof ↔ Nußdorf
+- **Type**: Tram
+- **Length**: 12.8 km
+- **Stations**: 19
+- **Color**: #FF0000
+- **Description**: Scenic route through historic districts
+- **Frequency**: Every 5-8 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### O - Oper/Karlsplatz ↔ Dornbach
+- **Type**: Tram
+- **Length**: 5.2 km
+- **Stations**: 10
+- **Color**: #FF6600
 - **Description**: Northern Vienna connection
-- **Frequency**: Every 7-15 minutes
-- **Operating Hours**: 5:00 AM - 12:00 AM
+- **Frequency**: Every 5-8 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
 
-### 3A - Stephansplatz ↔ Simmering
-- **Type**: Bus
-- **Length**: 7.8 km
-- **Stops**: 20
-- **Color**: #0066CC
-- **Description**: Eastern Vienna connection
-- **Frequency**: Every 7-15 minutes
-- **Operating Hours**: 5:00 AM - 12:00 AM
+## Bus Lines (Autobus)
 
-### 4A - Stephansplatz ↔ Hietzing
+### 7A - Westbahnhof ↔ Hernals
 - **Type**: Bus
-- **Length**: 6.9 km
-- **Stops**: 19
+- **Length**: 4.8 km
+- **Stations**: 12
 - **Color**: #0066CC
 - **Description**: Western Vienna connection
-- **Frequency**: Every 7-15 minutes
-- **Operating Hours**: 5:00 AM - 12:00 AM
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
 
-### 5A - Stephansplatz ↔ Favoriten
+### 8A - Josefstädter Straße ↔ Alser Straße
 - **Type**: Bus
-- **Length**: 7.2 km
-- **Stops**: 21
+- **Length**: 3.2 km
+- **Stations**: 8
 - **Color**: #0066CC
-- **Description**: Southern Vienna connection
-- **Frequency**: Every 7-15 minutes
-- **Operating Hours**: 5:00 AM - 12:00 AM
+- **Description**: Northern Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
 
-## Night Lines
+### 9A - Ring/Volkstheater ↔ Hernals
+- **Type**: Bus
+- **Length**: 4.1 km
+- **Stations**: 10
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
 
-### N25 - Ring ↔ Floridsdorf
-- **Type**: Night Bus
-- **Length**: 12.1 km
-- **Stops**: 28
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### 10A - Ring/Volkstheater ↔ Dornbach
+- **Type**: Bus
+- **Length**: 4.5 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 11A - Ring/Volkstheater ↔ Baumgarten
+- **Type**: Bus
+- **Length**: 3.8 km
+- **Stations**: 9
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 12A - Ring/Volkstheater ↔ Hütteldorf
+- **Type**: Bus
+- **Length**: 5.2 km
+- **Stations**: 13
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 13A - Ring/Volkstheater ↔ Penzing
+- **Type**: Bus
+- **Length**: 4.7 km
+- **Stations**: 12
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 14A - Ring/Volkstheater ↔ Breitensee
+- **Type**: Bus
+- **Length**: 4.3 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 15A - Ring/Volkstheater ↔ Ottakring
+- **Type**: Bus
+- **Length**: 5.1 km
+- **Stations**: 13
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 16A - Ring/Volkstheater ↔ Hernals
+- **Type**: Bus
+- **Length**: 4.6 km
+- **Stations**: 12
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 17A - Ring/Volkstheater ↔ Neulerchenfeld
+- **Type**: Bus
+- **Length**: 3.9 km
+- **Stations**: 10
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 18A - Ring/Volkstheater ↔ Thaliastraße
+- **Type**: Bus
+- **Length**: 4.2 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 19A - Ring/Volkstheater ↔ Ottakring
+- **Type**: Bus
+- **Length**: 4.8 km
+- **Stations**: 12
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 20A - Ring/Volkstheater ↔ Hernals
+- **Type**: Bus
+- **Length**: 4.5 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 21A - Ring/Volkstheater ↔ Neulerchenfeld
+- **Type**: Bus
+- **Length**: 3.7 km
+- **Stations**: 9
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 22A - Ring/Volkstheater ↔ Thaliastraße
+- **Type**: Bus
+- **Length**: 4.0 km
+- **Stations**: 10
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 23A - Ring/Volkstheater ↔ Ottakring
+- **Type**: Bus
+- **Length**: 4.9 km
+- **Stations**: 12
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 24A - Ring/Volkstheater ↔ Hernals
+- **Type**: Bus
+- **Length**: 4.4 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 25A - Ring/Volkstheater ↔ Neulerchenfeld
+- **Type**: Bus
+- **Length**: 3.6 km
+- **Stations**: 9
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 26A - Ring/Volkstheater ↔ Thaliastraße
+- **Type**: Bus
+- **Length**: 3.8 km
+- **Stations**: 10
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 27A - Ring/Volkstheater ↔ Ottakring
+- **Type**: Bus
+- **Length**: 4.7 km
+- **Stations**: 12
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 28A - Ring/Volkstheater ↔ Hernals
+- **Type**: Bus
+- **Length**: 4.3 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 29A - Ring/Volkstheater ↔ Neulerchenfeld
+- **Type**: Bus
+- **Length**: 3.5 km
+- **Stations**: 9
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 30A - Ring/Volkstheater ↔ Thaliastraße
+- **Type**: Bus
+- **Length**: 3.9 km
+- **Stations**: 10
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 31A - Ring/Volkstheater ↔ Ottakring
+- **Type**: Bus
+- **Length**: 4.6 km
+- **Stations**: 12
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 32A - Ring/Volkstheater ↔ Hernals
+- **Type**: Bus
+- **Length**: 4.2 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 33A - Ring/Volkstheater ↔ Neulerchenfeld
+- **Type**: Bus
+- **Length**: 3.4 km
+- **Stations**: 9
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 34A - Ring/Volkstheater ↔ Thaliastraße
+- **Type**: Bus
+- **Length**: 3.7 km
+- **Stations**: 10
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 35A - Ring/Volkstheater ↔ Ottakring
+- **Type**: Bus
+- **Length**: 4.5 km
+- **Stations**: 12
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 36A - Ring/Volkstheater ↔ Hernals
+- **Type**: Bus
+- **Length**: 4.1 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 37A - Ring/Volkstheater ↔ Neulerchenfeld
+- **Type**: Bus
+- **Length**: 3.3 km
+- **Stations**: 9
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 38A - Ring/Volkstheater ↔ Thaliastraße
+- **Type**: Bus
+- **Length**: 3.6 km
+- **Stations**: 10
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 39A - Ring/Volkstheater ↔ Ottakring
+- **Type**: Bus
+- **Length**: 4.4 km
+- **Stations**: 12
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 40A - Ring/Volkstheater ↔ Hernals
+- **Type**: Bus
+- **Length**: 4.0 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 41A - Ring/Volkstheater ↔ Neulerchenfeld
+- **Type**: Bus
+- **Length**: 3.2 km
+- **Stations**: 9
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 42A - Ring/Volkstheater ↔ Thaliastraße
+- **Type**: Bus
+- **Length**: 3.5 km
+- **Stations**: 10
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 43A - Ring/Volkstheater ↔ Ottakring
+- **Type**: Bus
+- **Length**: 4.3 km
+- **Stations**: 12
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 44A - Ring/Volkstheater ↔ Hernals
+- **Type**: Bus
+- **Length**: 3.9 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 45A - Ring/Volkstheater ↔ Neulerchenfeld
+- **Type**: Bus
+- **Length**: 3.1 km
+- **Stations**: 9
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 46A - Ring/Volkstheater ↔ Thaliastraße
+- **Type**: Bus
+- **Length**: 3.4 km
+- **Stations**: 10
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 47A - Ring/Volkstheater ↔ Ottakring
+- **Type**: Bus
+- **Length**: 4.2 km
+- **Stations**: 12
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 48A - Ring/Volkstheater ↔ Hernals
+- **Type**: Bus
+- **Length**: 3.8 km
+- **Stations**: 11
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 49A - Ring/Volkstheater ↔ Neulerchenfeld
+- **Type**: Bus
+- **Length**: 3.0 km
+- **Stations**: 9
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+### 50A - Ring/Volkstheater ↔ Thaliastraße
+- **Type**: Bus
+- **Length**: 3.3 km
+- **Stations**: 10
+- **Color**: #0066CC
+- **Description**: Western Vienna connection
+- **Frequency**: Every 7-10 minutes
+- **Operating Hours**: 5:00 AM - 12:30 AM
+
+## Night Bus Lines (Nachtbus)
+
+### N25 - Ring/Volkstheater ↔ Floridsdorf
+- **Type**: NightBus
+- **Length**: 8.2 km
+- **Stations**: 16
+- **Color**: #000066
+- **Description**: Night connection to northern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N26 - Ring ↔ Strebersdorf
-- **Type**: Night Bus
-- **Length**: 11.8 km
-- **Stops**: 26
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N26 - Ring/Volkstheater ↔ Aspernstraße
+- **Type**: NightBus
+- **Length**: 7.8 km
+- **Stations**: 15
+- **Color**: #000066
+- **Description**: Night connection to eastern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N29 - Ring ↔ Groß-Enzersdorf
-- **Type**: Night Bus
-- **Length**: 15.2 km
-- **Stops**: 32
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N29 - Ring/Volkstheater ↔ Kaiserebersdorf
+- **Type**: NightBus
+- **Length**: 9.1 km
+- **Stations**: 18
+- **Color**: #000066
+- **Description**: Night connection to southern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N31 - Ring ↔ Stammersdorf
-- **Type**: Night Bus
-- **Length**: 13.5 km
-- **Stops**: 30
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N31 - Ring/Volkstheater ↔ Stammersdorf
+- **Type**: NightBus
+- **Length**: 8.7 km
+- **Stations**: 17
+- **Color**: #000066
+- **Description**: Night connection to northern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N35 - Ring ↔ Groß-Enzersdorf
-- **Type**: Night Bus
-- **Length**: 14.8 km
-- **Stops**: 31
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N35 - Ring/Volkstheater ↔ Siebenhirten
+- **Type**: NightBus
+- **Length**: 10.2 km
+- **Stations**: 20
+- **Color**: #000066
+- **Description**: Night connection to southern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N36 - Ring ↔ Mödling
-- **Type**: Night Bus
-- **Length**: 16.3 km
-- **Stops**: 34
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N36 - Ring/Volkstheater ↔ Raxstraße
+- **Type**: NightBus
+- **Length**: 8.9 km
+- **Stations**: 17
+- **Color**: #000066
+- **Description**: Night connection to southern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N38 - Ring ↔ Baden
-- **Type**: Night Bus
-- **Length**: 18.7 km
-- **Stops**: 38
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N38 - Ring/Volkstheater ↔ Grinzing
+- **Type**: NightBus
+- **Length**: 6.8 km
+- **Stations**: 13
+- **Color**: #000066
+- **Description**: Night connection to northern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N41 - Ring ↔ Klosterneuburg
-- **Type**: Night Bus
-- **Length**: 17.2 km
-- **Stops**: 36
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N41 - Ring/Volkstheater ↔ Pötzleinsdorf
+- **Type**: NightBus
+- **Length**: 5.9 km
+- **Stations**: 11
+- **Color**: #000066
+- **Description**: Night connection to northern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N43 - Ring ↔ Purkersdorf
-- **Type**: Night Bus
-- **Length**: 15.9 km
-- **Stops**: 33
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N43 - Ring/Volkstheater ↔ Neuwaldegg
+- **Type**: NightBus
+- **Length**: 6.7 km
+- **Stations**: 13
+- **Color**: #000066
+- **Description**: Night connection to northern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N46 - Ring ↔ Vösendorf
-- **Type**: Night Bus
-- **Length**: 14.1 km
-- **Stops**: 29
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N46 - Ring/Volkstheater ↔ Baumgarten
+- **Type**: NightBus
+- **Length**: 5.4 km
+- **Stations**: 11
+- **Color**: #000066
+- **Description**: Night connection to western districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N49 - Ring ↔ Perchtoldsdorf
-- **Type**: Night Bus
-- **Length**: 13.8 km
-- **Stops**: 30
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N49 - Ring/Volkstheater ↔ Hütteldorf
+- **Type**: NightBus
+- **Length**: 6.2 km
+- **Stations**: 12
+- **Color**: #000066
+- **Description**: Night connection to western districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N54 - Ring ↔ Mödling
-- **Type**: Night Bus
-- **Length**: 16.5 km
-- **Stops**: 35
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N60 - Westbahnhof ↔ Raxstraße
+- **Type**: NightBus
+- **Length**: 7.8 km
+- **Stations**: 15
+- **Color**: #000066
+- **Description**: Night connection to southern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N60 - Ring ↔ Rodaun
-- **Type**: Night Bus
-- **Length**: 12.7 km
-- **Stops**: 27
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N62 - Oper/Karlsplatz ↔ Lainz
+- **Type**: NightBus
+- **Length**: 6.9 km
+- **Stations**: 14
+- **Color**: #000066
+- **Description**: Night connection to southern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N62 - Ring ↔ Lainz
-- **Type**: Night Bus
-- **Length**: 11.3 km
-- **Stops**: 25
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N66 - Oper/Karlsplatz ↔ Siebenhirten
+- **Type**: NightBus
+- **Length**: 9.8 km
+- **Stations**: 19
+- **Color**: #000066
+- **Description**: Night connection to southern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N66 - Ring ↔ Liesing
-- **Type**: Night Bus
-- **Length**: 13.9 km
-- **Stops**: 29
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N67 - Oper/Karlsplatz ↔ Otto-Wagner-Platz
+- **Type**: NightBus
+- **Length**: 5.1 km
+- **Stations**: 10
+- **Color**: #000066
+- **Description**: Night connection to southern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N67 - Ring ↔ Otto-Wagner-Spital
-- **Type**: Night Bus
-- **Length**: 12.4 km
-- **Stops**: 26
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N71 - Börsegasse ↔ Kaiserebersdorf
+- **Type**: NightBus
+- **Length**: 8.3 km
+- **Stations**: 16
+- **Color**: #000066
+- **Description**: Night connection to southern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N71 - Ring ↔ Kaiserebersdorf
-- **Type**: Night Bus
-- **Length**: 14.2 km
-- **Stops**: 30
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N75 - Börsegasse ↔ Aspernstraße
+- **Type**: NightBus
+- **Length**: 7.5 km
+- **Stations**: 14
+- **Color**: #000066
+- **Description**: Night connection to eastern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N75 - Ring ↔ Raxstraße
-- **Type**: Night Bus
-- **Length**: 11.8 km
-- **Stops**: 25
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N76 - Börsegasse ↔ Floridsdorf
+- **Type**: NightBus
+- **Length**: 8.8 km
+- **Stations**: 17
+- **Color**: #000066
+- **Description**: Night connection to northern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N76 - Ring ↔ Alterlaa
-- **Type**: Night Bus
-- **Length**: 13.1 km
-- **Stops**: 28
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N78 - Börsegasse ↔ Stammersdorf
+- **Type**: NightBus
+- **Length**: 9.2 km
+- **Stations**: 18
+- **Color**: #000066
+- **Description**: Night connection to northern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N78 - Ring ↔ Oberlaa
-- **Type**: Night Bus
-- **Length**: 12.6 km
-- **Stops**: 27
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N81 - Börsegasse ↔ Grinzing
+- **Type**: NightBus
+- **Length**: 7.1 km
+- **Stations**: 13
+- **Color**: #000066
+- **Description**: Night connection to northern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N81 - Ring ↔ Leopoldau
-- **Type**: Night Bus
-- **Length**: 14.8 km
-- **Stops**: 31
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N84 - Börsegasse ↔ Pötzleinsdorf
+- **Type**: NightBus
+- **Length**: 6.2 km
+- **Stations**: 11
+- **Color**: #000066
+- **Description**: Night connection to northern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N84 - Ring ↔ Aspernstraße
-- **Type**: Night Bus
-- **Length**: 13.7 km
-- **Stops**: 29
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N88 - Börsegasse ↔ Neuwaldegg
+- **Type**: NightBus
+- **Length**: 7.0 km
+- **Stations**: 13
+- **Color**: #000066
+- **Description**: Night connection to northern districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N88 - Ring ↔ Kagran
-- **Type**: Night Bus
-- **Length**: 12.9 km
-- **Stops**: 27
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N90 - Börsegasse ↔ Baumgarten
+- **Type**: NightBus
+- **Length**: 5.7 km
+- **Stations**: 11
+- **Color**: #000066
+- **Description**: Night connection to western districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM
 
-### N90 - Ring ↔ Brigittenau
-- **Type**: Night Bus
-- **Length**: 11.5 km
-- **Stops**: 24
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
-- **Operating Hours**: 12:30 AM - 5:00 AM
-
-### N91 - Ring ↔ Floridsdorf
-- **Type**: Night Bus
-- **Length**: 13.3 km
-- **Stops**: 28
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
-- **Operating Hours**: 12:30 AM - 5:00 AM
-
-### N92 - Ring ↔ Strebersdorf
-- **Type**: Night Bus
-- **Length**: 12.8 km
-- **Stops**: 26
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
-- **Operating Hours**: 12:30 AM - 5:00 AM
-
-### N95 - Ring ↔ Groß-Enzersdorf
-- **Type**: Night Bus
-- **Length**: 15.6 km
-- **Stops**: 33
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
-- **Operating Hours**: 12:30 AM - 5:00 AM
-
-### N96 - Ring ↔ Mödling
-- **Type**: Night Bus
-- **Length**: 16.8 km
-- **Stops**: 35
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
-- **Operating Hours**: 12:30 AM - 5:00 AM
-
-### N97 - Ring ↔ Baden
-- **Type**: Night Bus
-- **Length**: 19.2 km
-- **Stops**: 39
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
-- **Operating Hours**: 12:30 AM - 5:00 AM
-
-### N98 - Ring ↔ Klosterneuburg
-- **Type**: Night Bus
-- **Length**: 17.8 km
-- **Stops**: 37
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
-- **Operating Hours**: 12:30 AM - 5:00 AM
-
-### N99 - Ring ↔ Purkersdorf
-- **Type**: Night Bus
-- **Length**: 16.4 km
-- **Stops**: 34
-- **Color**: #333333
-- **Description**: Night service
-- **Frequency**: Every 30 minutes
+### N92 - Börsegasse ↔ Hütteldorf
+- **Type**: NightBus
+- **Length**: 6.5 km
+- **Stations**: 12
+- **Color**: #000066
+- **Description**: Night connection to western districts
+- **Frequency**: Every 15-30 minutes
 - **Operating Hours**: 12:30 AM - 5:00 AM 
