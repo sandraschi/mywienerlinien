@@ -10,6 +10,14 @@ echo.
 REM Set error handling
 setlocal enabledelayedexpansion
 
+REM Kill any existing processes on port 3080
+echo [INFO] Checking for existing processes on port 3080...
+call kill_port_3080.bat
+if %errorlevel% neq 0 (
+    echo [WARNING] Failed to kill processes on port 3080
+    echo [WARNING] You may need to manually stop the previous version
+)
+
 REM Check if Python is installed
 echo [INFO] Checking Python installation...
 python --version >nul 2>&1
@@ -101,7 +109,7 @@ echo.
 echo ========================================
 echo Starting Wiener Linien Live Map...
 echo ========================================
-echo [INFO] Application will be available at: http://localhost:5000
+echo [INFO] Application will be available at: http://localhost:3080
 echo [INFO] Press Ctrl+C to stop the application
 echo.
 
@@ -117,7 +125,7 @@ if %errorlevel% neq 0 (
     echo [ERROR] Application failed to start
     echo [ERROR] Check the logs above for details
     echo [ERROR] Common issues:
-    echo [ERROR] - Port 5000 is already in use
+    echo [ERROR] - Port 3080 is already in use
     echo [ERROR] - Missing dependencies
     echo [ERROR] - API connectivity issues
     pause

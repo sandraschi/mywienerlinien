@@ -33,6 +33,44 @@ function Test-Command {
     }
 }
 
+# Function to kill processes on port 3080
+function Stop-ProcessesOnPort {
+    param([int]$Port = 3080)
+    
+    Write-Log "Checking for existing processes on port $Port..."
+    
+    try {
+        # Get processes using the specified port
+        $connections = netstat -ano | Select-String ":$Port\s"
+        
+        if ($connections) {
+            Write-Log "Found processes using port $Port" "WARNING"
+            
+            foreach ($connection in $connections) {
+                $parts = $connection -split '\s+'
+                $processId = $parts[-1]
+                
+                if ($processId -and $processId -ne "0") {
+                    Write-Log "Killing process ID: $processId" "WARNING"
+                    try {
+                        Stop-Process -Id $processId -Force -ErrorAction Stop
+                        Write-Log "Successfully killed process $processId" "SUCCESS"
+                    } catch {
+                        Write-Log "Failed to kill process $processId`: $_" "ERROR"
+                    }
+                }
+            }
+        } else {
+            Write-Log "No processes found on port $Port" "SUCCESS"
+        }
+    } catch {
+        Write-Log "Error checking port $Port`: $_" "WARNING"
+    }
+}
+
+# Kill any existing processes on port 3080
+Stop-ProcessesOnPort -Port 3080
+
 # Check if Python is installed
 Write-Log "Checking Python installation..."
 if (-not (Test-Command "python")) {
@@ -155,7 +193,7 @@ Write-Host ""
 Write-Host "========================================" -ForegroundColor Green
 Write-Host "Starting Wiener Linien Live Map..." -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
-Write-Log "Application will be available at: http://localhost:5000" "INFO"
+Write-Log "Application will be available at: http://localhost:3080" "INFO"
 Write-Log "Press Ctrl+C to stop the application" "INFO"
 Write-Host ""
 
@@ -175,7 +213,7 @@ try {
     Write-Log "Application failed to start" "ERROR"
     Write-Log "Check the logs above for details" "ERROR"
     Write-Log "Common issues:" "ERROR"
-    Write-Log "- Port 5000 is already in use" "ERROR"
+    Write-Log "- Port 3080 is already in use" "ERROR"
     Write-Log "- Missing dependencies" "ERROR"
     Write-Log "- API connectivity issues" "ERROR"
     Read-Host "Press Enter to exit"

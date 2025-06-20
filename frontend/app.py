@@ -572,9 +572,8 @@ def on_disruption_alert(disruption, event_type):
 # Register disruption alert callback
 disruption_monitor.subscribe(on_disruption_alert)
 
-@app.before_first_request
 def initialize_app():
-    """Initialize the application on first request."""
+    """Initialize the application."""
     logger.info("Starting Wiener Linien Live Map application")
     
     # Ensure logs directory exists
@@ -585,6 +584,9 @@ def initialize_app():
     data_loader.load_stations()
     data_loader.load_routes()
 
+# Initialize the app immediately
+initialize_app()
+
 if __name__ == '__main__':
     logger.info("Starting Wiener Linien Live Map application")
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=3080, debug=True)
