@@ -380,19 +380,102 @@ class DataLoader:
         return self._lines_cache
     
     def load_stations(self, force_reload: bool = False) -> List[Station]:
-        """Load all stations from the data file."""
+        """Load station data from markdown file."""
         if not force_reload and self._stations_cache is not None:
             return self._stations_cache
         
-        content = self._read_file('stations.md')
-        if content:
-            self._stations_cache = self._parse_station_data(content)
-            self._last_loaded['stations'] = datetime.now()
-            logger.info(f"Loaded {len(self._stations_cache)} stations")
-        else:
-            self._stations_cache = []
+        try:
+            content = self._read_file('stations.md')
+            stations = self._parse_station_data(content)
+            
+            # Extract coordinates from routes file to populate station coordinates
+            self._populate_station_coordinates(stations)
+            
+            self._stations_cache = stations
+            logger.info(f"Loaded {len(stations)} stations")
+            return stations
+            
+        except Exception as e:
+            logger.error(f"Error loading stations: {e}")
+            return []
+    
+    def _populate_station_coordinates(self, stations: List[Station]):
+        """Populate station coordinates from routes data."""
+        try:
+            # Load routes to get coordinate data
+            routes_content = self._read_file('routes.md')
+            routes_sections = self._parse_markdown_sections(routes_content)
+            
+            # Create a mapping of station names to coordinates
+            station_coords = {}
+            
+            for section in routes_sections:
+                if section['level'] == 3:  # Individual route sections
+                    content = section['content']
+                    
+                    # Extract stops data
+                    for line in content.split('\n'):
+                        if line.strip().startswith('{"name":'):
+                            # Parse stop data
+                            try:
+                                # Simple JSON parsing for stop data
+                                line = line.strip().rstrip(',')
+                                if line.endswith(']'):
+                                    continue
+                                
+                                # Extract name, lat, lng, rbl from the line
+                                name_match = re.search(r'"name":\s*"([^"]+)"', line)
+                                lat_match = re.search(r'"lat":\s*([\d.]+)', line)
+                                lng_match = re.search(r'"lng":\s*([\d.]+)', line)
+                                rbl_match = re.search(r'"rbl":\s*(\d+)', line)
+                                
+                                if name_match and lat_match and lng_match:
+                                    name = name_match.group(1)
+                                    lat = float(lat_match.group(1))
+                                    lng = float(lng_match.group(1))
+                                    rbl = rbl_match.group(1) if rbl_match else ''
+                                    
+                                    station_coords[name] = {
+                                        'lat': lat,
+                                        'lng': lng,
+                                        'rbl': rbl
+                                    }
+                            except Exception as e:
+                                logger.debug(f"Error parsing stop line: {e}")
+                                continue
+            
+            # Update stations with coordinates
+            for station in stations:
+                if station.name in station_coords:
+                    coords = station_coords[station.name]
+                    station.lat = coords['lat']
+                    station.lng = coords['lng']
+                    # Update RBL if not set
+                    if not station.rbl and coords['rbl']:
+                        station.rbl = coords['rbl']
+                else:
+                    # Set approximate coordinates based on station type and name
+                    station.lat, station.lng = self._get_approximate_coordinates(station)
+            
+            logger.info(f"Populated coordinates for {len(stations)} stations")
+            
+        except Exception as e:
+            logger.error(f"Error populating station coordinates: {e}")
+    
+    def _get_approximate_coordinates(self, station: Station) -> tuple[float, float]:
+        """Get approximate coordinates for stations without exact data."""
+        # Vienna center coordinates
+        vienna_center = (48.2082, 16.3738)
         
-        return self._stations_cache
+        # Add some variation based on station name to avoid overlapping
+        import hashlib
+        name_hash = hashlib.md5(station.name.encode()).hexdigest()
+        
+        # Use hash to generate small offsets
+        lat_offset = (int(name_hash[:8], 16) % 1000 - 500) / 10000.0
+        lng_offset = (int(name_hash[8:16], 16) % 1000 - 500) / 10000.0
+        
+        return (vienna_center[0] + lat_offset, vienna_center[1] + lng_offset)
     
     def load_routes(self, force_reload: bool = False) -> List[Route]:
         """Load all routes from the data file."""
