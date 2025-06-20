@@ -82,6 +82,8 @@ function initializeMap() {
 // Load initial data
 async function loadInitialData() {
     try {
+        showLoading(); // Show loading when starting
+        
         // Load lines, stations, and routes
         await Promise.all([
             loadLines(),
@@ -93,9 +95,11 @@ async function loadInitialData() {
         await loadVehicleData();
         
         console.log('Initial data loaded successfully');
+        hideLoading(); // Hide loading when done
     } catch (error) {
         console.error('Error loading initial data:', error);
         showError('Failed to load initial data');
+        hideLoading(); // Hide loading on error
     }
 }
 
@@ -144,6 +148,8 @@ async function loadRoutes() {
 // Load vehicle data
 async function loadVehicleData() {
     try {
+        showLoading(); // Show loading during vehicle data refresh
+        
         const params = new URLSearchParams();
         if (currentFilters.vehicleType !== 'all') {
             params.append('type', currentFilters.vehicleType);
@@ -161,9 +167,12 @@ async function loadVehicleData() {
         if (data.vehicles) {
             updateVehicleMarkers(data.vehicles);
         }
+        
+        hideLoading(); // Hide loading when done
     } catch (error) {
         console.error('Error loading vehicle data:', error);
         showError('Failed to load vehicle data');
+        hideLoading(); // Hide loading on error
     }
 }
 
@@ -483,6 +492,22 @@ function toggleStops() {
     button.textContent = isVisible ? 'Show Stops' : 'Hide Stops';
 }
 
+// Show loading overlay
+function showLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        overlay.classList.remove('hidden');
+    }
+}
+
+// Hide loading overlay
+function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        overlay.classList.add('hidden');
+    }
+}
+
 // Show error message
 function showError(message) {
     const errorDiv = document.getElementById('error-message');
@@ -494,6 +519,7 @@ function showError(message) {
             errorDiv.style.display = 'none';
         }, 5000);
     }
+    hideLoading(); // Hide loading when there's an error
 }
 
 // Show success message
@@ -511,6 +537,9 @@ function showSuccess(message) {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Hide loading overlay by default
+    hideLoading();
+    
     initializeMap();
     
     // Set up event listeners
