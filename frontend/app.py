@@ -480,10 +480,27 @@ def get_system_status():
 def handle_connect():
     """Handle client connection."""
     logger.info(f"Client connected: {request.sid}")
+    
+    # Get system status properly
+    try:
+        status_response = get_system_status()
+        if hasattr(status_response, 'json'):
+            system_status = status_response.json
+        else:
+            system_status = status_response
+    except Exception as e:
+        logger.error(f"Error getting system status: {e}")
+        system_status = {
+            'websocket_clients': 0,
+            'active_disruptions': 0,
+            'vehicle_count': 0,
+            'timestamp': datetime.now().isoformat()
+        }
+    
     emit('connected', {
         'client_id': request.sid,
         'timestamp': datetime.now().isoformat(),
-        'system_status': get_system_status().json
+        'system_status': system_status
     })
 
 @socketio.on('disconnect')
@@ -543,8 +560,21 @@ def handle_request_updates(data):
     
     if update_type in ['status', 'all']:
         # Send system status
-        status = get_system_status().json
-        emit('system_status', status)
+        try:
+            status_response = get_system_status()
+            if hasattr(status_response, 'json'):
+                status = status_response.json
+            else:
+                status = status_response
+            emit('system_status', status)
+        except Exception as e:
+            logger.error(f"Error getting system status: {e}")
+            emit('system_status', {
+                'websocket_clients': 0,
+                'active_disruptions': 0,
+                'vehicle_count': 0,
+                'timestamp': datetime.now().isoformat()
+            })
 
 # Disruption alert callback
 def on_disruption_alert(disruption, event_type):

@@ -244,3 +244,2158 @@
 2025-06-20 16:28:21,690 - websocket_manager - INFO - WebSocket manager started
 2025-06-20 16:28:21,691 - disruption_alerts - INFO - Disruption monitoring started
 2025-06-20 16:28:21,694 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 17:24:51,174 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:24:51,174 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 17:24:51,180 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:24:51,181 - data_loader - INFO - Loaded 65 lines
+2025-06-20 17:24:51,183 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:24:51,184 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:24:51,186 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:24:51,188 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:24:51,188 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:24:51,638 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:24:51,639 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:24:52,462 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3080
+ * Running on http://192.168.0.81:3080
+2025-06-20 17:24:52,462 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-20 17:24:52,463 - werkzeug - INFO -  * Restarting with stat
+2025-06-20 17:24:52,899 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:24:52,900 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 17:24:52,902 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:24:52,903 - data_loader - INFO - Loaded 65 lines
+2025-06-20 17:24:52,903 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:24:52,906 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:24:52,907 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:24:52,908 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:24:52,908 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:24:52,908 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:24:52,916 - werkzeug - WARNING -  * Debugger is active!
+2025-06-20 17:24:52,923 - werkzeug - INFO -  * Debugger PIN: 115-768-075
+2025-06-20 17:24:53,376 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:24:53,377 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:06,662 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:06,663 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:06,663 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:06,663 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:08,413 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:08,413 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:08,421 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:08,421 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:21,813 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:21,813 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:21,819 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:21,820 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:23,420 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:23,420 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:23,426 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:23,426 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:36,897 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:36,899 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:36,899 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:36,900 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:38,477 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:38,477 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:38,503 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:38,504 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:50,813 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:25:50] "GET / HTTP/1.1" 200 -
+2025-06-20 17:25:50,912 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:25:50] "GET /static/js/map.js HTTP/1.1" 200 -
+2025-06-20 17:25:50,913 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:25:50] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-20 17:25:51,005 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:25:51] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-06-20 17:25:51,011 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:25:51] "GET /socket.io/?EIO=4&transport=polling&t=PUDyZWU HTTP/1.1" 200 -
+2025-06-20 17:25:51,036 - wiener_linien - INFO - Returning 65 lines
+2025-06-20 17:25:51,038 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:25:51] "GET /api/lines HTTP/1.1" 200 -
+2025-06-20 17:25:51,038 - wiener_linien - INFO - Returning 136 stations
+2025-06-20 17:25:51,039 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:25:51] "GET /api/stations HTTP/1.1" 200 -
+2025-06-20 17:25:51,040 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 17:25:51,041 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:25:51] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 17:25:51,050 - wiener_linien - INFO - Client connected: 5srAMPGK04-_a38mAAAB
+2025-06-20 17:25:51,051 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 823, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:25:51,053 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 823, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\engineio\server.py", line 642, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\socketio\server.py", line 782, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\socketio\server.py", line 672, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\socketio\server.py", line 749, in _trigger_event
+    return self.handlers[namespace][event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 825, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 486, in handle_connect
+    'system_status': get_system_status().json
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'json'
+2025-06-20 17:25:51,054 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:25:51] "GET /socket.io/?EIO=4&transport=polling&t=PUDyZX4.0&sid=bapvoWkxghQbFFRUAAAA HTTP/1.1" 200 -
+2025-06-20 17:25:51,054 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:25:51] "POST /socket.io/?EIO=4&transport=polling&t=PUDyZX4&sid=bapvoWkxghQbFFRUAAAA HTTP/1.1" 200 -
+2025-06-20 17:25:51,055 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:25:51,927 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:51,927 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:51,937 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:51,937 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:52,366 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:25:53,422 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:53,423 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:53,443 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:53,443 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:25:53,820 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:26:06,740 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:06,740 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:07,319 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:26:08,321 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:08,322 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:08,441 - wiener_linien - INFO - Fetching vehicles: type=night_bus, line=None, station=None
+2025-06-20 17:26:08,442 - wiener_linien - INFO - Fetching vehicles: type=night_bus, line=None, station=None
+2025-06-20 17:26:08,825 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:26:14,584 - wiener_linien - INFO - Fetching vehicles: type=metro, line=None, station=None
+2025-06-20 17:26:14,585 - wiener_linien - INFO - Fetching vehicles: type=metro, line=None, station=None
+2025-06-20 17:26:21,115 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 17:26:21,117 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 17:26:22,801 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:22,801 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:24,212 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:24,213 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:32,269 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1011
+2025-06-20 17:26:32,270 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1011
+2025-06-20 17:26:37,131 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:26:37,132 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:26:37] "GET /api/vehicles?type=metro&line=U4&station=1011 HTTP/1.1" 200 -
+2025-06-20 17:26:37,147 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 17:26:37,163 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:26:37,163 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:26:37] "GET /api/vehicles?type=metro&line=U4&station=1011 HTTP/1.1" 200 -
+2025-06-20 17:26:37,203 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 17:26:37,959 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:37,959 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:37,977 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:37,977 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:39,241 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:39,242 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:51,959 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 17:26:51,993 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 17:26:51,995 - wiener_linien - INFO - Returning 62 vehicles (successful requests: 4, failed: 1)
+2025-06-20 17:26:51,996 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:26:51] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:26:52,009 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 17:26:52,025 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 17:26:52,026 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 17:26:52,655 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:26:52,656 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:26:53,009 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:53,009 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:53,028 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:53,029 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:54,461 - wiener_linien - ERROR - API request failed for RBL 3052: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3052
+2025-06-20 17:26:54,475 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:26:54,476 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:07,057 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:27:07,059 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:27:07,060 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:07] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:27:07,061 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 17:27:07,061 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:07] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:27:07,071 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 17:27:07,974 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 17:27:07,978 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:07,978 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:09,390 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 17:27:09,427 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:09,427 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:14,395 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:27:15,345 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:27:22,010 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 17:27:22,011 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 3, failed: 2)
+2025-06-20 17:27:22,011 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:22] "GET /api/vehicles?type=metro HTTP/1.1" 200 -
+2025-06-20 17:27:22,016 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 17:27:22,017 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 4, failed: 1)
+2025-06-20 17:27:22,017 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:22] "GET /api/vehicles?type=metro HTTP/1.1" 200 -
+2025-06-20 17:27:22,024 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 17:27:22,026 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 2, failed: 3)
+2025-06-20 17:27:22,026 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:22] "GET /api/vehicles?type=night_bus HTTP/1.1" 200 -
+2025-06-20 17:27:22,029 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1011
+2025-06-20 17:27:22,031 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 17:27:22,045 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 17:27:22,048 - wiener_linien - ERROR - API request failed for RBL 1010: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1010
+2025-06-20 17:27:22,049 - wiener_linien - ERROR - API request failed for RBL 1010: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1010
+2025-06-20 17:27:22,050 - wiener_linien - INFO - No real vehicles found, adding dummy vehicles
+2025-06-20 17:27:22,051 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 17:27:22,052 - wiener_linien - INFO - No real vehicles found, adding dummy vehicles
+2025-06-20 17:27:22,053 - wiener_linien - INFO - Returning 1 vehicles (successful requests: 0, failed: 1)
+2025-06-20 17:27:22,055 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 3, failed: 2)
+2025-06-20 17:27:22,055 - wiener_linien - INFO - Returning 1 vehicles (successful requests: 0, failed: 1)
+2025-06-20 17:27:22,055 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:22] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:27:22,056 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:22] "GET /api/vehicles?type=night_bus HTTP/1.1" 200 -
+2025-06-20 17:27:22,056 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:22] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:27:23,020 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:23,020 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:23,029 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:23,029 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:23,405 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:27:24,328 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:24,328 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:24,331 - wiener_linien - ERROR - API request failed for RBL 3062: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3062
+2025-06-20 17:27:24,737 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:27:36,885 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 3, failed: 2)
+2025-06-20 17:27:36,885 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:36] "GET /api/vehicles?type=metro&line=U4 HTTP/1.1" 200 -
+2025-06-20 17:27:36,901 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 4)
+2025-06-20 17:27:36,901 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:36] "GET /api/vehicles?type=metro&line=U4 HTTP/1.1" 200 -
+2025-06-20 17:27:36,925 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:27:36,925 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:36] "GET /api/vehicles?type=metro&line=U4&station=1011 HTTP/1.1" 200 -
+2025-06-20 17:27:37,778 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:37,778 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:38,398 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:27:39,252 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:39,252 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:51,022 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:27:51,522 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:27:51,522 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:27:51] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:27:53,901 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:53,901 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:54,436 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:54,436 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:27:54,987 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:28:09,020 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:09,020 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:09,022 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:09,022 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:09,248 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:09,249 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:24,101 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:24,101 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:24,109 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:24,109 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:24,312 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:24,312 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:39,043 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:39,043 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:39,058 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:39,058 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:39,366 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:39,366 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:39,395 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:39,395 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:51,035 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:28:51,490 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:28:51,490 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:28:51] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:28:53,931 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:53,931 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:53,986 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:53,986 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:54,545 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:54,545 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:54,590 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:54,590 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:28:54,605 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:29:08,838 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:08,838 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:09,485 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:09,485 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:09,518 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:09,518 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:09,602 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:29:09,893 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:29:27,759 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:27,759 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:28,347 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:28,347 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:40,250 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:40,250 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:40,278 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:40,278 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:40,314 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:40,314 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:41,583 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:29:51,040 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:29:51,528 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:29:51,529 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:29:51] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:29:54,277 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:54,277 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:55,102 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:55,102 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:57,541 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:29:57,541 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:09,373 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:09,374 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:10,291 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:10,291 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:10,467 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:10,467 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:24,523 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:24,524 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:24,541 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:24,541 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:25,186 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:25,186 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:25,201 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:25,201 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:25,586 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:30:39,554 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:39,554 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:39,557 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:39,557 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:40,061 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:40,062 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:40,566 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:30:51,055 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:30:51,507 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:30:51,507 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:30:51] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:30:54,344 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:54,344 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:54,365 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:54,365 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:54,781 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:30:56,005 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:30:56,005 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:09,290 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:09,291 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:11,162 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:11,162 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:11,177 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:11,177 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:28,964 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:28,964 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:33,024 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:31:33,171 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:33,171 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:33,831 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:33,831 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:41,033 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:41,033 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:41,884 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:41,885 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:42,054 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:42,055 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:51,065 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:31:52,578 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:31:52,578 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:31:52] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:31:55,145 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:55,145 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:56,236 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:56,237 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:56,273 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:56,273 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:31:56,719 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:32:10,116 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:10,116 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:10,122 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:10,122 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:12,089 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:12,089 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:12,521 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:32:24,466 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:24,466 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:24,504 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:24,504 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:27,126 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:27,126 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:39,513 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:39,514 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:39,534 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:39,534 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:39,910 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:32:42,117 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:42,117 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:51,072 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:32:51,513 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:32:51,514 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:32:51] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:32:54,241 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:54,241 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:57,390 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:57,390 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:57,428 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:32:57,428 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:09,703 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:09,703 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:10,084 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:33:12,258 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:12,258 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:12,264 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:12,264 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:24,293 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:24,293 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:27,379 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:27,379 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:27,381 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:27,382 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:27,820 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:33:39,397 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:39,397 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:42,518 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:42,519 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:51,082 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:33:51,900 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:33:51,900 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:33:51] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:33:54,418 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:54,418 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:54,754 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:54,754 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:57,183 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:57,183 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:33:57,774 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:34:09,492 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:09,492 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:09,506 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:09,506 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:12,149 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:12,149 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:24,468 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:24,468 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:24,486 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:24,486 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:24,873 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:34:27,201 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:27,201 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:39,304 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:39,304 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:42,299 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:42,301 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:42,301 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:42,301 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:51,094 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:34:51,520 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:34:51,521 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:34:51] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:34:54,308 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:54,309 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:54,709 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:34:57,332 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:57,333 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:57,336 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:34:57,336 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:09,310 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:09,311 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:12,347 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:12,348 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:12,348 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:12,348 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:12,754 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:35:24,276 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:24,276 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:27,173 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:27,173 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:39,499 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:39,499 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:39,521 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:39,522 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:42,151 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:42,152 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:42,527 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:35:51,347 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:35:51,774 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:35:51,775 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:35:51] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:35:54,444 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:54,445 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:54,449 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:54,449 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:57,162 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:35:57,162 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:09,489 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:09,491 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:09,491 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:09,491 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:09,875 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:36:12,123 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:12,123 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:24,320 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:24,321 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:27,323 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:27,324 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:27,422 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:27,423 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:39,316 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:39,316 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:39,716 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:36:42,332 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:42,333 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:42,337 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:42,338 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:51,356 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1010
+2025-06-20 17:36:51,807 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:36:51,807 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:36:51] "GET /api/vehicles?type=metro&line=U4&station=1010 HTTP/1.1" 200 -
+2025-06-20 17:36:54,266 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:54,266 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:57,519 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:57,519 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:57,703 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:57,703 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:36:58,269 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:37:09,332 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:09,332 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:09,730 - wiener_linien - INFO - Client disconnected: 5srAMPGK04-_a38mAAAB
+2025-06-20 17:37:09,731 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:09] "GET /socket.io/?EIO=4&transport=websocket&sid=bapvoWkxghQbFFRUAAAA HTTP/1.1" 200 -
+2025-06-20 17:37:09,735 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:09] "GET / HTTP/1.1" 200 -
+2025-06-20 17:37:09,770 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:09] "[36mGET /static/js/map.js HTTP/1.1[0m" 304 -
+2025-06-20 17:37:09,771 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:09] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-20 17:37:09,825 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:09] "GET /socket.io/?EIO=4&transport=polling&t=PUD_9E_ HTTP/1.1" 200 -
+2025-06-20 17:37:09,828 - wiener_linien - INFO - Returning 65 lines
+2025-06-20 17:37:09,829 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:09] "GET /api/lines HTTP/1.1" 200 -
+2025-06-20 17:37:09,834 - wiener_linien - INFO - Returning 136 stations
+2025-06-20 17:37:09,835 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:09] "GET /api/stations HTTP/1.1" 200 -
+2025-06-20 17:37:09,835 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 17:37:09,837 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:09] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 17:37:09,841 - wiener_linien - INFO - Client connected: j_c9kV2OFi2kt4IVAAAD
+2025-06-20 17:37:09,841 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 823, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:37:09,843 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 823, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\engineio\server.py", line 642, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\socketio\server.py", line 782, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\socketio\server.py", line 672, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\socketio\server.py", line 749, in _trigger_event
+    return self.handlers[namespace][event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 825, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 486, in handle_connect
+    'system_status': get_system_status().json
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'json'
+2025-06-20 17:37:09,844 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:09] "POST /socket.io/?EIO=4&transport=polling&t=PUD_9FC&sid=hclFbJvYlRZOzwohAAAC HTTP/1.1" 200 -
+2025-06-20 17:37:09,852 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:09] "GET /socket.io/?EIO=4&transport=polling&t=PUD_9FD&sid=hclFbJvYlRZOzwohAAAC HTTP/1.1" 200 -
+2025-06-20 17:37:09,855 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:37:12,129 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:12,129 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:14,709 - wiener_linien - INFO - Client disconnected: j_c9kV2OFi2kt4IVAAAD
+2025-06-20 17:37:14,709 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "GET /socket.io/?EIO=4&transport=websocket&sid=hclFbJvYlRZOzwohAAAC HTTP/1.1" 200 -
+2025-06-20 17:37:14,718 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "GET / HTTP/1.1" 200 -
+2025-06-20 17:37:14,738 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-20 17:37:14,740 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "GET /static/js/map.js HTTP/1.1" 200 -
+2025-06-20 17:37:14,863 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-06-20 17:37:14,870 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "GET /socket.io/?EIO=4&transport=polling&t=PUD_ATp HTTP/1.1" 200 -
+2025-06-20 17:37:14,876 - wiener_linien - INFO - Returning 65 lines
+2025-06-20 17:37:14,877 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "GET /api/lines HTTP/1.1" 200 -
+2025-06-20 17:37:14,877 - wiener_linien - INFO - Returning 136 stations
+2025-06-20 17:37:14,879 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "GET /api/stations HTTP/1.1" 200 -
+2025-06-20 17:37:14,879 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 17:37:14,881 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 17:37:14,888 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "GET /socket.io/?EIO=4&transport=polling&t=PUD_AU2.0&sid=rTKRKi26HWzgedFhAAAE HTTP/1.1" 200 -
+2025-06-20 17:37:14,911 - wiener_linien - INFO - Client connected: FmZT-qinGYFwZzf-AAAF
+2025-06-20 17:37:14,912 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 823, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:37:14,913 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 823, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\engineio\server.py", line 642, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\socketio\server.py", line 782, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\socketio\server.py", line 672, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\socketio\server.py", line 749, in _trigger_event
+    return self.handlers[namespace][event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\venv\Lib\site-packages\flask_socketio\__init__.py", line 825, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 486, in handle_connect
+    'system_status': get_system_status().json
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'json'
+2025-06-20 17:37:14,914 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:14] "POST /socket.io/?EIO=4&transport=polling&t=PUD_AU2&sid=rTKRKi26HWzgedFhAAAE HTTP/1.1" 200 -
+2025-06-20 17:37:14,918 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:37:20,982 - wiener_linien - INFO - Fetching vehicles: type=metro, line=None, station=None
+2025-06-20 17:37:20,983 - wiener_linien - INFO - Fetching vehicles: type=metro, line=None, station=None
+2025-06-20 17:37:24,440 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:24,440 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:24,453 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:24,454 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:25,386 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 17:37:25,387 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 17:37:27,213 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:27,213 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:27,612 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:37:39,460 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:39,460 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:39,463 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:39,463 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:42,140 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:42,140 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:47,660 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:37:47,661 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:37:54,509 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:54,509 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:54,520 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:54,520 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:54,900 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:37:55,809 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 17:37:55,813 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:37:55,813 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:55] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 17:37:55,816 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 17:37:55,817 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:37:55,818 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:37:55] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 17:37:55,830 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 17:37:57,145 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:37:57,146 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:09,290 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 17:38:10,578 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 17:38:10,627 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 17:38:10,679 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 17:38:10,689 - wiener_linien - INFO - Returning 66 vehicles (successful requests: 5, failed: 0)
+2025-06-20 17:38:10,690 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:38:10] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:38:12,179 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:12,182 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:12,182 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:12,182 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:14,873 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:38:24,311 - wiener_linien - ERROR - API request failed for RBL 3080: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3080
+2025-06-20 17:38:24,788 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:38:25,579 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 17:38:25,583 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 17:38:25,595 - wiener_linien - INFO - Returning 34 vehicles (successful requests: 3, failed: 2)
+2025-06-20 17:38:25,595 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:38:25] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:38:25,606 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 17:38:25,607 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 4, failed: 1)
+2025-06-20 17:38:25,607 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:38:25] "GET /api/vehicles?type=metro HTTP/1.1" 200 -
+2025-06-20 17:38:25,608 - wiener_linien - ERROR - API request failed for RBL 1012: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1012
+2025-06-20 17:38:25,610 - wiener_linien - INFO - No real vehicles found, adding dummy vehicles
+2025-06-20 17:38:25,611 - wiener_linien - INFO - Returning 1 vehicles (successful requests: 0, failed: 1)
+2025-06-20 17:38:25,611 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:38:25] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 17:38:25,676 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 17:38:25,678 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 2, failed: 3)
+2025-06-20 17:38:25,678 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:38:25] "GET /api/vehicles?type=metro HTTP/1.1" 200 -
+2025-06-20 17:38:27,215 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:27,215 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:27,218 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:27,218 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:39,293 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:39,293 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:40,308 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 3, failed: 2)
+2025-06-20 17:38:40,309 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:38:40] "GET /api/vehicles?type=metro&line=U4 HTTP/1.1" 200 -
+2025-06-20 17:38:40,320 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 3, failed: 2)
+2025-06-20 17:38:40,320 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:38:40] "GET /api/vehicles?type=metro&line=U4 HTTP/1.1" 200 -
+2025-06-20 17:38:42,186 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:42,186 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:42,208 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:42,208 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:38:42,606 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:40:33,033 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:40:33,033 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 17:40:33,035 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:40:33,037 - data_loader - INFO - Loaded 65 lines
+2025-06-20 17:40:33,038 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:40:33,039 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:40:33,041 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:40:33,042 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:40:33,042 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:40:33,043 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:40:33,716 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:33,716 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:34,329 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3080
+ * Running on http://192.168.0.81:3080
+2025-06-20 17:40:34,329 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-20 17:40:34,330 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-06-20 17:40:34,747 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:40:34,748 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 17:40:34,749 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:40:34,752 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:40:34,754 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:40:34,754 - data_loader - INFO - Loaded 65 lines
+2025-06-20 17:40:34,756 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:40:34,756 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:40:34,759 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:40:34,759 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:40:34,760 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:40:34,766 - werkzeug - WARNING -  * Debugger is active!
+2025-06-20 17:40:34,773 - werkzeug - INFO -  * Debugger PIN: 158-675-289
+2025-06-20 17:40:35,235 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:35,235 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:36,608 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 17:40:36,609 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:36] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 17:40:37,411 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:37] "GET /socket.io/?EIO=4&transport=polling&t=PUD_xwV HTTP/1.1" 200 -
+2025-06-20 17:40:37,416 - wiener_linien - INFO - Client connected: sKwAQMviCwS8uX7_AAAB
+2025-06-20 17:40:37,416 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:40:37,420 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:37] "GET /socket.io/?EIO=4&transport=polling&t=PUD_xwd.0&sid=Pi5z3Hh7CBEcr1czAAAA HTTP/1.1" 200 -
+2025-06-20 17:40:37,433 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\flask_socketio\\__init__.py', reloading
+2025-06-20 17:40:37,434 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\engineio\\server.py', reloading
+2025-06-20 17:40:37,436 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\socketio\\server.py', reloading
+2025-06-20 17:40:37,433 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 486, in handle_connect
+    'system_status': get_system_status().json
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'json'
+2025-06-20 17:40:37,437 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:37] "POST /socket.io/?EIO=4&transport=polling&t=PUD_xwd&sid=Pi5z3Hh7CBEcr1czAAAA HTTP/1.1" 200 -
+2025-06-20 17:40:37,817 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-06-20 17:40:38,227 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:40:38,228 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 17:40:38,230 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:40:38,231 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:40:38,232 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:40:38,233 - data_loader - INFO - Loaded 65 lines
+2025-06-20 17:40:38,235 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:40:38,235 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:40:38,236 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:40:38,238 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:40:38,238 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:40:38,245 - werkzeug - WARNING -  * Debugger is active!
+2025-06-20 17:40:38,252 - werkzeug - INFO -  * Debugger PIN: 158-675-289
+2025-06-20 17:40:38,725 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:38,726 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:38,966 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:38] "GET / HTTP/1.1" 200 -
+2025-06-20 17:40:39,087 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:39] "GET /socket.io/?EIO=4&transport=polling&t=PUD_yKi HTTP/1.1" 200 -
+2025-06-20 17:40:39,093 - wiener_linien - INFO - Client connected: PPn9aNOKZgcL2CzHAAAB
+2025-06-20 17:40:39,093 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:40:39,096 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:39] "GET /socket.io/?EIO=4&transport=polling&t=PUD_yKo.0&sid=CLIJ28xRqBctkf39AAAA HTTP/1.1" 200 -
+2025-06-20 17:40:39,095 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 486, in handle_connect
+    'system_status': get_system_status().json
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'json'
+2025-06-20 17:40:39,098 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:39] "POST /socket.io/?EIO=4&transport=polling&t=PUD_yKo&sid=CLIJ28xRqBctkf39AAAA HTTP/1.1" 200 -
+2025-06-20 17:40:43,213 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:43] "GET / HTTP/1.1" 200 -
+2025-06-20 17:40:43,358 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:43] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-06-20 17:40:43,360 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:43] "[36mGET /static/js/map.js HTTP/1.1[0m" 304 -
+2025-06-20 17:40:43,387 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:43] "GET /socket.io/?EIO=4&transport=polling&t=PUD_zNs HTTP/1.1" 200 -
+2025-06-20 17:40:43,393 - wiener_linien - INFO - Returning 65 lines
+2025-06-20 17:40:43,393 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:43] "GET /api/lines HTTP/1.1" 200 -
+2025-06-20 17:40:43,394 - wiener_linien - INFO - Returning 136 stations
+2025-06-20 17:40:43,395 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 17:40:43,395 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:43] "GET /api/stations HTTP/1.1" 200 -
+2025-06-20 17:40:43,397 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:43] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 17:40:43,411 - wiener_linien - INFO - Client connected: zHpH87YB5fm3acgHAAAD
+2025-06-20 17:40:43,412 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:40:43,413 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 486, in handle_connect
+    'system_status': get_system_status().json
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'json'
+2025-06-20 17:40:43,414 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:43] "POST /socket.io/?EIO=4&transport=polling&t=PUD_zO5&sid=t4osKBXCX146KYfiAAAC HTTP/1.1" 200 -
+2025-06-20 17:40:43,436 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:40:43] "GET /socket.io/?EIO=4&transport=polling&t=PUD_zO5.0&sid=t4osKBXCX146KYfiAAAC HTTP/1.1" 200 -
+2025-06-20 17:40:43,439 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:40:48,514 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:48,514 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:48,519 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:48,520 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:53,858 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:53,858 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:53,896 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:40:53,896 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:03,622 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:03,623 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:03,623 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:03,624 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:08,875 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:08,875 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:08,891 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:08,891 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:16,230 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:41:18,524 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:18,525 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:18,537 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:18,537 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:23,755 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:23,756 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:23,772 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:23,772 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:28,895 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:41:28,895 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:41:28] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 17:41:33,519 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:33,519 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:33,530 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:33,532 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:33,890 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:41:38,724 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:38,724 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:38,745 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:38,745 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:39,144 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:41:43,431 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:41:43,932 - wiener_linien - INFO - Returning 65 vehicles (successful requests: 5, failed: 0)
+2025-06-20 17:41:43,933 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:41:43] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:41:48,486 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:48,486 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:48,892 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:41:53,671 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:53,671 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:41:54,159 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:42:04,326 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:04,326 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:09,602 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:09,602 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:16,164 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:42:19,342 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:19,342 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:24,583 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:24,583 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:34,088 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:42:34,088 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:42:34] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 17:42:34,344 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:34,344 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:34,390 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:34,390 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:39,613 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:39,613 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:39,633 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:39,633 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:43,516 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:42:43,861 - wiener_linien - INFO - Returning 62 vehicles (successful requests: 5, failed: 0)
+2025-06-20 17:42:43,862 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:42:43] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:42:49,367 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:49,367 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:49,386 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:49,386 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:54,618 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:54,619 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:54,639 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:42:54,639 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:04,386 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:04,386 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:04,390 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:04,390 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:05,305 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:43:09,628 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:09,628 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:10,035 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:10,036 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:10,600 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:43:16,179 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:43:19,723 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:19,723 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:24,955 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:24,956 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:29,059 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:43:29,059 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:43:29] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 17:43:34,726 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:34,727 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:35,167 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:43:39,599 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:39,599 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:39,993 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:43:43,643 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:43:49,314 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:49,314 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:54,566 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:54,567 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:43:58,960 - wiener_linien - INFO - Returning 55 vehicles (successful requests: 5, failed: 0)
+2025-06-20 17:43:58,961 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:43:58] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:44:04,972 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:04,973 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:08,420 - wiener_linien - INFO - Client disconnected: zHpH87YB5fm3acgHAAAD
+2025-06-20 17:44:08,420 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "GET /socket.io/?EIO=4&transport=websocket&sid=t4osKBXCX146KYfiAAAC HTTP/1.1" 200 -
+2025-06-20 17:44:08,428 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "GET / HTTP/1.1" 200 -
+2025-06-20 17:44:08,465 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-20 17:44:08,473 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "GET /static/js/map.js HTTP/1.1" 200 -
+2025-06-20 17:44:08,582 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-06-20 17:44:08,588 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "GET /socket.io/?EIO=4&transport=polling&t=PUE0lU5 HTTP/1.1" 200 -
+2025-06-20 17:44:08,592 - wiener_linien - INFO - Returning 65 lines
+2025-06-20 17:44:08,592 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "GET /api/lines HTTP/1.1" 200 -
+2025-06-20 17:44:08,594 - wiener_linien - INFO - Returning 136 stations
+2025-06-20 17:44:08,594 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "GET /api/stations HTTP/1.1" 200 -
+2025-06-20 17:44:08,595 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 17:44:08,596 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 17:44:08,611 - wiener_linien - INFO - Client connected: lIDNBiY5TIFjL-xgAAAF
+2025-06-20 17:44:08,611 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:44:08,612 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 486, in handle_connect
+    'system_status': get_system_status().json
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'json'
+2025-06-20 17:44:08,614 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "POST /socket.io/?EIO=4&transport=polling&t=PUE0lUM&sid=_Rrg1D_SNbMBB7l1AAAE HTTP/1.1" 200 -
+2025-06-20 17:44:08,622 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:08] "GET /socket.io/?EIO=4&transport=polling&t=PUE0lUM.0&sid=_Rrg1D_SNbMBB7l1AAAE HTTP/1.1" 200 -
+2025-06-20 17:44:08,638 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:44:09,579 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:09,580 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:09,655 - wiener_linien - INFO - Client disconnected: lIDNBiY5TIFjL-xgAAAF
+2025-06-20 17:44:09,656 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:09] "GET /socket.io/?EIO=4&transport=websocket&sid=_Rrg1D_SNbMBB7l1AAAE HTTP/1.1" 200 -
+2025-06-20 17:44:09,662 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:09] "GET / HTTP/1.1" 200 -
+2025-06-20 17:44:09,690 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:09] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-20 17:44:09,692 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:09] "GET /static/js/map.js HTTP/1.1" 200 -
+2025-06-20 17:44:09,853 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:09] "GET /socket.io/?EIO=4&transport=polling&t=PUE0lns HTTP/1.1" 200 -
+2025-06-20 17:44:09,855 - wiener_linien - INFO - Returning 65 lines
+2025-06-20 17:44:09,857 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:09] "GET /api/lines HTTP/1.1" 200 -
+2025-06-20 17:44:09,857 - wiener_linien - INFO - Returning 136 stations
+2025-06-20 17:44:09,858 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:09] "GET /api/stations HTTP/1.1" 200 -
+2025-06-20 17:44:09,859 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 17:44:09,860 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:09] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 17:44:09,877 - wiener_linien - INFO - Client connected: e8j6IYvacfU3XjJ9AAAH
+2025-06-20 17:44:09,878 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:44:09,880 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 486, in handle_connect
+    'system_status': get_system_status().json
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'json'
+2025-06-20 17:44:09,881 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:09] "POST /socket.io/?EIO=4&transport=polling&t=PUE0lo9&sid=S27YJQDKTJIiGdKtAAAG HTTP/1.1" 200 -
+2025-06-20 17:44:09,885 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:09] "GET /socket.io/?EIO=4&transport=polling&t=PUE0loA&sid=S27YJQDKTJIiGdKtAAAG HTTP/1.1" 200 -
+2025-06-20 17:44:09,904 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:44:10,188 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-06-20 17:44:10,468 - wiener_linien - INFO - Client disconnected: e8j6IYvacfU3XjJ9AAAH
+2025-06-20 17:44:10,468 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "GET /socket.io/?EIO=4&transport=websocket&sid=S27YJQDKTJIiGdKtAAAG HTTP/1.1" 200 -
+2025-06-20 17:44:10,472 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "GET / HTTP/1.1" 200 -
+2025-06-20 17:44:10,493 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-20 17:44:10,495 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "GET /static/js/map.js HTTP/1.1" 200 -
+2025-06-20 17:44:10,583 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-06-20 17:44:10,591 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "GET /socket.io/?EIO=4&transport=polling&t=PUE0lzR HTTP/1.1" 200 -
+2025-06-20 17:44:10,594 - wiener_linien - INFO - Returning 65 lines
+2025-06-20 17:44:10,595 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "GET /api/lines HTTP/1.1" 200 -
+2025-06-20 17:44:10,596 - wiener_linien - INFO - Returning 136 stations
+2025-06-20 17:44:10,597 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 17:44:10,599 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "GET /api/stations HTTP/1.1" 200 -
+2025-06-20 17:44:10,599 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 17:44:10,619 - wiener_linien - INFO - Client connected: L--4Ur3LbrVojhlyAAAJ
+2025-06-20 17:44:10,620 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:44:10,623 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:44:10,623 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 486, in handle_connect
+    'system_status': get_system_status().json
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'json'
+2025-06-20 17:44:10,625 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "POST /socket.io/?EIO=4&transport=polling&t=PUE0lzs&sid=dq7HSxLLy2zyGF-oAAAI HTTP/1.1" 200 -
+2025-06-20 17:44:10,625 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:10] "GET /socket.io/?EIO=4&transport=polling&t=PUE0lzs.0&sid=dq7HSxLLy2zyGF-oAAAI HTTP/1.1" 200 -
+2025-06-20 17:44:11,792 - wiener_linien - INFO - Client disconnected: L--4Ur3LbrVojhlyAAAJ
+2025-06-20 17:44:11,792 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:11] "GET /socket.io/?EIO=4&transport=websocket&sid=dq7HSxLLy2zyGF-oAAAI HTTP/1.1" 200 -
+2025-06-20 17:44:11,802 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:11] "GET / HTTP/1.1" 200 -
+2025-06-20 17:44:11,824 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:11] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-20 17:44:11,824 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:11] "GET /static/js/map.js HTTP/1.1" 200 -
+2025-06-20 17:44:12,107 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:12] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-06-20 17:44:12,114 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:12] "GET /socket.io/?EIO=4&transport=polling&t=PUE0mLD HTTP/1.1" 200 -
+2025-06-20 17:44:12,122 - wiener_linien - INFO - Returning 65 lines
+2025-06-20 17:44:12,123 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:12] "GET /api/lines HTTP/1.1" 200 -
+2025-06-20 17:44:12,123 - wiener_linien - INFO - Returning 136 stations
+2025-06-20 17:44:12,125 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:12] "GET /api/stations HTTP/1.1" 200 -
+2025-06-20 17:44:12,125 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 17:44:12,126 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:12] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 17:44:12,139 - wiener_linien - INFO - Client connected: SVyqSLKdVsOtq5esAAAL
+2025-06-20 17:44:12,139 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:44:12,140 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 486, in handle_connect
+    'system_status': get_system_status().json
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'json'
+2025-06-20 17:44:12,141 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:12] "POST /socket.io/?EIO=4&transport=polling&t=PUE0mLY&sid=4q-S13gO38fBcCZ_AAAK HTTP/1.1" 200 -
+2025-06-20 17:44:12,145 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:12] "GET /socket.io/?EIO=4&transport=polling&t=PUE0mLZ&sid=4q-S13gO38fBcCZ_AAAK HTTP/1.1" 200 -
+2025-06-20 17:44:12,170 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:44:16,942 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:44:19,390 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:19,392 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:19,392 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:19,392 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:24,599 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:24,599 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:24,632 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:24,632 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:29,192 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:44:29,192 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:29] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 17:44:29,204 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 17:44:34,385 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:34,386 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:34,398 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:34,398 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:39,629 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:39,629 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:39,636 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:39,636 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:43,959 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 17:44:43,971 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 17:44:49,376 - wiener_linien - ERROR - API request failed for RBL 3062: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3062
+2025-06-20 17:44:49,412 - wiener_linien - ERROR - API request failed for RBL 3080: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3080
+2025-06-20 17:44:49,811 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:44:54,658 - wiener_linien - ERROR - API request failed for RBL 3080: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3080
+2025-06-20 17:44:54,662 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:54,662 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:44:55,040 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:44:59,006 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 17:44:59,034 - wiener_linien - INFO - Returning 63 vehicles (successful requests: 5, failed: 0)
+2025-06-20 17:44:59,036 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:44:59] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:44:59,064 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 17:45:04,300 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 17:45:09,597 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 17:45:12,121 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:45:13,960 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 17:45:13,961 - wiener_linien - INFO - Returning 33 vehicles (successful requests: 3, failed: 2)
+2025-06-20 17:45:13,962 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:45:13] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:45:13,967 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 17:45:13,968 - wiener_linien - INFO - Returning 53 vehicles (successful requests: 4, failed: 1)
+2025-06-20 17:45:13,968 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:45:13] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:45:13,986 - wiener_linien - INFO - Returning 20 vehicles (successful requests: 2, failed: 3)
+2025-06-20 17:45:13,986 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:45:13] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:45:14,018 - wiener_linien - INFO - Returning 51 vehicles (successful requests: 4, failed: 1)
+2025-06-20 17:45:14,019 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:45:14] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 17:45:16,952 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:45:19,356 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:45:19,356 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:45:19,753 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:45:24,587 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:45:24,587 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:45:24,972 - websocket_manager - ERROR - Error processing disruption alert: 'str' object has no attribute 'get'
+2025-06-20 17:45:28,901 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:45:28,901 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:45:28] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 17:45:34,350 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:45:39,562 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:45:50,183 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:45:55,397 - websocket_manager - ERROR - Error processing vehicle update: 'str' object has no attribute 'get'
+2025-06-20 17:46:12,130 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:46:13,947 - wiener_linien - INFO - Returning 59 vehicles (successful requests: 5, failed: 0)
+2025-06-20 17:46:16,959 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:47:12,131 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:47:16,973 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:47:33,935 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\app.py', reloading
+2025-06-20 17:48:10,550 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:48:10,551 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 17:48:10,552 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:48:10,560 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:48:10,562 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:48:10,567 - data_loader - INFO - Loaded 65 lines
+2025-06-20 17:48:10,567 - data_loader - INFO - Loaded 65 lines
+2025-06-20 17:48:10,579 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:48:10,580 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:48:10,589 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:48:10,589 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:48:10,590 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:48:11,047 - websocket_manager - WARNING - Received string instead of dict for vehicle update: data
+2025-06-20 17:48:11,047 - websocket_manager - WARNING - Received string instead of dict for vehicle update: message
+2025-06-20 17:48:11,869 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3080
+ * Running on http://192.168.0.81:3080
+2025-06-20 17:48:11,869 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-20 17:48:11,869 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-06-20 17:48:12,277 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:48:12,277 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 17:48:12,280 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:48:12,281 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:48:12,282 - data_loader - INFO - Loaded 65 lines
+2025-06-20 17:48:12,283 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:48:12,285 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:48:12,286 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:48:12,288 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:48:12,288 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:48:12,293 - werkzeug - WARNING -  * Debugger is active!
+2025-06-20 17:48:12,300 - werkzeug - INFO -  * Debugger PIN: 158-675-289
+2025-06-20 17:48:12,308 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:12] "GET /socket.io/?EIO=4&transport=polling&t=PUE1gh0 HTTP/1.1" 200 -
+2025-06-20 17:48:12,308 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:12] "GET /socket.io/?EIO=4&transport=polling&t=PUE1fPc HTTP/1.1" 200 -
+2025-06-20 17:48:12,308 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:48:12,316 - wiener_linien - INFO - Client connected: c8oCF71Whs_JAdJEAAAC
+2025-06-20 17:48:12,317 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:48:12,320 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:12] "GET /socket.io/?EIO=4&transport=polling&t=PUE1g-P.0&sid=r3OW1fR6BbkL8VgvAAAA HTTP/1.1" 200 -
+2025-06-20 17:48:12,324 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:12] "GET /socket.io/?EIO=4&transport=polling&t=PUE1g-O.0&sid=MLNs8au5CicpplNBAAAB HTTP/1.1" 200 -
+2025-06-20 17:48:12,333 - wiener_linien - INFO - Client connected: c8oCF71Whs_JAdJEAAAC
+2025-06-20 17:48:12,334 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:48:12,343 - wiener_linien - INFO - Client connected: T813WMycEf7hpctKAAAD
+2025-06-20 17:48:12,356 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\socketio\\manager.py', reloading
+2025-06-20 17:48:12,394 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:48:12,394 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\socketio\\packet.py', reloading
+2025-06-20 17:48:12,394 - wiener_linien - INFO - Client connected: T813WMycEf7hpctKAAAD
+2025-06-20 17:48:12,394 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\__init__.py', reloading
+2025-06-20 17:48:12,395 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:48:12,395 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\encoder.py', reloading
+2025-06-20 17:48:12,393 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 17:48:12,406 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:12] "POST /socket.io/?EIO=4&transport=polling&t=PUE1g-P&sid=r3OW1fR6BbkL8VgvAAAA HTTP/1.1" 200 -
+2025-06-20 17:48:12,397 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 17:48:12,407 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:12] "POST /socket.io/?EIO=4&transport=polling&t=PUE1g-O&sid=MLNs8au5CicpplNBAAAB HTTP/1.1" 200 -
+2025-06-20 17:48:12,801 - websocket_manager - WARNING - Received string instead of dict for vehicle update: data
+2025-06-20 17:48:12,801 - websocket_manager - WARNING - Received string instead of dict for vehicle update: message
+2025-06-20 17:48:13,343 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-06-20 17:48:13,759 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:48:13,760 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 17:48:13,762 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:48:13,764 - data_loader - INFO - Loaded 65 lines
+2025-06-20 17:48:13,764 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 17:48:13,767 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:48:13,768 - data_loader - INFO - Loaded 136 stations
+2025-06-20 17:48:13,769 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:48:13,770 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 17:48:13,770 - data_loader - INFO - Loaded 10 routes
+2025-06-20 17:48:13,777 - werkzeug - WARNING -  * Debugger is active!
+2025-06-20 17:48:13,783 - werkzeug - INFO -  * Debugger PIN: 158-675-289
+2025-06-20 17:48:13,789 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:48:14,227 - websocket_manager - WARNING - Received string instead of dict for vehicle update: data
+2025-06-20 17:48:14,227 - websocket_manager - WARNING - Received string instead of dict for vehicle update: message
+2025-06-20 17:48:14,345 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:14] "GET /socket.io/?EIO=4&transport=polling&t=PUE1hU4 HTTP/1.1" 200 -
+2025-06-20 17:48:14,345 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:14] "GET /socket.io/?EIO=4&transport=polling&t=PUE1hU5 HTTP/1.1" 200 -
+2025-06-20 17:48:14,350 - wiener_linien - INFO - Client connected: FMyg9o5Ev7t_6BtuAAAC
+2025-06-20 17:48:14,351 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:48:14,352 - wiener_linien - INFO - Client connected: FMyg9o5Ev7t_6BtuAAAC
+2025-06-20 17:48:14,352 - wiener_linien - INFO - Client connected: 8qT5XVlNNV3IVL6PAAAD
+2025-06-20 17:48:14,352 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:48:14,354 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:48:14,358 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:14] "GET /socket.io/?EIO=4&transport=polling&t=PUE1hUC.0&sid=wYlY2H6_F2cOiyxTAAAA HTTP/1.1" 200 -
+2025-06-20 17:48:14,358 - wiener_linien - INFO - Client connected: 8qT5XVlNNV3IVL6PAAAD
+2025-06-20 17:48:14,360 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:48:14,363 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:14] "GET /socket.io/?EIO=4&transport=polling&t=PUE1hUD.0&sid=535Ib4p6tQ__6LvAAAAB HTTP/1.1" 200 -
+2025-06-20 17:48:14,357 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 17:48:14,365 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:14] "POST /socket.io/?EIO=4&transport=polling&t=PUE1hUC&sid=wYlY2H6_F2cOiyxTAAAA HTTP/1.1" 200 -
+2025-06-20 17:48:14,364 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 500, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 17:48:14,367 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:14] "POST /socket.io/?EIO=4&transport=polling&t=PUE1hUD&sid=535Ib4p6tQ__6LvAAAAB HTTP/1.1" 200 -
+2025-06-20 17:48:14,572 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:48:14,573 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:48:14] "[35m[1mGET /api/status HTTP/1.1[0m" 500 -

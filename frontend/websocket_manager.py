@@ -183,9 +183,18 @@ class WebSocketManager:
         except Exception as e:
             logger.error(f"Error updating vehicle positions: {e}")
     
-    def _process_vehicle_update(self, vehicle_data: Dict[str, Any]):
+    def _process_vehicle_update(self, vehicle_data):
         """Process a vehicle update."""
         try:
+            # Handle both string and dictionary inputs
+            if isinstance(vehicle_data, str):
+                logger.warning(f"Received string instead of dict for vehicle update: {vehicle_data}")
+                return
+            
+            if not isinstance(vehicle_data, dict):
+                logger.warning(f"Received non-dict type for vehicle update: {type(vehicle_data)}")
+                return
+            
             vehicle_id = vehicle_data.get('id', 'unknown')
             
             update = VehicleUpdate(
@@ -227,9 +236,18 @@ class WebSocketManager:
         except Exception as e:
             logger.error(f"Error checking disruptions: {e}")
     
-    def _process_disruption_alert(self, disruption_data: Dict[str, Any]):
+    def _process_disruption_alert(self, disruption_data):
         """Process a disruption alert."""
         try:
+            # Handle both string and dictionary inputs
+            if isinstance(disruption_data, str):
+                logger.warning(f"Received string instead of dict for disruption alert: {disruption_data}")
+                return
+            
+            if not isinstance(disruption_data, dict):
+                logger.warning(f"Received non-dict type for disruption alert: {type(disruption_data)}")
+                return
+            
             disruption_id = disruption_data.get('id', str(datetime.now().timestamp()))
             
             # Check if this is a new disruption
