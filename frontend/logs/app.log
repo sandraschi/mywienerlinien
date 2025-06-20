@@ -7461,3 +7461,1960 @@ TypeError: Object of type Response is not JSON serializable
 2025-06-20 17:59:07,378 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:07] "GET /socket.io/?EIO=4&transport=polling&t=PUE4Av3.0&sid=LjhKFGgOZpTrfm3WAAAC HTTP/1.1" 200 -
 2025-06-20 17:59:07,382 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:07] "GET /socket.io/?EIO=4&transport=polling&t=PUE4Av4.0&sid=XycZ4flE6_L86C3_AAAD HTTP/1.1" 200 -
 2025-06-20 17:59:07,759 - wiener_linien - ERROR - API request failed for RBL 3052: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3052
+2025-06-20 17:59:09,009 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:09] "GET / HTTP/1.1" 200 -
+2025-06-20 17:59:12,838 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:59:13,228 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:13] "GET / HTTP/1.1" 200 -
+2025-06-20 17:59:13,384 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:13] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-20 17:59:13,388 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:13] "GET /static/js/map.js HTTP/1.1" 200 -
+2025-06-20 17:59:13,412 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:13] "GET /socket.io/?EIO=4&transport=polling&t=PUE4CNy HTTP/1.1" 200 -
+2025-06-20 17:59:13,456 - wiener_linien - INFO - Returning 65 lines
+2025-06-20 17:59:13,458 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:13] "GET /api/lines HTTP/1.1" 200 -
+2025-06-20 17:59:13,459 - wiener_linien - INFO - Returning 136 stations
+2025-06-20 17:59:13,461 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:13] "GET /api/stations HTTP/1.1" 200 -
+2025-06-20 17:59:13,461 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 17:59:13,462 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:13] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 17:59:13,490 - wiener_linien - INFO - Client connected: MMSoWGxRSQNBHjVeAAAJ
+2025-06-20 17:59:13,492 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:59:13,493 - wiener_linien - INFO - Client connected: MMSoWGxRSQNBHjVeAAAJ
+2025-06-20 17:59:13,494 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 17:59:13,495 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 17:59:13,499 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:13] "POST /socket.io/?EIO=4&transport=polling&t=PUE4COx&sid=VA9JgfwOkHBUk2QcAAAI HTTP/1.1" 200 -
+2025-06-20 17:59:13,511 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:13] "GET /socket.io/?EIO=4&transport=polling&t=PUE4COy&sid=VA9JgfwOkHBUk2QcAAAI HTTP/1.1" 200 -
+2025-06-20 17:59:13,514 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:59:17,877 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 17:59:26,357 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 17:59:28,376 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 17:59:28,377 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 17:59:28] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 17:59:43,318 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 17:59:43,350 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 17:59:58,149 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:00:06,621 - websocket_manager - INFO - Broadcasted disruption alert: 1750435206.621711
+2025-06-20 18:00:07,797 - wiener_linien - ERROR - API request failed for RBL 3080: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3080
+2025-06-20 18:00:07,810 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 18:00:08,261 - websocket_manager - INFO - Broadcasted disruption alert: 1750435208.261435
+2025-06-20 18:00:08,262 - websocket_manager - ERROR - Error broadcasting updates: Object of type datetime is not JSON serializable
+2025-06-20 18:00:12,856 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:00:13,423 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:00:13,430 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:00:13,431 - wiener_linien - INFO - Returning 43 vehicles (successful requests: 4, failed: 1)
+2025-06-20 18:00:13,432 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:00:13] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:00:13,435 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:00:13,498 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:00:13,506 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:00:18,020 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 18:00:21,618 - websocket_manager - INFO - Broadcasted disruption alert: 1750435221.618274
+2025-06-20 18:00:23,229 - websocket_manager - INFO - Broadcasted disruption alert: 1750435223.229925
+2025-06-20 18:00:28,574 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:00:28,589 - wiener_linien - ERROR - API request failed for RBL 1012: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1012
+2025-06-20 18:00:28,590 - wiener_linien - INFO - No real vehicles found, adding dummy vehicles
+2025-06-20 18:00:28,590 - wiener_linien - INFO - Returning 1 vehicles (successful requests: 0, failed: 1)
+2025-06-20 18:00:28,590 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:00:28] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 18:00:28,593 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:00:28,596 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:00:28,597 - wiener_linien - INFO - Returning 16 vehicles (successful requests: 2, failed: 3)
+2025-06-20 18:00:28,597 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:00:28] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:00:28,614 - wiener_linien - INFO - Returning 25 vehicles (successful requests: 3, failed: 2)
+2025-06-20 18:00:28,615 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:00:28] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:00:43,901 - wiener_linien - INFO - Fetching vehicles: type=metro, line=None, station=None
+2025-06-20 18:00:43,907 - wiener_linien - INFO - Fetching vehicles: type=metro, line=None, station=None
+2025-06-20 18:00:48,040 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 18:00:48,042 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 18:00:58,766 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:00:58,774 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 18:00:58,811 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:01:05,686 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\__init__.py', reloading
+2025-06-20 18:01:05,854 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\_typing.py', reloading
+2025-06-20 18:01:05,878 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\_orderedbidict.py', reloading
+2025-06-20 18:01:05,890 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\_orderedbase.py', reloading
+2025-06-20 18:01:05,910 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\_iter.py', reloading
+2025-06-20 18:01:05,929 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\_frozen.py', reloading
+2025-06-20 18:01:05,943 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\_exc.py', reloading
+2025-06-20 18:01:05,957 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\_dup.py', reloading
+2025-06-20 18:01:05,974 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\_bidict.py', reloading
+2025-06-20 18:01:05,993 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\_base.py', reloading
+2025-06-20 18:01:06,006 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\_abc.py', reloading
+2025-06-20 18:01:06,034 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\bidict\\metadata.py', reloading
+2025-06-20 18:01:06,144 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\blinker\\__init__.py', reloading
+2025-06-20 18:01:06,161 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\blinker\\_utilities.py', reloading
+2025-06-20 18:01:06,195 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\blinker\\_saferef.py', reloading
+2025-06-20 18:01:06,220 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\venv\\Lib\\site-packages\\blinker\\base.py', reloading
+2025-06-20 18:01:06,604 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-06-20 18:01:07,147 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:01:07,149 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 18:01:07,151 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:01:07,153 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:01:07,155 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:01:07,155 - data_loader - INFO - Loaded 65 lines
+2025-06-20 18:01:07,157 - data_loader - INFO - Loaded 136 stations
+2025-06-20 18:01:07,157 - data_loader - INFO - Loaded 136 stations
+2025-06-20 18:01:07,159 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:01:07,160 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:01:07,160 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:01:07,169 - werkzeug - WARNING -  * Debugger is active!
+2025-06-20 18:01:07,175 - werkzeug - INFO -  * Debugger PIN: 158-675-289
+2025-06-20 18:01:07,182 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:01:07,183 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:01:07,184 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 18:01:07,186 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 18:01:07,186 - wiener_linien - INFO - Fetching vehicles: type=metro, line=None, station=None
+2025-06-20 18:01:07,189 - wiener_linien - INFO - Fetching vehicles: type=metro, line=None, station=None
+2025-06-20 18:01:13,062 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 18:01:23,073 - wiener_linien - ERROR - API request failed for RBL 3058: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3058
+2025-06-20 18:01:23,164 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:01:23,174 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:01:23,175 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:01:23,186 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:01:38,216 - websocket_manager - INFO - Broadcasted disruption alert: 1750435298.215941
+2025-06-20 18:01:38,228 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 18:01:38,232 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 18:01:38,235 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 18:01:38,240 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 18:01:38,271 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 18:01:53,224 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 18:01:53,237 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 18:01:53,245 - websocket_manager - INFO - Broadcasted disruption alert: 1750435313.24595
+2025-06-20 18:01:53,249 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:02:08,227 - wiener_linien - INFO - Returning 33 vehicles (successful requests: 4, failed: 1)
+2025-06-20 18:02:08,229 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:08] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:02:08,259 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:02:08,295 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:02:08,746 - wiener_linien - ERROR - API request failed for RBL 3052: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3052
+2025-06-20 18:02:08,767 - websocket_manager - INFO - Broadcasted disruption alert: 1750435328.767297
+2025-06-20 18:02:23,084 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:02:23,086 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 2, failed: 3)
+2025-06-20 18:02:23,086 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /api/vehicles?type=metro&line=U4 HTTP/1.1" 200 -
+2025-06-20 18:02:23,089 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4eO2 HTTP/1.1" 200 -
+2025-06-20 18:02:23,091 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4jrW HTTP/1.1" 200 -
+2025-06-20 18:02:23,093 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4pzi HTTP/1.1" 200 -
+2025-06-20 18:02:23,096 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 4)
+2025-06-20 18:02:23,096 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /api/vehicles?type=metro&line=U4 HTTP/1.1" 200 -
+2025-06-20 18:02:23,098 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4w4X HTTP/1.1" 200 -
+2025-06-20 18:02:23,100 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 18:02:23,102 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 4, failed: 1)
+2025-06-20 18:02:23,103 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /api/vehicles?type=metro HTTP/1.1" 200 -
+2025-06-20 18:02:23,104 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=None
+2025-06-20 18:02:23,105 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4eGQ HTTP/1.1" 200 -
+2025-06-20 18:02:23,107 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4jgX HTTP/1.1" 200 -
+2025-06-20 18:02:23,109 - wiener_linien - INFO - Client connected: rzmP0Ze9loZrptEXAAAG
+2025-06-20 18:02:23,109 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:02:23,109 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:02:23,112 - wiener_linien - INFO - Returning 8 vehicles (successful requests: 1, failed: 4)
+2025-06-20 18:02:23,112 - wiener_linien - INFO - Client connected: rzmP0Ze9loZrptEXAAAG
+2025-06-20 18:02:23,113 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:02:23,113 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:02:23,118 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 18:02:23,120 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "POST /socket.io/?EIO=4&transport=polling&t=PUE4wi0&sid=5ZNqxw-DHobEXt6_AAAD HTTP/1.1" 200 -
+2025-06-20 18:02:23,127 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4wi0.0&sid=5ZNqxw-DHobEXt6_AAAD HTTP/1.1" 200 -
+2025-06-20 18:02:23,127 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4pAA HTTP/1.1" 200 -
+2025-06-20 18:02:23,128 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4vJd HTTP/1.1" 200 -
+2025-06-20 18:02:23,130 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:02:23,133 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:02:23,138 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:02:23,139 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 2, failed: 3)
+2025-06-20 18:02:23,140 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /api/vehicles?type=metro HTTP/1.1" 200 -
+2025-06-20 18:02:23,142 - wiener_linien - INFO - Client connected: jwjS1lavtbS2tBzbAAAJ
+2025-06-20 18:02:23,143 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:02:23,144 - wiener_linien - INFO - Client connected: jwjS1lavtbS2tBzbAAAJ
+2025-06-20 18:02:23,144 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:02:23,147 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:02:23,148 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 3, failed: 2)
+2025-06-20 18:02:23,149 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /api/vehicles?type=metro&line=U4 HTTP/1.1" 200 -
+2025-06-20 18:02:23,146 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 18:02:23,152 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "POST /socket.io/?EIO=4&transport=polling&t=PUE4wiV&sid=Mc6c_PXgLC78PQ23AAAI HTTP/1.1" 200 -
+2025-06-20 18:02:23,155 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4wiW&sid=Mc6c_PXgLC78PQ23AAAI HTTP/1.1" 200 -
+2025-06-20 18:02:23,157 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4eWC HTTP/1.1" 200 -
+2025-06-20 18:02:23,157 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4jxW HTTP/1.1" 200 -
+2025-06-20 18:02:23,160 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4pzh HTTP/1.1" 200 -
+2025-06-20 18:02:23,162 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4w4X HTTP/1.1" 200 -
+2025-06-20 18:02:23,163 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE4wit&sid=Mc6c_PXgLC78PQ23AAAI HTTP/1.1" 200 -
+2025-06-20 18:02:23,164 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 18:02:23,166 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 18:02:23,767 - websocket_manager - INFO - Broadcasted disruption alert: 1750435343.767501
+2025-06-20 18:02:38,021 - wiener_linien - ERROR - API request failed for RBL 1012: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1012
+2025-06-20 18:02:38,023 - wiener_linien - INFO - No real vehicles found, adding dummy vehicles
+2025-06-20 18:02:38,023 - wiener_linien - INFO - Returning 1 vehicles (successful requests: 0, failed: 1)
+2025-06-20 18:02:38,023 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:38] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 18:02:38,026 - wiener_linien - INFO - Client connected: 0X7AB3WOxlhMKTpDAAAO
+2025-06-20 18:02:38,026 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:02:38,027 - wiener_linien - INFO - Client connected: 0X7AB3WOxlhMKTpDAAAO
+2025-06-20 18:02:38,027 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:02:38,029 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 18:02:38,032 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:38] "POST /socket.io/?EIO=4&transport=polling&t=PUE4wiz&sid=4aSc1Q-fiY7ZnG28AAAN HTTP/1.1" 200 -
+2025-06-20 18:02:38,062 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:02:38,067 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 18:02:38,068 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:38] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 18:02:38,069 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:02:38,073 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:38] "GET /socket.io/?EIO=4&transport=polling&t=PUE4eGf HTTP/1.1" 200 -
+2025-06-20 18:02:38,074 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:38] "GET /socket.io/?EIO=4&transport=polling&t=PUE4wi-&sid=4aSc1Q-fiY7ZnG28AAAN HTTP/1.1" 200 -
+2025-06-20 18:02:38,079 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:38] "GET /socket.io/?EIO=4&transport=polling&t=PUE4jh0 HTTP/1.1" 200 -
+2025-06-20 18:02:38,080 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:38] "GET /socket.io/?EIO=4&transport=polling&t=PUE4pLC HTTP/1.1" 200 -
+2025-06-20 18:02:38,081 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:02:38] "GET /socket.io/?EIO=4&transport=polling&t=PUE4vjz HTTP/1.1" 200 -
+2025-06-20 18:02:38,082 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:02:38,087 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:02:38,692 - wiener_linien - ERROR - API request failed for RBL 3052: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3052
+2025-06-20 18:02:52,992 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:03:08,038 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 18:03:08,046 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 18:03:08,069 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 18:03:08,100 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 18:03:09,495 - websocket_manager - INFO - Broadcasted disruption alert: 1750435389.495888
+2025-06-20 18:03:22,489 - wiener_linien - INFO - Client disconnected: rzmP0Ze9loZrptEXAAAG
+2025-06-20 18:03:22,490 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:22] "GET /socket.io/?EIO=4&transport=websocket&sid=5ZNqxw-DHobEXt6_AAAD HTTP/1.1" 200 -
+2025-06-20 18:03:22,490 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:03:22,492 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 18:03:22,498 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:22] "GET / HTTP/1.1" 200 -
+2025-06-20 18:03:23,006 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:03:23,010 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 18:03:23,612 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 18:03:24,328 - wiener_linien - ERROR - API request failed for RBL 3062: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3062
+2025-06-20 18:03:34,649 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:34] "GET / HTTP/1.1" 200 -
+2025-06-20 18:03:38,114 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:03:38,133 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:03:38,135 - wiener_linien - INFO - Returning 47 vehicles (successful requests: 4, failed: 1)
+2025-06-20 18:03:38,137 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:03:38,165 - wiener_linien - ERROR - API request failed for RBL 1012: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1012
+2025-06-20 18:03:38,165 - wiener_linien - INFO - Returning 46 vehicles (successful requests: 4, failed: 1)
+2025-06-20 18:03:38,168 - wiener_linien - INFO - No real vehicles found, adding dummy vehicles
+2025-06-20 18:03:38,168 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:03:38,169 - wiener_linien - INFO - Returning 1 vehicles (successful requests: 0, failed: 1)
+2025-06-20 18:03:38,170 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 18:03:38,186 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-06-20 18:03:38,192 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-06-20 18:03:38,192 - wiener_linien - INFO - Client connected: YJPYU9BsCmJiNSrjAAAT
+2025-06-20 18:03:38,192 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:03:38,194 - wiener_linien - INFO - Client connected: YJPYU9BsCmJiNSrjAAAT
+2025-06-20 18:03:38,195 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:03:38,196 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "GET /socket.io/?EIO=4&transport=polling&t=PUE4-M9.0&sid=-TOeswYO00mreSO7AAAS HTTP/1.1" 200 -
+2025-06-20 18:03:38,197 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 18:03:38,202 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "POST /socket.io/?EIO=4&transport=polling&t=PUE4-M9&sid=-TOeswYO00mreSO7AAAS HTTP/1.1" 200 -
+2025-06-20 18:03:38,202 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "GET /socket.io/?EIO=4&transport=websocket&sid=-TOeswYO00mreSO7AAAS HTTP/1.1" 200 -
+2025-06-20 18:03:38,204 - wiener_linien - INFO - Client disconnected: YJPYU9BsCmJiNSrjAAAT
+2025-06-20 18:03:38,204 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "POST /socket.io/?EIO=4&transport=polling&t=PUE59LJ&sid=-TOeswYO00mreSO7AAAS HTTP/1.1" 200 -
+2025-06-20 18:03:38,205 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "GET /socket.io/?EIO=4&transport=polling&t=PUE59a- HTTP/1.1" 200 -
+2025-06-20 18:03:38,207 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:03:38,208 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:03:38,218 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "GET /static/js/map.js HTTP/1.1" 200 -
+2025-06-20 18:03:38,221 - wiener_linien - INFO - Client connected: O8VbJSKf5sv442KgAAAV
+2025-06-20 18:03:38,223 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:03:38,223 - wiener_linien - INFO - Client connected: O8VbJSKf5sv442KgAAAV
+2025-06-20 18:03:38,223 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:03:38,225 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 18:03:38,227 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "POST /socket.io/?EIO=4&transport=polling&t=PUE5D1X&sid=pxQghQq0KtOAOIUiAAAU HTTP/1.1" 200 -
+2025-06-20 18:03:38,590 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 3, failed: 2)
+2025-06-20 18:03:38,590 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "GET /api/vehicles?type=metro&line=U4 HTTP/1.1" 200 -
+2025-06-20 18:03:38,605 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 4, failed: 1)
+2025-06-20 18:03:38,606 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:38] "GET /api/vehicles?type=metro&line=U4 HTTP/1.1" 200 -
+2025-06-20 18:03:38,663 - wiener_linien - ERROR - API request failed for RBL 3080: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3080
+2025-06-20 18:03:39,234 - websocket_manager - INFO - Broadcasted disruption alert: 1750435419.234886
+2025-06-20 18:03:40,269 - websocket_manager - INFO - Broadcasted disruption alert: 1750435420.26972
+2025-06-20 18:03:40,271 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:40] "GET /socket.io/?EIO=4&transport=polling&t=PUE5D1X.0&sid=pxQghQq0KtOAOIUiAAAU HTTP/1.1" 200 -
+2025-06-20 18:03:40,271 - websocket_manager - ERROR - Error broadcasting updates: Object of type datetime is not JSON serializable
+2025-06-20 18:03:40,274 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:40] "GET /socket.io/?EIO=4&transport=polling&t=PUE5D1q HTTP/1.1" 200 -
+2025-06-20 18:03:40,275 - wiener_linien - INFO - Returning 65 lines
+2025-06-20 18:03:40,276 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:40] "GET /api/lines HTTP/1.1" 200 -
+2025-06-20 18:03:40,278 - wiener_linien - INFO - Returning 136 stations
+2025-06-20 18:03:40,280 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:40] "GET /api/stations HTTP/1.1" 200 -
+2025-06-20 18:03:40,282 - wiener_linien - INFO - Returning 10 routes
+2025-06-20 18:03:40,282 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:40] "GET /api/routes HTTP/1.1" 200 -
+2025-06-20 18:03:40,285 - wiener_linien - INFO - Client connected: eDNC2H41SCWyiD0-AAAX
+2025-06-20 18:03:40,285 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:03:40,286 - wiener_linien - INFO - Client connected: eDNC2H41SCWyiD0-AAAX
+2025-06-20 18:03:40,286 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:03:40,288 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 18:03:40,290 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:40] "POST /socket.io/?EIO=4&transport=polling&t=PUE5DXu&sid=B1uW_lVPWKVTKe6FAAAW HTTP/1.1" 200 -
+2025-06-20 18:03:53,014 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 18:03:53,049 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:03:53,050 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:03:53,052 - wiener_linien - INFO - Returning 21 vehicles (successful requests: 1, failed: 4)
+2025-06-20 18:03:53,052 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:03:53,055 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:03:53,059 - wiener_linien - INFO - Returning 25 vehicles (successful requests: 3, failed: 2)
+2025-06-20 18:03:53,059 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:03:53,064 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /socket.io/?EIO=4&transport=polling&t=PUE5DXo&sid=pxQghQq0KtOAOIUiAAAU HTTP/1.1" 200 -
+2025-06-20 18:03:53,070 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /socket.io/?EIO=4&transport=polling&t=PUE5DXv&sid=B1uW_lVPWKVTKe6FAAAW HTTP/1.1" 200 -
+2025-06-20 18:03:53,070 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /socket.io/?EIO=4&transport=polling&t=PUE4eWC HTTP/1.1" 200 -
+2025-06-20 18:03:53,074 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /socket.io/?EIO=4&transport=polling&t=PUE4jk4 HTTP/1.1" 200 -
+2025-06-20 18:03:53,074 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /socket.io/?EIO=4&transport=polling&t=PUE4pr3 HTTP/1.1" 200 -
+2025-06-20 18:03:53,077 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /socket.io/?EIO=4&transport=polling&t=PUE4v-n HTTP/1.1" 200 -
+2025-06-20 18:03:53,078 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /socket.io/?EIO=4&transport=polling&t=PUE508h HTTP/1.1" 200 -
+2025-06-20 18:03:53,079 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /socket.io/?EIO=4&transport=polling&t=PUE56Ic HTTP/1.1" 200 -
+2025-06-20 18:03:53,081 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:03:53] "GET /socket.io/?EIO=4&transport=polling&t=PUE5CPW HTTP/1.1" 200 -
+2025-06-20 18:03:53,083 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:03:53,083 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:03:55,262 - websocket_manager - INFO - Broadcasted disruption alert: 1750435435.262237
+2025-06-20 18:04:07,945 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 18:04:07,959 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:04:08,024 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 18:04:37,983 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:04:38,000 - wiener_linien - INFO - Returning 31 vehicles (successful requests: 2, failed: 3)
+2025-06-20 18:04:38,001 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:04:38] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:04:38,004 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:04:38,010 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:04:38,034 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 18:04:38,684 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 18:04:40,751 - wiener_linien - ERROR - API request failed for RBL 3062: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3062
+2025-06-20 18:04:52,922 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:04:52,924 - wiener_linien - INFO - Returning 15 vehicles (successful requests: 2, failed: 3)
+2025-06-20 18:04:52,924 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:04:52] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:04:52,926 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:04:52,950 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:04:52,965 - wiener_linien - INFO - Returning 26 vehicles (successful requests: 3, failed: 2)
+2025-06-20 18:04:52,966 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:04:52] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:04:52,968 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 18:04:52,988 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:04:54,066 - websocket_manager - INFO - Broadcasted disruption alert: 1750435494.066656
+2025-06-20 18:04:55,730 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 18:05:07,977 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:05:07,978 - wiener_linien - INFO - Returning 16 vehicles (successful requests: 2, failed: 3)
+2025-06-20 18:05:07,978 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:07] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:05:07,981 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:05:07,992 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:05:08,016 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:05:08,020 - wiener_linien - INFO - Returning 36 vehicles (successful requests: 3, failed: 2)
+2025-06-20 18:05:08,021 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:08] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:05:08,023 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:05:08,063 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:05:08,064 - wiener_linien - INFO - Returning 23 vehicles (successful requests: 3, failed: 2)
+2025-06-20 18:05:08,065 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:08] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:05:08,067 - engineio.server - ERROR - Invalid session mOXpKXRhMOxmr5oTAAAe (further occurrences of this error will be logged with level INFO)
+2025-06-20 18:05:08,069 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:08] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5Gg2&sid=mOXpKXRhMOxmr5oTAAAe HTTP/1.1[0m" 400 -
+2025-06-20 18:05:08,070 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:08] "[31m[1mGET /socket.io/?EIO=4&transport=polling&t=PUE5Gg2.0&sid=mOXpKXRhMOxmr5oTAAAe HTTP/1.1[0m" 400 -
+2025-06-20 18:05:08,072 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:08] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=mOXpKXRhMOxmr5oTAAAe HTTP/1.1[0m" 400 -
+2025-06-20 18:05:08,075 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:08] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5RjS&sid=mOXpKXRhMOxmr5oTAAAe HTTP/1.1[0m" 400 -
+2025-06-20 18:05:08,078 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:08] "GET /socket.io/?EIO=4&transport=polling&t=PUE5RzI HTTP/1.1" 200 -
+2025-06-20 18:05:08,080 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:08] "GET /socket.io/?EIO=4&transport=polling&t=PUE5XdX HTTP/1.1" 200 -
+2025-06-20 18:05:08,083 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:05:08,631 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 18:05:11,160 - websocket_manager - INFO - Broadcasted disruption alert: 1750435511.160016
+2025-06-20 18:05:11,161 - websocket_manager - ERROR - Error broadcasting updates: Object of type datetime is not JSON serializable
+2025-06-20 18:05:13,164 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 18:05:13,164 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:13] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 18:05:13,168 - wiener_linien - INFO - Client connected: A-RtX-lxZ_ntki_1AAAh
+2025-06-20 18:05:13,168 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:05:13,169 - wiener_linien - INFO - Client connected: A-RtX-lxZ_ntki_1AAAh
+2025-06-20 18:05:13,169 - wiener_linien - ERROR - Error in get_system_status: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 466, in get_system_status
+    'active_disruptions': disruption_monitor.get_active_disruptions_count(),
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'DisruptionMonitor' object has no attribute 'get_active_disruptions_count'
+2025-06-20 18:05:13,170 - engineio.server - ERROR - message handler error
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 538, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 824, in _handle_event
+    ret = handler(auth)
+          ^^^^^^^^^^^^^
+TypeError: handle_connect() takes 0 positional arguments but 1 was given
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\engineio\server.py", line 450, in run_handler
+    return self.handlers[event](*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 652, in _handle_eio_message
+    self._handle_connect(eio_sid, pkt.namespace, pkt.data)
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 541, in _handle_connect
+    success = self._trigger_event(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 617, in _trigger_event
+    return handler(*args)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 282, in _handler
+    return self._handle_event(handler, message, namespace, sid,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 826, in _handle_event
+    ret = handler()
+          ^^^^^^^^^
+  File "C:\Users\sandr\OneDrive\Dokumente\GitHub\mywienerlinien\frontend\app.py", line 501, in handle_connect
+    emit('connected', {
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 903, in emit
+    return socketio.emit(event, *args, namespace=namespace, to=to,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_socketio\__init__.py", line 462, in emit
+    self.server.emit(event, *args, namespace=namespace, to=to,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\server.py", line 166, in emit
+    self.manager.emit(event, data, namespace, room=room,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\manager.py", line 44, in emit
+    encoded_packet = pkt.encode()
+                     ^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\site-packages\socketio\packet.py", line 64, in encode
+    encoded_packet += self.json.dumps(data, separators=(',', ':'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python311\Lib\json\encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Response is not JSON serializable
+2025-06-20 18:05:13,174 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:13] "POST /socket.io/?EIO=4&transport=polling&t=PUE5Yzp&sid=Gc5Oz9zgMI_aaSIMAAAg HTTP/1.1" 200 -
+2025-06-20 18:05:22,804 - wiener_linien - ERROR - API request failed for RBL 1001: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1001
+2025-06-20 18:05:23,633 - wiener_linien - ERROR - API request failed for RBL 3080: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3080
+2025-06-20 18:05:24,028 - websocket_manager - INFO - Broadcasted disruption alert: 1750435524.028854
+2025-06-20 18:05:26,166 - websocket_manager - INFO - Broadcasted disruption alert: 1750435526.166192
+2025-06-20 18:05:33,080 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:33] "GET /socket.io/?EIO=4&transport=polling&t=PUE5Yzq&sid=Gc5Oz9zgMI_aaSIMAAAg HTTP/1.1" 200 -
+2025-06-20 18:05:33,082 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 18:05:37,934 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 18:05:37,935 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:37] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 18:05:37,936 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:05:52,966 - wiener_linien - ERROR - API request failed for RBL 1003: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1003
+2025-06-20 18:05:52,976 - wiener_linien - INFO - Returning 59 vehicles (successful requests: 5, failed: 0)
+2025-06-20 18:05:52,977 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:05:52] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:05:52,979 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:00,735 - wiener_linien - INFO - Client disconnected: A-RtX-lxZ_ntki_1AAAh
+2025-06-20 18:06:07,980 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:06:07,982 - wiener_linien - ERROR - API request failed for RBL 1004: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1004
+2025-06-20 18:06:07,990 - wiener_linien - INFO - Returning 49 vehicles (successful requests: 4, failed: 1)
+2025-06-20 18:06:07,992 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:07] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:06:07,995 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:08,985 - wiener_linien - ERROR - API request failed for RBL 3062: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3062
+2025-06-20 18:06:11,595 - wiener_linien - ERROR - API request failed for RBL 3052: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3052
+2025-06-20 18:06:22,997 - wiener_linien - ERROR - API request failed for RBL 1002: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1002
+2025-06-20 18:06:22,998 - wiener_linien - INFO - Returning 28 vehicles (successful requests: 3, failed: 2)
+2025-06-20 18:06:23,000 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:23] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:06:23,003 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 18:06:23,020 - wiener_linien - INFO - Returning 58 vehicles (successful requests: 5, failed: 0)
+2025-06-20 18:06:23,021 - wiener_linien - ERROR - API request failed for RBL 1005: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=1005
+2025-06-20 18:06:23,022 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:23] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:06:23,024 - wiener_linien - INFO - Returning 18 vehicles (successful requests: 2, failed: 3)
+2025-06-20 18:06:23,024 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:23] "GET /api/vehicles HTTP/1.1" 200 -
+2025-06-20 18:06:23,025 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:23,028 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:23] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=Gc5Oz9zgMI_aaSIMAAAg HTTP/1.1[0m" 400 -
+2025-06-20 18:06:23,032 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:23] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5f4R&sid=Gc5Oz9zgMI_aaSIMAAAg HTTP/1.1[0m" 400 -
+2025-06-20 18:06:23,033 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:23] "[31m[1mGET /socket.io/?EIO=4&transport=polling&t=PUE5f4R.0&sid=Gc5Oz9zgMI_aaSIMAAAg HTTP/1.1[0m" 400 -
+2025-06-20 18:06:23,037 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:23] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5q4p&sid=Gc5Oz9zgMI_aaSIMAAAg HTTP/1.1[0m" 400 -
+2025-06-20 18:06:23,038 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:23] "GET /socket.io/?EIO=4&transport=polling&t=PUE5qKf HTTP/1.1" 200 -
+2025-06-20 18:06:23,040 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:23,657 - wiener_linien - ERROR - API request failed for RBL 3058: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3058
+2025-06-20 18:06:23,666 - wiener_linien - ERROR - API request failed for RBL 3071: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3071
+2025-06-20 18:06:26,658 - wiener_linien - ERROR - API request failed for RBL 3058: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3058
+2025-06-20 18:06:31,988 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\random.py', reloading
+2025-06-20 18:06:32,217 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\websocket_manager.py', reloading
+2025-06-20 18:06:32,217 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\websocket_manager.py', reloading
+2025-06-20 18:06:32,883 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-06-20 18:06:33,310 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:06:33,311 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 18:06:33,312 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:06:33,314 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:06:33,316 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:06:33,316 - data_loader - INFO - Loaded 65 lines
+2025-06-20 18:06:33,317 - data_loader - INFO - Loaded 136 stations
+2025-06-20 18:06:33,319 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:06:33,320 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:06:33,321 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:06:33,326 - werkzeug - WARNING -  * Debugger is active!
+2025-06-20 18:06:33,332 - werkzeug - INFO -  * Debugger PIN: 158-675-289
+2025-06-20 18:06:33,338 - engineio.server - ERROR - Invalid session gt19ZGxXTz14KUNQAAAi (further occurrences of this error will be logged with level INFO)
+2025-06-20 18:06:33,340 - wiener_linien - INFO - Fetching vehicles: type=metro, line=U4, station=1012
+2025-06-20 18:06:33,340 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:33] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5rH1&sid=gt19ZGxXTz14KUNQAAAi HTTP/1.1[0m" 400 -
+2025-06-20 18:06:33,340 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:33,342 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:33,343 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:33,344 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:33,345 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:33] "[31m[1mGET /socket.io/?EIO=4&transport=polling&t=PUE5rH1.0&sid=gt19ZGxXTz14KUNQAAAi HTTP/1.1[0m" 400 -
+2025-06-20 18:06:33,347 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:33] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=gt19ZGxXTz14KUNQAAAi HTTP/1.1[0m" 400 -
+2025-06-20 18:06:33,353 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:33,918 - wiener_linien - INFO - Returning 0 vehicles (successful requests: 1, failed: 0)
+2025-06-20 18:06:33,918 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:33] "GET /api/vehicles?type=metro&line=U4&station=1012 HTTP/1.1" 200 -
+2025-06-20 18:06:33,921 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:33] "GET /socket.io/?EIO=4&transport=polling&t=PUE5twc HTTP/1.1" 200 -
+2025-06-20 18:06:33,923 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:33] "GET /socket.io/?EIO=4&transport=polling&t=PUE5twb HTTP/1.1" 200 -
+2025-06-20 18:06:33,925 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:38,703 - wiener_linien - ERROR - API request failed for RBL 3080: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3080
+2025-06-20 18:06:39,091 - websocket_manager - INFO - Broadcasted disruption alert: 1750435599.091151
+2025-06-20 18:06:41,459 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\websocket_manager.py', reloading
+2025-06-20 18:06:41,459 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\websocket_manager.py', reloading
+2025-06-20 18:06:42,399 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-06-20 18:06:42,864 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:06:42,865 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 18:06:42,867 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:06:42,868 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:06:42,869 - data_loader - INFO - Loaded 65 lines
+2025-06-20 18:06:42,871 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:06:42,872 - data_loader - INFO - Loaded 136 stations
+2025-06-20 18:06:42,873 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:06:42,874 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:06:42,875 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:06:42,881 - werkzeug - WARNING -  * Debugger is active!
+2025-06-20 18:06:42,888 - werkzeug - INFO -  * Debugger PIN: 158-675-289
+2025-06-20 18:06:42,894 - engineio.server - ERROR - Invalid session qgIGto2Cp2nEEnsBAAAA (further occurrences of this error will be logged with level INFO)
+2025-06-20 18:06:42,895 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:42] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5tx5&sid=qgIGto2Cp2nEEnsBAAAA HTTP/1.1[0m" 400 -
+2025-06-20 18:06:42,895 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:42] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=qgIGto2Cp2nEEnsBAAAA HTTP/1.1[0m" 400 -
+2025-06-20 18:06:42,894 - engineio.server - ERROR - Invalid session qgIGto2Cp2nEEnsBAAAA (further occurrences of this error will be logged with level INFO)
+2025-06-20 18:06:42,896 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:42,896 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:42] "[31m[1mGET /socket.io/?EIO=4&transport=polling&t=PUE5tx5.0&sid=qgIGto2Cp2nEEnsBAAAA HTTP/1.1[0m" 400 -
+2025-06-20 18:06:42,897 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:42,899 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:42,900 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:42,904 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:42] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5tx7&sid=DBTA7yIBOWDjTedpAAAB HTTP/1.1[0m" 400 -
+2025-06-20 18:06:42,905 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:42] "GET /socket.io/?EIO=4&transport=polling&t=PUE5u04 HTTP/1.1" 200 -
+2025-06-20 18:06:42,907 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:42] "[31m[1mGET /socket.io/?EIO=4&transport=polling&t=PUE5tx7.0&sid=DBTA7yIBOWDjTedpAAAB HTTP/1.1[0m" 400 -
+2025-06-20 18:06:42,908 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:42] "GET /socket.io/?EIO=4&transport=polling&t=PUE5t-f HTTP/1.1" 200 -
+2025-06-20 18:06:42,909 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:42,910 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:42] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5u2V&sid=gt19ZGxXTz14KUNQAAAi HTTP/1.1[0m" 400 -
+2025-06-20 18:06:42,913 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:42] "GET /socket.io/?EIO=4&transport=polling&t=PUE5uKh HTTP/1.1" 200 -
+2025-06-20 18:06:42,914 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:48,281 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\websocket_manager.py', reloading
+2025-06-20 18:06:48,281 - werkzeug - INFO -  * Detected change in 'C:\\Users\\sandr\\OneDrive\\Dokumente\\GitHub\\mywienerlinien\\frontend\\websocket_manager.py', reloading
+2025-06-20 18:06:48,950 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-06-20 18:06:49,423 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:06:49,424 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 18:06:49,426 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:06:49,427 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:06:49,427 - data_loader - INFO - Loaded 65 lines
+2025-06-20 18:06:49,429 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:06:49,431 - data_loader - INFO - Loaded 136 stations
+2025-06-20 18:06:49,432 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:06:49,433 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:06:49,433 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:06:49,440 - werkzeug - WARNING -  * Debugger is active!
+2025-06-20 18:06:49,446 - werkzeug - INFO -  * Debugger PIN: 158-675-289
+2025-06-20 18:06:49,452 - engineio.server - ERROR - Invalid session qgIGto2Cp2nEEnsBAAAA (further occurrences of this error will be logged with level INFO)
+2025-06-20 18:06:49,453 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:49] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5wN8&sid=qgIGto2Cp2nEEnsBAAAA HTTP/1.1[0m" 400 -
+2025-06-20 18:06:49,454 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:06:49] "GET /socket.io/?EIO=4&transport=polling&t=PUE5wiY HTTP/1.1" 200 -
+2025-06-20 18:06:49,454 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:49,454 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:49,455 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:49,456 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:49,460 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:06:49,461 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:07:02,681 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:07:02,682 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 18:07:02,684 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:07:02,686 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:07:02,687 - data_loader - INFO - Loaded 65 lines
+2025-06-20 18:07:02,689 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:07:02,690 - data_loader - INFO - Loaded 136 stations
+2025-06-20 18:07:02,690 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:07:02,691 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:07:02,692 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:07:03,970 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3080
+ * Running on http://192.168.0.81:3080
+2025-06-20 18:07:03,971 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-06-20 18:07:03,972 - werkzeug - INFO -  * Restarting with watchdog (windowsapi)
+2025-06-20 18:07:04,402 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:07:04,402 - disruption_alerts - INFO - Disruption monitoring started
+2025-06-20 18:07:04,404 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:07:04,405 - websocket_manager - INFO - WebSocket manager started
+2025-06-20 18:07:04,407 - data_loader - INFO - Loaded 65 lines
+2025-06-20 18:07:04,407 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:07:04,409 - data_loader - INFO - Loaded 136 stations
+2025-06-20 18:07:04,410 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:07:04,411 - data_loader - INFO - Loaded 10 routes
+2025-06-20 18:07:04,412 - wiener_linien - INFO - Starting Wiener Linien Live Map application
+2025-06-20 18:07:04,419 - werkzeug - WARNING -  * Debugger is active!
+2025-06-20 18:07:04,425 - werkzeug - INFO -  * Debugger PIN: 158-675-289
+2025-06-20 18:07:04,432 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "GET /socket.io/?EIO=4&transport=polling&t=PUE5-x1 HTTP/1.1" 200 -
+2025-06-20 18:07:04,432 - engineio.server - ERROR - Invalid session xCzrmv_3QLrMy9RSAAAA (further occurrences of this error will be logged with level INFO)
+2025-06-20 18:07:04,433 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:07:04,434 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5-hD&sid=xCzrmv_3QLrMy9RSAAAA HTTP/1.1[0m" 400 -
+2025-06-20 18:07:04,434 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5w7U&sid=pItSFDPEwnzTgp9wAAAA HTTP/1.1[0m" 400 -
+2025-06-20 18:07:04,435 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "[31m[1mGET /socket.io/?EIO=4&transport=polling&t=PUE5w7V&sid=pItSFDPEwnzTgp9wAAAA HTTP/1.1[0m" 400 -
+2025-06-20 18:07:04,438 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:07:04,438 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "[31m[1mGET /socket.io/?EIO=4&transport=websocket&sid=pItSFDPEwnzTgp9wAAAA HTTP/1.1[0m" 400 -
+2025-06-20 18:07:04,441 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5wN8&sid=DBTA7yIBOWDjTedpAAAB HTTP/1.1[0m" 400 -
+2025-06-20 18:07:04,446 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "GET /socket.io/?EIO=4&transport=polling&t=PUE5weG HTTP/1.1" 200 -
+2025-06-20 18:07:04,447 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5w7Y&sid=qwXj53Tof9z7OFD0AAAB HTTP/1.1[0m" 400 -
+2025-06-20 18:07:04,448 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "[31m[1mGET /socket.io/?EIO=4&transport=polling&t=PUE5w7Y.0&sid=qwXj53Tof9z7OFD0AAAB HTTP/1.1[0m" 400 -
+2025-06-20 18:07:04,450 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "[31m[1mPOST /socket.io/?EIO=4&transport=polling&t=PUE5w7f&sid=F5bdNP9VwK-qCocbAAAC HTTP/1.1[0m" 400 -
+2025-06-20 18:07:04,452 - werkzeug - INFO - 127.0.0.1 - - [20/Jun/2025 18:07:04] "[31m[1mGET /socket.io/?EIO=4&transport=polling&t=PUE5w7f.0&sid=F5bdNP9VwK-qCocbAAAC HTTP/1.1[0m" 400 -
+2025-06-20 18:07:04,455 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:07:04,457 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:07:04,458 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
+2025-06-20 18:07:04,480 - wiener_linien - INFO - Fetching vehicles: type=all, line=None, station=None
