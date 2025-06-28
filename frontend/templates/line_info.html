@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line Information - Wiener Linien Live Map</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/line-info.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation Bar -->
+        <nav class="top-nav">
+            <div class="nav-container">
+                <a href="{{ url_for('index') }}" class="nav-brand">Wiener Linien</a>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}" class="nav-link">Map</a>
+                    <a href="{{ url_for('line_info') }}" class="nav-link active">Lines</a>
+                    <a href="{{ url_for('about') }}" class="nav-link">About</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="line-info-container">
+                <h1>Vienna Public Transport Lines</h1>
+                
+                <!-- Line Type Tabs -->
+                <div class="line-tabs">
+                    <button class="tab-btn active" data-type="all">All Lines</button>
+                    <button class="tab-btn" data-type="metro">Metro</button>
+                    <button class="tab-btn" data-type="tram">Tram</button>
+                    <button class="tab-btn" data-type="bus">Bus</button>
+                    <button class="tab-btn" data-type="nightbus">Night Bus</button>
+                </div>
+
+                <!-- Lines Grid -->
+                <div class="lines-grid" id="linesGrid">
+                    <!-- Lines will be dynamically inserted here -->
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading line information...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Line Detail Modal -->
+    <div class="modal" id="lineDetailModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-body" id="lineDetailContent">
+                <!-- Line details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/line-info.js') }}"></script>
+</body>
+</html>

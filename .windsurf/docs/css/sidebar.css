@@ -1,0 +1,451 @@
+/* ==========================================================================
+   SIDEBAR STYLES
+   ========================================================================== */
+
+/**
+ * Sidebar component styles.
+ * Uses CSS variables defined in variables.css
+ */
+
+/* Sidebar Container */
+.sidebar {
+  --sidebar-padding: var(--space-6);
+  width: var(--sidebar-width);
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  padding: var(--sidebar-padding) 0;
+  box-sizing: border-box;
+  transition: transform var(--transition-speed) var(--transition-timing),
+              background-color var(--transition-speed) var(--transition-timing),
+              color var(--transition-speed) var(--transition-timing);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: var(--z-fixed);
+  border-right: 1px solid var(--border-color);
+  transform: translateX(0);
+  will-change: transform;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-dark-gray) transparent;
+}
+
+/* Scrollbar styling for WebKit browsers */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: var(--color-dark-gray);
+  border-radius: 3px;
+  border: 3px solid transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-medium-gray);
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.sidebar-nav li {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-6) var(--space-2) var(--space-8);
+  color: var(--sidebar-text);
+  text-decoration: none;
+  transition: all var(--transition-speed) var(--transition-timing);
+  position: relative;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  border-left: 3px solid transparent;
+}
+
+/* Add indentation for nested items */
+.sidebar-nav .sidebar-nav {
+  padding-left: var(--space-4);
+}
+
+/* Active and hover states */
+.sidebar-nav a:hover,
+.sidebar-nav a:focus,
+.sidebar-nav a.active {
+  background-color: var(--sidebar-highlight);
+  color: var(--link-color);
+  border-left-color: var(--link-color);
+}
+
+/* Add icon for external links */
+.sidebar-nav a[target="_blank"]::after {
+  content: '↗';
+  display: inline-block;
+  margin-left: var(--space-2);
+  font-size: 0.8em;
+  opacity: 0.7;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-nav a[target="_blank"]:hover::after {
+  transform: translate(2px, -2px);
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  color: var(--link-color, #42b983);
+  background-color: var(--sidebar-highlight, #e6f7ff);
+}
+
+/* Nested items */
+.sidebar-nav ul {
+  padding-left: 15px;
+  list-style: none;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 0.8;
+}
+
+.sidebar-nav .active + ul,
+.sidebar-nav ul.active {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+/* Tree view specific styles */
+.sidebar-nav .app-sub-sidebar {
+  padding-left: 0;
+}
+
+.sidebar-nav .app-sub-sidebar > li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure proper spacing for nested items */
+.sidebar-nav .app-sub-sidebar > li > a,
+.sidebar-nav .app-sub-sidebar > li > strong {
+  display: block;
+  padding: 8px 20px 8px 30px;
+  color: var(--sidebar-text, #364149);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.sidebar-nav .app-sub-sidebar > li > a:hover,
+.sidebar-nav .app-sub-sidebar > li > strong:hover {
+  color: var(--link-color, #42b983);
+  background-color: var(--sidebar-highlight, #e6f7ff);
+}
+
+/* Dark mode specific adjustments */
+:root[data-theme="dark"] .sidebar-nav .app-sub-sidebar > li > a,
+:root[data-theme="dark"] .sidebar-nav .app-sub-sidebar > li > strong,
+:root.dark-theme .sidebar-nav .app-sub-sidebar > li > a,
+:root.dark-theme .sidebar-nav .app-sub-sidebar > li > strong {
+  color: var(--sidebar-text, #e0e0e0);
+}
+
+:root[data-theme="dark"] .sidebar-nav .app-sub-sidebar > li > a:hover,
+:root[data-theme="dark"] .sidebar-nav .app-sub-sidebar > li > strong:hover,
+:root.dark-theme .sidebar-nav .app-sub-sidebar > li > a:hover,
+:root.dark-theme .sidebar-nav .app-sub-sidebar > li > strong:hover {
+  color: var(--link-color, #4dba87);
+  background-color: var(--sidebar-highlight, #2a2d2e);
+}
+
+/* Ensure proper indentation for nested lists */
+.sidebar-nav .app-sub-sidebar .app-sub-sidebar {
+  padding-left: 15px;
+}
+
+/* Make sure the active item is visible */
+.sidebar-nav .active > a,
+.sidebar-nav .active > strong {
+  color: var(--link-color, #42b983) !important;
+  font-weight: 600;
+}
+
+/* Tree view toggle buttons */
+.sublist-toggle {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease;
+  font-size: 0.8em;
+  line-height: 16px;
+  vertical-align: middle;
+  color: var(--sidebar-text, #666);
+}
+
+.sidebar-nav .has-sublist > a,
+.sidebar-nav .has-sublist > strong {
+  position: relative;
+  padding-left: 10px;
+}
+
+.sidebar-nav .has-sublist.expanded > .sublist-toggle {
+  transform: rotate(90deg);
+}
+
+/* Dark mode adjustments for toggle buttons */
+:root[data-theme="dark"] .sublist-toggle,
+:root.dark-theme .sublist-toggle {
+  color: var(--sidebar-text, #aaa);
+}
+
+:root[data-theme="dark"] .sublist-toggle:hover,
+:root.dark-theme .sublist-toggle:hover {
+  color: var(--link-color, #4dba87);
+}
+
+/* Ensure proper spacing for nested items with toggles */
+.sidebar-nav .has-sublist > a,
+.sidebar-nav .has-sublist > strong {
+  padding-left: 30px;
+}
+
+.sidebar-nav .has-sublist > a .sublist-toggle,
+.sidebar-nav .has-sublist > strong .sublist-toggle {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+}
+
+.sidebar-nav .has-sublist.expanded > a .sublist-toggle,
+.sidebar-nav .has-sublist.expanded > strong .sublist-toggle {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* Fix for nested lists */
+.sidebar-nav ul ul .has-sublist > a,
+.sidebar-nav ul ul .has-sublist > strong {
+  padding-left: 45px;
+}
+
+.sidebar-nav ul ul .has-sublist > a .sublist-toggle,
+.sidebar-nav ul ul .has-sublist > strong .sublist-toggle {
+  left: 23px;
+}
+
+/* Add some visual feedback for keyboard navigation */
+.sublist-toggle:focus-visible {
+  outline: 2px solid var(--link-color, #42b983);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Ensure content doesn't overlap with sidebar */
+:root {
+  --sidebar-width: 260px;
+  --header-height: 60px;
+  --transition-speed: 0.3s;
+  --bg-color: #ffffff;
+  --text-color: #2c3e50;
+  --sidebar-bg: #f5f7fa;
+  --sidebar-text: #364149;
+  --sidebar-highlight: #e6f7ff;
+  --link-color: #3eaf7c;
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: #e0e0e0;
+  --sidebar-bg: #252526;
+  --sidebar-text: #e0e0e0;
+  --sidebar-highlight: #2a2d2e;
+  --link-color: #4dba87;
+}
+
+/* Dark theme specific styles */
+[data-theme="dark"] .sidebar,
+:root.dark-theme #sidebar {
+  background-color: var(--sidebar-bg, #252526);
+  color: var(--sidebar-text, #e0e0e0);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Sidebar links */
+.sidebar-nav a {
+  color: var(--sidebar-text);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+:root[data-theme="dark"] .sidebar-nav a,
+:root.dark-theme .sidebar-nav a {
+  color: var(--sidebar-text, #e0e0e0);
+}
+
+/* Hover and active states */
+.sidebar-nav a:hover,
+.sidebar-nav .active {
+  background-color: var(--sidebar-highlight, #e6f7ff);
+  color: var(--link-color, #3eaf7c);
+}
+
+:root[data-theme="dark"] .sidebar-nav a:hover,
+:root.dark-theme .sidebar-nav a:hover,
+:root[data-theme="dark"] .sidebar-nav .active,
+:root.dark-theme .sidebar-nav .active {
+  background-color: var(--sidebar-highlight, #2a2d2e);
+  color: var(--link-color, #4fa6ee);
+}
+
+/* Sidebar header */
+.sidebar-header {
+  border-bottom: 1px solid var(--border-color, #eaecef);
+}
+
+:root[data-theme="dark"] .sidebar-header,
+:root.dark-theme .sidebar-header {
+  border-bottom-color: var(--border-color, #3c3c3c);
+}
+
+/* Collapse button */
+.collapse-btn {
+  color: var(--sidebar-text);
+}
+
+:root[data-theme="dark"] .collapse-btn,
+:root.dark-theme .collapse-btn {
+  color: var(--sidebar-text, #e0e0e0);
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  padding: 0 20px 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  color: var(--sidebar-text);
+  font-size: 1.5rem;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+  padding: 0 15px;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  position: relative;
+  margin: 2px 0;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 6px 12px;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-nav a:hover {
+  background-color: var(--sidebar-highlight);
+  color: var(--link-color);
+}
+
+.sidebar-nav .active {
+  color: var(--link-color);
+  font-weight: 600;
+}
+
+/* Collapsible Sections */
+.sidebar-nav .app-sub-sidebar {
+  padding-left: 15px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.sidebar-nav .sidebar-nav-item.collapsed .app-sub-sidebar {
+  max-height: 1000px; /* Adjust based on content */
+}
+
+/* Toggle Buttons */
+.collapse-btn {
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  background: none;
+  border: none;
+  color: var(--sidebar-text);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.collapse-btn:after {
+  content: '▶';
+  font-size: 0.8em;
+  transition: transform 0.2s;
+}
+
+.collapse-btn.collapsed:after {
+  transform: rotate(90deg);
+}
+
+/* Responsive Sidebar */
+@media (max-width: 768px) {
+  #sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+  }
+  
+  #sidebar.sidebar-visible {
+    transform: translateX(0);
+  }
+  
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
+  
+  .sidebar-visible + .sidebar-overlay {
+    display: block;
+  }
+}

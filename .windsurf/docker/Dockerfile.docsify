@@ -1,0 +1,24 @@
+# Use Node.js LTS as base image
+FROM node:lts-alpine
+
+# Install docsify-cli globally
+RUN npm install -g docsify-cli@latest
+
+# Create app directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+
+# Install app dependencies
+RUN npm install
+
+# Copy documentation
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Command to run the application
+CMD ["docsify", "serve", ".windsurf/docs", "-p", "3000", "-l", "0.0.0.0"]

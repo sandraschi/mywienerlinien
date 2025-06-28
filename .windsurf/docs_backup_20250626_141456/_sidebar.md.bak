@@ -1,0 +1,215 @@
+- [Home](/)
+- <details open><summary>Ai</summary>
+
+  - ** Templates**
+    - [Company Template](ai/_templates/company_template.md)
+    - [Person Template](ai/_templates/person_template.md)
+  - **Coding Tools**
+    - [Cline](ai/coding_tools/cline.md)
+    - [Devika](ai/coding_tools/devika.md)
+    - [Devin](ai/coding_tools/devin.md)
+  - **Companies**
+    - [Amazon Ai](ai/companies/amazon_ai.md)
+    - [Anthropic](ai/companies/anthropic.md)
+    - [Apple Ai](ai/companies/apple_ai.md)
+    - [Baidu Ai](ai/companies/baidu_ai.md)
+    - [Deepseek](ai/companies/deepseek.md)
+    - [Google Deepmind](ai/companies/google_deepmind.md)
+    - [Huggingface](ai/companies/huggingface.md)
+    - [Meta Ai](ai/companies/meta_ai.md)
+    - [Microsoft Ai](ai/companies/microsoft_ai.md)
+    - [Mistral Ai](ai/companies/mistral_ai.md)
+    - [Openai](ai/companies/openai.md)
+    - [Sensetime](ai/companies/sensetime.md)
+  - **Controversies**
+    - [Guardrails Limits Foss Llms](ai/controversies/guardrails_limits_foss_llms.md)
+    - [Index](ai/controversies/index.md)
+    - [Self Optimizing Ai Skynet](ai/controversies/self_optimizing_ai_skynet.md)
+  - **Frameworks**
+    - **Langchain**
+      - [Langchain](ai/frameworks/langchain/langchain.md)
+  - **Hardware**
+    - [China Ai Landscape](ai/hardware/china_ai_landscape.md)
+    - [Europe Ai Landscape](ai/hardware/europe_ai_landscape.md)
+    - [Evolution Ai Hardware](ai/hardware/evolution_ai_hardware.md)
+  - **History**
+    - [Short History](ai/history/short_history.md)
+  - **Hosted Llms**
+    - [Anthropic](ai/hosted_llms/anthropic.md)
+    - [Gemini](ai/hosted_llms/gemini.md)
+    - [Openai](ai/hosted_llms/openai.md)
+    - [Perplexity](ai/hosted_llms/perplexity.md)
+  - **Image Video**
+    - [Gradio](ai/image_video/gradio.md)
+    - [Overview](ai/image_video/overview.md)
+    - [Sora](ai/image_video/sora.md)
+    - [Stable Diffusion](ai/image_video/stable_diffusion.md)
+    - [Veo 3](ai/image_video/veo_3.md)
+  - **Local Llms**
+    - [Lm Studio](ai/local_llms/lm_studio.md)
+    - [Ollama](ai/local_llms/ollama.md)
+    - [Vllm](ai/local_llms/vllm.md)
+  - **Mcp**
+    - [Agentic Ides](ai/mcp/agentic_ides.md)
+    - [Overview](ai/mcp/overview.md)
+    - [Repositories](ai/mcp/repositories.md)
+  - **Models**
+    - [Diffusion Models](ai/models/diffusion_models.md)
+    - [Transformer Models](ai/models/transformer_models.md)
+  - **Opinion**
+    - [Ai Oy Vey To Hurray](ai/opinion/ai_oy_vey_to_hurray.md)
+  - **Papers**
+    - [Seminal Papers](ai/papers/seminal_papers.md)
+  - **Persons**
+    - [Aaron Courville](ai/persons/aaron_courville.md)
+    - [Alex Graves](ai/persons/alex_graves.md)
+    - [Andrew Ng](ai/persons/andrew_ng.md)
+    - [Daphne Koller](ai/persons/daphne_koller.md)
+    - [David Silver](ai/persons/david_silver.md)
+    - [Demis Hassabis](ai/persons/demis_hassabis.md)
+    - [Doina Precup](ai/persons/doina_precup.md)
+    - [Fei Fei Li](ai/persons/fei_fei_li.md)
+    - [Geoffrey Hinton](ai/persons/geoffrey_hinton.md)
+    - [Hugo Larochelle](ai/persons/hugo_larochelle.md)
+    - [Ian Goodfellow](ai/persons/ian_goodfellow.md)
+    - [Ilya Sutskever](ai/persons/ilya_sutskever.md)
+    - [Joelle Pineau](ai/persons/joelle_pineau.md)
+    - [Koray Kavukcuoglu](ai/persons/koray_kavukcuoglu.md)
+    - [Nick Bostrom](ai/persons/nick_bostrom.md)
+    - [Person Template](ai/persons/person_template.md)
+    - [Peter Norvig](ai/persons/peter_norvig.md)
+    - [Prominent Figures](ai/persons/prominent_figures.md)
+    - [Rich Sutton](ai/persons/rich_sutton.md)
+    - [Sebastian Thrun](ai/persons/sebastian_thrun.md)
+    - [Stuart Russell](ai/persons/stuart_russell.md)
+    - [Volodymyr Mnih](ai/persons/volodymyr_mnih.md)
+    - [Yann Lecun](ai/persons/yann_lecun.md)
+    - [Yoshua Bengio](ai/persons/yoshua_bengio.md)
+  - **Speech Avatars**
+    - [Elevenlabs Guide](ai/speech_avatars/elevenlabs_guide.md)
+    - [Overview](ai/speech_avatars/overview.md)
+  </details>
+- <details open><summary>Audio</summary>
+
+  - [Audacity](audio/audacity.md)
+  - [Grandorgue](audio/grandorgue.md)
+  - [Sidify](audio/sidify.md)
+  - [Virtualdj](audio/virtualdj.md)
+  </details>
+- <details open><summary>Automation Tools</summary>
+
+  - **Autohotkey**
+    - [01 Introduction](automation_tools/autohotkey/01_introduction.md)
+    - [02 Getting Started](automation_tools/autohotkey/02_getting_started.md)
+    - [03 Hotkeys Hotstrings](automation_tools/autohotkey/03_hotkeys_hotstrings.md)
+    - [04 Variables Expressions](automation_tools/autohotkey/04_variables_expressions.md)
+    - [05 Control Flow](automation_tools/autohotkey/05_control_flow.md)
+    - [06 Gui Programming](automation_tools/autohotkey/06_gui_programming.md)
+    - [07 Advanced Topics](automation_tools/autohotkey/07_advanced_topics.md)
+    - [08 Practical Examples](automation_tools/autohotkey/08_practical_examples.md)
+  </details>
+- <details open><summary>Current Projects</summary>
+
+  - **Wiener Linien**
+    - [Gtfs](current_projects/wiener_linien/gtfs.md)
+    - [Wiener Linien Api Guide](current_projects/wiener_linien/WIENER_LINIEN_API_GUIDE.md)
+  </details>
+- <details open><summary>Dev Tools</summary>
+
+  - **Node Js**
+    - [Tesseract Ocr](dev_tools/node_js/tesseract_ocr.md)
+  - [Nodejs](dev_tools/nodejs.md)
+  </details>
+- <details open><summary>Doc Tools</summary>
+
+  - [Finereader Ocr](doc_tools/finereader_ocr.md)
+  - [Pandoc](doc_tools/pandoc.md)
+  </details>
+- <details open><summary>File Tools</summary>
+
+  - [Beyond Compare](file_tools/beyond_compare.md)
+  - [Hasleo Backup](file_tools/hasleo_backup.md)
+  - [Hex Editors](file_tools/hex_editors.md)
+  - [Notepad Plus Plus](file_tools/notepad_plus_plus.md)
+  - [Vuescan](file_tools/vuescan.md)
+  - [Wizfile](file_tools/wizfile.md)
+  - [Wiztree](file_tools/wiztree.md)
+  </details>
+- <details open><summary>Flows</summary>
+
+  - **Bugs**
+    - **250621 Rules Reading Issue**
+      - [Bug](flows/bugs/250621_rules_reading_issue/bug.md)
+  </details>
+- <details open><summary>Frameworks</summary>
+
+  - [Angular](frameworks/angular.md)
+  - [Docker](frameworks/docker.md)
+  - [Fastapi](frameworks/fastapi.md)
+  - [React](frameworks/react.md)
+  - [Svelte](frameworks/svelte.md)
+  - [Vuejs](frameworks/vuejs.md)
+  </details>
+- <details open><summary>Ide</summary>
+
+  - **Windsurf**
+    - **Deep Dive**
+      - [Architecture](ide/windsurf/deep_dive/architecture.md)
+      - [Community](ide/windsurf/deep_dive/community.md)
+      - [Dos Donts](ide/windsurf/deep_dive/dos_donts.md)
+      - [Overview](ide/windsurf/deep_dive/overview.md)
+      - [Press Reception](ide/windsurf/deep_dive/press_reception.md)
+      - [Pros Cons](ide/windsurf/deep_dive/pros_cons.md)
+      - [Tips Tricks](ide/windsurf/deep_dive/tips_tricks.md)
+    - **Global Services**
+      - [Cache System](ide/windsurf/global_services/cache_system.md)
+      - [Config Store](ide/windsurf/global_services/config_store.md)
+      - [Documentation Hub](ide/windsurf/global_services/documentation_hub.md)
+      - [Documentation Standards](ide/windsurf/global_services/documentation_standards.md)
+      - [Logging System](ide/windsurf/global_services/logging_system.md)
+      - [Multi Developer Setup](ide/windsurf/global_services/multi_developer_setup.md)
+      - [Rulebooks](ide/windsurf/global_services/rulebooks.md)
+      - [Shared Libraries](ide/windsurf/global_services/shared_libraries.md)
+      - [Task Management](ide/windsurf/global_services/task_management.md)
+      - [Template Library](ide/windsurf/global_services/template_library.md)
+  </details>
+- <details open><summary>Mcp Tools</summary>
+
+  - [Memory](mcp_tools/memory.md)
+  - [Playwright](mcp_tools/playwright.md)
+  - [Puppeteer](mcp_tools/puppeteer.md)
+  - [Sequential Thinking](mcp_tools/sequential-thinking.md)
+  </details>
+- <details open><summary>Media Servers</summary>
+
+  - [Arr Ecosystem](media_servers/arr_ecosystem.md)
+  - [Calibre](media_servers/calibre.md)
+  - [Immich](media_servers/immich.md)
+  - [Plex](media_servers/plex.md)
+  </details>
+- <details open><summary>Philosophy And Risks</summary>
+
+  - [The Great Filter Is Us](philosophy_and_risks/the_great_filter_is_us.md)
+  </details>
+- <details open><summary>Robotics</summary>
+
+  - **Canine**
+    - [Unitree](robotics/canine/unitree.md)
+    - [Xiaomi](robotics/canine/xiaomi.md)
+  - **Humanoid**
+    - [Agility Robotics](robotics/humanoid/agility_robotics.md)
+    - [Boston Dynamics](robotics/humanoid/boston_dynamics.md)
+    - [Figure Ai](robotics/humanoid/figure_ai.md)
+    - [Sanctuary Ai](robotics/humanoid/sanctuary_ai.md)
+    - [Tesla](robotics/humanoid/tesla.md)
+  - **Industrial Logistics**
+    - [Abb](robotics/industrial_logistics/abb.md)
+    - [Fanuc](robotics/industrial_logistics/fanuc.md)
+    - [Kuka](robotics/industrial_logistics/kuka.md)
+  </details>
+- <details open><summary>Tools</summary>
+
+  - [Docsify](tools/docsify.md)
+  - [Grafana Loki](tools/grafana_loki.md)
+  - [Log Viewer](tools/log_viewer.md)
+  </details>

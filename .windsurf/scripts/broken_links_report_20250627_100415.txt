@@ -1,0 +1,200 @@
+﻿# Broken Links Report
+Generated: 06/27/2025 10:04:15
+File: D:\Dev\repos\mywienerlinien\.windsurf\docs\README.md
+Total Links Checked: 68
+Broken Links: 64
+
+## Broken Links
+- **Latest Updates**
+  - URL: 1_news.md/README.md
+  - Line: 10
+- **Release Notes**
+  - URL: 1_news/releases.md/README.md
+  - Line: 11
+- **Technical Notes**
+  - URL: 2_notes.md/README.md
+  - Line: 14
+- **Flows**
+  - URL: 2_notes/flows.md/README.md
+  - Line: 15
+- **Ideas**
+  - URL: 2_notes/ideas.md/README.md
+  - Line: 16
+- **Meeting Notes**
+  - URL: 2_notes/meeting-notes.md/README.md
+  - Line: 17
+- **How-To Guides**
+  - URL: 2_notes/how-tos.md/README.md
+  - Line: 18
+- **Troubleshooting**
+  - URL: 2_notes/troubleshooting.md/README.md
+  - Line: 19
+- **AI Overview**
+  - URL: 3_ai.md/README.md
+  - Line: 22
+- **AI Basics**
+  - URL: 3_ai/basics.md/README.md
+  - Line: 23
+- **AI Companies**
+  - URL: 3_ai/companies.md/README.md
+  - Line: 24
+- **AI Hardware**
+  - URL: 3_ai/hardware.md/README.md
+  - Line: 25
+- **Hosted LLMs**
+  - URL: 3_ai/hosted_llms.md/README.md
+  - Line: 26
+- **Local LLMs**
+  - URL: 3_ai/local_llms.md/README.md
+  - Line: 27
+- **AI News**
+  - URL: 3_ai/news.md/README.md
+  - Line: 28
+- **Research Papers**
+  - URL: 3_ai/papers.md/README.md
+  - Line: 29
+- **AI Personalities**
+  - URL: 3_ai/persons.md/README.md
+  - Line: 30
+- **Speech AI**
+  - URL: 3_ai/speech.md/README.md
+  - Line: 31
+- **Computer Vision**
+  - URL: 3_ai/image_and_video.md/README.md
+  - Line: 32
+- **AI Controversies**
+  - URL: 3_ai/controversies.md/README.md
+  - Line: 33
+- **Development Guide**
+  - URL: 5_development.md/README.md
+  - Line: 36
+- **API Documentation**
+  - URL: 5_development/api.md/README.md
+  - Line: 37
+- **Architecture**
+  - URL: 5_development/architecture.md/README.md
+  - Line: 38
+- **Docker**
+  - URL: 5_development/docker.md/README.md
+  - Line: 39
+- **Frameworks**
+  - URL: 5_development/frameworks.md/README.md
+  - Line: 40
+- **Guides**
+  - URL: 5_development/guides.md/README.md
+  - Line: 41
+- **IDEs**
+  - URL: 5_development/ide.md/README.md
+  - Line: 42
+- **Low-Code/No-Code**
+  - URL: 5_development/low_code_no_code.md/README.md
+  - Line: 43
+- **UI Libraries**
+  - URL: 5_development/ui_libraries.md/README.md
+  - Line: 44
+- **Software Catalog**
+  - URL: 6_software.md/README.md
+  - Line: 47
+- **Development Tools**
+  - URL: 6_software/development_tools.md/README.md
+  - Line: 48
+- **Operating Systems**
+  - URL: 6_software/operating_systems.md/README.md
+  - Line: 49
+- **Security Tools**
+  - URL: 6_software/security.md/README.md
+  - Line: 50
+- **Project Directory**
+  - URL: 7_projects.md/README.md
+  - Line: 53
+- **S&S Documentation**
+  - URL: 7_projects/S&S_docs.md/README.md
+  - Line: 54
+- **Wiener Linien**
+  - URL: 7_projects/wiener_linien.md/README.md
+  - Line: 55
+- **Robotics Overview**
+  - URL: 8_robotics.md/README.md
+  - Line: 58
+- **Canine Robotics**
+  - URL: 8_robotics/canine.md/README.md
+  - Line: 59
+- **Humanoid Robots**
+  - URL: 8_robotics/humanoid.md/README.md
+  - Line: 60
+- **Industrial Logistics**
+  - URL: 8_robotics/industrial_logistics.md/README.md
+  - Line: 61
+- **Resources**
+  - URL: 9_misc/resources.md/README.md
+  - Line: 64
+- **Proposed Rules**
+  - URL: 9_misc/proposed_rules.md/README.md
+  - Line: 65
+- **Archive**
+  - URL: 9_misc/archive.md/README.md
+  - Line: 66
+- **API Reference**
+  - URL: 5_development/api.md/README.md
+  - Line: 76
+- **Contributing Guide**
+  - URL: 2_notes/contributing.md/README.md
+  - Line: 77
+- **Troubleshooting**
+  - URL: 2_notes/troubleshooting.md/README.md
+  - Line: 78
+- **Development Tools**
+  - URL: 6_software/development_tools.md/README.md
+  - Line: 79
+- **Software Catalog**
+  - URL: 6_software.md/README.md
+  - Line: 80
+- **Visual Studio Code**
+  - URL: 6_software/development_tools/ides.md/README.md
+  - Line: 88
+- **JetBrains IDEs**
+  - URL: 6_software/development_tools/ides.md/README.md
+  - Line: 89
+- **Terminal-based Editors**
+  - URL: 6_software/development_tools/terminal.md/README.md
+  - Line: 90
+- **Version Control**
+  - URL: 6_software/development_tools/version_control.md/README.md
+  - Line: 94
+- **Package Managers**
+  - URL: 6_software/development_tools/package_managers.md/README.md
+  - Line: 95
+- **Containerization**
+  - URL: 5_development/containers.md/README.md
+  - Line: 96
+- **CI/CD**
+  - URL: 5_development/deployment.md/README.md
+  - Line: 97
+- **Wiener Linien API Guide**
+  - URL: 7_projects/wiener_linien/WIENER_LINIEN_API_GUIDE.md.md
+  - Line: 109
+- **GTFS Data**
+  - URL: 7_projects/wiener_linien/gtfs.md.md
+  - Line: 110
+- **Rules Reading Issue**
+  - URL: 2_notes/flows/bugs/250621_rules_reading_issue/bug.md.md
+  - Line: 114
+- **Analysis**
+  - URL: 2_notes/flows/bugs/250621_rules_reading_issue/analysis.md.md
+  - Line: 115
+- **Documentation Standards**
+  - URL: 5_development/global_services/documentation_standards.md.md
+  - Line: 128
+- **Template Library**
+  - URL: 5_development/global_services/template_library.md.md
+  - Line: 129
+- **IDE Setup Guide**
+  - URL: 5_development/ide/README.md.md
+  - Line: 134
+- **Grafana Dashboard Import**
+  - URL: ../grafana/import_dashboard.ps1.md
+  - Line: 135
+- **Documentation Standards**
+  - URL: 5_development/global_services/documentation_standards.md.md
+  - Line: 136
+

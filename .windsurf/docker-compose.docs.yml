@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  docs:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.docsify
+    container_name: windsurf-docs
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../.windsurf/docs:/app/.windsurf/docs
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - docs-network
+
+  # Optional: Add Nginx as a reverse proxy
+  nginx:
+    image: nginx:alpine
+    container_name: windsurf-docs-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./nginx/logs:/var/log/nginx
+    depends_on:
+      - docs
+    networks:
+      - docs-network
+
+networks:
+  docs-network:
+    driver: bridge

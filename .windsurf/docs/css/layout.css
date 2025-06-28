@@ -1,0 +1,500 @@
+/* ==========================================================================
+   LAYOUT STYLES
+   ========================================================================== */
+
+/**
+ * Base layout styles for the application.
+ * Uses CSS variables defined in variables.css
+ */
+
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-speed) var(--transition-timing),
+              color var(--transition-speed) var(--transition-timing);
+}
+
+/* Layout containers */
+#app {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+/* Sidebar container */
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: var(--z-sidebar);
+  overflow-y: auto;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  transition: transform var(--transition-speed) var(--transition-timing);
+}
+
+/* Main content area */
+.content {
+  flex: 1;
+  margin-left: var(--sidebar-width, 280px);
+  min-height: 100vh;
+  padding: 2rem 3rem;
+  background: var(--bg-color);
+  transition: margin-left var(--transition-speed) var(--transition-timing);
+  width: calc(100% - var(--sidebar-width, 280px));
+  box-sizing: border-box;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Docsify content container */
+.content #main {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* Fix for Docsify content */
+.markdown-section {
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+/* Ensure proper spacing for content */
+.markdown-section > *:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-section > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Fix for code blocks and other elements */
+.markdown-section pre,
+.markdown-section p,
+.markdown-section ul,
+.markdown-section ol,
+.markdown-section h1,
+.markdown-section h2,
+.markdown-section h3,
+.markdown-section h4,
+.markdown-section h5,
+.markdown-section h6 {
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Fix for tables */
+.markdown-section table {
+  width: 100% !important;
+  display: table !important;
+  margin: 1rem 0 !important;
+  overflow-x: auto;
+}
+
+/* Ensure content starts immediately after sidebar */
+.markdown-section > *:first-child {
+  margin-top: 0 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1023px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .content {
+    margin-left: 0;
+    width: 100%;
+    padding: var(--space-4);
+  }
+  
+  .sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+  
+  .sidebar-open .content {
+    margin-left: var(--sidebar-width);
+  }
+}
+
+/* Print styles */
+@media print {
+  .main-content {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Utility classes for layout */
+.container {
+  width: 100%;
+  max-width: var(--content-max-width, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+/* Grid system */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+/* Flex utilities */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+/* Spacing utilities */
+.mt-4 { margin-top: var(--space-4); }
+.mb-4 { margin-bottom: var(--space-4); }
+.ml-4 { margin-left: var(--space-4); }
+.mr-4 { margin-right: var(--space-4); }
+
+/* Responsive helpers */
+.hide-mobile {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.hide-desktop {
+  @media (min-width: 768px) {
+    display: none !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  a, a:visited {
+    text-decoration: underline;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 90%;
+  }
+  
+  pre, blockquote {
+    page-break-inside: avoid;
+  }
+  
+  thead {
+    display: table-header-group;
+  }
+  
+  tr, img {
+    page-break-inside: avoid;
+  }
+  
+  img {
+    max-width: 100% !important;
+  }
+  
+  @page {
+    margin: 2cm 0.5cm;
+  }
+  
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  
+  h2, h3 {
+    page-break-after: avoid;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.6;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+/* App Container */
+#app {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  transition: all var(--transition-speed);
+}
+
+/* Content Area */
+.content {
+  --content-padding: 32px 48px;
+  flex: 1;
+  padding: var(--content-padding);
+  margin-left: var(--sidebar-width, 280px);
+  width: calc(100% - var(--sidebar-width, 280px));
+  max-width: none;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  transition: margin-left 0.3s ease, width 0.3s ease;
+  overflow-x: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .content {
+    --content-padding: 24px 32px;
+    width: calc(100% - var(--sidebar-width, 280px));
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0;
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 24px;
+  }
+}
+
+/* Ensure content is properly aligned when sidebar is collapsed */
+.sidebar-collapsed .content {
+  margin-left: 0;
+  max-width: 100%;
+  padding: 20px;
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background-color: var(--sidebar-bg, #f5f7fa);
+  color: var(--text-color, #2c3e50);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-toggle:hover {
+  background-color: var(--sidebar-highlight, #e6f7ff);
+  transform: scale(1.05);
+}
+
+.sidebar-toggle:focus {
+  outline: none;
+  border-color: var(--link-color, #42b983);
+  box-shadow: 0 0 0 3px rgba(66, 185, 131, 0.3);
+}
+
+.sidebar-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Ensure the button is visible in high contrast mode */
+@media (forced-colors: active) {
+  .sidebar-toggle {
+    border: 2px solid ButtonText;
+  }
+  
+  .sidebar-toggle:focus {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
+/* When sidebar is collapsed */
+.sidebar-collapsed #app {
+  padding-left: 0;
+}
+
+.sidebar-collapsed .sidebar {
+  transform: translateX(-100%);
+}
+
+.sidebar-collapsed .sidebar-toggle {
+  left: 10px;
+}
+
+/* Adjust main content when sidebar is toggled */
+.sidebar-collapsed main {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* Main Content */
+main {
+  flex: 1;
+  padding: 2rem;
+  margin-left: var(--sidebar-width);
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  width: calc(100% - var(--sidebar-width));
+  transition: all var(--transition-speed);
+  box-sizing: border-box;
+}
+
+/* Docsify-specific styles */
+.sidebar {
+  width: var(--sidebar-width) !important;
+  background: var(--sidebar-bg, #f5f7fa);
+  color: var(--sidebar-text, #364149);
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  transition: transform var(--transition-speed);
+  z-index: 10;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  
+  main {
+    margin-left: 0;
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .sidebar-toggle {
+    display: block;
+  }
+  
+  .sidebar-overlay {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+  
+  #sidebar.show + .sidebar-overlay {
+    opacity: 0.5;
+    visibility: visible;
+  }
+}
+
+/* Mobile menu toggle button */
+.sidebar-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1001;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Sidebar overlay for mobile */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+/* Print Styles */
+@media print {
+  #sidebar, .theme-toggle, .sidebar-toggle, .sidebar-overlay {
+    display: none !important;
+  }
+  
+  main {
+    margin-left: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+}

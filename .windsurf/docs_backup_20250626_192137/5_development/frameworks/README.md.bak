@@ -1,0 +1,105 @@
+# Frameworks Documentation
+
+This directory contains documentation for key frameworks and technologies used in Windsurf projects.
+
+## Available Guides
+
+### Web Development
+- [React](frameworks/./react.md) - Frontend JavaScript library for building user interfaces
+- [Next.js](frameworks/./nextjs.md) - React framework for server-rendered applications
+- [Vue.js](frameworks/./vuejs.md) - Progressive JavaScript framework
+- [Angular](frameworks/./angular.md) - Opinionated framework for building enterprise-grade applications
+- [Svelte](frameworks/./svelte.md) - Compiler-based framework for building high-performance user interfaces
+
+### API Development
+- [FastAPI](frameworks/./fastapi.md) - Modern Python web framework for building APIs
+- [Express](frameworks/./express.md) - Minimalist web framework for Node.js
+- [NestJS](frameworks/./nestjs.md) - Progressive Node.js framework for server-side applications
+
+### Containerization & Orchestration
+- [Docker](frameworks/./docker.md) - Container platform
+- [Kubernetes](frameworks/./kubernetes.md) - Container orchestration
+- [Docker Compose](frameworks/./docker-compose.md) - Multi-container Docker applications
+
+### Database
+- [PostgreSQL](frameworks/./postgresql.md) - Powerful open-source relational database
+- [MongoDB](frameworks/./mongodb.md) - NoSQL database
+- [Redis](frameworks/./redis.md) - In-memory data structure store
+
+### Testing
+- [Jest](frameworks/./jest.md) - JavaScript testing framework
+- [Pytest](frameworks/./pytest.md) - Python testing framework
+- [Cypress](frameworks/./cypress.md) - End-to-end testing framework
+
+### DevOps
+- [GitHub Actions](frameworks/./github-actions.md) - CI/CD platform
+- [Terraform](frameworks/./terraform.md) - Infrastructure as Code
+- [Ansible](frameworks/./ansible.md) - Configuration management
+
+## Adding New Framework Documentation
+
+1. Create a new markdown file in this directory
+2. Follow the standard template below
+3. Add a link to the table of contents above
+
+### Documentation Template
+
+```markdown
+# [Framework Name]
+
+## Overview
+Brief description of the framework and its purpose in our projects.
+
+## Installation
+```bash
+# Installation commands
+echo "Installation instructions"
+```
+
+## Configuration
+
+### Environment Variables
+- `VARIABLE_NAME`: Description
+- `ANOTHER_VAR`: Description
+
+### Example Config
+```yaml
+# Example configuration
+setting: value
+```
+
+## Usage
+
+### Basic Example
+```language
+// Example code
+const example = "Hello, World!";
+```
+
+## Best Practices
+- Best practice 1
+- Best practice 2
+
+## Common Issues
+
+### Issue 1
+**Problem**: Description of the problem
+**Solution**: How to fix it
+
+## Resources
+- [Official Documentation](https://example.com)
+- [GitHub Repository](https://github.com/example)
+```
+
+## Updating Documentation
+
+When updating framework documentation:
+
+1. Update the version numbers
+2. Add new features or changes
+3. Update any deprecated usage
+4. Update the "Last Updated" date at the bottom of the file
+
+## Last Updated
+2025-06-23
+

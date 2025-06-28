@@ -1,0 +1,52 @@
+# AI & Technology Thought Leaders
+
+This directory contains profiles of key figures in artificial intelligence, technology, and related fields. Each profile includes biographical information, key contributions, publications, and links to further reading.
+
+## Featured Profiles
+
+### AI Pioneers
+- [Nick Bostrom](ai/persons/nick_bostrom.md) - Philosopher of AI risk and existential risk
+- [Demis Hassabis](ai/persons/demis_hassabis.md) - Co-founder of DeepMind, creator of AlphaGo and AlphaFold
+- [Yann LeCun](ai/persons/yann_lecun.md) - Chief AI Scientist at Meta, pioneer of convolutional neural networks
+
+### Upcoming Profiles
+- Geoffrey Hinton
+- Yoshua Bengio
+- Fei-Fei Li
+- Ilya Sutskever
+- Andrej Karpathy
+- Elon Musk
+- Sam Altman
+
+## Profile Structure
+
+Each profile follows a consistent structure including:
+- Overview and significance
+- Key contributions
+- Biography
+- Major works and publications
+- Awards and honors
+- Current work
+- Media appearances
+- Further reading and external links
+
+## Contributing
+
+To add a new profile:
+1. Copy `person_template.md` to a new file with the format `firstname_lastname.md`
+2. Fill in the template with accurate, well-sourced information
+3. Add the profile to the appropriate section in this README
+4. Submit a pull request
+
+## Sources
+
+Information is gathered from:
+- Official websites and publications
+- Peer-reviewed papers
+- Reputable news sources
+- Verified interviews and talks
+
+## Last Updated
+
+2025-06-24
+

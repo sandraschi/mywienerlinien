@@ -1,0 +1,257 @@
+/**
+ * Print Styles
+ * Optimized styles for printing the documentation
+ */
+
+@media print {
+  /* Hide unnecessary elements */
+  .no-print,
+  .theme-toggle,
+  .console-toggle,
+  .controls-toggle,
+  .console-panel,
+  .controls-panel,
+  .edit-link,
+  .sidebar-toggle,
+  .pagination,
+  .breadcrumbs,
+  .toc,
+  .alert,
+  .notice,
+  .ad,
+  .feedback-widget,
+  .sidebar-footer,
+  .sidebar-version,
+  .sidebar-search {
+    display: none !important;
+  }
+
+  /* Base typography */
+  body {
+    font-family: var(--font-sans);
+    font-size: 11pt;
+    line-height: 1.5;
+    color: var(--color-black);
+    background: var(--color-white) !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  h1 { font-size: 18pt; }
+  h2 { font-size: 16pt; }
+  h3 { font-size: 14pt; }
+  h4 { font-size: 12pt; }
+  h5, h6 { font-size: 11pt; }
+
+  /* Paragraphs and lists */
+  p, ul, ol, dl, blockquote, pre, table {
+    margin: 0.75em 0;
+  }
+
+  p, li, dt, dd, td, th, caption {
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  /* Ensure proper page breaks */
+  p, h2, h3, li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  pre, blockquote, table, figure, img, svg, .code-toolbar, .highlight {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Links */
+  a, a:visited {
+    text-decoration: underline;
+    color: var(--color-black) !important;
+  }
+
+  a[href^='http']:after,
+  a[href^='https://']:after {
+    content: " (" attr(href) ")";
+    font-size: 90%;
+    word-break: break-all;
+  }
+
+  a[href^='#']:after,
+  a[href^='javascript:']:after,
+  a[href^='mailto:']:after {
+    content: '';
+  }
+
+  /* Code blocks and syntax highlighting */
+  pre, code, kbd, samp, var, tt {
+    font-family: var(--font-mono);
+    font-size: 10pt;
+    background: var(--color-off-white) !important;
+    border: 1px solid var(--color-light-gray);
+    page-break-inside: avoid;
+    word-wrap: break-word;
+  }
+
+  pre {
+    padding: 0.5em;
+    overflow: hidden;
+    page-break-inside: avoid;
+  }
+
+  code {
+    padding: 0.15em 0.3em;
+    border-radius: 2px;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    margin: 1em 0;
+    page-break-inside: avoid;
+  }
+
+  table, th, td {
+    border: 1px solid var(--color-medium-gray) !important;
+  }
+
+  th, td {
+    padding: 0.4em 0.8em;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--color-off-white) !important;
+    font-weight: bold;
+  }
+
+  /* Images and figures */
+  img, svg, figure {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
+  }
+
+  figure {
+    margin: 1em 0;
+    page-break-inside: avoid;
+  }
+
+  figcaption {
+    font-size: 9pt;
+    font-style: italic;
+    text-align: center;
+    margin-top: 0.5em;
+  }
+
+  /* Utility classes */
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  .no-break {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* Content adjustments */
+  .main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+  }
+
+  /* Print header and footer */
+  .print-header {
+    position: running(header);
+    text-align: center;
+    font-size: 10pt;
+    color: var(--color-medium-gray);
+    padding-bottom: 0.5cm;
+    border-bottom: 1px solid var(--color-light-gray);
+  }
+
+  .print-footer {
+    position: running(footer);
+    text-align: center;
+    font-size: 9pt;
+    color: var(--color-medium-gray);
+    padding-top: 0.5cm;
+  }
+
+  /* First page header */
+  .print-title {
+    position: running(first-header);
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-bottom: 1cm;
+  }
+
+  /* Lists */
+  ul, ol {
+    padding-left: 1.5em;
+  }
+
+  li {
+    margin: 0.3em 0;
+    page-break-inside: avoid;
+  }
+
+  /* Blockquotes */
+  blockquote {
+    border-left: 3px solid var(--color-light-gray);
+    padding: 0.5em 0 0.5em 1em;
+    margin: 1em 0 1em 1em;
+    color: var(--color-darker-gray);
+  }
+
+  /* Horizontal rules */
+  hr {
+    border: 0;
+    border-top: 1px solid var(--color-light-gray);
+    margin: 1.5em 0;
+  }
+
+  /* Definition lists */
+  dt {
+    font-weight: bold;
+    margin-top: 0.5em;
+  }
+
+  dd {
+    margin-left: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  /* Hide interactive elements */
+  .no-print,
+  .btn,
+  button,
+  input,
+  select,
+  textarea,
+  .form-control,
+  .nav-tabs,
+  .tab-content > .tab-pane:not(.active) {
+    display: none !important;
+  }
+}

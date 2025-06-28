@@ -1,0 +1,12 @@
+# Humanoid Robots
+
+This section covers companies and their projects focused on developing bipedal, humanoid robots. These robots are often designed for general-purpose tasks in environments built for humans.
+
+## Companies
+
+*   [Agility Robotics](robotics/humanoid/./agility_robotics.md) - Creators of Digit, a robot for logistics and warehouse automation.
+*   [Boston Dynamics](robotics/humanoid/./boston_dynamics.md) - Developers of the highly agile Atlas research platform.
+*   [Figure AI](robotics/humanoid/./figure_ai.md) - Developers of the Figure 01, an AI-powered humanoid for manufacturing and logistics.
+*   [Sanctuary AI](robotics/humanoid/./sanctuary_ai.md) - Creators of Phoenix and the Carbon™ AI control system, focused on general-purpose robotics.
+*   [Tesla](robotics/humanoid/./tesla.md) - Developers of Optimus, a general-purpose humanoid robot for manufacturing and beyond.
+
