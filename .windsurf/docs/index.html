@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Windsurf Documentation</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="Windsurf Documentation">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="icon" href="favicon.ico">
+  
+  <!-- Docsify CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4.13.0/lib/themes/vue.css">
+  
+  <!-- Prism CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  
+  <!-- Theme Toggle Button -->
+  <style>
+    .theme-toggle, .console-toggle, .config-toggle {
+      position: fixed;
+      background: var(--theme-color, #3F51B5);
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 1000;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .theme-toggle {
+      right: 20px;
+      top: 20px;
+    }
+    
+    .console-toggle {
+      right: 70px;
+      top: 20px;
+      font-family: monospace;
+      font-weight: bold;
+    }
+    
+    .config-toggle {
+      right: 120px;
+      top: 20px;
+      font-size: 18px;
+    }
+    
+    .theme-toggle:hover, .console-toggle:hover, .config-toggle:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    
+    /* Console styles */
+    #console {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: #1e1e1e;
+      color: #f0f0f0;
+      z-index: 999;
+      display: none;
+      border-top: 1px solid #444;
+      font-family: 'Consolas', 'Monaco', monospace;
+      overflow: hidden;
+      resize: vertical;
+      min-height: 100px;
+      max-height: 80vh;
+    }
+    
+    /* Custom resize handle */
+    #console::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      cursor: row-resize;
+      background: transparent;
+      z-index: 1001;
+    }
+    
+    /* Console content area */
+    #console-content {
+      position: absolute;
+      top: 8px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: auto;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    
+    .console-toggle.console-open {
+      background: #ff5252;
+    }
+    
+    /* Config panel styles */
+    #config-panel {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background: #fff;
+      z-index: 1002;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+      transition: right 0.3s ease;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+    
+    #config-panel.open {
+      right: 0;
+    }
+    
+    #config-panel h3 {
+      margin-top: 0;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    .config-section {
+      margin-bottom: 20px;
+    }
+    
+    .config-option {
+      margin: 10px 0;
+    }
+    
+    .config-option label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    .config-option select, 
+    .config-option input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Theme Toggle Button -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+    🌓
+  </button>
+  
+  <!-- Console Toggle Button -->
+  <button id="consoleToggle" class="console-toggle" aria-label="Toggle console" title="Toggle console">
+    >_
+  </button>
+  
+  <!-- Config Toggle Button -->
+  <button id="configToggle" class="config-toggle" aria-label="Settings" title="Settings">
+    ⚙️
+  </button>
+  
+  <!-- Docsify container -->
+  <div id="app"></div>
+  
+  <!-- Docsify Scripts -->
+  <script>
+    window.$docsify = {
+      name: 'Windsurf Documentation',
+      repo: '',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      themeColor: '#3F51B5',
+      executeScript: true,
+      noEmoji: false,
+      relativePath: true,
+      maxLevel: 6,
+      loadNavbar: false,
+      mergeNavbar: false,
+      coverpage: true,
+      onlyCover: false,
+      loadFooter: false,
+      pagination: {
+        previousText: 'Previous',
+        nextText: 'Next',
+        crossChapter: true,
+        crossChapterText: true,
+        theme: 'bootstrap'
+      },
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md',
+        '/.*/_coverpage.md': '/_coverpage.md'
+      },
+      plugins: [
+        function(hook, vm) {
+          hook.beforeEach(function(content) {
+            return content;
+          });
+        },
+        // Enable sidebar collapse
+        function(hook) {
+          hook.doneEach(function() {
+            // Initialize sidebar collapse after content is loaded
+            if (window.DocsifySidebarCollapse) {
+              window.DocsifySidebarCollapse.init({
+                sidebarHtml: true
+              });
+            }
+          });
+        }
+      ]
+    };
+    
+    // Theme management
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      let currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+      
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        currentTheme = theme;
+      }
+      
+      // Initialize theme
+      setTheme(currentTheme);
+      
+      // Toggle theme on button click
+      themeToggle.addEventListener('click', function() {
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+      });
+      
+      // Watch for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('theme')) {
+          setTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    });
+  </script>
+  
+  <!-- Load Docsify -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4.13.0/lib/docsify.min.js"></script>
+  
+  <!-- Load plugins -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4.13.0/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2.1.1/dist/docsify-copy-code.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-console/dist/docsify-console.min.js"></script>
+  
+  <!-- Prism for syntax highlighting -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-powershell.min.js"></script>
+  
+  <!-- Initialize console and sidebar -->
+  <!-- Config Panel -->
+  <div id="config-panel">
+    <h3>Documentation Settings</h3>
+    
+    <div class="config-section">
+      <h4>Appearance</h4>
+      <div class="config-option">
+        <label for="themeSelect">Theme:</label>
+        <select id="themeSelect">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="system">System Default</option>
+        </select>
+      </div>
+      
+      <div class="config-option">
+        <label for="fontSize">Font Size:</label>
+        <select id="fontSize">
+          <option value="14px">Small</option>
+          <option value="16px" selected>Medium</option>
+          <option value="18px">Large</option>
+          <option value="20px">Extra Large</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="config-section">
+      <h4>Navigation</h4>
+      <div class="config-option">
+        <label>
+          <input type="checkbox" id="autoCollapse" checked>
+          Auto-collapse sidebar
+        </label>
+      </div>
+      <div class="config-option">
+        <label>
+          <input type="checkbox" id="smoothScroll" checked>
+          Smooth scrolling
+        </label>
+      </div>
+    </div>
+    
+    <div class="config-section">
+      <h4>Features</h4>
+      <div class="config-option">
+        <label>
+          <input type="checkbox" id="showLineNumbers" checked>
+          Show line numbers
+        </label>
+      </div>
+      <div class="config-option">
+        <label>
+          <input type="checkbox" id="enableSearch" checked>
+          Enable search
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configure console
+    window.$docsify = window.$docsify || {};
+    window.$docsify.console = {
+      style: 'position: fixed; bottom: 0; left: 0; right: 0; height: 200px; z-index: 900;',
+      showOnStart: false
+    };
+    
+    // Initialize UI components when DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize console
+      const consoleToggle = document.getElementById('consoleToggle');
+      const consoleEl = document.createElement('div');
+      consoleEl.id = 'console';
+      
+      // Create console content area
+      const consoleContent = document.createElement('div');
+      consoleContent.id = 'console-content';
+      consoleEl.appendChild(consoleContent);
+      
+      // Add welcome message
+      consoleContent.textContent = 'Console ready. Type commands here...';
+      
+      document.body.appendChild(consoleEl);
+      
+      let consoleVisible = false;
+      let isResizing = false;
+      let startY, startHeight;
+      
+      // Load saved console height
+      const savedHeight = localStorage.getItem('consoleHeight');
+      if (savedHeight) {
+        consoleEl.style.height = savedHeight + 'px';
+      }
+      
+      // Toggle console visibility
+      function toggleConsole(show) {
+        if (show !== undefined) {
+          consoleVisible = show;
+        } else {
+          consoleVisible = !consoleVisible;
+        }
+        
+        consoleEl.style.display = consoleVisible ? 'block' : 'none';
+        consoleToggle.classList.toggle('console-open', consoleVisible);
+        
+        // Trigger window resize to update layout
+        window.dispatchEvent(new Event('resize'));
+      }
+      
+      // Toggle on button click
+      consoleToggle.addEventListener('click', () => toggleConsole());
+      
+      // Make console resizable
+      consoleEl.addEventListener('mousedown', function(e) {
+        if (e.offsetY < 10) { // Only trigger on top 10px of console
+          isResizing = true;
+          startY = e.clientY;
+          startHeight = parseInt(document.defaultView.getComputedStyle(consoleEl).height, 10);
+          e.preventDefault();
+        }
+      });
+      
+      document.addEventListener('mousemove', function(e) {
+        if (!isResizing) return;
+        
+        const height = startHeight + (startY - e.clientY);
+        const minHeight = 100;
+        const maxHeight = window.innerHeight * 0.8;
+        
+        if (height >= minHeight && height <= maxHeight) {
+          consoleEl.style.height = height + 'px';
+          localStorage.setItem('consoleHeight', height);
+        }
+      });
+      
+      document.addEventListener('mouseup', function() {
+        isResizing = false;
+      });
+      
+      // Prevent text selection while resizing
+      document.addEventListener('selectstart', function(e) {
+        if (isResizing) {
+          e.preventDefault();
+          return false;
+        }
+      });
+      
+      // Toggle console with keyboard shortcut (Ctrl+`)
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === '`') {
+          e.preventDefault();
+          toggleConsole();
+        }
+      });
+      
+      // Initialize config panel toggle
+      const configToggle = document.getElementById('configToggle');
+      const configPanel = document.getElementById('config-panel');
+      
+      configToggle.addEventListener('click', function() {
+        configPanel.classList.toggle('open');
+      });
+      
+      // Close config panel when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!configPanel.contains(event.target) && event.target !== configToggle) {
+          configPanel.classList.remove('open');
+        }
+      });
+      
+      // Load saved settings
+      function loadSettings() {
+        const settings = JSON.parse(localStorage.getItem('docsifySettings') || '{}');
+        
+        // Apply theme
+        if (settings.theme) {
+          document.documentElement.setAttribute('data-theme', settings.theme);
+          document.getElementById('themeSelect').value = settings.theme;
+        }
+        
+        // Apply font size
+        if (settings.fontSize) {
+          document.documentElement.style.setProperty('--base-font-size', settings.fontSize);
+          document.getElementById('fontSize').value = settings.fontSize;
+        }
+        
+        // Apply other settings
+        if (settings.autoCollapse !== undefined) {
+          document.getElementById('autoCollapse').checked = settings.autoCollapse;
+        }
+        
+        if (settings.smoothScroll !== undefined) {
+          document.getElementById('smoothScroll').checked = settings.smoothScroll;
+        }
+        
+        if (settings.showLineNumbers !== undefined) {
+          document.getElementById('showLineNumbers').checked = settings.showLineNumbers;
+        }
+        
+        if (settings.enableSearch !== undefined) {
+          document.getElementById('enableSearch').checked = settings.enableSearch;
+        }
+      }
+      
+      // Save settings
+      function saveSettings() {
+        const settings = {
+          theme: document.getElementById('themeSelect').value,
+          fontSize: document.getElementById('fontSize').value,
+          autoCollapse: document.getElementById('autoCollapse').checked,
+          smoothScroll: document.getElementById('smoothScroll').checked,
+          showLineNumbers: document.getElementById('showLineNumbers').checked,
+          enableSearch: document.getElementById('enableSearch').checked
+        };
+        
+        localStorage.setItem('docsifySettings', JSON.stringify(settings));
+        
+        // Apply theme
+        document.documentElement.setAttribute('data-theme', settings.theme);
+        
+        // Apply font size
+        document.documentElement.style.setProperty('--base-font-size', settings.fontSize);
+        
+        // Apply other settings
+        if (window.$docsify) {
+          window.$docsify.search = settings.enableSearch ? { maxAge: 86400000 } : false;
+        }
+      }
+      
+      // Add event listeners for settings changes
+      document.getElementById('themeSelect').addEventListener('change', saveSettings);
+      document.getElementById('fontSize').addEventListener('change', saveSettings);
+      document.getElementById('autoCollapse').addEventListener('change', saveSettings);
+      document.getElementById('smoothScroll').addEventListener('change', saveSettings);
+      document.getElementById('showLineNumbers').addEventListener('change', saveSettings);
+      document.getElementById('enableSearch').addEventListener('change', saveSettings);
+      
+      // Load initial settings
+      loadSettings();
+    });
+    
+    // Configure sidebar
+    window.$docsify = window.$docsify || {};
+    window.$docsify.sidebar = {
+      toggleButton: true,
+      level: '\\-',
+      collapseLevel: 2,
+      auto2top: true,
+      nameField: 'title',
+      hideMissingTitles: true
+    };
+    
+    // Initialize sidebar collapse after Docsify is loaded
+    window.$docsify.plugins = window.$docsify.plugins || [];
+    window.$docsify.plugins.push(function(hook, vm) {
+      hook.doneEach(function() {
+        if (window.DocsifySidebarCollapse) {
+          window.DocsifySidebarCollapse.init({
+            sidebarHtml: true,
+            collapseAll: false
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

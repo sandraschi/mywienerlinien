@@ -1,0 +1,226 @@
+/* ==========================================================================
+   CSS VARIABLES
+   ========================================================================== */
+
+/**
+ * 1. Colors
+ * 2. Typography
+ * 3. Layout
+ * 4. Z-index
+ * 5. Breakpoints
+ * 6. Shadows
+ * 7. Borders
+ * 8. Spacing
+ * 9. Transitions
+ * 10. Theme-specific overrides
+ */
+
+:root {
+  /* ==================== 1. Colors ==================== */
+  
+  /* Brand Colors */
+  --color-primary: #3eaf7c;
+  --color-primary-hover: #4abf8a;
+  --color-secondary: #2c3e50;
+  --color-accent: #4fa6ee;
+  
+  /* Grayscale */
+  --color-white: #ffffff;
+  --color-off-white: #f5f7fa;
+  --color-light-gray: #eaecef;
+  --color-medium-gray: #d1d5da;
+  --color-dark-gray: #6a737d;
+  --color-darker-gray: #444d56;
+  --color-off-black: #24292e;
+  
+  /* Status Colors */
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-error: #dc3545;
+  --color-info: #17a2b8;
+  
+  /* Text Colors */
+  --text-primary: var(--color-off-black);
+  --text-secondary: var(--color-darker-gray);
+  --text-muted: var(--color-dark-gray);
+  --text-inverse: var(--color-white);
+  
+  /* Background Colors */
+  --bg-primary: var(--color-white);
+  --bg-secondary: var(--color-off-white);
+  --bg-tertiary: var(--color-light-gray);
+  
+  /* Border Colors */
+  --border-primary: var(--color-light-gray);
+  --border-secondary: var(--color-medium-gray);
+  
+  /* Link Colors */
+  --link-color: var(--color-primary);
+  --link-hover: var(--color-primary-hover);
+  --link-visited: #6f42c1;
+  
+  /* Code Colors */
+  --code-bg: var(--color-off-white);
+  --code-color: #476582;
+  --code-comment: #6a737d;
+  --code-keyword: #d73a49;
+  --code-string: #032f62;
+  --code-number: #005cc5;
+  
+  /* ==================== 2. Typography ==================== */
+  
+  /* Font Families */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  
+  /* Font Sizes */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+  --text-4xl: 2.25rem;    /* 36px */
+  
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+  
+  /* Font Weights */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  
+  /* ==================== 3. Layout ==================== */
+  
+  /* Sizes */
+  --header-height: 60px;
+  --footer-height: 80px;
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 60px;
+  --content-max-width: 1200px;
+  --content-padding: 2rem;
+  
+  /* ==================== 4. Z-index ==================== */
+  
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  
+  /* ==================== 5. Breakpoints ==================== */
+  
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-xxl: 1400px;
+  
+  /* ==================== 6. Shadows ==================== */
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* ==================== 7. Borders ==================== */
+  
+  --border-width: 1px;
+  --border-radius-sm: 0.125rem;  /* 2px */
+  --border-radius: 0.25rem;      /* 4px */
+  --border-radius-md: 0.375rem;  /* 6px */
+  --border-radius-lg: 0.5rem;    /* 8px */
+  --border-radius-xl: 1rem;      /* 16px */
+  --border-radius-full: 9999px;  /* For circles/pills */
+  
+  /* ==================== 8. Spacing ==================== */
+  
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+  
+  /* ==================== 9. Transitions ==================== */
+  
+  --transition-speed: 0.2s;
+  --transition-timing: ease-in-out;
+  --transition: all var(--transition-speed) var(--transition-timing);
+  
+  /* ==================== 10. Theme-specific ==================== */
+  
+  /* Light Theme (default) */
+  --bg-color: var(--color-white);
+  --text-color: var(--color-off-black);
+  --sidebar-bg: var(--color-off-white);
+  --sidebar-text: var(--color-darker-gray);
+  --sidebar-highlight: #e6f7ff;
+  --header-bg: var(--color-white);
+  --header-text: var(--color-off-black);
+  --footer-bg: var(--color-off-white);
+  --footer-text: var(--color-darker-gray);
+  --border-color: var(--color-light-gray);
+  --code-bg: var(--color-off-white);
+  --code-color: #476582;
+  --link-color: var(--color-primary);
+  --link-hover: var(--color-primary-hover);
+  --accent-color: var(--color-primary);
+}
+
+/* ==================== Dark Theme ==================== */
+[data-theme="dark"],
+.dark-theme {
+  /* Colors */
+  --bg-color: #1e1e1e;
+  --text-color: #f5f5f5;
+  --sidebar-bg: #000000;
+  --sidebar-text: #e0e0e0;
+  --sidebar-highlight: #1a1a1a;
+  --header-bg: #000000;
+  --header-text: #ffffff;
+  --footer-bg: #000000;
+  --footer-text: #cccccc;
+  --border-color: #333333;
+  --code-bg: #1a1a1a;
+  --code-color: #d4d4d4;
+  --link-color: #4fa6ee;
+  --link-hover: #71b7ff;
+  --accent-color: #4fa6ee;
+  
+  /* Additional theme-specific styles */
+  color-scheme: dark;
+  
+  /* Code syntax highlighting */
+  --code-comment: #6a9955;
+  --code-keyword: #569cd6;
+  --code-string: #ce9178;
+  --code-number: #b5cea8;
+  
+  /* UI Elements */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+}

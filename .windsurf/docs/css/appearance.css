@@ -1,0 +1,258 @@
+/* Appearance Controls Styles */
+
+/* Base styles for appearance controls */
+#appearance-controls .control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+/* Form controls */
+.control-select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 2.25rem 0.5rem 0.75rem;
+  margin: 0.25rem 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.control-select:focus {
+  border-color: var(--theme-color, #42b983);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(66, 185, 131, 0.25);
+}
+
+/* Checkbox controls */
+.control-checkbox {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.control-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.control-checkbox label {
+  position: relative;
+  padding-left: 2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+.control-checkbox label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 1.25rem;
+  width: 1.25rem;
+  background-color: var(--bg-color);
+  border: 2px solid var(--border-color);
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.control-checkbox:hover label:before {
+  border-color: var(--theme-color, #42b983);
+}
+
+.control-checkbox input:checked ~ label:before {
+  background-color: var(--theme-color, #42b983);
+  border-color: var(--theme-color, #42b983);
+}
+
+.control-checkbox label:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 0.5rem;
+  top: 0.25rem;
+  width: 0.3125rem;
+  height: 0.625rem;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.control-checkbox input:checked ~ label:after {
+  display: block;
+}
+
+/* Reset button */
+#resetAppearance {
+  margin-top: 1rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, 
+              border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+#resetAppearance:hover {
+  background-color: var(--border-color);
+  color: var(--text-color);
+}
+
+/* Focus states for accessibility */
+.control-select:focus-visible,
+.control-checkbox input:focus-visible + label:before,
+#resetAppearance:focus-visible {
+  outline: 2px solid var(--theme-color, #42b983);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+.high-contrast {
+  --text-color: #000;
+  --bg-color: #fff;
+  --border-color: #000;
+  --theme-color: #0066cc;
+  --sidebar-bg: #f0f0f0;
+  --sidebar-text: #000;
+  --header-bg: #e0e0e0;
+  --header-text: #000;
+  --code-bg: #f5f5f5;
+  --code-text: #000;
+  --link-color: #0066cc;
+  --link-hover: #004080;
+  --table-border: #000;
+  --table-header-bg: #e0e0e0;
+  --table-row-odd: #f9f9f9;
+  --table-row-even: #f0f0f0;
+  --blockquote-border: #000;
+  --blockquote-bg: #f5f5f5;
+  --hr-color: #000;
+  --search-bg: #fff;
+  --search-border: #000;
+  --search-focus: #0066cc;
+  --search-highlight: #ff0;
+  --search-result-bg: #fff;
+  --search-result-border: #000;
+  --search-result-hover: #e0e0e0;
+  --search-result-active: #0066cc;
+  --search-result-active-text: #fff;
+  --search-result-count: #666;
+  --search-no-results: #900;
+  --search-loading: #0066cc;
+  --search-clear-bg: #e0e0e0;
+  --search-clear-hover: #ccc;
+  --search-clear-active: #999;
+  --search-clear-text: #000;
+  --search-clear-disabled: #999;
+  --search-clear-disabled-text: #666;
+  --search-clear-focus: #0066cc;
+  --search-clear-focus-text: #fff;
+  --search-clear-focus-bg: #004080;
+  --search-clear-focus-border: #000;
+  --search-clear-focus-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.5);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #appearance-controls .control-item {
+    gap: 0.75rem;
+  }
+  
+  .control-select,
+  .control-checkbox label {
+    font-size: 1rem;
+  }
+  
+  #resetAppearance {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] {
+  .control-select {
+    background-color: var(--sidebar-bg, #2f353a);
+    color: var(--sidebar-text, #e9ecef);
+    border-color: var(--border-color, #495057);
+  }
+  
+  .control-checkbox label:before {
+    background-color: var(--sidebar-bg, #2f353a);
+    border-color: var(--border-color, #495057);
+  }
+  
+  #resetAppearance {
+    background-color: var(--sidebar-bg, #2f353a);
+    border-color: var(--border-color, #495057);
+    color: var(--sidebar-text, #e9ecef);
+  }
+  
+  #resetAppearance:hover {
+    background-color: var(--border-color, #495057);
+  }
+}
+
+/* High contrast mode overrides */
+.high-contrast {
+  .control-select,
+  .control-checkbox label:before,
+  #resetAppearance {
+    border: 2px solid #000;
+  }
+  
+  .control-select:focus,
+  .control-checkbox input:focus-visible + label:before,
+  #resetAppearance:focus-visible {
+    outline: 3px solid #0000ff;
+    outline-offset: 2px;
+  }
+  
+  .control-checkbox input:checked ~ label:before {
+    background-color: #000;
+    border-color: #000;
+  }
+}

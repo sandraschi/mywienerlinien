@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>Windsurf Documentation</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Windsurf Documentation">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/controls.css">
+  <link rel="stylesheet" href="css/appearance.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/prism-simple.css">
+  <link rel="stylesheet" href="css/print.css">
+    }
+  </style>
+</head>
+<body>
+  <!-- Theme Toggle Button -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+    <span id="themeIcon">🌓</span>
+  </button>
+  
+  <!-- App container -->
+  <div id="app">
+    <div class="sidebar">
+      <!-- Sidebar will be loaded here -->
+      <div id="sidebar"></div>
+    </div>
+    <div class="content">
+      <!-- Content will be loaded here -->
+      <div id="main"></div>
+    </div>
+  </div>
+
+  <!-- Load Marked.js for parsing markdown -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
+  <!-- Load Docsify -->
+  <script src="plugins/docsify.min.js"></script>
+  
+  <!-- Load Sidebar Collapse Plugin -->
+  <link rel="stylesheet" href="plugins/sidebar-collapse.min.css">
+  <script src="plugins/docsify-sidebar-collapse.js"></script>
+  
+  <!-- Initialize Docsify -->
+  <script>
+    // Configuration
+    window.$docsify = {
+      el: '#main',
+      basePath: '/',
+      name: 'Windsurf Documentation',
+      loadSidebar: '_sidebar.md',
+      subMaxLevel: 3,
+      auto2top: true,
+      themeColor: 'var(--theme-primary)',
+      executeScript: true,
+      noEmoji: false,
+      relativePath: false,
+      maxLevel: 6,
+      loadNavbar: false,
+      mergeNavbar: false,
+      autoHeader: true,
+      coverpage: false,
+      onlyCover: false,
+      loadFooter: false,
+      // Use hash-based routing
+      routerMode: 'hash',
+      // Fix for sidebar loading
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
+      // Handle .md extensions in URLs
+      request: function (opts) {
+        // Add .md extension if not present and not a directory
+        if (!opts.url.endsWith('.md') && !opts.url.endsWith('/')) {
+          opts.url += '.md';
+        }
+        // Ensure sidebar is loaded correctly
+        if (opts.url.endsWith('_sidebar.md')) {
+          opts.url = '/_sidebar.md';
+        }
+        return opts;
+      },
+      // Custom path handling
+      requestHeaders: {
+        'Cache-Control': 'no-cache'
+      },
+      // Sidebar Collapse Plugin Configuration
+      sidebarDisplayLevel: 2,  // Show up to 2 levels by default
+      subMaxLevel: 3,         // Allow up to 3 levels of nesting
+      loadSidebar: true,      // Enable sidebar loading
+      loadNavbar: false,      // No navbar needed
+      mergeNavbar: false,     // Don't merge navbar with sidebar
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      }
+    };
+    
+    // Theme management
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      
+      // Set initial theme
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      let currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+      
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        currentTheme = theme;
+      }
+      
+      // Initialize theme
+      setTheme(currentTheme);
+      
+      // Toggle theme on button click
+      themeToggle.addEventListener('click', function() {
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+      });
+      
+      // Watch for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('theme')) {
+          setTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+      
+      // Load the sidebar content
+      function loadSidebar() {
+        fetch('_sidebar.md')
+          .then(response => response.text())
+          .then(content => {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+              sidebar.innerHTML = marked.parse(content);
+              
+              // Add folder toggle functionality
+              const folders = sidebar.querySelectorAll('.folder > a');
+              folders.forEach(folder => {
+                folder.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  const subnav = this.nextElementSibling;
+                  if (subnav && subnav.classList.contains('subnav')) {
+                    subnav.style.display = subnav.style.display === 'none' ? 'block' : 'none';
+                  }
+                });
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Error loading sidebar:', error);
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+              sidebar.innerHTML = '<p>Error loading navigation. Please check the console for details.';
+            }
+          });
+      }
+      
+      // Initial load
+      loadSidebar();
+      
+      // Watch for navigation changes
+      window.addEventListener('popstate', loadSidebar);
+    });
+    
+    // Error handling
+    window.addEventListener('error', function(e) {
+      console.error('Error:', e.message, 'at', e.filename, 'line', e.lineno);
+    });
+  </script>
+  
+  <!-- Load Prism.js for syntax highlighting -->
+  <script src="plugins/prism.js"></script>
+  <script src="plugins/prism-javascript.min.js"></script>
+  <script src="plugins/prism-python.min.js"></script>
+  <script src="plugins/prism-bash.min.js"></script>
+  <script src="plugins/prism-json.min.js"></script>
+  <script src="plugins/prism-yaml.min.js"></script>
+  <script src="plugins/prism-powershell.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+﻿# Broken Links Report
+Generated: 06/27/2025 10:15:44
+File: D:\Dev\repos\mywienerlinien\.windsurf\docs\README.md
+Total Links Checked: 68
+Broken Links: 61
+
+## Broken Links
+- **Latest Updates**
+  - URL: 1_news
+  - Line: 10
+- **Release Notes**
+  - URL: 1_news/releases
+  - Line: 11
+- **Technical Notes**
+  - URL: 2_notes
+  - Line: 14
+- **Flows**
+  - URL: 2_notes/flows
+  - Line: 15
+- **Ideas**
+  - URL: 2_notes/ideas
+  - Line: 16
+- **Meeting Notes**
+  - URL: 2_notes/meeting-notes
+  - Line: 17
+- **How-To Guides**
+  - URL: 2_notes/how-tos
+  - Line: 18
+- **Troubleshooting**
+  - URL: 2_notes/troubleshooting
+  - Line: 19
+- **AI Overview**
+  - URL: 3_ai
+  - Line: 22
+- **AI Basics**
+  - URL: 3_ai/basics
+  - Line: 23
+- **AI Companies**
+  - URL: 3_ai/companies
+  - Line: 24
+- **AI Hardware**
+  - URL: 3_ai/hardware
+  - Line: 25
+- **Hosted LLMs**
+  - URL: 3_ai/hosted_llms
+  - Line: 26
+- **Local LLMs**
+  - URL: 3_ai/local_llms
+  - Line: 27
+- **AI News**
+  - URL: 3_ai/news
+  - Line: 28
+- **Research Papers**
+  - URL: 3_ai/papers
+  - Line: 29
+- **AI Personalities**
+  - URL: 3_ai/persons
+  - Line: 30
+- **Speech AI**
+  - URL: 3_ai/speech
+  - Line: 31
+- **Computer Vision**
+  - URL: 3_ai/image_and_video
+  - Line: 32
+- **AI Controversies**
+  - URL: 3_ai/controversies
+  - Line: 33
+- **Development Guide**
+  - URL: 5_development
+  - Line: 36
+- **API Documentation**
+  - URL: 5_development/api
+  - Line: 37
+- **Architecture**
+  - URL: 5_development/architecture
+  - Line: 38
+- **Docker**
+  - URL: 5_development/docker
+  - Line: 39
+- **Frameworks**
+  - URL: 5_development/frameworks
+  - Line: 40
+- **Guides**
+  - URL: 5_development/guides
+  - Line: 41
+- **IDEs**
+  - URL: 5_development/ide
+  - Line: 42
+- **Low-Code/No-Code**
+  - URL: 5_development/low_code_no_code
+  - Line: 43
+- **UI Libraries**
+  - URL: 5_development/ui_libraries
+  - Line: 44
+- **Software Catalog**
+  - URL: 6_software
+  - Line: 47
+- **Development Tools**
+  - URL: 6_software/development_tools
+  - Line: 48
+- **Operating Systems**
+  - URL: 6_software/operating_systems
+  - Line: 49
+- **Security Tools**
+  - URL: 6_software/security
+  - Line: 50
+- **Project Directory**
+  - URL: 7_projects
+  - Line: 53
+- **S&S Documentation**
+  - URL: 7_projects/S&S_docs
+  - Line: 54
+- **Wiener Linien**
+  - URL: 7_projects/wiener_linien
+  - Line: 55
+- **Robotics Overview**
+  - URL: 8_robotics
+  - Line: 58
+- **Canine Robotics**
+  - URL: 8_robotics/canine
+  - Line: 59
+- **Humanoid Robots**
+  - URL: 8_robotics/humanoid
+  - Line: 60
+- **Industrial Logistics**
+  - URL: 8_robotics/industrial_logistics
+  - Line: 61
+- **Resources**
+  - URL: 9_misc/resources
+  - Line: 64
+- **Proposed Rules**
+  - URL: 9_misc/proposed_rules
+  - Line: 65
+- **Archive**
+  - URL: 9_misc/archive
+  - Line: 66
+- **API Reference**
+  - URL: 5_development/api
+  - Line: 76
+- **Contributing Guide**
+  - URL: 2_notes/contributing
+  - Line: 77
+- **Troubleshooting**
+  - URL: 2_notes/troubleshooting
+  - Line: 78
+- **Development Tools**
+  - URL: 6_software/development_tools
+  - Line: 79
+- **Software Catalog**
+  - URL: 6_software
+  - Line: 80
+- **Visual Studio Code**
+  - URL: 6_software/development_tools/ides
+  - Line: 88
+- **JetBrains IDEs**
+  - URL: 6_software/development_tools/ides
+  - Line: 89
+- **Terminal-based Editors**
+  - URL: 6_software/development_tools/terminal
+  - Line: 90
+- **Version Control**
+  - URL: 6_software/development_tools/version_control
+  - Line: 94
+- **Package Managers**
+  - URL: 6_software/development_tools/package_managers
+  - Line: 95
+- **Containerization**
+  - URL: 5_development/containers
+  - Line: 96
+- **CI/CD**
+  - URL: 5_development/deployment
+  - Line: 97
+- **Wiener Linien API Guide**
+  - URL: 7_projects/wiener_linien/WIENER_LINIEN_API_GUIDE.md
+  - Line: 109
+- **Analysis**
+  - URL: 2_notes/flows/bugs/250621_rules_reading_issue/analysis.md
+  - Line: 115
+- **Documentation Standards**
+  - URL: 5_development/global_services/documentation_standards.md
+  - Line: 128
+- **Template Library**
+  - URL: 5_development/global_services/template_library.md
+  - Line: 129
+- **Grafana Dashboard Import**
+  - URL: ../grafana/import_dashboard.ps1.md
+  - Line: 135
+- **Documentation Standards**
+  - URL: 5_development/global_services/documentation_standards.md
+  - Line: 136
+

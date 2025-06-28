@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Vienna Public Transport - Wiener Linien Live Map</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation Bar -->
+        <nav class="top-nav">
+            <div class="nav-container">
+                <a href="{{ url_for('index') }}" class="nav-brand">Wiener Linien</a>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}" class="nav-link">Map</a>
+                    <a href="{{ url_for('line_info') }}" class="nav-link">Lines</a>
+                    <a href="{{ url_for('about') }}" class="nav-link active">About</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="about-container">
+                <section class="hero">
+                    <h1>Vienna's Public Transport</h1>
+                    <p class="subtitle">Efficient, sustainable, and always on time</p>
+                </section>
+
+                <section class="stats-section">
+                    <h2>Vienna Public Transport by the Numbers</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="statLines">0</div>
+                            <div class="stat-label">Lines</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="statStations">0</div>
+                            <div class="stat-label">Stations</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="statDailyPassengers">2.6M</div>
+                            <div class="stat-label">Daily Passengers</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="statCoverage">100%</div>
+                            <div class="stat-label">City Coverage</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="transport-types">
+                    <h2>Our Transport Network</h2>
+                    <div class="transport-grid">
+                        <div class="transport-card metro">
+                            <div class="transport-icon">U</div>
+                            <h3>Metro (U-Bahn)</h3>
+                            <p>Fast and efficient underground trains connecting all major districts of Vienna.</p>
+                            <ul>
+                                <li>5 lines (U1-U6)</li>
+                                <li>24/7 service on weekends</li>
+                                <li>2-5 minute intervals during peak hours</li>
+                            </ul>
+                        </div>
+                        <div class="transport-card tram">
+                            <div class="transport-icon">T</div>
+                            <h3>Tram</h3>
+                            <p>Extensive tram network providing convenient access throughout the city.</p>
+                            <ul>
+                                <li>Over 30 lines</li>
+                                <li>Scenic routes through the city</li>
+                                <li>Low-floor vehicles for accessibility</li>
+                            </ul>
+                        </div>
+                        <div class="transport-card bus">
+                            <div class="transport-icon">B</div>
+                            <h3>Bus</h3>
+                            <p>Comprehensive bus network covering all areas of Vienna.</p>
+                            <ul>
+                                <li>Day and night services</li>
+                                <li>Real-time information</li>
+                                <li>Bike transport available</li>
+                            </ul>
+                        </div>
+                        <div class="transport-card nightbus">
+                            <div class="transport-icon">N</div>
+                            <h3>NightBus</h3>
+                            <p>Reliable night service when other transport options are limited.</p>
+                            <ul>
+                                <li>Operates 12:30 AM - 5:00 AM</li>
+                                <li>Frequent departures</li>
+                                <li>Safe and monitored</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="sustainability">
+                    <h2>Sustainability & Innovation</h2>
+                    <div class="sustainability-content">
+                        <div class="sustainability-text">
+                            <p>Vienna's public transport system is a global leader in sustainability and innovation:</p>
+                            <ul>
+                                <li>100% of our electricity comes from renewable sources</li>
+                                <li>Modern, energy-efficient vehicles across our network</li>
+                                <li>Continuous expansion of bike-sharing and pedestrian zones</li>
+                                <li>Smart city integration for seamless mobility</li>
+                            </ul>
+                        </div>
+                        <div class="sustainability-image">
+                            <img src="{{ url_for('static', filename='img/sustainability.jpg') }}" alt="Sustainable transport in Vienna">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="ticketing">
+                    <h2>Tickets & Fares</h2>
+                    <div class="ticketing-grid">
+                        <div class="ticket-option">
+                            <h3>Single Ticket</h3>
+                            <p class="price">€2.40</p>
+                            <p>Valid for one journey in one direction with transfers allowed within 1 hour</p>
+                        </div>
+                        <div class="ticket-option">
+                            <h3>24-Hour Ticket</h3>
+                            <p class="price">€8.00</p>
+                            <p>Unlimited travel for 24 hours from time of validation</p>
+                        </div>
+                        <div class="ticket-option">
+                            <h3>Weekly Ticket</h3>
+                            <p class="price">€17.10</p>
+                            <p>Unlimited travel from Monday to the following Monday at 9:00 AM</p>
+                        </div>
+                        <div class="ticket-option">
+                            <h3>Annual Pass</h3>
+                            <p class="price">€365</p>
+                            <p>Just €1 per day for unlimited travel throughout Vienna</p>
+                        </div>
+                    </div>
+                    <div class="ticketing-cta">
+                        <a href="https://www.wienerlinien.at/eportal3/ep/channelView.do/pageTypeId/66533/channelId/-52064" 
+                           target="_blank" 
+                           class="btn btn-primary">
+                            Buy Tickets Online
+                        </a>
+                    </div>
+                </section>
+
+                <section class="accessibility">
+                    <h2>Accessibility</h2>
+                    <div class="accessibility-content">
+                        <div class="accessibility-image">
+                            <img src="{{ url_for('static', filename='img/accessibility.jpg') }}" alt="Accessible transport in Vienna">
+                        </div>
+                        <div class="accessibility-text">
+                            <p>Vienna's public transport is designed to be accessible to everyone:</p>
+                            <ul>
+                                <li>Step-free access at all metro stations</li>
+                                <li>Audio and visual announcements on all vehicles</li>
+                                <li>Priority seating for passengers with disabilities</li>
+                                <li>Tactile guidance systems for visually impaired passengers</li>
+                                <li>Assistance services available upon request</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="contact">
+                    <h2>Contact & Support</h2>
+                    <div class="contact-grid">
+                        <div class="contact-method">
+                            <h3>Customer Service</h3>
+                            <p>Available 24/7 in multiple languages</p>
+                            <p><strong>Phone:</strong> +43 1 7909 100</p>
+                            <p><strong>Email:</strong> <a href="mailto:service@wienerlinien.at">service@wienerlinien.at</a></p>
+                        </div>
+                        <div class="contact-method">
+                            <h3>Lost & Found</h3>
+                            <p>Items lost on our vehicles can be reported online or in person</p>
+                            <p><strong>Phone:</strong> +43 1 7909 174</p>
+                            <p><strong>Location:</strong> Erdbergstraße 202, 1030 Vienna</p>
+                        </div>
+                        <div class="contact-method">
+                            <h3>Follow Us</h3>
+                            <div class="social-links">
+                                <a href="https://www.facebook.com/wienerlinien" target="_blank" class="social-link">Facebook</a>
+                                <a href="https://twitter.com/wienerlinien" target="_blank" class="social-link">Twitter</a>
+                                <a href="https://www.instagram.com/wienerlinien" target="_blank" class="social-link">Instagram</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Wiener Linien</h4>
+                    <p>Your reliable public transport partner in Vienna since 1903.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}">Live Map</a></li>
+                        <li><a href="{{ url_for('line_info') }}">Lines & Routes</a></li>
+                        <li><a href="https://www.wienerlinien.at" target="_blank">Official Website</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Imprint</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> Wiener Linien Live Map. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/about.js') }}"></script>
+</body>
+</html>

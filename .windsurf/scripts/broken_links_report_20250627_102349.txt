@@ -1,0 +1,53 @@
+﻿# Broken Links Report
+Generated: 06/27/2025 10:23:49
+File: D:\Dev\repos\mywienerlinien\.windsurf\docs\README.md
+Total Links Checked: 68
+Broken Links: 15
+
+## Broken Links
+- **Release Notes**
+  - URL: 1_news/releases/README.md
+  - Line: 11
+- **How-To Guides**
+  - URL: 2_notes/how-tos/README.md
+  - Line: 18
+- **Troubleshooting**
+  - URL: 2_notes/troubleshooting/README.md
+  - Line: 19
+- **Resources**
+  - URL: 9_misc/resources/README.md
+  - Line: 64
+- **Archive**
+  - URL: 9_misc/archive/README.md
+  - Line: 66
+- **Contributing Guide**
+  - URL: 2_notes/contributing/README.md
+  - Line: 77
+- **Troubleshooting**
+  - URL: 2_notes/troubleshooting/README.md
+  - Line: 78
+- **Terminal-based Editors**
+  - URL: 6_software/development_tools/terminal/README.md
+  - Line: 90
+- **Containerization**
+  - URL: 5_development/containers/README.md
+  - Line: 96
+- **Wiener Linien API Guide**
+  - URL: 7_projects/wiener_linien/WIENER_LINIEN_API_GUIDE.md
+  - Line: 109
+- **Analysis**
+  - URL: 2_notes/flows/bugs/250621_rules_reading_issue/analysis.md
+  - Line: 115
+- **Documentation Standards**
+  - URL: 5_development/global_services/documentation_standards.md
+  - Line: 128
+- **Template Library**
+  - URL: 5_development/global_services/template_library.md
+  - Line: 129
+- **Grafana Dashboard Import**
+  - URL: ../grafana/import_dashboard.ps1.md
+  - Line: 135
+- **Documentation Standards**
+  - URL: 5_development/global_services/documentation_standards.md
+  - Line: 136
+

@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Global Documentation Hub</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Windsurf Global Documentation">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  
+  <style>
+    /* Theme styles */
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #2c3e50;
+      --sidebar-bg: #f5f7fa;
+      --sidebar-text: #2c3e50;
+      --border-color: #eaecef;
+      --code-bg: #f6f8fa;
+      --code-text: #476582;
+      --link-color: #2c3e50;
+      --link-hover: #42b983;
+      --header-bg: #f5f7fa;
+    }
+    
+    [data-theme="dark"] {
+      --bg-color: #1e1e1e;
+      --text-color: #e0e0e0;
+      --sidebar-bg: #252526;
+      --sidebar-text: #e0e0e0;
+      --border-color: #404040;
+      --code-bg: #2d2d2d;
+      --code-text: #d4d4d4;
+      --link-color: #e0e0e0;
+      --link-hover: #42b983;
+      --header-bg: #252526;
+    }
+    
+    /* Base styles */
+    html, body, #app {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: #fff;
+    }
+    
+    /* Layout container */
+    .app-container {
+      min-height: 100vh;
+      position: relative;
+      padding-left: 0;
+      transition: padding 0.3s ease;
+    }
+    
+    /* Sidebar container */
+    .sidebar {
+      width: 280px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      border-right: 1px solid var(--border-color);
+      z-index: 10;
+      overflow-y: auto;
+      transform: translateX(0);
+      transition: all 0.3s ease;
+      padding: 20px 0 20px 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Collapsed state */
+    .sidebar-collapsed .sidebar {
+      transform: translateX(-100%);
+    }
+    
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .sidebar li {
+      padding: 2px 10px;
+      margin: 0;
+      line-height: 1.2;
+      transition: background-color 0.2s ease;
+    }
+    
+    .sidebar li:hover {
+      background-color: var(--border-color);
+    }
+    
+    .sidebar a {
+      color: var(--sidebar-text);
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s ease;
+      padding: 2px 0;
+    }
+    
+    .sidebar a:hover {
+      color: var(--link-hover);
+    }
+    
+    /* Active sidebar link */
+    .sidebar a.router-link-active {
+      color: var(--link-hover);
+      font-weight: 500;
+    }
+    
+    /* Nested sidebar items */
+    .sidebar .sidebar-nav ul {
+      padding-left: 15px;
+    }
+    
+    /* Collapsible arrows */
+    .sidebar .app-sub-sidebar > li > a:before,
+    .sidebar .sidebar-nav > li > a:before {
+      content: '▶';
+      display: inline-block;
+      font-size: 10px;
+      margin-right: 6px;
+      transition: transform 0.2s ease;
+    }
+    
+    .sidebar li.open > a:before {
+      transform: rotate(90deg);
+    }
+    
+    /* Collapsible sidebar items */
+    .sidebar ul li {
+      position: relative;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .sidebar ul li a {
+      display: block;
+      padding: 6px 10px 6px 24px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: background-color 0.2s;
+      position: relative;
+      border-radius: 4px;
+    }
+  
+    .sidebar ul li a:hover {
+      background-color: var(--sidebar-item-hover-bg);
+    }
+  
+    /* Collapse/expand icons */
+    .sidebar ul li .collapse-btn {
+      position: absolute;
+      left: 4px;
+      top: 6px;
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+      text-align: center;
+      line-height: 16px;
+      font-size: 12px;
+      color: var(--text-color);
+      opacity: 0.6;
+      transition: all 0.2s;
+    }
+  
+    .sidebar ul li .collapse-btn:hover {
+      opacity: 1;
+    }
+  
+    /* Nested lists */
+    .sidebar ul ul {
+      padding-left: 16px;
+      margin: 0;
+      display: none;
+    }
+  
+    .sidebar ul li.open > ul {
+      display: block;
+    }
+  
+    /* Active link */
+    .sidebar ul li.active > a {
+      color: var(--theme-color);
+      font-weight: 600;
+    }
+    
+    .sidebar .app-sub-sidebar {
+      display: none;
+    }
+    
+    .sidebar li.open > .app-sub-sidebar,
+    .sidebar li.open > .sidebar-nav {
+      display: block;
+    }
+    
+    /* Sidebar section headers */
+    .sidebar h2 {
+      color: var(--sidebar-text);
+      font-size: 1.1em;
+      margin: 20px 0 10px 0;
+      padding: 0 20px;
+      font-weight: 600;
+    }
+    
+    /* Show sidebar */
+    body.sidebar-visible .sidebar {
+      transform: translateX(0);
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    
+    /* Main content area */
+    .content {
+      margin-left: 280px;
+      padding: 20px;
+      transition: margin 0.3s ease;
+      min-height: 100vh;
+      background: var(--bg-color);
+      color: var(--text-color);
+    }
+    
+    /* When sidebar is collapsed */
+    .sidebar-collapsed .content {
+      margin-left: 0;
+    }
+    
+    /* Show sidebar */
+    
+    /* Collapsed sidebar */
+    body.sidebar-collapsed .sidebar {
+      transform: translateX(-300px);
+    }
+    body.sidebar-collapsed .content {
+      margin-left: 0;
+    }
+    
+    /* Ensure sidebar content is visible */
+    .sidebar > * {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    
+    /* Sidebar toggle button */
+    .sidebar-toggle {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      background: var(--sidebar-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    
+    /* Theme toggle button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      background: var(--sidebar-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .theme-toggle:hover {
+      background: var(--border-color);
+    }
+    
+    /* Toggle buttons */
+    .sidebar-toggle, .theme-toggle {
+      position: fixed;
+      z-index: 100;
+      background: #42b983;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+      opacity: 0.9;
+    }
+    
+    .sidebar-toggle:hover, .theme-toggle:hover {
+      opacity: 1;
+      transform: scale(1.1);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    }
+    
+    .sidebar-toggle:active, .theme-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    .sidebar-toggle {
+      top: 20px;
+      left: 20px;
+    }
+    
+    .theme-toggle {
+      top: 20px;
+      right: 50px;
+      background: #6c757d;
+    }
+    
+    /* Overlay when sidebar is open */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    body.sidebar-visible .sidebar-overlay {
+      display: block;
+      opacity: 1;
+    }
+    
+    /* Toggle buttons */
+    .toggle-button {
+      position: fixed;
+      z-index: 20;
+      background: var(--theme-color, #42b983);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .sidebar-toggle {
+      top: 10px;
+      left: 10px;
+    }
+    
+    .theme-toggle {
+      top: 10px;
+      right: 65px;
+      z-index: 100;
+    }
+    
+    /* Fix sidebar positioning */
+    .app-nav {
+      left: 0 !important;
+      right: auto !important;
+      top: 0 !important;
+      width: 300px !important;
+      max-width: 300px !important;
+      min-width: 300px !important;
+      transition: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      position: fixed !important;
+      height: 100vh !important;
+      overflow-y: auto !important;
+    }
+    
+    /* Remove any negative margins or transforms */
+    .sidebar-toggle {
+      position: fixed !important;
+      z-index: 1000 !important;
+      background: var(--theme-color, #42b983) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 0 4px 4px 0 !important;
+    }
+    
+    /* Sidebar width and content positioning */
+    .content {
+      margin-left: 300px !important;
+      padding: 20px !important;
+      max-width: calc(100% - 300px) !important;
+    }
+    
+    /* Set explicit sidebar width */
+    .app-nav {
+      width: 300px !important;
+      max-width: 300px !important;
+      min-width: 300px !important;
+    }
+    
+    /* Reset body and html */
+    body, html {
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow-x: hidden !important;
+    }
+    /* Clean up any conflicting styles */
+    body, html {
+      transform: none !important;
+      transition: none !important;
+    }
+    
+    /* Ensure proper layout structure */
+    #app {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar toggle button */
+    .sidebar-toggle {
+      position: fixed;
+      left: 0;
+      top: 0;
+      padding: 15px;
+      background: var(--theme-color, #42b983);
+      color: white;
+      z-index: 100;
+      border: none;
+      border-radius: 0 4px 4px 0;
+    }
+    
+    /* Ensure proper dark/light theme toggle visibility */
+    .darklight-theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 99;
+      background: var(--theme-color, #42b983);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    /* Remove any unwanted margins from body/html */
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      height: 100%;
+    }
+    
+    /* Sidebar footer styles */
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 15px 10px;
+      font-size: 0.8em;
+      color: var(--sidebar-text);
+      border-top: 1px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.05);
+    }
+    
+    .sidebar-footer p {
+      margin: 5px 0;
+    }
+    
+    /* Better spacing for sidebar items */
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+    }
+    
+    /* Improve collapsible items */
+    .sidebar-nav .app-sub-sidebar {
+      padding-left: 15px;
+    }
+    
+    /* Better toggle buttons */
+    .sidebar-toggle-button {
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    
+    .sidebar-toggle-button:hover {
+      opacity: 1;
+    }
+  </style>
+  
+  <!-- Theme and Styling -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/buble.css">
+  
+  <!-- KaTeX for math typesetting -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  
+  <!-- Prism.js for syntax highlighting -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  
+  <!-- Sidebar Collapse Plugin CSS -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-collapse.min.css">
+</head>
+<body>
+  <div id="app">
+    <div class="app-container">
+      <nav class="sidebar">
+        <!-- Sidebar content will be injected by Docsify -->
+        <div class="sidebar-nav"></div>
+        <div class="sidebar-footer">
+          <p>Documentation v1.0.0</p>
+          <p>Last updated: 2025-06-26</p>
+        </div>
+      </nav>
+      <main class="content">
+        <!-- Main content will be injected by Docsify -->
+      </main>
+    </div>
+  </div>
+  <div class="sidebar-overlay"></div>
+  <script>
+    window.$docsify = {
+      name: 'Windsurf',
+      repo: 'sandraschi/mywienerlinien',
+      loadSidebar: true,
+      subMaxLevel: 6,  // Increased to handle deep nesting
+      sidebarDisplayLevel: 1,  // Show first level by default
+      auto2top: true,
+      coverpage: false,
+      executeScript: true,
+      noEmoji: false,
+      relativePath: true,
+      autoHeader: true,
+      mergeNavbar: true,
+      maxLevel: 4,
+      
+      // Alias for sidebar
+      alias: {
+        '/_sidebar.md': '/_sidebar.md',
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
+      
+      // Search configuration
+      search: {
+        maxAge: 86400000, // 1 day
+        paths: 'auto',
+        placeholder: 'Search...',
+        noData: 'No results!',
+        depth: 6,
+        hideOtherSidebarContent: true,
+        namespace: 'windsurf-docs'
+      },
+      
+      // Sidebar collapse plugin configuration
+      sidebarCollapse: {
+        collapseAll: false, // Don't collapse all items by default
+        scrollbar: true,   // Show scrollbar when needed
+        openOnStart: false, // Keep items collapsed on start
+        icons: {
+          collapse: '▼',    // Icon for collapsed state
+          expand: '▶',     // Icon for expanded state
+          normal: '○'      // Icon for items without children
+        },
+        // Custom class for the sidebar
+        sidebarClass: 'sidebar',
+        // Custom class for the toggle buttons
+        toggleBtnClass: 'sidebar-toggle-btn',
+        // Custom class for the collapsible items
+        collapsibleClass: 'collapsible',
+        // Auto save the state in localStorage
+        remember: true
+      },
+      
+      // Edit link configuration
+      editLink: {
+        text: 'Edit this page on GitHub',
+        pattern: 'https://github.com/sandraschi/mywienerlinien/edit/main/docs/:path',
+        defaultText: 'Edit this page',
+        auto: true
+      },
+      
+      // Versioning configuration
+      versioning: {
+        current: 'v1.0.0',
+        items: [
+          { text: 'v1.0.0', link: 'https://github.com/sandraschi/mywienerlinien/tree/v1.0.0' },
+          { text: 'v0.9.0', link: 'https://github.com/sandraschi/mywienerlinien/tree/v0.9.0' }
+        ]
+      },
+      
+      // Gitalk configuration
+      gitalk: {
+        clientID: 'YOUR_CLIENT_ID',
+        clientSecret: 'YOUR_CLIENT_SECRET',
+        repo: 'mywienerlinien',
+        owner: 'sandraschi',
+        admin: ['sandraschi'],
+        id: window.location.pathname, // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      },
+      
+      // Chart.js configuration
+      chart: {
+        theme: 'default',
+        chart: {
+          type: 'line',
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        }
+      },
+      
+      // PlantUML configuration
+      plantuml: {
+        server: 'https://www.plantuml.com/plantuml/svg/'
+      },
+      
+      // Kroki configuration
+      kroki: {
+        server: 'https://kroki.io',
+        type: 'svg',
+        scale: 1.0
+      },
+      
+      // Terminal block configuration
+      terminalBlock: {
+        prompt: '$ ',
+        style: 'default',
+        output: '> ',
+        copy: true,
+        copyBtnText: 'Copy',
+        copyBtnClass: 'terminal-copy-btn',
+        copySuccessText: 'Copied!',
+        copySuccessClass: 'terminal-copy-success'
+      },
+      
+      // Quiz configuration
+      quiz: {
+        prefix: 'quiz-',
+        nextText: 'Next',
+        retryText: 'Retry',
+        checkAnswerText: 'Check Answer',
+        showCorrect: true,
+        showIncorrect: true
+      },
+      
+      // Reading progress configuration
+      progress: {
+        position: 'top',
+        color: 'var(--theme-color, #42b983)',
+        height: '3px',
+        failedColor: '#ff0000',
+        appendTo: '.app-nav',
+        positionFixed: true
+      },
+      
+      // Update wrapper for custom processing
+      updateWrapper: function(html) {
+        return html;
+      },
+      
+      // Dark/Light theme configuration
+      darklightTheme: {
+        siteFont: 'PT Sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        defaultTheme: 'light',
+        codeFontFamily: 'Roboto Mono, Monaco, courier, monospace',
+        bodyFontSize: '16px',
+        dark: {
+          accent: '#42b983',
+          toogleBackground: '#ffffff',
+          background: '#1e1e1e',
+          textColor: '#e0e0e0',
+          codeTextColor: '#d4d4d4',
+          codeBackgroundColor: '#2d2d2d',
+          borderColor: '#404040',
+          blockQuoteColor: '#858585',
+          highlightColor: '#d22778',
+          sidebarSublink: '#b4b4b4',
+          codeTypeColor: '#ffffff',
+          coverBackground: 'linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%)',
+          toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/sun.svg)'
+        },
+        light: {
+          accent: '#42b983',
+          toogleBackground: '#091a28',
+          background: '#ffffff',
+          textColor: '#34495e',
+          codeTextColor: '#525252',
+          codeBackgroundColor: '#f8f8f8',
+          borderColor: 'rgba(0, 0, 0, 0.07)',
+          blockQuoteColor: '#858585',
+          highlightColor: '#d22778',
+          sidebarSublink: '#b4b4b4',
+          codeTypeColor: '#091a28',
+          coverBackground: 'linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%)',
+          toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/moon.svg)'
+        }
+      },
+      
+      // Tabs configuration
+      tabs: {
+        persist: true,
+        sync: true,
+        theme: 'classic',
+        tabComments: true,
+        tabHeadings: true
+      },
+      
+      // Pagination configuration
+      pagination: {
+        previousText: 'Previous',
+        nextText: 'Next',
+        crossChapter: true,
+        crossChapterText: true
+      },
+      
+      // Edit link configuration
+      editLink: {
+        text: 'Edit this page on GitHub',
+        template: 'https://github.com/sandraschi/mywienerlinien/edit/main/.windsurf/docs{{file}}'
+      },
+      
+      // Copy code button configuration
+      copyCode: {
+        buttonText: 'Copy',
+        errorText: 'Failed',
+        successText: 'Copied!',
+        selector: 'pre[data-lang]',
+        position: 'top'
+      },
+      
+      // Sidebar collapse configuration
+      sidebarDisplayLevel: 1
+    };
+  </script>
+      }
+    };
+  </script>
+  
+  <!-- Core Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4" type="application/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js" type="application/javascript"></script>
+  
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js" type="application/javascript"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: false });
+    window.$docsify.markdown = window.$docsify.markdown || {};
+    window.$docsify.markdown.renderer = window.$docsify.markdown.renderer || {};
+    window.$docsify.markdown.renderer.code = function(code, lang) {
+      if (lang === "mermaid") {
+        return `<div class="mermaid">${code}</div>`;
+      }
+      return this.origin.code.apply(this, arguments);
+    };
+  </script>
+  
+  <!-- PlantUML for UML diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-plantuml@1.8.0/dist/docsify-plantuml.min.js" type="application/javascript"></script>
+
+<!-- Kroki for various diagrams -->
+<script src="https://cdn.jsdelivr.net/npm/docsify-kroki@0.11.0/dist/docsify-kroki.min.js" type="application/javascript"></script>
+
+<!-- Chart.js for charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js" type="application/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/docsify-chart@1.0.6/dist/docsify-chart.umd.min.js" type="application/javascript"></script>
+
+<!-- Versioning support -->
+<script src="https://cdn.jsdelivr.net/npm/docsify-versioning@1.0.1/dist/docsify-versioning.min.js" type="application/javascript"></script>
+
+<!-- Include external files -->
+<script src="https://cdn.jsdelivr.net/npm/docsify-include-html@1.1.0/dist/docsify-include-html.min.js" type="application/javascript"></script>
+
+<!-- Sidebar Collapse -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-sidebar-collapse@1.4.0/dist/sidebar-collapse.min.css" type="text/css">
+<script src="https://cdn.jsdelivr.net/npm/docsify-sidebar-collapse@1.4.0/dist/sidebar-collapse.min.js" type="application/javascript"></script>
+
+<!-- Sidebar Footer -->
+<script src="https://cdn.jsdelivr.net/npm/docsify-sidebar-footer@1.0.4/dist/docsify-sidebar-footer.min.js" type="application/javascript"></script>
+
+<!-- Terminal Blocks -->
+<script src="https://cdn.jsdelivr.net/npm/docsify-terminal-block@1.1.0/dist/docsify-terminal-block.min.js" type="application/javascript"></script>
+
+<!-- Interactive Quizzes -->
+<script src="https://cdn.jsdelivr.net/npm/docsify-quiz@1.0.2/dist/docsify-quiz.min.js" type="application/javascript"></script>
+
+<!-- Gitalk Comments -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css" type="text/css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js" type="application/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/docsify-gitalk@1.0.2/dist/docsify-gitalk.min.js" type="application/javascript"></script>
+
+<!-- GitHub Buttons -->
+<script src="https://cdn.jsdelivr.net/npm/docsify-github@1.0.1/dist/docsify-github.min.js" type="application/javascript"></script>
+
+<!-- Reading Progress -->
+<script src="https://cdn.jsdelivr.net/npm/docsify-progress@1.1.0/dist/progress.min.js" type="application/javascript"></script>
+
+<!-- Toggle Buttons and Logic -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Create and add sidebar toggle button
+    const sidebarToggle = document.createElement('button');
+    sidebarToggle.className = 'sidebar-toggle';
+    sidebarToggle.innerHTML = '&#8801;';
+    sidebarToggle.title = 'Toggle Sidebar';
+    
+    // Add sidebar toggle to the page
+    document.body.appendChild(sidebarToggle);
+    
+    // Create and add theme toggle button
+    const themeToggle = document.createElement('button');
+    themeToggle.className = 'theme-toggle';
+    themeToggle.title = 'Toggle Theme';
+    themeToggle.innerHTML = '🌙';
+    
+    // Add theme toggle to the page
+    document.body.appendChild(themeToggle);
+    
+    // Theme management
+    const themeManager = {
+        init: function() {
+          this.themeToggle = document.querySelector('.theme-toggle');
+          if (!this.themeToggle) return;
+          
+          this.setupEventListeners();
+          this.applyTheme();
+        },
+        
+        setupEventListeners: function() {
+          if (this.themeToggle) {
+            this.themeToggle.addEventListener('click', (e) => {
+              e.preventDefault();
+              this.toggleTheme();
+            });
+          }
+          
+          // Watch for system theme changes
+          if (window.matchMedia) {
+            const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            darkModeMediaQuery.addListener(() => {
+              if (!localStorage.getItem('theme')) {
+                this.applyTheme();
+              }
+            });
+          }
+        },
+        
+        toggleTheme: function() {
+          const isDark = document.body.classList.toggle('dark');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+          this.applySidebarTheme(isDark ? 'dark' : 'light');
+        },
+        
+        applyTheme: function() {
+          const savedTheme = localStorage.getItem('theme') || 'light';
+          if (savedTheme === 'dark') {
+            document.body.classList.add('dark');
+          } else {
+            document.body.classList.remove('dark');
+          }
+          this.applySidebarTheme(savedTheme);
+        },
+        
+        applySidebarTheme: function(theme) {
+          const sidebar = document.querySelector('.sidebar');
+          if (!sidebar) return;
+          
+          if (theme === 'dark') {
+            sidebar.style.setProperty('--sidebar-bg', '#252526');
+            sidebar.style.setProperty('--sidebar-text', '#e0e0e0');
+            sidebar.style.setProperty('--border-color', '#404040');
+          } else {
+            sidebar.style.setProperty('--sidebar-bg', '#f5f7fa');
+            sidebar.style.setProperty('--sidebar-text', '#2c3e50');
+            sidebar.style.setProperty('--border-color', '#eaecef');
+          }
+        }
+      };
+      
+      // Sidebar management
+      const sidebarManager = {
+        init: function() {
+          this.sidebarToggle = document.querySelector('.sidebar-toggle');
+          this.sidebar = document.querySelector('.sidebar');
+          this.overlay = document.querySelector('.sidebar-overlay');
+          
+          if (!this.sidebar || !this.sidebarToggle) return;
+          
+          this.setupEventListeners();
+          this.setupOverlay();
+          this.restoreSidebarState();
+        },
+        
+        setupEventListeners: function() {
+          if (this.sidebarToggle) {
+            this.sidebarToggle.addEventListener('click', (e) => {
+              e.preventDefault();
+              this.toggleSidebar();
+            });
+          }
+          
+          // Close sidebar when clicking outside on mobile
+          document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && 
+                this.sidebar && 
+                !this.sidebar.contains(e.target) && 
+                e.target !== this.sidebarToggle) {
+              this.hideSidebar();
+            }
+          });
+          
+          // Close sidebar when pressing Escape key
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+              this.hideSidebar();
+            }
+          });
+        },
+        
+        toggleSidebar: function() {
+          if (!this.overlay) return;
+          
+          const isCollapsed = document.body.classList.toggle('sidebar-collapsed');
+          this.overlay.classList.toggle('active', isCollapsed);
+          localStorage.setItem('sidebar-collapsed', isCollapsed);
+        },
+        
+        hideSidebar: function() {
+          document.body.classList.add('sidebar-collapsed');
+          if (this.overlay) {
+            this.overlay.classList.add('active');
+          }
+        },
+        
+        setupOverlay: function() {
+          if (this.overlay) return;
+          
+          this.overlay = document.createElement('div');
+          this.overlay.className = 'sidebar-overlay';
+          document.body.appendChild(this.overlay);
+          
+          this.overlay.addEventListener('click', () => this.hideSidebar());
+        },
+        
+        restoreSidebarState: function() {
+          const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+          if (isCollapsed) {
+            document.body.classList.add('sidebar-collapsed');
+            if (this.overlay) {
+              this.overlay.classList.add('active');
+            }
+          }
+        }
+      };
+      
+      // Initialize managers
+      themeManager.init();
+      sidebarManager.init();
+      
+      // Close sidebar on mobile when clicking a link
+      const sidebarLinks = document.querySelectorAll('.sidebar a');
+      sidebarLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (window.innerWidth < 768) {
+            sidebarManager.hideSidebar();
+          }
+        });
+      });
+    });
+  </script>
+  
+  <script>
+    // Initialize Docsify
+    window.$docsify = window.$docsify || {};
+    window.$docsify.plugins = [
+      function(hook, vm) {
+        hook.ready(function() {
+          console.log('Docsify is ready!');
+        });
+      }
+    ];
+  </script>
+</body>
+</html>

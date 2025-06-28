@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSS Tester</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    button { display: block; margin: 5px 0; padding: 8px; width: 200px; }
+    .test-area { margin-top: 20px; padding: 20px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>CSS File Tester</h1>
+  <p>Click a button to load the corresponding CSS file:</p>
+  
+  <button onclick="testCSS('variables.css')">Test variables.css</button>
+  <button onclick="testCSS('layout.css')">Test layout.css</button>
+  <button onclick="testCSS('theme.css')">Test theme.css</button>
+  <button onclick="testCSS('sidebar.css')">Test sidebar.css</button>
+  <button onclick="testCSS('controls.css')">Test controls.css</button>
+  <button onclick="testCSS('appearance.css')">Test appearance.css</button>
+  <button onclick="testCSS('utilities.css')">Test utilities.css</button>
+  <button onclick="testCSS('prism-simple.css')">Test prism-simple.css</button>
+  <button onclick="testCSS('print.css')">Test print.css</button>
+  <button onclick="testCSS('minimal.css')">Test minimal.css</button>
+  <button onclick="testCSS('none')">No CSS</button>
+  
+  <div class="test-area">
+    <h2>Test Area</h2>
+    <div id="app">
+      <div class="sidebar" style="width: 200px; float: left; background: #f0f0f0; padding: 10px;">
+        <h3>Sidebar</h3>
+        <ul>
+          <li>Item 1</li>
+          <li>Item 2</li>
+          <li>Item 3</li>
+        </ul>
+      </div>
+      <div class="content" style="margin-left: 220px;">
+        <h1>Content Area</h1>
+        <p>This is a test of the current CSS.</p>
+        <p>If the layout breaks when you click a button, that CSS file contains problematic styles.</p>
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentLink = null;
+    
+    function testCSS(filename) {
+      // Remove previous CSS link if it exists
+      if (currentLink) {
+        document.head.removeChild(currentLink);
+        currentLink = null;
+      }
+      
+      // If 'none' was clicked, we're done
+      if (filename === 'none') {
+        return;
+      }
+      
+      // Create and add new link
+      currentLink = document.createElement('link');
+      currentLink.rel = 'stylesheet';
+      currentLink.href = 'css/' + filename;
+      document.head.appendChild(currentLink);
+    }
+  </script>
+</body>
+</html>

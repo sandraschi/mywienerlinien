@@ -1,0 +1,14 @@
+{
+  "backup_root": "D:\\Backups",
+  "log_file": "D:\\Backups\\backup_log.txt",
+  "max_backups_per_repo": 5,
+  "repositories": [
+    {
+      "name": "wienerlinien",
+      "path": "D:\\Dev\\repos\\mywienerlinien",
+      "enabled": true,
+      "exclude_dirs": ["venv", ".git", "__pycache__", "node_modules"],
+      "exclude_extensions": [".pyc", ".pyo", ".pyd", ".log", ".tmp"]
+    }
+  ]
+}

@@ -2,29 +2,85 @@
 
 ## Executive Summary
 
-The Wiener Linien Live Map is a real-time public transport visualization application that displays moving vehicle positions for Vienna's public transport system (U-Bahn, trams, and buses) on an interactive map. The application fetches data from the official Wiener Linien Open Data API and presents it in a user-friendly web interface.
+The Wiener Linien Live Map is an interactive web application that displays real-time public transport information for Vienna, Austria. The application provides a dynamic map interface showing the current positions of U-Bahn (metro), tram, and bus vehicles, along with their routes and schedules. The goal is to create an intuitive, user-friendly interface that helps commuters and visitors navigate Vienna's public transport system with ease.
 
-## Current State Analysis
+## System Overview
 
-### What's Working
-- Basic Flask application structure
-- Frontend with Leaflet.js map integration
-- API endpoint structure for vehicle data
-- Caching mechanism for API requests
-- Static file serving and template rendering
+### Core Components
 
-### Critical Issues Identified
-1. **API Integration Problems**: The current implementation has incorrect API parameter usage (`stopId` instead of `rbl`)
-2. **Data Parsing Issues**: The vehicle data extraction logic doesn't match the actual API response structure
-3. **Missing Error Handling**: Limited error handling for API failures
-4. **Incomplete Frontend**: The JavaScript code is incomplete and doesn't properly handle vehicle updates
-5. **Dependency Issues**: Some dependencies may be outdated
+1. **Frontend**
+   - Interactive map interface using Leaflet.js
+   - Real-time vehicle tracking
+   - Route visualization
+   - Stop information display
+   - Responsive design for all devices
+
+2. **Backend**
+   - Flask-based web server
+   - API integration with Wiener Linien Open Data
+   - Data caching and processing
+   - Static file serving
+
+3. **Data Processing**
+   - GTFS data parsing and storage
+   - Real-time vehicle position updates
+   - Route and schedule processing
+
+### Technical Stack
+
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+), Leaflet.js
+- **Backend**: Python 3.8+, Flask
+- **Data Storage**: SQLite for GTFS data
+- **APIs**: Wiener Linien Open Data API
+- **Deployment**: Containerized with Docker (optional)
+
+## Features
+
+### 1. Interactive Map
+- Real-time display of vehicle positions
+- Zoom and pan functionality
+- Base map layers (OpenStreetMap, Satellite, etc.)
+
+### 2. Vehicle Tracking
+- Live updates of vehicle positions (every 15 seconds)
+- Color-coded by transport type
+- Direction indicators and route visualization
+
+### 3. Stop Information
+- Clickable stops with departure times
+- Line information and next departures
+- Accessibility information
+
+### 4. User Interface
+- Intuitive controls
+- Responsive design for all screen sizes
+- Dark/light mode support
+- Language selection
+
+## Technical Requirements
+
+### Performance
+- Map updates within 500ms of data receipt
+- Initial page load under 2 seconds
+- Support for at least 1000 concurrent users
+
+### Reliability
+- 99.9% uptime
+- Graceful degradation during API outages
+- Data caching for offline functionality
+
+### Security
+- HTTPS encryption
+- Input validation
+- Rate limiting
+- CORS policy enforcement
 
 ## Product Requirements
 
 ### 1. Core Functionality
 
-#### 1.1 Real-time Vehicle Tracking
+#### 1.1 GTFS Data Processing
+- **Requirement**: Process GTFS data into structured markdown documentation
 - **Requirement**: Display real-time positions of U-Bahn, tram, and bus vehicles on an interactive map
 - **Acceptance Criteria**:
   - Vehicles appear as colored markers on the map

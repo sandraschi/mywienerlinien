@@ -1,0 +1,103 @@
+﻿# IDE Documentation
+
+Welcome to the Integrated Development Environment (IDE) documentation for the Windsurf project. This section provides comprehensive guides and references for setting up and using various IDEs with the Windsurf development environment.
+
+## Available IDEs
+
+- [Visual Studio Code (VSCode)](/ide/./vscode/README.md) - Lightweight, powerful, and extensible code editor
+- [Windsurf IDE](/ide/./windsurf/README.md) - Custom IDE tailored for Windsurf development
+- [Cursor IDE](/ide/./cursor/README.md) - AI-powered code editor with deep Git integration
+- [Roo Code IDE](/ide/./roo/README.md) - Specialized IDE for Windsurf project workflows
+
+## Common Setup
+
+### Prerequisites
+
+1. Install the latest version of your preferred IDE
+2. Ensure you have Git installed and configured
+3. Install the Windsurf CLI tools
+4. Set up your SSH keys for repository access
+
+### Recommended Extensions
+
+- GitLens - Git supercharged
+- EditorConfig for VS Code
+- ESLint
+- Prettier - Code formatter
+- Docker
+- Kubernetes
+
+## Getting Started
+
+1. Clone the repository:
+   ```bash
+   git clone git@github.com:your-org/your-repo.git
+   cd your-repo
+   ```
+
+2. Open the project in your preferred IDE
+3. Install recommended extensions (if any)
+4. Configure your workspace settings
+5. Run the setup script:
+   ```bash
+   .windsurf/scripts/setup.ps1
+   ```
+
+## IDE-Specific Guides
+
+### [VSCode](/ide/./vscode/README.md)
+- Installation and setup
+- Recommended extensions
+- Debugging configuration
+- Remote development
+- Keybindings and shortcuts
+
+### [Windsurf IDE](/ide/./windsurf/README.md)
+- Installation
+- Project setup
+- Custom commands
+- Integration with Windsurf services
+
+### [Cursor IDE](/ide/./cursor/README.md)
+- Setup and configuration
+- AI-assisted development
+- Git integration
+- Custom workflows
+
+### [Roo Code IDE](/ide/./roo/README.md)
+- Installation
+- Project onboarding
+- Built-in tools
+- Custom commands
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Extension conflicts**
+   - Disable other extensions to identify conflicts
+   - Check extension logs for errors
+
+2. **Performance issues**
+   - Disable unnecessary extensions
+   - Increase memory allocation if needed
+   - Check for large files in your workspace
+
+3. **Git integration problems**
+   - Verify Git is in your system PATH
+   - Check your Git authentication
+   - Ensure line endings are configured correctly
+
+## Support
+
+For additional help, please refer to:
+
+- [Windsurf Documentation](/ide/README.md)
+- [IDE-specific documentation](#ide-specific-guides)
+- [GitHub Issues](https://github.com/your-org/your-repo/issues)
+
+## Contributing
+
+We welcome contributions to improve our IDE documentation. Please see our [Contributing Guidelines](/ide/../CONTRIBUTING.md) for more information.
+
+

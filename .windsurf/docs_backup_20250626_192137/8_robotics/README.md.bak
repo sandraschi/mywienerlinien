@@ -1,0 +1,23 @@
+# Robotics Documentation
+
+This section provides an overview of leading companies and key technologies in the robotics industry. It covers a range of applications from industrial automation to advanced humanoid and canine platforms.
+
+## Companies
+
+### Humanoid Robots
+
+*   [Boston Dynamics](robotics/./humanoid/boston_dynamics.md)
+*   [Tesla](robotics/./humanoid/tesla.md)
+*   [Agility Robotics](robotics/./humanoid/agility_robotics.md)
+
+### Canine Robots
+
+*   [Unitree](robotics/./canine/unitree.md)
+*   [Xiaomi](robotics/./canine/xiaomi.md)
+
+### Industrial & Logistics Robots
+
+*   [KUKA](robotics/./industrial_logistics/kuka.md)
+*   [ABB](robotics/./industrial_logistics/abb.md)
+*   [FANUC](robotics/./industrial_logistics/fanuc.md)
+

@@ -1,0 +1,130 @@
+/* Sidebar Container */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  overflow-y: auto;
+  padding: 20px 0;
+  transition: transform var(--transition-speed), width var(--transition-speed);
+  z-index: 100;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  padding: 0 20px 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  color: var(--sidebar-text);
+  font-size: 1.5rem;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+  padding: 0 15px;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  position: relative;
+  margin: 2px 0;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 6px 12px;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-nav a:hover {
+  background-color: var(--sidebar-highlight);
+  color: var(--link-color);
+}
+
+.sidebar-nav .active {
+  color: var(--link-color);
+  font-weight: 600;
+}
+
+/* Collapsible Sections */
+.sidebar-nav .app-sub-sidebar {
+  padding-left: 15px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.sidebar-nav .sidebar-nav-item.collapsed .app-sub-sidebar {
+  max-height: 1000px; /* Adjust based on content */
+}
+
+/* Toggle Buttons */
+.collapse-btn {
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  background: none;
+  border: none;
+  color: var(--sidebar-text);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.collapse-btn:after {
+  content: '▶';
+  font-size: 0.8em;
+  transition: transform 0.2s;
+}
+
+.sidebar-nav-item.collapsed > .collapse-btn:after {
+  transform: rotate(90deg);
+}
+
+/* Responsive Sidebar */
+@media (max-width: 768px) {
+  #sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+  }
+  
+  .sidebar-visible #sidebar {
+    transform: translateX(0);
+  }
+  
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
+  
+  .sidebar-visible .sidebar-overlay {
+    display: block;
+  }
+}

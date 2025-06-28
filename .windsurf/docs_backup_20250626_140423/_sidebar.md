@@ -1,0 +1,364 @@
+- [Home](/)
+- **Ai**
+  - ** Templates**
+    - [Company Template](ai/_templates/company_template)
+    - [Person Template](ai/_templates/person_template)
+  - **Coding Tools**
+    - [Cline](ai/coding_tools/cline)
+    - [Devika](ai/coding_tools/devika)
+    - [Devin](ai/coding_tools/devin)
+  - **Companies**
+    - [Amazon Ai](ai/companies/amazon_ai)
+    - [Anthropic](ai/companies/anthropic)
+    - [Apple Ai](ai/companies/apple_ai)
+    - [Baidu Ai](ai/companies/baidu_ai)
+    - [Deepseek](ai/companies/deepseek)
+    - [Google Deepmind](ai/companies/google_deepmind)
+    - [Huggingface](ai/companies/huggingface)
+    - [Meta Ai](ai/companies/meta_ai)
+    - [Microsoft Ai](ai/companies/microsoft_ai)
+    - [Mistral Ai](ai/companies/mistral_ai)
+    - [Openai](ai/companies/openai)
+    - [Sambanova](ai/companies/sambanova)
+    - [Sensetime](ai/companies/sensetime)
+  - **Controversies**
+    - [Guardrails Limits Foss Llms](ai/controversies/guardrails_limits_foss_llms)
+    - [Index](ai/controversies/index)
+    - [Self Optimizing Ai Skynet](ai/controversies/self_optimizing_ai_skynet)
+  - **Frameworks**
+    - **Langchain**
+      - [Langchain](ai/frameworks/langchain/langchain)
+  - **Hardware**
+    - [China Ai Landscape](ai/hardware/china_ai_landscape)
+    - [Europe Ai Landscape](ai/hardware/europe_ai_landscape)
+    - [Evolution Ai Hardware](ai/hardware/evolution_ai_hardware)
+  - **History**
+    - [Short History](ai/history/short_history)
+  - **Hosted Llms**
+    - [Anthropic](ai/hosted_llms/anthropic)
+    - [Gemini](ai/hosted_llms/gemini)
+    - [Openai](ai/hosted_llms/openai)
+    - [Perplexity](ai/hosted_llms/perplexity)
+  - **Image Video**
+    - [Gradio](ai/image_video/gradio)
+    - [Overview](ai/image_video/overview)
+    - [Sora](ai/image_video/sora)
+    - [Stable Diffusion](ai/image_video/stable_diffusion)
+    - [Veo 3](ai/image_video/veo_3)
+  - **Local Llms**
+    - [Lm Studio](ai/local_llms/lm_studio)
+    - [Ollama](ai/local_llms/ollama)
+    - [Vllm](ai/local_llms/vllm)
+  - **Mcp**
+    - [Agentic Ides](ai/mcp/agentic_ides)
+    - [Overview](ai/mcp/overview)
+    - [Repositories](ai/mcp/repositories)
+  - **Models**
+    - [Diffusion Models](ai/models/diffusion_models)
+    - [Transformer Models](ai/models/transformer_models)
+  - **Opinion**
+    - [Ai Oy Vey To Hurray](ai/opinion/ai_oy_vey_to_hurray)
+  - **Papers**
+    - [Seminal Papers](ai/papers/seminal_papers)
+  - **Persons**
+    - [Aaron Courville](ai/persons/aaron_courville)
+    - [Alex Graves](ai/persons/alex_graves)
+    - [Andrew Ng](ai/persons/andrew_ng)
+    - [Daphne Koller](ai/persons/daphne_koller)
+    - [David Silver](ai/persons/david_silver)
+    - [Demis Hassabis](ai/persons/demis_hassabis)
+    - [Doina Precup](ai/persons/doina_precup)
+    - [Fei Fei Li](ai/persons/fei_fei_li)
+    - [Geoffrey Hinton](ai/persons/geoffrey_hinton)
+    - [Hugo Larochelle](ai/persons/hugo_larochelle)
+    - [Ian Goodfellow](ai/persons/ian_goodfellow)
+    - [Ilya Sutskever](ai/persons/ilya_sutskever)
+    - [Joelle Pineau](ai/persons/joelle_pineau)
+    - [Koray Kavukcuoglu](ai/persons/koray_kavukcuoglu)
+    - [Nick Bostrom](ai/persons/nick_bostrom)
+    - [Person Template](ai/persons/person_template)
+    - [Peter Norvig](ai/persons/peter_norvig)
+    - [Prominent Figures](ai/persons/prominent_figures)
+    - [Rich Sutton](ai/persons/rich_sutton)
+    - [Sebastian Thrun](ai/persons/sebastian_thrun)
+    - [Stuart Russell](ai/persons/stuart_russell)
+    - [Volodymyr Mnih](ai/persons/volodymyr_mnih)
+    - [Yann Lecun](ai/persons/yann_lecun)
+    - [Yoshua Bengio](ai/persons/yoshua_bengio)
+  - **Speech Avatars**
+    - [Elevenlabs Guide](ai/speech_avatars/elevenlabs_guide)
+    - [Overview](ai/speech_avatars/overview)
+- **Audio**
+  - [Audacity](audio/audacity)
+  - [Grandorgue](audio/grandorgue)
+  - [Sidify](audio/sidify)
+  - [Virtualdj](audio/virtualdj)
+- **Automation Tools**
+  - **Autohotkey**
+    - [01 Introduction](automation_tools/autohotkey/01_introduction)
+    - [02 Getting Started](automation_tools/autohotkey/02_getting_started)
+    - [03 Hotkeys Hotstrings](automation_tools/autohotkey/03_hotkeys_hotstrings)
+    - [04 Variables Expressions](automation_tools/autohotkey/04_variables_expressions)
+    - [05 Control Flow](automation_tools/autohotkey/05_control_flow)
+    - [06 Gui Programming](automation_tools/autohotkey/06_gui_programming)
+    - [07 Advanced Topics](automation_tools/autohotkey/07_advanced_topics)
+    - [08 Practical Examples](automation_tools/autohotkey/08_practical_examples)
+- **Current Projects**
+  - **Wiener Linien**
+    - [Gtfs](current_projects/wiener_linien/gtfs)
+    - [Wiener Linien Api Guide](current_projects/wiener_linien/WIENER_LINIEN_API_GUIDE)
+  - [Sxs Documents](current_projects/sxs_documents)
+- **Dev Tools**
+  - **Node Js**
+    - [Tesseract Ocr](dev_tools/node_js/tesseract_ocr)
+  - [Nodejs](dev_tools/nodejs)
+- **Development**
+  - [Process Management](development/process_management)
+- **Doc Tools**
+  - [Finereader Ocr](doc_tools/finereader_ocr)
+  - [Pandoc](doc_tools/pandoc)
+- **File Tools**
+  - [Beyond Compare](file_tools/beyond_compare)
+  - [Hasleo Backup](file_tools/hasleo_backup)
+  - [Hex Editors](file_tools/hex_editors)
+  - [Notepad Plus Plus](file_tools/notepad_plus_plus)
+  - [Vuescan](file_tools/vuescan)
+  - [Wizfile](file_tools/wizfile)
+  - [Wiztree](file_tools/wiztree)
+- **Flows**
+  - **Bugs**
+    - **2025 04 28 Bock Millach**
+      - [Ai Analysis](flows/bugs/2025-04-28_bock-millach/ai_analysis)
+      - [User Report](flows/bugs/2025-04-28_bock-millach/user_report)
+    - **2025 04 28 Bunny Chaos**
+      - [Ai Analysis](flows/bugs/2025-04-28_bunny-chaos/ai_analysis)
+      - [User Report](flows/bugs/2025-04-28_bunny-chaos/user_report)
+    - **2025 04 28 Buttons Hubs**
+      - [Ai Analysis](flows/bugs/2025-04-28_buttons-hubs/ai_analysis)
+      - [User Report](flows/bugs/2025-04-28_buttons-hubs/user_report)
+    - **2025 04 28 Buttons Hubs Actionable**
+      - [Ai Analysis](flows/bugs/2025-04-28_buttons-hubs-actionable/ai_analysis)
+      - [User Report](flows/bugs/2025-04-28_buttons-hubs-actionable/user_report)
+    - **2025 04 28 Heavy Packet**
+      - [Ai Analysis](flows/bugs/2025-04-28_heavy-packet/ai_analysis)
+      - [User Report](flows/bugs/2025-04-28_heavy-packet/user_report)
+    - **2025 04 28 Maikaefer Immortality**
+      - [Ai Analysis](flows/bugs/2025-04-28_maikaefer-immortality/ai_analysis)
+      - [User Report](flows/bugs/2025-04-28_maikaefer-immortality/user_report)
+    - **2025 04 28 Peace Process**
+      - [Ai Analysis](flows/bugs/2025-04-28_peace-process/ai_analysis)
+      - [User Report](flows/bugs/2025-04-28_peace-process/user_report)
+    - **2025 04 28 Vibe Coding Bender**
+      - [Ai Analysis](flows/bugs/2025-04-28_vibe-coding-bender/ai_analysis)
+      - [User Report](flows/bugs/2025-04-28_vibe-coding-bender/user_report)
+    - **250621 Rules Reading Issue**
+      - [Bug](flows/bugs/250621_rules_reading_issue/bug)
+    - [Bugs](flows/bugs/bugs)
+  - **Decisions**
+    - [Decision Log](flows/decisions/decision_log)
+  - **Howto**
+    - **2025 05 01 Build After Clone**
+      - [Chunk 01](flows/howto/2025-05-01_build-after-clone/chunk_01)
+      - [Chunk 02](flows/howto/2025-05-01_build-after-clone/chunk_02)
+  - **Links**
+    - [Links](flows/links/links)
+  - **Newthingy**
+    - **2025 05 06 Robotic Whimsy**
+      - [Actions](flows/newthingy/2025-05-06_robotic-whimsy/actions)
+      - [Analysis](flows/newthingy/2025-05-06_robotic-whimsy/analysis)
+      - [Builder](flows/newthingy/2025-05-06_robotic-whimsy/builder)
+      - [Drone Mission](flows/newthingy/2025-05-06_robotic-whimsy/drone_mission)
+      - [Loudspeaker Truck](flows/newthingy/2025-05-06_robotic-whimsy/loudspeaker_truck)
+      - [Meme Placard Generator](flows/newthingy/2025-05-06_robotic-whimsy/meme_placard_generator)
+      - [Print Job Submission](flows/newthingy/2025-05-06_robotic-whimsy/print_job_submission)
+      - [Robot Flashmob](flows/newthingy/2025-05-06_robotic-whimsy/robot_flashmob)
+      - [Virtual Orchestration](flows/newthingy/2025-05-06_robotic-whimsy/virtual_orchestration)
+  - **Qna**
+    - [Qna Log](flows/qna/qna_log)
+  - **Quotes**
+    - [Quotes](flows/quotes/quotes)
+  - **Research**
+    - **2025 04 28 Automated Research Papers**
+      - [Chunk 01](flows/research/2025-04-28_automated-research-papers/chunk_01)
+      - [Chunk 02](flows/research/2025-04-28_automated-research-papers/chunk_02)
+      - [Chunk 03](flows/research/2025-04-28_automated-research-papers/chunk_03)
+      - [Chunk 04](flows/research/2025-04-28_automated-research-papers/chunk_04)
+    - **2025 04 28 Online Chat Multiuser Ai**
+      - [Chunk 01](flows/research/2025-04-28_online-chat-multiuser-ai/chunk_01)
+      - [Chunk 02](flows/research/2025-04-28_online-chat-multiuser-ai/chunk_02)
+      - [Chunk 03](flows/research/2025-04-28_online-chat-multiuser-ai/chunk_03)
+      - [Chunk 04](flows/research/2025-04-28_online-chat-multiuser-ai/chunk_04)
+    - **2025 05 01 Agentic Vibe Coding Karpathy**
+      - [Chunk 01](flows/research/2025-05-01_agentic-vibe-coding-karpathy/chunk_01)
+      - [Chunk 02](flows/research/2025-05-01_agentic-vibe-coding-karpathy/chunk_02)
+      - [Chunk 03](flows/research/2025-05-01_agentic-vibe-coding-karpathy/chunk_03)
+      - [Chunk 04](flows/research/2025-05-01_agentic-vibe-coding-karpathy/chunk_04)
+    - **2025 05 01 Busspredigten Abraham A Sancta Clara**
+      - [Chunk 01](flows/research/2025-05-01_busspredigten-abraham-a-sancta-clara/chunk_01)
+      - [Chunk 02](flows/research/2025-05-01_busspredigten-abraham-a-sancta-clara/chunk_02)
+      - [Chunk 03](flows/research/2025-05-01_busspredigten-abraham-a-sancta-clara/chunk_03)
+      - [Chunk 04](flows/research/2025-05-01_busspredigten-abraham-a-sancta-clara/chunk_04)
+    - **2025 05 01 Fungal Pathogens Extinction**
+      - [Chunk 01](flows/research/2025-05-01_fungal-pathogens-extinction/chunk_01)
+      - [Chunk 02](flows/research/2025-05-01_fungal-pathogens-extinction/chunk_02)
+      - [Chunk 03](flows/research/2025-05-01_fungal-pathogens-extinction/chunk_03)
+      - [Chunk 04](flows/research/2025-05-01_fungal-pathogens-extinction/chunk_04)
+    - **2025 05 01 Garbage Serious Analysis**
+      - [Chunk 01](flows/research/2025-05-01_garbage-serious-analysis/chunk_01)
+      - [Chunk 02](flows/research/2025-05-01_garbage-serious-analysis/chunk_02)
+    - **2025 05 01 Github Copilot Vs Agentic Ides**
+      - [Chunk 01](flows/research/2025-05-01_github-copilot-vs-agentic-ides/chunk_01)
+      - [Chunk 02](flows/research/2025-05-01_github-copilot-vs-agentic-ides/chunk_02)
+    - **2025 05 01 Trump Muskox Duo Infernale**
+      - [Chunk 01](flows/research/2025-05-01_trump-muskox-duo-infernale/chunk_01)
+      - [Chunk 02](flows/research/2025-05-01_trump-muskox-duo-infernale/chunk_02)
+      - [Chunk 03](flows/research/2025-05-01_trump-muskox-duo-infernale/chunk_03)
+      - [Chunk 04](flows/research/2025-05-01_trump-muskox-duo-infernale/chunk_04)
+    - **2025 05 01 Vibe Coding**
+      - [Chunk 01](flows/research/2025-05-01_vibe-coding/chunk_01)
+      - [Chunk 02](flows/research/2025-05-01_vibe-coding/chunk_02)
+      - [Chunk 03](flows/research/2025-05-01_vibe-coding/chunk_03)
+      - [Chunk 04](flows/research/2025-05-01_vibe-coding/chunk_04)
+    - **2025 05 04 Limitations Bugs Windsurf Ide**
+      - [Chunk 01](flows/research/2025-05-04_limitations-bugs-windsurf-ide/chunk_01)
+      - [Chunk 02](flows/research/2025-05-04_limitations-bugs-windsurf-ide/chunk_02)
+      - [Overview](flows/research/2025-05-04_limitations-bugs-windsurf-ide/overview)
+    - **2025 05 04 Plex Api Key**
+      - [Chunk 01](flows/research/2025-05-04_plex-api-key/chunk_01)
+      - [Chunk 02](flows/research/2025-05-04_plex-api-key/chunk_02)
+    - **2025 05 04 Plex Overview**
+      - [Chunk 01](flows/research/2025-05-04_plex-overview/chunk_01)
+      - [Chunk 02](flows/research/2025-05-04_plex-overview/chunk_02)
+      - [Chunk 03](flows/research/2025-05-04_plex-overview/chunk_03)
+      - [Chunk 04](flows/research/2025-05-04_plex-overview/chunk_04)
+    - **2025 05 04 Rulebooks In Windsurf**
+      - [Chunk 01](flows/research/2025-05-04_rulebooks-in-windsurf/chunk_01)
+      - [Chunk 02](flows/research/2025-05-04_rulebooks-in-windsurf/chunk_02)
+      - [Chunk 03](flows/research/2025-05-04_rulebooks-in-windsurf/chunk_03)
+      - [Chunk 04](flows/research/2025-05-04_rulebooks-in-windsurf/chunk_04)
+    - **2025 05 05 Ai Human Obsolescence**
+      - [Chunk 01](flows/research/2025-05-05_ai-human-obsolescence/chunk_01)
+    - **2025 05 05 Anti Trump Apps**
+      - [Chunk 01](flows/research/2025-05-05_anti-trump-apps/chunk_01)
+    - **2025 05 05 Ms Ai Toolkit Vscode**
+      - [Section 01 Deep Dive](flows/research/2025-05-05_ms-ai-toolkit-vscode/section_01_deep_dive)
+      - [Section 02 Competition](flows/research/2025-05-05_ms-ai-toolkit-vscode/section_02_competition)
+      - [Section 03 Recent Improvements](flows/research/2025-05-05_ms-ai-toolkit-vscode/section_03_recent_improvements)
+      - [Section 04 Tips And Tricks](flows/research/2025-05-05_ms-ai-toolkit-vscode/section_04_tips_and_tricks)
+      - [Section 05 Bibliography](flows/research/2025-05-05_ms-ai-toolkit-vscode/section_05_bibliography)
+    - **2025 05 07 Davinci Resolve Overview**
+      - [Chunk 01](flows/research/2025-05-07_davinci-resolve-overview/chunk_01)
+      - [Chunk 02](flows/research/2025-05-07_davinci-resolve-overview/chunk_02)
+      - [Chunk 03](flows/research/2025-05-07_davinci-resolve-overview/chunk_03)
+      - [Chunk 04](flows/research/2025-05-07_davinci-resolve-overview/chunk_04)
+      - [Chunk 05](flows/research/2025-05-07_davinci-resolve-overview/chunk_05)
+    - **2025 05 07 Windsurf Wave 8**
+      - [Chunk 01](flows/research/2025-05-07_windsurf-wave-8/chunk_01)
+      - [Chunk 02](flows/research/2025-05-07_windsurf-wave-8/chunk_02)
+      - [Chunk 03](flows/research/2025-05-07_windsurf-wave-8/chunk_03)
+      - [Chunk 04](flows/research/2025-05-07_windsurf-wave-8/chunk_04)
+      - [Chunk 05](flows/research/2025-05-07_windsurf-wave-8/chunk_05)
+    - **2025 05 14 Windows Pro Multiuser**
+      - [Chunk 01](flows/research/2025-05-14_windows-pro-multiuser/chunk_01)
+      - [Chunk 02](flows/research/2025-05-14_windows-pro-multiuser/chunk_02)
+      - [Chunk 03](flows/research/2025-05-14_windows-pro-multiuser/chunk_03)
+      - [Chunk 04](flows/research/2025-05-14_windows-pro-multiuser/chunk_04)
+      - [Chunk 05](flows/research/2025-05-14_windows-pro-multiuser/chunk_05)
+    - **2025 05 23 All Windsurf Memories Review**
+      - [Chunk 01 All Memories Summary](flows/research/2025-05-23_all-windsurf-memories-review/chunk_01_all_memories_summary)
+    - **2025 05 23 Cascade Interaction Long Responses**
+      - [Chunk 01 Detailed Interactions Summary](flows/research/2025-05-23_cascade-interaction-long-responses/chunk_01_detailed_interactions_summary)
+    - **2025 05 23 Cascade Memory Overview**
+      - [Chunk 01 Discussion Memory Summary](flows/research/2025-05-23_cascade-memory-overview/chunk_01_discussion_memory_summary)
+    - **2025 05 23 Qdrant Windsurf Competitors**
+      - [Chunk 01 Qdrant Overview](flows/research/2025-05-23_qdrant-windsurf-competitors/chunk_01_qdrant_overview)
+      - [Chunk 02 Qdrant Windsurf Mcp](flows/research/2025-05-23_qdrant-windsurf-competitors/chunk_02_qdrant_windsurf_mcp)
+      - [Chunk 03 Competitor Pinecone](flows/research/2025-05-23_qdrant-windsurf-competitors/chunk_03_competitor_pinecone)
+      - [Chunk 04 Competitor Weaviate](flows/research/2025-05-23_qdrant-windsurf-competitors/chunk_04_competitor_weaviate)
+      - [Chunk 05 Competitor Milvus](flows/research/2025-05-23_qdrant-windsurf-competitors/chunk_05_competitor_milvus)
+      - [Chunk 06 Competitor Chroma](flows/research/2025-05-23_qdrant-windsurf-competitors/chunk_06_competitor_chroma)
+      - [Chunk 07 Comparative Analysis](flows/research/2025-05-23_qdrant-windsurf-competitors/chunk_07_comparative_analysis)
+    - **2025 05 23 Windsurf Memory Mcp**
+      - [Chunk 01 Read Graph Issue](flows/research/2025-05-23_windsurf-memory-mcp/chunk_01_read_graph_issue)
+      - [Chunk 02 Mcp Overview And Memory Clues](flows/research/2025-05-23_windsurf-memory-mcp/chunk_02_mcp_overview_and_memory_clues)
+      - [Chunk 03 Mcp Benefits And Setup](flows/research/2025-05-23_windsurf-memory-mcp/chunk_03_mcp_benefits_and_setup)
+    - **2025 05 24 Fastapi Auto Docs**
+      - [Chunk 01](flows/research/2025-05-24_fastapi_auto_docs/chunk_01)
+    - **2025 06 25 Iran Nuclear Attack**
+      - [Chunk 01 Overview](flows/research/2025-06-25_iran_nuclear_attack/chunk_01_overview)
+      - [Chunk 02 Target Analysis](flows/research/2025-06-25_iran_nuclear_attack/chunk_02_target_analysis)
+      - [Chunk 03 Weapon Systems](flows/research/2025-06-25_iran_nuclear_attack/chunk_03_weapon_systems)
+      - [Chunk 04 Operational Assessment](flows/research/2025-06-25_iran_nuclear_attack/chunk_04_operational_assessment)
+  - **Sprints**
+    - [Sprint Log](flows/sprints/sprint_log)
+  - **Todo**
+    - **2025 04 28 Kyoyu Chess Ultra Impress**
+      - [Todo Chunk 01](flows/todo/2025-04-28_kyoyu-chess-ultra-impress/todo_chunk_01)
+      - [Todo Chunk 02](flows/todo/2025-04-28_kyoyu-chess-ultra-impress/todo_chunk_02)
+      - [Todo Chunk 03](flows/todo/2025-04-28_kyoyu-chess-ultra-impress/todo_chunk_03)
+      - [Todo Chunk 04](flows/todo/2025-04-28_kyoyu-chess-ultra-impress/todo_chunk_04)
+    - [Todo](flows/todo/todo)
+  - [Flows building rules](flows/Flows Building Rules)
+  - [Rules 2](flows/Rules 2)
+- **Frameworks**
+  - [Angular](frameworks/angular)
+  - [Docker](frameworks/docker)
+  - [Fastapi](frameworks/fastapi)
+  - [React](frameworks/react)
+  - [Svelte](frameworks/svelte)
+  - [Vuejs](frameworks/vuejs)
+- **Guides**
+  - [Nginx Guide](guides/nginx_guide)
+- **Ide**
+  - **Windsurf**
+    - **Deep Dive**
+      - [Architecture](ide/windsurf/deep_dive/architecture)
+      - [Community](ide/windsurf/deep_dive/community)
+      - [Dos Donts](ide/windsurf/deep_dive/dos_donts)
+      - [Overview](ide/windsurf/deep_dive/overview)
+      - [Press Reception](ide/windsurf/deep_dive/press_reception)
+      - [Pros Cons](ide/windsurf/deep_dive/pros_cons)
+      - [Tips Tricks](ide/windsurf/deep_dive/tips_tricks)
+    - **Global Services**
+      - [Cache System](ide/windsurf/global_services/cache_system)
+      - [Config Store](ide/windsurf/global_services/config_store)
+      - [Documentation Hub](ide/windsurf/global_services/documentation_hub)
+      - [Documentation Standards](ide/windsurf/global_services/documentation_standards)
+      - [Logging System](ide/windsurf/global_services/logging_system)
+      - [Multi Developer Setup](ide/windsurf/global_services/multi_developer_setup)
+      - [Rulebooks](ide/windsurf/global_services/rulebooks)
+      - [Shared Libraries](ide/windsurf/global_services/shared_libraries)
+      - [Task Management](ide/windsurf/global_services/task_management)
+      - [Template Library](ide/windsurf/global_services/template_library)
+- **Junk**
+  - [Documentation System](junk/DOCUMENTATION_SYSTEM)
+- **Mcp Tools**
+  - [Memory](mcp_tools/memory)
+  - [Playwright](mcp_tools/playwright)
+  - [Puppeteer](mcp_tools/puppeteer)
+  - [Sequential Thinking](mcp_tools/sequential-thinking)
+- **Media Servers**
+  - [Arr Ecosystem](media_servers/arr_ecosystem)
+  - [Calibre](media_servers/calibre)
+  - [Immich](media_servers/immich)
+  - [Plex](media_servers/plex)
+- **Philosophy And Risks**
+  - [The Great Filter Is Us](philosophy_and_risks/the_great_filter_is_us)
+- **Robotics**
+  - **Canine**
+    - [Unitree](robotics/canine/unitree)
+    - [Xiaomi](robotics/canine/xiaomi)
+  - **Humanoid**
+    - [Agility Robotics](robotics/humanoid/agility_robotics)
+    - [Boston Dynamics](robotics/humanoid/boston_dynamics)
+    - [Figure Ai](robotics/humanoid/figure_ai)
+    - [Sanctuary Ai](robotics/humanoid/sanctuary_ai)
+    - [Tesla](robotics/humanoid/tesla)
+  - **Industrial Logistics**
+    - [Abb](robotics/industrial_logistics/abb)
+    - [Fanuc](robotics/industrial_logistics/fanuc)
+    - [Kuka](robotics/industrial_logistics/kuka)
+- **Tools**
+  - [Docsify](tools/docsify)
+  - [Grafana Loki](tools/grafana_loki)
+  - [Log Viewer](tools/log_viewer)

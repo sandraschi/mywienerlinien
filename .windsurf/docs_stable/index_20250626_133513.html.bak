@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Global Documentation Hub</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Windsurf Global Documentation">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  
+  <style>
+    /* Theme styles */
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #2c3e50;
+      --sidebar-bg: #f5f7fa;
+      --sidebar-text: #2c3e50;
+      --border-color: #eaecef;
+      --code-bg: #f6f8fa;
+      --code-text: #476582;
+      --link-color: #2c3e50;
+      --link-hover: #42b983;
+      --header-bg: #f5f7fa;
+    }
+    
+    [data-theme="dark"] {
+      --bg-color: #1e1e1e;
+      --text-color: #e0e0e0;
+      --sidebar-bg: #252526;
+      --sidebar-text: #e0e0e0;
+      --border-color: #404040;
+      --code-bg: #2d2d2d;
+      --code-text: #d4d4d4;
+      --link-color: #e0e0e0;
+      --link-hover: #42b983;
+      --header-bg: #252526;
+    }
+    
+    /* Base styles */
+    html, body, #app {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: #fff;
+    }
+    
+    /* Layout container */
+    .app-container {
+      min-height: 100vh;
+      position: relative;
+      padding-left: 0;
+      transition: padding 0.3s ease;
+    }
+    
+    /* Sidebar container */
+    .sidebar {
+      width: 300px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      border-right: 1px solid var(--border-color);
+      z-index: 10;
+      overflow-y: auto;
+      transform: translateX(0);
+      transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      padding: 60px 10px 20px 10px;
+      box-sizing: border-box;
+    }
+    
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .sidebar li {
+      padding: 2px 10px;
+      margin: 0;
+      line-height: 1.2;
+      transition: background-color 0.2s ease;
+    }
+    
+    .sidebar li:hover {
+      background-color: var(--border-color);
+    }
+    
+    .sidebar a {
+      color: var(--sidebar-text);
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s ease;
+      padding: 2px 0;
+    }
+    
+    .sidebar a:hover {
+      color: var(--link-hover);
+    }
+    
+    /* Active sidebar link */
+    .sidebar a.router-link-active {
+      color: var(--link-hover);
+      font-weight: 500;
+    }
+    
+    /* Nested sidebar items */
+    .sidebar .sidebar-nav ul {
+      padding-left: 15px;
+    }
+    
+    /* Collapsible arrows */
+    .sidebar .app-sub-sidebar > li > a:before,
+    .sidebar .sidebar-nav > li > a:before {
+      content: '▶';
+      display: inline-block;
+      font-size: 10px;
+      margin-right: 6px;
+      transition: transform 0.2s ease;
+    }
+    
+    .sidebar li.open > a:before {
+      transform: rotate(90deg);
+    }
+    
+    .sidebar .app-sub-sidebar {
+      display: none;
+    }
+    
+    .sidebar li.open > .app-sub-sidebar,
+    .sidebar li.open > .sidebar-nav {
+      display: block;
+    }
+    
+    /* Sidebar section headers */
+    .sidebar h2 {
+      color: var(--sidebar-text);
+      font-size: 1.1em;
+      margin: 20px 0 10px 0;
+      padding: 0 20px;
+      font-weight: 600;
+    }
+    
+    /* Show sidebar */
+    body.sidebar-visible .sidebar {
+      transform: translateX(0);
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    
+    /* Main content area */
+    .content {
+      padding: 20px 40px;
+      margin-left: 300px;
+      max-width: 100%;
+      box-sizing: border-box;
+      background: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      transition: margin 0.3s ease;
+    }
+    
+    /* Show sidebar */
+    
+    /* Collapsed sidebar */
+    body.sidebar-collapsed .sidebar {
+      transform: translateX(-300px);
+    }
+    body.sidebar-collapsed .content {
+      margin-left: 0;
+    }
+    
+    /* Ensure sidebar content is visible */
+    .sidebar > * {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    
+    /* Sidebar toggle button */
+    .sidebar-toggle {
+      position: fixed;
+      top: 10px;
+      right: 60px;
+      z-index: 1000;
+      background: var(--sidebar-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    
+    /* Theme toggle button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      background: var(--sidebar-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .theme-toggle:hover {
+      background: var(--border-color);
+    }
+    
+    /* Toggle buttons */
+    .sidebar-toggle, .theme-toggle {
+      position: fixed;
+      z-index: 100;
+      background: #42b983;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+      opacity: 0.9;
+    }
+    
+    .sidebar-toggle:hover, .theme-toggle:hover {
+      opacity: 1;
+      transform: scale(1.1);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    }
+    
+    .sidebar-toggle:active, .theme-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    .sidebar-toggle {
+      top: 20px;
+      left: 20px;
+    }
+    
+    .theme-toggle {
+      top: 20px;
+      right: 50px;
+      background: #6c757d;
+    }
+    
+    /* Overlay when sidebar is open */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    body.sidebar-visible .sidebar-overlay {
+      display: block;
+      opacity: 1;
+    }
+    
+    /* Toggle buttons */
+    .toggle-button {
+      position: fixed;
+      z-index: 20;
+      background: var(--theme-color, #42b983);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .sidebar-toggle {
+      top: 10px;
+      left: 10px;
+    }
+    
+    .theme-toggle {
+      top: 10px;
+      right: 65px;
+      z-index: 100;
+    }
+    
+    /* Fix sidebar positioning */
+    .app-nav {
+      left: 50 !important;
+      right: auto !important;
+      top: 0 !important;
+      width: 250px !important;
+      transition: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    }
+    
+    /* Remove any negative margins or transforms */
+    .sidebar-toggle {
+      position: fixed !important;
+      z-index: 1000 !important;
+      background: var(--theme-color, #42b983) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 0 4px 4px 0 !important;
+    }
+    
+    /* Ensure content doesn't overlap with sidebar */
+    .content {
+      margin-left: 300px !important;
+      padding: 20px !important;
+    }
+    
+    /* Reset body and html */
+    body, html {
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow-x: hidden !important;
+    }
+    /* Clean up any conflicting styles */
+    body, html {
+      transform: none !important;
+      transition: none !important;
+    }
+    
+    /* Ensure proper layout structure */
+    #app {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar toggle button */
+    .sidebar-toggle {
+      position: fixed;
+      left: 0;
+      top: 0;
+      padding: 15px;
+      background: var(--theme-color, #42b983);
+      color: white;
+      z-index: 100;
+      border: none;
+      border-radius: 0 4px 4px 0;
+    }
+    
+    /* Ensure proper dark/light theme toggle visibility */
+    .darklight-theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 99;
+      background: var(--theme-color, #42b983);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    /* Remove any unwanted margins from body/html */
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+  </style>
+  
+  <!-- Theme and Styling -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/buble.css">
+  
+  <!-- KaTeX for math typesetting -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  
+  <!-- Prism.js for syntax highlighting -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+  <div id="app">
+    <div class="app-container">
+      <nav class="sidebar">
+        <!-- Sidebar content will be injected by Docsify -->
+      </nav>
+      <main class="content">
+        <!-- Main content will be injected by Docsify -->
+      </main>
+    </div>
+  </div>
+  <div class="sidebar-overlay"></div>
+  <script>
+    window.$docsify = {
+      name: 'Windsurf',
+      repo: 'sandraschi/mywienerlinien',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      search: {
+        maxAge: 86400000, // 1 day
+        paths: 'auto',
+        placeholder: 'Search...',
+        noData: 'No results!',
+        depth: 6
+      },
+      auto2top: true,
+      coverpage: false,
+      
+      // Dark/Light theme configuration
+      darklightTheme: {
+        siteFont: 'PT Sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+        defaultTheme: 'light',
+        codeFontFamily: 'Roboto Mono, Monaco, courier, monospace',
+        bodyFontSize: '16px',
+        dark: {
+          accent: '#42b983',
+          toogleBackground: '#ffffff',
+          background: '#1e1e1e',
+          textColor: '#e0e0e0',
+          codeTextColor: '#d4d4d4',
+          codeBackgroundColor: '#2d2d2d',
+          borderColor: '#404040',
+          blockQuoteColor: '#858585',
+          highlightColor: '#d22778',
+          sidebarSublink: '#b4b4b4',
+          codeTypeColor: '#ffffff',
+          coverBackground: 'linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%)',
+          toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/sun.svg)'
+        },
+        light: {
+          accent: '#42b983',
+          toogleBackground: '#091a28',
+          background: '#ffffff',
+          textColor: '#34495e',
+          codeTextColor: '#525252',
+          codeBackgroundColor: '#f8f8f8',
+          borderColor: 'rgba(0, 0, 0, 0.07)',
+          blockQuoteColor: '#858585',
+          highlightColor: '#d22778',
+          sidebarSublink: '#b4b4b4',
+          codeTypeColor: '#091a28',
+          coverBackground: 'linear-gradient(to left bottom, hsl(118, 100%, 85%) 0%,hsl(181, 100%, 85%) 100%)',
+          toogleImage: 'url(https://cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/icons/moon.svg)'
+        }
+      },
+      
+      // Tabs configuration
+      tabs: {
+        persist: true,
+        sync: true,
+        theme: 'classic',
+        tabComments: true,
+        tabHeadings: true
+      },
+      
+      // Pagination configuration
+      pagination: {
+        previousText: 'Previous',
+        nextText: 'Next',
+        crossChapter: true,
+        crossChapterText: true
+      },
+      
+      // Edit link configuration
+      editLink: {
+        text: 'Edit this page on GitHub',
+        template: 'https://github.com/sandraschi/mywienerlinien/edit/main/.windsurf/docs{{file}}'
+      },
+      
+      // Copy code button configuration
+      copyCode: {
+        buttonText: 'Copy',
+        errorText: 'Failed',
+        successText: 'Copied!',
+        selector: 'pre[data-lang]',
+        position: 'top'
+      },
+      
+      // Sidebar collapse configuration
+      sidebarDisplayLevel: 1
+    };
+  </script>
+  <!-- Load docsify-darklight-theme before docsify -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  
+  <!-- Tabs Plugin -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+  
+  <!-- Copy Code Plugin -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+  
+  <!-- Pagination Plugin -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  
+  <!-- Sidebar Collapse Plugin -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css">
+  
+  <!-- Zoom Image Plugin -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  
+  <!-- Edit on GitHub -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/edit-link.min.js"></script>
+  
+  <!-- Mermaid.js for diagrams -->
+  <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: false });
+    window.$docsify.markdown = {
+      renderer: {
+        code: function(code, lang) {
+          if (lang === "mermaid") {
+            return `<div class="mermaid">${code}</div>`;
+          }
+          return this.origin.code.apply(this, arguments);
+        }
+      }
+    };
+  </script>
+  
+  <!-- PlantUML for UML diagrams -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-plantuml/dist/docsify-plantuml.min.js"></script>
+  
+  <!-- Kroki for various diagrams -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-kroki/dist/docsify-kroki.min.js"></script>
+  
+  <!-- Chart.js for charts -->
+  <script src="//cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-chart/dist/docsify-chart.umd.js"></script>
+  
+  <!-- Versioning support -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-versioning/dist/docsify-versioning.min.js"></script>
+  
+  <!-- Include external files -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-include-html@1.0.0/dist/docsify-include-html.min.js"></script>
+  
+  <!-- Sidebar Footer -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-footer/dist/docsify-sidebar-footer.min.js"></script>
+  
+  <!-- Terminal Blocks -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-terminal-block/dist/docsify-terminal-block.min.js"></script>
+  
+  <!-- Interactive Quizzes -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-quiz/dist/docsify-quiz.min.js"></script>
+  
+  <!-- Gitalk Comments -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css">
+  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-gitalk/dist/docsify-gitalk.min.js"></script>
+  
+  <!-- GitHub Buttons -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-github@1"></script>
+  
+  <!-- Reading Progress -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-progress/dist/progress.min.js"></script>
+  
+  <!-- Toggle Buttons and Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Create and add sidebar toggle button
+      const sidebarToggle = document.createElement('button');
+      sidebarToggle.className = 'sidebar-toggle';
+      sidebarToggle.innerHTML = '≡';
+      sidebarToggle.title = 'Toggle Sidebar';
+      
+      // Create and add theme toggle button
+      const themeToggle = document.createElement('button');
+      themeToggle.className = 'theme-toggle';
+      themeToggle.title = 'Toggle Theme';
+      themeToggle.innerHTML = '🌙';
+      
+      // Add theme toggle to the page immediately
+      document.body.appendChild(themeToggle);
+      
+      // Helper to apply sidebar theme
+      function applySidebarTheme(theme) {
+        const sidebar = document.querySelector('.sidebar');
+        if (!sidebar) return;
+        if (theme === 'dark') {
+          sidebar.style.setProperty('--sidebar-bg', '#252526');
+          sidebar.style.setProperty('--sidebar-text', '#e0e0e0');
+          sidebar.style.setProperty('--border-color', '#404040');
+        } else {
+          sidebar.style.setProperty('--sidebar-bg', '#f5f7fa');
+          sidebar.style.setProperty('--sidebar-text', '#2c3e50');
+          sidebar.style.setProperty('--border-color', '#eaecef');
+        }
+      }
+      
+      // Detect and apply initial theme
+      function initTheme() {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = saved ? saved : (prefersDark ? 'dark' : 'light');
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          themeToggle.innerHTML = '☀️';
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          themeToggle.innerHTML = '🌙';
+        }
+        applySidebarTheme(theme);
+      }
+      
+      // Create sidebar overlay if not present
+      let overlay = document.querySelector('.sidebar-overlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        Object.assign(overlay.style, {
+          position: 'fixed',
+          left: '0',
+          top: '0',
+          right: '0',
+          bottom: '0',
+          background: 'rgba(0,0,0,0.3)',
+          zIndex: '9',
+          display: 'none'
+        });
+        document.body.appendChild(overlay);
+      }
+      
+
+      
+      // Helper to show/hide overlay on small screens
+      function updateOverlay() {
+        if (window.innerWidth < 768 && !document.body.classList.contains('sidebar-collapsed')) {
+          overlay.style.display = 'block';
+        } else {
+          overlay.style.display = 'none';
+        }
+      }
+      window.addEventListener('resize', updateOverlay);
+      updateOverlay();
+      
+      // Theme toggle functionality
+      function toggleTheme() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const newTheme = isDark ? 'light' : 'dark';
+        
+        // Update theme
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Update button
+        themeToggle.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
+        themeToggle.title = `Switch to ${isDark ? 'Dark' : 'Light'} Mode`;
+        
+        applySidebarTheme(newTheme);
+        
+        // Force redraw for smooth transition
+        document.body.style.display = 'none';
+        document.body.offsetHeight; // Trigger reflow
+        document.body.style.display = '';
+      }
+      
+      // Initialize theme from localStorage
+      function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          themeToggle.innerHTML = '☀️';
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          themeToggle.innerHTML = '🌙';
+        }
+      }
+      
+      // Initialize theme first so sidebar correct
+      initTheme();
+      // Set up theme toggle
+      themeToggle.addEventListener('click', toggleTheme);
+      
+      // Watch for system theme changes
+      if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          if (!localStorage.getItem('theme')) {
+            initTheme();
+          }
+        });
+      }
+      
+      // Get overlay element
+      // overlay is defined above if needed
+      
+      // Toggle sidebar function
+      function toggleSidebar() {
+        if (show === null) {
+          document.body.classList.toggle('sidebar-collapsed');
+        } else {
+          document.body.classList.toggle('sidebar-visible', show);
+        }
+        updateOverlay();
+      }
+      
+      // Add toggle functionality with better event handling
+      function setupSidebarToggle() {
+        // Remove any existing event listeners to prevent duplicates
+        sidebarToggle.onclick = null;
+        if (overlay) overlay.onclick = null;
+        
+        // Add new event listeners
+        sidebarToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          document.body.classList.toggle('sidebar-collapsed');
+        });
+        
+        if (overlay) {
+          overlay.addEventListener('click', function() {
+            document.body.classList.remove('sidebar-visible');
+          });
+        }
+        
+        // Add to DOM if not already present
+        if (!document.body.contains(sidebarToggle)) {
+          document.body.appendChild(sidebarToggle);
+        }
+      }
+      
+      // Initialize sidebar toggle
+      setupSidebarToggle();
+      
+      // Close sidebar when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.sidebar') && !e.target.closest('.sidebar-toggle')) {
+          toggleSidebar(false);
+        }
+      });
+      
+      // Close sidebar when pressing Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          toggleSidebar(false);
+        }
+      });
+      
+      // Theme toggle functionality is now handled above
+      
+      // sidebarToggle already appended if not present
+      
+      // Close sidebar on mobile when clicking a link
+      const sidebarLinks = document.querySelectorAll('.sidebar a');
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth < 768) {
+            toggleSidebar(false);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

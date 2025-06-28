@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <title>Windsurf Documentation</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Windsurf Documentation">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="plugins/prism-css.min.css">
+  <link rel="stylesheet" href="plugins/katex.min.css">
+  
+  <!-- Collapsible Sidebar CSS -->
+  <link rel="stylesheet" href="plugins/sidebar-collapse.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/appearance.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <link rel="stylesheet" href="assets/css/controls.css">
+  <link rel="stylesheet" href="plugins/pdfjs-dist-viewer-min.css">
+  
+  <link rel="icon" href="favicon.ico">
+</head>
+<body>
+  <!-- Sidebar Toggle Button -->
+  <button id="sidebarToggle" class="sidebar-toggle" title="Toggle sidebar">☰</button>
+  
+  <!-- Theme Toggle Button -->
+  <button id="themeToggle" class="theme-toggle" title="Toggle dark/light mode">🌙</button>
+  
+  <!-- Console Toggle Button -->
+  <button id="consoleToggle" class="console-toggle" title="Show console">>_</button>
+  
+  <!-- Controls Panel Toggle -->
+  <button id="controlsToggle" class="controls-toggle" title="Toggle controls panel">⚙️</button>
+  
+  <!-- Console Panel -->
+  <div id="consolePanel" class="console-panel">
+    <div class="console-header">
+      <h4>Console</h4>
+      <button id="clearConsole" class="console-clear" title="Clear console">🗑️</button>
+    </div>
+    <div id="consoleOutput" class="console-output"></div>
+    <div class="console-input">
+      <input type="text" id="consoleInput" placeholder="Type commands here..." autocomplete="off">
+      <button id="executeCommand">Run</button>
+    </div>
+  </div>
+  
+  <!-- Main Container -->
+  <div id="app">
+    <!-- Sidebar will be loaded here by Docsify -->
+  </div>
+  
+  <!-- Controls Panel -->
+  <div id="controlsPanel" class="controls-panel">
+    <div class="controls-header">
+      <h3>Documentation Controls</h3>
+      <button id="closeControls" class="close-controls">×</button>
+    </div>
+    <div class="controls-content">
+      <div class="control-group">
+        <h4>Theme</h4>
+        <div class="control-item">
+          <label><input type="radio" name="theme" value="light" checked> Light</label>
+          <label><input type="radio" name="theme" value="dark"> Dark</label>
+          <label><input type="radio" name="theme" value="system"> System</label>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <h4>Plugins</h4>
+        <div class="control-item">
+          <label><input type="checkbox" name="plugin-search" checked> Search</label>
+          <label><input type="checkbox" name="plugin-zoom" checked> Image Zoom</label>
+          <label><input type="checkbox" name="plugin-copy" checked> Copy Code</label>
+          <label><input type="checkbox" name="plugin-collapse" checked> Collapsible Sidebar</label>
+          <label><input type="checkbox" name="plugin-tabs" checked> Tabs</label>
+          <label><input type="checkbox" name="plugin-pagination" checked> Pagination</label>
+          <label><input type="checkbox" name="plugin-edit-link" checked> Edit Link</label>
+          <label><input type="checkbox" name="plugin-mermaid" checked> Diagrams</label>
+          <label><input type="checkbox" name="plugin-katex" checked> Math Equations</label>
+          <label><input type="checkbox" name="plugin-footnote" checked> Footnotes</label>
+          <label><input type="checkbox" name="plugin-pdf" checked> PDF Viewer</label>
+        </div>
+      </div>
+      
+      <div class="control-group" id="appearance-controls">
+        <h4>Appearance</h4>
+        <div class="control-item">
+          <label for="fontSize">Font Size</label>
+          <select id="fontSize" name="fontSize" class="control-select" aria-label="Select font size">
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+            <option value="xlarge">Extra Large</option>
+          </select>
+          
+          <label for="lineHeight">Line Height</label>
+          <select id="lineHeight" name="lineHeight" class="control-select" aria-label="Select line height">
+            <option value="tight">Tight</option>
+            <option value="normal" selected>Normal</option>
+            <option value="loose">Loose</option>
+          </select>
+          
+          <label for="fontFamily">Font Family</label>
+          <select id="fontFamily" name="fontFamily" class="control-select" aria-label="Select font family">
+            <option value="system">System Default</option>
+            <option value="sans" selected>San Francisco (Sans)</option>
+            <option value="serif">Georgia (Serif)</option>
+            <option value="mono">Monospace</option>
+          </select>
+          
+          <div class="control-checkbox">
+            <input type="checkbox" id="highContrast" name="highContrast" aria-labelledby="highContrastLabel">
+            <label for="highContrast" id="highContrastLabel">High Contrast Mode</label>
+          </div>
+          
+          <div class="control-checkbox">
+            <input type="checkbox" id="reduceMotion" name="reduceMotion" aria-labelledby="reduceMotionLabel">
+            <label for="reduceMotion" id="reduceMotionLabel">Reduce Motion</label>
+          </div>
+          
+          <button id="resetAppearance" class="btn btn-sm btn-outline-secondary mt-2" style="width: 100%;">
+            Reset to Defaults
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- App Container -->
+  <div id="app">
+    <!-- Sidebar and content will be loaded by Docsify -->
+  </div>
+  
+  <!-- Initialize Docsify -->
+  <script>
+    // Load configuration first
+    window.$docsify = window.$docsify || {};
+  </script>
+  
+  <!-- Initialize Docsify configuration -->
+  <script>
+    // Initialize Docsify configuration
+    window.$docsify = {
+      // Will be merged with config.js
+    };
+  </script>
+  
+  <!-- Configure Docsify -->
+  <script>
+    // Set Docsify configuration before loading the core
+    window.$docsify = {
+      name: 'Windsurf Documentation',
+      repo: '',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      themeColor: '#42b983',
+      executeScript: true,
+      noEmoji: false,
+      relativePath: true,
+      maxLevel: 6,
+      loadNavbar: false,
+      mergeNavbar: false,
+      autoHeader: true,
+      coverpage: false,
+      onlyCover: false,
+      loadFooter: false,
+      plugins: []
+    };
+  </script>
+  
+  <!-- Load configuration -->
+  <script src="js/config.js"></script>
+  
+  <!-- Load Docsify core -->
+  <script src="plugins/docsify.min.js"></script>
+  
+  <!-- Load required plugins -->
+  <script src="plugins/prism.js"></script>
+  <script src="plugins/prism-javascript.min.js"></script>
+  <script src="plugins/prism-python.min.js"></script>
+  <script src="plugins/prism-bash.min.js"></script>
+  <script src="plugins/prism-json.min.js"></script>
+  <script src="plugins/prism-yaml.min.js"></script>
+  <script src="plugins/prism-powershell.min.js"></script>
+  <script src="plugins/docsify-sidebar-collapse.js"></script>
+  <script src="plugins/docsify-search.min.js"></script>
+  
+  <!-- Load optional plugins with error handling -->
+  <script>
+    // Function to safely load optional scripts
+    function loadOptionalScript(src) {
+      return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.onload = () => {
+          console.log(`Loaded: ${src}`);
+          resolve();
+        };
+        script.onerror = () => {
+          console.warn(`Failed to load: ${src}`);
+          resolve(); // Continue even if some plugins fail to load
+        };
+        script.src = src;
+        document.head.appendChild(script);
+      });
+    }
+    
+    // List of optional plugins
+    const optionalPlugins = [
+      'plugins/docsify-copy-code.js',
+      'plugins/zoom-image.js',
+      'plugins/docsify-tabs.js',
+      'plugins/docsify-pagination.js',
+      'plugins/mermaid.min.js',
+      'plugins/docsify-mermaid.js',
+      'plugins/katex.min.js',
+      'plugins/docsify-katex.js',
+      'plugins/docsify-footnote.js'
+    ];
+    
+    // Load optional plugins after DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load optional plugins
+      Promise.all(optionalPlugins.map(loadOptionalScript))
+        .then(() => {
+          console.log('All plugins loaded');
+        })
+        .catch(err => {
+          console.error('Error loading plugins:', err);
+        });
+    });
+  </script>
+  </script>
+  
+  <!-- Load UI managers -->
+  <script src="js/theme-manager.js"></script>
+  <script src="js/sidebar-manager.js"></script>
+  <script src="js/appearance-manager.js"></script>
+  <script src="js/plugins.js"></script>
+  
+  <!-- Main application script -->
+  <script src="js/main.js"></script>
+  
+  <!-- Controls Script (loads last) -->
+  <script src="assets/js/controls.js"></script>
+</body>
+</html>
