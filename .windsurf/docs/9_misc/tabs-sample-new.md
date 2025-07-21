@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Tabs plugin allows you to organize content into tabbed sections, making your documentation more organized and easier to navigate. This guide covers everything from basic usage to advanced customization.
+The Tabs plugin allows you torganize content into tabbed sections, making your documentation more organized and easier to navigate. This guide covers everything from basic usage to advanced customization.
 
 ## Basic Usage
 
@@ -19,13 +19,13 @@ The Tabs plugin allows you to organize content into tabbed sections, making your
 <!-- tabs:start -->
 
 #### **English**
-Hello! This is some content in English.
+Hello! Thisome content in English.
 
 #### **French**
 Bonjour! Voici du contenu en français.
 
 #### **Spanish**
-¡Hola! Este es un contenido en español.
+¡Hola! Estes un contenido en español.
 
 <!-- tabs:end -->
 ```
@@ -65,7 +65,7 @@ JavaScript runtime built on Chrome's V8 engine.
 A high-level Python Web framework.
 
 ##### **Spring**
-Framework for building Java applications.
+Framework for building Javapplications.
 
 <!-- tabs:end -->
 
@@ -80,18 +80,17 @@ Framework for building Java applications.
 window.$docsify = {
   tabs: {
     // Basic Settings
-    defaultTab: 0,           // Default tab to display (0-based index or 'first'/'last')
+    defaultTab: 0,           // Defaultab to display (0-based index or 'first'/'last')
     maxTabs: 5,              // Maximum number of tabs to display
     loadAllTabs: false,      // Load all tab content at once
-    sync: true,              // Sync tabs with the same name across the page
-    persist: false,          // Persist the active tab across page loads
+    sync: true,              // Sync tabs withe same name across the page
+    persist: false,          // Persisthe active tab across page loads
     
     // Styling
     theme: 'default',        // 'default' or 'material'
     tabHeadings: 'all',      // 'all' or 'active'
     
-    // Animation
-    animation: 200,          // Animation duration in milliseconds
+    // Animation: 200,          // Animation duration in milliseconds
     
     // Custom Classes
     tabContainerClass: 'docsify-tabs',
@@ -102,7 +101,7 @@ window.$docsify = {
     
     // Callbacks
     onTabShow: function(tab) {
-      // Called when a tab is shown
+      // Called when a tab ishown
       console.log('Tab shown:', tab);
     },
     
@@ -111,10 +110,9 @@ window.$docsify = {
       console.log('Tab hidden:', tab);
     },
     
-    // Advanced
-    dynamic: false,          // Enable dynamic tab loading
+    // Advancedynamic: false,          // Enable dynamic tab loading
     updateHash: true,        // Update URL hash when switching tabs
-    useStorage: true,        // Use localStorage to persist tab state
+    useStorage: true,        // Use localStorage to persistab state
     storageKey: 'docsify-tabs' // Key to use for localStorage
   }
 };
@@ -135,7 +133,7 @@ Content for Tab 2.
 Content for Tab 3.
 
 #### **Tab 4**
-This tab won't be shown because maxTabs is set to 3.
+This tab won't be shown because maxTabs iseto 3.
 
 <!-- tabs:end -->
 ```
@@ -235,7 +233,7 @@ This tab won't be shown because maxTabs is set to 3.
 
 1. **Performance**
    - Use lazy loading for content-heavy tabs with `<!-- tabs:lazy -->`
-   - Limit the number of tabs to 3-5 for better usability
+   - Limithe number of tabs to 3-5 for better usability
    - Avoid complex layouts inside tabs
 
 2. **Accessibility**
@@ -246,7 +244,7 @@ This tab won't be shown because maxTabs is set to 3.
 3. **Maintainability**
    - Keep tab content focused and concise
    - Use consistent styling
-   - Group related content together
+   - Group related contentogether
 
 ## Troubleshooting
 
@@ -327,9 +325,7 @@ Returns a single user by ID.
 <!-- tabs:end -->
 ```
 
-## Browser Support
-
-The plugin works in all modern browsers, including:
+## Browser Supporthe plugin works in all modern browsers, including:
 - Chrome (latest)
 - Firefox (latest)
 - Safari (latest)
@@ -342,4 +338,4 @@ MIT
 
 ---
 
-For more information, visit the [docsify-tabs GitHub repository](https://github.com/jhildenbiddle/docsify-tabs).
+For more information, visithe [docsify-tabs GitHub repository](https://github.com/jhildenbiddle/docsify-tabs).

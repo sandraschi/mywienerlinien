@@ -1,4 +1,4 @@
-﻿# assets.Value.ToUpper() ssets\nThis directory contains files and subdirectories related to assets.\n\n## Contents\n<!-- toc -->\n
+# assets\nThis directory contains files and subdirectories related to assets.\n\n## Contents\n<!-- toc -->\n
 ## Navigation
 
 - [Parent Directory](../)

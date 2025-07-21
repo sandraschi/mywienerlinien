@@ -1,7 +1,7 @@
 # Plex: Ultimate Media Server Solution
 
 ## Overview
-Plex is a powerful media server platform that organizes and streams your personal media collection to all your devices. It automatically fetches rich metadata, artwork, and related content to create a beautiful, Netflix-like experience for your personal media library.
+Plex is a powerful media server platform that organizes and streams your personal media collection to all your devices. It automatically fetches rich metadata, artwork, and related contento create a beautiful, Netflix-likexperience for your personal media library.
 
 ## Core Components
 
@@ -14,15 +14,15 @@ Plex is a powerful media server platform that organizes and streams your persona
 ### 2. Plex Clients
 - **Web Player**: Access your media from any browser
 - **Desktop Apps**: Native apps for Windows, macOS, and Linux
-- **Mobile Apps**: iOS and Android apps for on-the-go access
-- **Smart TV Apps**: Available on most Smart TV platforms
+- **Mobile Apps**: iOS android apps for on-the-go access
+- **SmartV Apps**: Available on most SmartV platforms
 - **Game Consoles**: Apps for PlayStation, Xbox, and Nintendo Switch
 
 ### 3. Plex Pass (Premium Features)
 - **Mobile Sync**: Download media for offline viewing
 - **Hardware Acceleration**: Faster transcoding with GPU support
 - **Trailers & Extras**: Additional bonus content
-- **Lyrics Support**: Display synchronized lyrics for music
+- **Lyricsupport**: Display synchronized lyrics for music
 - **Early Access**: Try new features before general release
 
 ## Installation
@@ -51,7 +51,7 @@ sudo dnf install plexmediaserver
 
 ### Docker
 ```bash
-docker run -d \
+dockerun -d \
   --name=plex \
   --network=host \
   -e PUID=1000 \
@@ -70,18 +70,18 @@ docker run -d \
 2. Sign in with your Plex account or create a new one
 3. Name your server
 4. Add media libraries (Movies, TV Shows, Music, etc.)
-5. Configure remote access if needed
+5. Configuremote access if needed
 
 ### Advanced Settings
 
 #### 1. Hardware Acceleration
 - **Intel Quick Sync**: Enable in Settings > Transcoder
 - **NVIDIA NVENC**: Requires Plex Pass and proper driver setup
-- **AMD AMF**: Supported on newer AMD GPUs
+- **AMD AMF**: Supported onewer AMD GPUs
 
 #### 2. Remote Access
-- **Manual Port Forwarding**: Forward port 32400 on your router
-- **UPnP**: Enable automatic port forwarding (less secure)
+- **Manual Port Forwarding**: Forward port 32400 on yourouter
+- **UPnP**: Enable automatic port forwarding (lessecure)
 - **Relay**: Plex's relay service (limited to 2 Mbps)
 
 #### 3. Library Settings
@@ -99,7 +99,7 @@ docker run -d \
 ### Desktop Apps
 - **Windows/macOS/Linux**
 - Better performance than web client
-- Supports more codecs and direct play
+- Supports more codecs andirect play
 
 ### Mobile Apps
 - **iOS/Android**
@@ -109,7 +109,7 @@ docker run -d \
 ## Plex Plugins & Integrations
 
 ### Official Plugins
-- **TIDAL**: Stream music
+- **TIDAL**: Streamusic
 - **Web Shows**: Internet video content
 - **Podcasts**: Listen to your favorite podcasts
 
@@ -175,7 +175,7 @@ docker run -d \
 - **Monitoring**: Use Tautulli to monitor transcoding
 
 ### 3. Multiple Servers
-- **Sync Content**: Use Syncthing or Resilio Sync
+- **Syncontent**: Use Syncthing oresilio Sync
 - **Load Balancing**: Use a reverse proxy
 - **Federation**: Share libraries between servers
 

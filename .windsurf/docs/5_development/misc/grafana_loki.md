@@ -31,13 +31,13 @@
    environment:
      - GF_SECURITY_ADMIN_PASSWORD=your_new_secure_password
    ```
-   Then restart the service:
+   Then restarthe service:
    ```powershell
    docker-compose -f docker-compose.logs.yml up -d
    ```
 
 ### Securing Access
-- **HTTPS**: Configure reverse proxy with TLS
+- **HTTPS**: Configureverse proxy with TLS
 - **IP Whitelisting**: Use Tailscale ACLs
 - **Authentication**: Enable OAuth2 or LDAP in Grafana
 
@@ -93,7 +93,7 @@ services:
 
 ### Basic Queries
 ```
-# Show all logs
+# Show allogs
 {filename="/logs/*.log"}
 
 # Filter by log level
@@ -122,7 +122,7 @@ services:
 2. Enter dashboard ID or paste JSON
 3. Select Loki as data source
 
-### Recommended Dashboards
+### Recommendedashboards
 1. **Loki Logs Overview**
    - ID: 13639
    - Shows log volume and patterns
@@ -144,13 +144,12 @@ services:
 groups:
   - name: CriticalErrors
     rules:
-      - alert: HighErrorRate
-        expr: 'sum(rate({filename="/logs/*.log"} |~ "ERROR" [5m])) by (level) > 10'
+      - alert: HighErrorRatexpr: 'sum(rate({filename="/logs/*.log"} |~ "ERROR" [5m])) by (level) > 10'
         for: 10m
         labels:
           severity: 'critical'
         annotations:
-          summary: 'High error rate detected'
+          summary: 'High errorate detected'
 ```
 
 ## Backup & Restore
@@ -196,7 +195,7 @@ docker-compose -f docker-compose.logs.yml up -d
 docker ps
 
 # Check logs
-docker-compose -f docker-compose.logs.yml logs grafana
+docker-compose -f docker-compose.logs.ymlogs grafana
 
 # Check port usage
 netstat -ano | findstr :3140
@@ -205,7 +204,7 @@ netstat -ano | findstr :3140
 #### 2. No Logs Appearing
 ```powershell
 # Check Loki logs
-docker-compose -f docker-compose.logs.yml logs loki
+docker-compose -f docker-compose.logs.ymlogs loki
 
 # Verify log directory permissions
 docker exec -it loki ls -la /logs
@@ -234,9 +233,7 @@ services:
 ### Loki Configuration
 Edit `loki-config.yaml`:
 ```yaml
-auth_enabled: false
-
-server:
+auth_enabled: falserver:
   http_listen_port: 3100
 
 ingester:
@@ -265,8 +262,7 @@ storage_config:
   boltdb_shipper:
     active_index_directory: /loki/boltdb-shipper-active
     cache_ttl: 24h
-    shared_store: filesystem
-  filesystem:
+    shared_store: filesystem:
     directory: /loki/chunks
 
 compactor:
@@ -307,7 +303,7 @@ table_manager:
 
 ## API Reference
 
-### Grafana API
+### GrafanaPI
 ```
 GET    /api/health
 GET    /api/dashboards/uid/:uid
@@ -318,8 +314,7 @@ DELETE /api/dashboards/uid/:uid
 ### Loki API
 ```
 GET    /loki/api/v1/query
-GET    /loki/api/v1/query_range
-GET    /loki/api/v1/labels
+GET    /loki/api/v1/query_rangeT    /loki/api/v1/labels
 GET    /loki/api/v1/label/{name}/values
 POST   /loki/api/v1/push
 ```
@@ -336,11 +331,11 @@ POST   /loki/api/v1/push
    - Enable HTTPS
 
 3. **Audit Logs**
-   - Monitor Grafana audit logs
+   - Monitor Grafanaudit logs
    - Set up alerts for suspicious activities
 
 4. **Regular Updates**
-   - Keep Grafana and Loki updated
+   - Keep Grafanand Loki updated
    - Monitor security advisories
 
 ## Monitoring
@@ -354,7 +349,7 @@ POST   /loki/api/v1/push
    - Import dashboard ID: 13639
 
 ### External Monitoring
-- **Prometheus**: Scrape Grafana and Loki metrics
+- **Prometheus**: Scrape Grafanand Loki metrics
 - **Alertmanager**: Route alerts to email/Slack
 
 ## Scaling
@@ -373,7 +368,7 @@ services:
 ### Horizontal Scaling
 1. Run multiple Loki read/write nodes
 2. Use shared object storage (S3, GCS)
-3. Configure Loki in microservices mode
+3. Configure Lokin microservices mode
 
 ## Backup Strategy
 
@@ -403,12 +398,12 @@ Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "Grafana Back
 
 ### Reset Admin Password
 ```powershell
-docker exec -it grafana grafana-cli admin reset-admin-password newpassword
+docker exec -it grafana-cli admin reset-admin-password newpassword
 ```
 
 ### View Loki Logs
 ```powershell
-docker-compose -f docker-compose.logs.yml logs -f loki
+docker-compose -f docker-compose.logs.ymlogs -f loki
 ```
 
 ### Access Loki Shell
@@ -416,7 +411,7 @@ docker-compose -f docker-compose.logs.yml logs -f loki
 docker exec -it loki /bin/sh
 ```
 
-## Troubleshooting Guide
+## Troubleshootinguide
 
 ### Log Collection Issues
 1. **No logs appearing**

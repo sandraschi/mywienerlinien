@@ -6,7 +6,7 @@ Sora is OpenAI's advanced text-to-video generation model that creates realistic 
 ## 1. Overview of Sora
 
 ### 1.1 Key Features
-- Generates high-quality video clips up to one minute long
+- Generates high-quality video clips up tone minute long
 - Creates complex scenes with multiple characters and motions
 - Maintains visual quality and consistency
 - Understands and simulates the physical world
@@ -21,17 +21,17 @@ Sora is OpenAI's advanced text-to-video generation model that creates realistic 
 ## 2. Getting Started
 
 ### 2.1 Accessing Sora
-*Note: As of June 2024, Sora is in limited access. This section will be updated when public APIs become available.*
+*Note: As of June 2024, Sora is in limited access. Thisection will be updated when public APIs become available.*
 
 ```python
-# Example of future API usage (speculative)
-from openai import OpenAI
+# Example ofuture API usage (speculative)
+from openaimport OpenAI
 
 client = OpenAI(api_key="your-api-key")
 
 response = client.video.generate(
     model="sora",
-    prompt="A beautiful sunset over a mountain lake, with trees swaying in the wind",
+    prompt="A beautiful sunset over a mountain lake, with treeswaying in the wind",
     duration=30,  # seconds
     resolution="1080p",
     aspect_ratio="16:9",
@@ -53,10 +53,10 @@ with open("generated_video.mp4", "wb") as f:
 
 ### 3.1 Video-to-Video Generation
 ```python
-# Example of future video-to-video usage (speculative)
+# Example ofuture video-to-video usage (speculative)
 response = client.video.generate(
     model="sora",
-    prompt="Convert this sketch into a photorealistic scene",
+    prompt="Converthisketch into a photorealistic scene",
     input_file=open("sketch.png", "rb"),
     style="photorealistic",
     motion_intensity=0.8
@@ -65,7 +65,7 @@ response = client.video.generate(
 
 ### 3.2 Video Extension
 ```python
-# Example of future video extension (speculative)
+# Example ofuture video extension (speculative)
 response = client.video.extend(
     model="sora",
     input_file=open("existing_video.mp4", "rb"),
@@ -79,7 +79,7 @@ response = client.video.extend(
 ### 4.1 Core Components
 - **Diffusion Transformer**: Processes video data in latent space
 - **Text Encoder**: Converts prompts into embeddings
-- **Temporal Layers**: Maintains consistency across frames
+- **Temporalayers**: Maintains consistency across frames
 - **Video Decoder**: Converts latent representations to video
 
 ### 4.2 Training Process
@@ -111,16 +111,16 @@ response = client.video.extend(
 ## 6. Best Practices
 
 ### 6.1 Prompt Engineering
-- Be specific about the scene and actions
+- Be specific abouthe scene and actions
 - Include style references
 - Specify camera movements
 - Mention important visual elements
 
 ### 6.2 Example Prompts
 ```
-"A futuristic city at night, with flying cars zooming between neon-lit skyscrapers, cinematic lighting, 8k, hyper-detailed"
+"A futuristicity at night, with flying cars zooming betweeneon-lit skyscrapers, cinematic lighting, 8k, hyper-detailed"
 
-"A serene mountain lake at sunrise, with mist rising from the water, wildlife drinking at the shore, nature documentary style, 4k"
+"A serene mountain lake at sunrise, with mist rising from the water, wildlife drinking athe shore, nature documentary style, 4k"
 
 "An astronaut floating in space, Earth visible in the background, stars twinkling, IMAX documentary style, ultra-realistic"
 ```
@@ -142,7 +142,7 @@ response = client.video.extend(
 ## 8. Limitations
 
 ### 8.1 Current Challenges
-- Physics simulation inaccuracies
+- Physicsimulation inaccuracies
 - Complex cause-and-effect relationships
 - Precise spatial details
 - Long-term consistency
@@ -157,15 +157,15 @@ response = client.video.extend(
 
 ### 9.1 Expected Improvements
 - Longer video generation
-- Higher resolution output
-- Better physics simulation
+- Higheresolution output
+- Better physicsimulation
 - Improved temporal consistency
 
 ### 9.2 Potential Features
 - Interactive video generation
 - Multi-modal input (text + image + audio)
 - Real-time generation
-- Custom model fine-tuning
+- Customodel fine-tuning
 
 ## 10. Resources
 
@@ -188,9 +188,9 @@ response = client.video.extend(
 - **Runway Gen-2**: More accessible but shorter clips
 - **Pika Labs**: Community-focused, different style options
 - **Stable Video Diffusion**: Open-source alternative, less coherent
-- **Google's Lumiere**: Different technical approach, not yet public
+- **Google's Lumiere**: Differentechnical approach, not yet public
 
-### 11.2 Choosing the Right Tool
+### 11.2 Choosing the Rightool
 - **Sora**: High-quality, general-purpose video generation
 - **Specialized Tools**: For specific styles or use cases
 - **Open-Source Alternatives**: For customization and local deployment

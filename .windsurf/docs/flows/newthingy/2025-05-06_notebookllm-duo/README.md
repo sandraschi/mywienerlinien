@@ -1,4 +1,4 @@
-﻿# 2025 05 06  2025 05 06 notebookllm duo.Value.ToUpper() otebookllm  2025 05 06 notebookllm duo.Value.ToUpper() uo\nThis directory contains files and subdirectories related to 2025-05-06 notebookllm-duo.\n\n## Contents\n<!-- toc -->\n
+# 2025 05 06  2025 05 06 notebookllm duotebookllm  2025 05 06 notebookllm duo\nThis directory contains files and subdirectories related to 2025-05-06 notebookllm-duo.\n\n## Contents\n<!-- toc -->\n
 ## Navigation
 
 - [Parent Directory](../)

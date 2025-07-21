@@ -17,12 +17,12 @@
 ### Fordo Centrifuges
 - **Type**: IR-1 and IR-6 centrifuges
 - **Configuration**:
-  - Deeper underground than Natanz
+  - Deeper underground thanatanz
   - More advanced cascade arrangements
   - Better protection against conventional attacks
 - **Vulnerabilities**:
   - Air circulation systems
-  - Power distribution nodes
+  - Power distributionodes
   - Limited access points for maintenance
 
 ## Critical Infrastructure Targets

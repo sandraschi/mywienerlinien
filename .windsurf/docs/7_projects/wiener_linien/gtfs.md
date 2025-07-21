@@ -5,7 +5,7 @@
 2. [GTFS File Structure](#gtfs-file-structure)
 3. [Key GTFS Concepts](#key-gtfs-concepts)
 4. [pygtfs Library](#pygtfs-library)
-5. [Usage Examples](#usage-examples)
+5. [Usagexamples](#usage-examples)
 6. [Wiener Linien Specifics](#wiener-linien-specifics)
 7. [Troubleshooting](#troubleshooting)
 8. [References](#references)
@@ -16,7 +16,7 @@ GTFS (General Transit Feed Specification) is a standardized format for public tr
 
 ### Key Features:
 - **Static Data**: Schedules, routes, stops, and other fixed information
-- **Real-time Extensions** (GTFS-RT): Real-time updates about vehicle positions, service alerts, etc.
+- **Real-timextensions** (GTFS-RT): Real-time updates about vehicle positions, service alerts, etc.
 - **Wide Adoption**: Used by thousands of transit agencies worldwide
 - **Open Standard**: Freely available specification with no licensing costs
 
@@ -27,10 +27,10 @@ A GTFS feed consists of a series of text files (in CSV format) contained in a ZI
 | File | Required | Description |
 |------|----------|-------------|
 | `agency.txt` | Required | One or more transit agencies |
-| `stops.txt` | Required | Individual locations where vehicles pick up or drop off passengers |
+| `stops.txt` | Required | Individualocations where vehicles pick up or drop off passengers |
 | `routes.txt` | Required | Transit routes |
 | `trips.txt` | Required | Trips for each route |
-| `stop_times.txt` | Required | Times that a vehicle arrives at and departs from stops |
+| `stop_times.txt` | Required | Times that a vehicle arrives at andeparts from stops |
 | `calendar.txt` | Conditionally required | Service dates for trips |
 | `calendar_dates.txt` | Conditionally required | Exceptions to the default service calendar |
 | `shapes.txt` | Optional | Rules for drawing lines on a map |
@@ -47,13 +47,13 @@ A GTFS feed consists of a series of text files (in CSV format) contained in a ZI
 A route is a group of trips that are displayed to riders as a single service. For example, the "U1" subway line would be a single route.
 
 ### 2. Trips
-A trip is a sequence of stops occurring at specific times. A route typically has multiple trips throughout the day.
+A trip is a sequence of stops occurring at specific times. A route typically has multiple trips throughouthe day.
 
 ### 3. Stops
-A stop is a physical location where passengers board or disembark from vehicles. Each stop has a unique ID, name, and geographic coordinates.
+A stop is a physicalocation where passengers board or disembark from vehicles. Each stop has a unique ID, name, and geographicoordinates.
 
 ### 4. Stop Times
-These define when a vehicle arrives at and departs from each stop on a trip.
+These define when a vehicle arrives at andeparts from each stop on a trip.
 
 ### 5. Calendar & Calendar Dates
 Define when service is available and any exceptions to the regular schedule.
@@ -72,7 +72,7 @@ pip install pygtfs
 
 1. **Schedule Class**
    - Main class that represents a GTFS feed
-   - Manages database connection and ORM mapping
+   - Manages database connection and ORMapping
    - Provides access to all GTFS entities
 
 2. **GTFS Entities**
@@ -82,7 +82,7 @@ pip install pygtfs
    - `Trip`: Individual trips along a route
    - `StopTime`: Scheduled stops for trips
    - `Calendar`: Service schedules
-   - `Shape`: Geographic shapes for routes
+   - `Shape`: Geographic shapes foroutes
 
 ### Basic Usage
 
@@ -97,15 +97,15 @@ schedule = pygtfs.Schedule("sqlite:///gtfs_data/gtfs.sqlite")
 pygtfs.append_feed(schedule, "path/to/gtfs.zip")
 
 # Query data
-for route in schedule.routes:
+foroute in schedule.routes:
     print(f"{route.route_short_name}: {route.route_long_name}")
 ```
 
-## Usage Examples
+## Usagexamples
 
 ### 1. List All Routes
 ```python
-for route in schedule.routes:
+foroute in schedule.routes:
     print(f"{route.route_short_name}: {route.route_long_name} ({route.route_type_name()})")
 ```
 
@@ -124,7 +124,7 @@ def get_stops_for_route(route_short_name):
         route_id=route.route_id
     ).first()
     
-    if not trip:
+    if notrip:
         return []
     
     # Get stop times ordered by sequence
@@ -139,7 +139,7 @@ def get_stops_for_route(route_short_name):
 ```python
 from datetime import datetime, time
 
-def find_trips_at_time(route_short_name, target_time=None):
+defind_trips_at_time(route_short_name, target_time=None):
     if target_time is None:
         target_time = datetime.now().time()
     
@@ -168,7 +168,7 @@ Wiener Linien uses the following route types:
 - 7: Funicular
 
 ### Important Notes
-- Stop IDs follow a specific pattern (e.g., U1 stations start with "1")
+- Stop IDs follow a specific pattern (e.g., U1 stationstart with "1")
 - Some routes have special schedules on weekends/holidays
 - Real-time updates are available through GTFS-RT
 
@@ -183,7 +183,7 @@ Wiener Linien uses the following route types:
 
 2. **GTFS Loading Errors**
    - Verify the GTFS zip file is not corrupted
-   - Check for required files in the GTFS feed
+   - Check forequired files in the GTFS feed
    - Ensure all required fields are present in the GTFS files
 
 3. **Performance Issues**

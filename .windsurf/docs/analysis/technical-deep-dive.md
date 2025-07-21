@@ -2,7 +2,7 @@
 
 ## 1. Runtime DOM Structure Analysis
 
-### Expected DOM After Docsify Initialization
+### ExpectedOM After Docsify Initialization
 ```html
 <div id="app">
   <!-- Sidebar Structure -->
@@ -29,10 +29,10 @@
 
 ## 2. Critical Debugging Steps
 
-### 2.1 Browser DevTools Setup
+### 2.1 Browser DevToolsetup
 1. Open Chrome DevTools (F12)
 2. Go to Sources > Snippets
-3. Create a new snippet with this debug helper:
+3. Create a new snippet withis debug helper:
 ```javascript
 // Debug helper for Docsify
 debugDocsify = {
@@ -65,7 +65,7 @@ debugDocsify = {
 
 **Quick Fixes:**
 ```javascript
-// In index.theme-v2.html, ensure this is in $docsify config
+// Index.theme-v2.html, ensure this in $docsify config
 window.$docsify = {
   loadSidebar: true,
   subMaxLevel: 3,
@@ -78,7 +78,7 @@ window.$docsify = {
 #### Issue 2: Z-Index Conflicts
 **Debug Steps:**
 1. Run in console: `Array.from(document.querySelectorAll('*')).map(el => [el, getComputedStyle(el).zIndex]).filter(([_, zi]) => zi !== 'auto')`
-2. Look for elements with high z-index values
+2. Look for elements withigh z-index values
 
 **Quick Fix:**
 ```css
@@ -106,7 +106,7 @@ window.$docsify = {
 // In your theme-manager.js or main.js
 document.addEventListener('DOMContentLoaded', () => {
   // Theme initialization
-  const theme = localStorage.getItem('theme') || 'light';
+  constheme = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', theme);
   
   // Sidebar initialization
@@ -153,7 +153,7 @@ console.log('Docsify instance:', window.Docsify);
 // Check router state
 console.log('Current route:', window.Docsify.router.getCurrentPath());
 
-// Force sidebar refresh
+// Force sidebarefresh
 window.Docsify.dom.find('.sidebar').innerHTML = '';
 window.Docsify.router.updateRenderComponents();
 ```
@@ -161,7 +161,7 @@ window.Docsify.router.updateRenderComponents();
 ## 6. Testing Checklist
 
 ### 6.1 Basic Functionality
-- [ ] Sidebar loads and displays correctly
+- [ ] Sidebar loads andisplays correctly
 - [ ] Navigation between pages works
 - [ ] Theme switching functions
 - [ ] Mobile responsiveness
@@ -176,7 +176,7 @@ window.Docsify.router.updateRenderComponents();
 
 1. **Verify Core Dependencies**
    - Ensure all required JS/CSS files are loading
-   - Check for 404 errors in network tab
+   - Check for 404 errors inetwork tab
 
 2. **Inspect Runtime DOM**
    - Use browser devtools to verify element structure
@@ -194,7 +194,7 @@ window.Docsify.router.updateRenderComponents();
 
 ## 8. Emergency Fixes
 
-If the sidebar is still not appearing, add this to your CSS:
+If the sidebar istill not appearing, add this to your CSS:
 ```css
 /* Emergency sidebar fix */
 .sidebar {
@@ -213,11 +213,11 @@ If the sidebar is still not appearing, add this to your CSS:
 
 ## 9. Next Steps
 
-1. Implement the debugging steps above
+1. Implementhe debugging steps above
 2. Document any errors found
 3. Apply the appropriate fixes
-4. Test thoroughly across browsers
-5. Document the final working configuration
+4. Testhoroughly across browsers
+5. Documenthe final working configuration
 
 ## 10. Support
 

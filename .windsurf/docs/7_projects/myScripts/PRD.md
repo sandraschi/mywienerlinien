@@ -7,7 +7,7 @@ Collection of utility scripts and automation tools
 *Describe the problem this project aims to solve*
 
 ## 3. Target Users
-*List and describe the primary users of the system*
+*List andescribe the primary users of the system*
 
 ## 4. Features
 ### 4.1 Core Features
@@ -29,10 +29,10 @@ Collection of utility scripts and automation tools
 *List of external services and APIs to be integrated*
 
 ## 7. Success Metrics
-*How will we measure the success of this project?*
+*Howill we measure the success of this project?*
 
 ## 8. Timeline
-*High-level project timeline*
+*High-level projectimeline*
 
 ## 9. Repository
 D:\Dev\repos\myscripts

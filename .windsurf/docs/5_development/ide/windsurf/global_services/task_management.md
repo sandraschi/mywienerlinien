@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Task Management system provides a unified way to define, track, and manage tasks across all projects in the Windsurf ecosystem. It integrates with version control, CI/CD pipelines, and project management tools.
+The Task Management system provides a unified way to define, track, and manage tasks across all projects in the Windsurf ecosystem. It integrates with version control, CI/CD pipelines, and project managementools.
 
 ## Directory Structure
 
@@ -40,8 +40,7 @@ The Task Management system provides a unified way to define, track, and manage t
 name: Run Tests
 description: Run the test suite for the project
 
-# Task metadata
-metadata:
+# Task metadata:
   category: testing
   timeout: 10m
   requires: [node, python]
@@ -56,11 +55,11 @@ commands:
   - name: Install dependencies
     cmd: |
       npm ci
-      pip install -r requirements-test.txt
+      pip install -requirements-test.txt
     
   - name: Run tests
     cmd: |
-      pytest tests/
+      pytests/
       npm test
     
   - name: Generate coverage
@@ -73,8 +72,7 @@ artifacts:
   - path: coverage/
   - path: test-results.xml
 
-# Notifications
-notifications:
+# Notifications:
   slack: ${SLACK_WEBHOOK_URL}
   email: ${TEAM_EMAIL}
 ```
@@ -100,7 +98,7 @@ windsurf task run test --dry-run
 
 ```
 [2025-06-23T15:30:00Z] ℹ️  Starting task: Run Tests
-[2025-06-23T15:30:05Z] ✓ Installed dependencies (5.2s)
+[2025-06-23T15:30:05Z] ✓ Installedependencies (5.2s)
 [2025-06-23T15:30:20Z] ✓ Ran 42 tests (15.1s)
 [2025-06-23T15:30:22Z] ✓ Generated coverage report (2.1s)
 [2025-06-23T15:30:22Z] ✅ Task completed in 22.4s
@@ -111,7 +109,7 @@ windsurf task run test --dry-run
 ### Example Workflow
 ```yaml
 # .windsurf/tasks/workflows/pr-review.yaml
-name: PR Review Workflow
+name: PRevieworkflow
 description: Run CI checks for pull requests
 
 tasks:
@@ -123,8 +121,7 @@ tasks:
     depends_on: [lint]
     
   - name: Build Artifacts
-    task: build
-    depends_on: [test]
+    task: buildepends_on: [test]
     
   - name: Deploy Preview
     task: deploy-preview
@@ -167,8 +164,7 @@ on: [push, pull_request]
 
 jobs:
   task:
-    runs-on: ubuntu-latest
-    steps:
+    runs-on: ubuntu-latesteps:
       - uses: actions/checkout@v3
       - uses: windsurf-ai/setup-windsurf@v1
       - name: Run task
@@ -184,21 +180,21 @@ jobs:
    - Use `--check` flags when available
 
 2. **Error Handling**
-   - Include proper error handling
+   - Include properror handling
    - Set appropriate timeouts
    - Clean up resources on failure
 
 3. **Documentation**
-   - Document task purpose and parameters
-   - Include examples
+   - Documentask purpose and parameters
+   - Includexamples
    - Document required permissions
 
 ## Security
 
-- Use secrets for sensitive data
+- Usecrets for sensitive data
 - Validate task inputs
-- Limit task permissions
-- Audit task executions
+- Limitask permissions
+- Auditask executions
 
 ## Monitoring
 
@@ -210,7 +206,7 @@ windsurf task logs test
 # Follow logs in real-time
 windsurf task logs -f deploy
 
-# Get task status
+# Getask status
 windsurf task status test
 ```
 

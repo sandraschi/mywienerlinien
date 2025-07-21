@@ -1,4 +1,4 @@
-﻿# Yann LeCun (1960-Present)
+# Yann LeCun (1960-Present)
 
 ## Overview
 Yann LeCun is a French-American computer scientist working primarily in machine learning, computer vision, mobile robotics, and computational neuroscience. He is one of the founding fathers of [convolutional neural networks (CNNs)](https://en.wikipedia.org/wiki/Convolutional_neural_network) and has made significant contributions to deep learning. He currently serves as VP & Chief AI Scientist at Meta (formerly Facebook) and is a Silver Professor at New York University.
@@ -8,7 +8,7 @@ Yann LeCun is a French-American computer scientist working primarily in machine 
 - [Yoshua Bengio](/ai/persons/yoshua_bengio.md) - The third recipient of the 2018 Turing Award, co-author on deep learning research
 - [Demis Hassabis](/ai/persons/demis_hassabis.md) - DeepMind CEO, shares interest in biologically-inspired AI
 - [LÃ©on Bottou](/ai/persons/leon_bottou.md) - Long-time collaborator on machine learning research
-- [Yejin Choi](/ai/persons/yejin_choi.md) - Colleague at Meta AI Research working on AI and language understanding
+- [Yejin Choi](/ai/persons/yejin_choi.md) - Colleague at MetaI Research working on AI and language understanding
 
 ## Key Contributions
 - Convolutional Neural Networks (CNNs)
@@ -17,12 +17,12 @@ Yann LeCun is a French-American computer scientist working primarily in machine 
 - Co-developer of the DjVu image compression technology
 
 ## Biography
-Born in Soisy-sous-Montmorency, France, LeCun received his DiplÃ´me d'IngÃ©nieur from ESIEE Paris and his PhD from Sorbonne UniversitÃ©. He worked at AT&T Bell Laboratories and later became a professor at New York University. He is currently VP & Chief AI Scientist at Meta (formerly Facebook).
+Born in Soisy-sous-Montmorency, France, LeCun received his DiplÃ´me d'IngÃ©nieur from ESIEE Paris and his PhD from Sorbonne UniversitÃ©. He worked at&T Bellaboratories and later became a professor at New York University. He is currently VP & Chief AI Scientist at Meta (formerly Facebook).
 
 ## Major Works
 ### LeNet-5 (1998)
 - **Impact**: Pioneered modern CNNs for document recognition
-- **Key Concepts**: Convolutional layers, subsampling, gradient-based learning
+- **Key Concepts**: Convolutionalayers, subsampling, gradient-based learning
 - **Reception**: Foundation for modern computer vision systems
 
 ### Deep Learning (2015)
@@ -46,12 +46,12 @@ Born in Soisy-sous-Montmorency, France, LeCun received his DiplÃ´me d'IngÃ©n
 - Silver Professor, New York University
 - Director of AI Research, Facebook AI Research (FAIR)
 
-## Media Appearances
-- MIT Tech Review's EmTech Digital (2023)
+## Mediappearances
+- MITech Review's EmTech Digital (2023)
 - Lex Fridman Podcast #258 (2021)
 - The Artificial Intelligence Podcast (2019)
 
-## Further Reading
+## Furthereading
 - [NYU Faculty Page](https://cds.nyu.edu/yann/) - Official academic profile and research
 - [Google Scholar](https://scholar.google.com/citations?user=WLN3QrAAAAAJ) - Academic publications and citations
 - [Wikipedia](https://en.wikipedia.org/wiki/Yann_LeCun) - Comprehensive biography and career overview
@@ -64,6 +64,6 @@ Born in Soisy-sous-Montmorency, France, LeCun received his DiplÃ´me d'IngÃ©n
 ## See Also
 - [NYU Center for Data Science](https://cds.nyu.edu/)
 - [Facebook AI Research (FAIR)](https://ai.facebook.com/)
-- [The Elements of AI](https://www.elementsofai.com/) - Free online course on AI fundamentals
+- [Thelements of AI](https://www.elementsofai.com/) - Free online course on AI fundamentals
 - [The AI Summer School](https://www.aisummerschool.org/) - Educational initiative co-founded by LeCun
 

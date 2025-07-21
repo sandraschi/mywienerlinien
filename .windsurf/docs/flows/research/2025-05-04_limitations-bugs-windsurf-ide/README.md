@@ -1,4 +1,4 @@
-﻿# 2025 05 04  2025 05 04 limitations bugs windsurf ide.Value.ToUpper() imitations  2025 05 04 limitations bugs windsurf ide.Value.ToUpper() ugs  2025 05 04 limitations bugs windsurf ide.Value.ToUpper() indsurf  2025 05 04 limitations bugs windsurf ide.Value.ToUpper() de\nThis directory contains files and subdirectories related to 2025-05-04 limitations-bugs-windsurf-ide.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [chunk 01.Value.ToUpper() hunk 01](./chunk_01.md)\n- [chunk 02.Value.ToUpper() hunk 02](./chunk_02.md)\n- [overview.Value.ToUpper() verview](./overview.md)\n
+# 2025 05 04  2025 05 04 limitations bugs windsurf ide imitations  2025 05 04 limitations bugs windsurf ide ugs  2025 05 04 limitations bugs windsurf ide indsurf  2025 05 04 limitations bugs windsurf ide\nThis directory contains files and subdirectories related to 2025-05-04 limitations-bugs-windsurf-ide.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [chunk 01 hunk 01](./chunk_01.md)\n- [chunk 02 hunk 02](./chunk_02.md)\n- [overview](./overview.md)\n
 ## Navigation
 
 - [Parent Directory](../)

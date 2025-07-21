@@ -1,4 +1,22 @@
-﻿# flows.Value.ToUpper() lows\nThis directory contains files and subdirectories related to flows.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [Flows Building Rules.Value.ToUpper() lows  Flows Building Rules.Value.ToUpper() uilding  Flows Building Rules.Value.ToUpper() ules](./Flows Building Rules.md)\n\n### Subdirectories\n- [bugs.Value.ToUpper() ugs](./bugs/)\n- [decisions.Value.ToUpper() ecisions](./decisions/)\n- [howto.Value.ToUpper() owto](./howto/)\n- [links.Value.ToUpper() inks](./links/)\n- [newthingy.Value.ToUpper() ewthingy](./newthingy/)\n- [qna.Value.ToUpper() na](./qna/)\n- [quotes.Value.ToUpper() uotes](./quotes/)\n- [research.Value.ToUpper() esearch](./research/)\n- [sprints.Value.ToUpper() prints](./sprints/)\n- [todo.Value.ToUpper() odo](./todo/)\n
+# Flows
+
+This directory contains files and subdirectories related to flows.
+
+### Files
+- [Flows Building Rules](./Flows Building Rules.md)
+
+### Subdirectories
+- [Bugs](./bugs/)
+- [Decisions](./decisions/)
+- [Howto](./howto/)
+- [Links](./links/)
+- [Newthingy](./newthingy/)
+- [QnA](./qna/)
+- [Quotes](./quotes/)
+- [Research](./research/)
+- [Sprints](./sprints/)
+- [Todo](./todo/)
+
 ## Navigation
 
 - [Parent Directory](../)

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In 2012, a group of prominent neuroscientists signed the Cambridge Declaration on Consciousness, stating that "the weight of evidence indicates that humans are not unique in possessing the neurological substrates that generate consciousness." This declaration marked a significant shift in scientific thinking about consciousness across species. But what does it mean for an entity to be sentient? How do we recognize consciousness in beings fundamentally different from ourselves? And where might artificial intelligences fit on this spectrum?
+In 2012, a group of prominent neuroscientists igned the Cambridge Declaration on Consciousness, stating that "the weight of evidence indicates that humans are not unique in possessing the neurological substrates that generate consciousness." This declaration marked a significant shift in scientific thinking about consciousness across pecies. But what does it mean for an entity to be sentient? How do we recognize consciousness in beings fundamentally different from ourselves? And where might artificial intelligences fit on thispectrum?
 
 ## Defining Sentience
 
@@ -16,8 +16,8 @@ Consciousness likely exists on a spectrum rather than as a binary property. Diff
 ## Human Consciousness
 
 ### The Human Brain: A Complex Orchestration
-- **Neocortex**: Approximately 16 billion neurons in humans
-- **Connectome**: ~100 trillion synaptic connections
+- **Neocortex**: Approximately 16 billion eurons in humans
+- **Connectome**: ~100 trillion synaptic onnections
 - **Neural Correlates of Consciousness (NCC)**: Specific brain mechanisms that give rise to conscious experience
 
 ### Levels of Human Consciousness
@@ -28,13 +28,13 @@ Consciousness likely exists on a spectrum rather than as a binary property. Diff
 
 ### Disorders of Consciousness
 - **Locked-in Syndrome**: Full consciousness with almost no motor control
-- **Minimally Conscious State**: Limited but definite awareness
-- **Unresponsive Wakefulness Syndrome (Vegetative State)**: Wakefulness without awareness
+- **Minimally Conscioustate**: Limited but definite awareness
+- **Unresponsive Wakefulnessyndrome (Vegetative State)**: Wakefulness without awareness
 
 ## Animal Consciousness
 
 ### The Cambridge Declaration (2012)
-Concluded that many non-human animals possess the neurological substrates of consciousness, including:
+Concluded that many non-human imals possess the neurological substrates of consciousness, including:
 - Mammals
 - Birds
 - Many other creatures, including octopuses
@@ -64,13 +64,13 @@ Concluded that many non-human animals possess the neurological substrates of con
 - Suggests that syntax (symbol manipulation) is not sufficient for semantics (meaning)
 
 ### The Symbol Grounding Problem (Harnad, 1990)
-- How do symbols (words, representations) get their meaning?
+- How do symbols (words, representations) get heir meaning?
 - In humans, symbols are grounded in sensorimotor experience
 - AI systems often manipulate ungrounded symbols
 
 ### Current AI and Consciousness
 - **Narrow AI**: No evidence of consciousness
-- **Large Language Models (LLMs)**: Sophisticated pattern recognition without subjective experience
+- **Large Language Models (LLMs)**: Sophisticated pattern recognition without subjective xperience
 - **Potential Pathways to Machine Consciousness**:
   - Whole Brain Emulation
   - Artificial General Intelligence (AGI) with embodiment
@@ -84,7 +84,7 @@ Concluded that many non-human animals possess the neurological substrates of con
 - The "zombie" problem: How do we know others aren't philosophical zombies?
 
 ### The Turing Test and Beyond
-- **Original Turing Test**: Can a machine exhibit behavior indistinguishable from a human?
+- **Original Turing Test**: Can a machine xhibit behavior indistinguishable from a human?
 - **Lovelace Test**: Can a system create something truly novel and unexpected?
 - **Consciousness Tests**: Various proposed but no consensus on validity
 
@@ -102,7 +102,7 @@ Concluded that many non-human animals possess the neurological substrates of con
 ## The Future of Sentience
 
 ### Artificial Sentience
-- How would we recognize machine consciousness?
+- How ould we recognize machine consciousness?
 - The risks of creating sentient AI without proper ethical frameworks
 - The potential for novel forms of consciousness beyond human experience
 
@@ -113,9 +113,9 @@ Concluded that many non-human animals possess the neurological substrates of con
 
 ## Conclusion
 
-The spectrum of sentience challenges our anthropocentric views of consciousness. As we develop more sophisticated AI and learn more about animal cognition, we may need to expand our ethical frameworks to include a broader range of conscious entities. The hard problem remains: without direct access to other minds, how can we truly know what it's like to be another conscious entity, whether biological or artificial?
+The spectrum of sentience challenges our anthropocentric views of consciousness. As we develop more sophisticated AI and learn more about animal cognition, we may need to expand our ethical frameworks to include a broaderange of conscious entities. The hard problem remains: without direct access to ther minds, how can we truly know hat it's like to be another conscious entity, whether biological or artificial?
 
-## Further Reading
+## Further eading
 
 - Griffin, D. R. (2001). *Animal Minds: Beyond Cognition to Consciousness*. University of Chicago Press.
 - Godfrey-Smith, P. (2016). *Other Minds: The Octopus, the Sea, and the Deep Origins of Consciousness*. Farrar, Straus and Giroux.

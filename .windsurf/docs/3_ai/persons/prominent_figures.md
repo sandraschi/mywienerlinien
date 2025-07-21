@@ -13,7 +13,7 @@
 - **Legacy**: Founded the AI lab at Stanford
 
 ### Marvin Minsky (1927-2016)
-- **Contributions**: Co-founded MIT's AI Lab, work on neural networks and robotics
+- **Contributions**: Co-founded MIT's AI Lab, work oneural networks and robotics
 - **Key Work**: "Perceptrons" (1969) with Seymour Papert
 - **Legacy**: Influenced generations of AI researchers
 
@@ -37,7 +37,7 @@
 ### Demis Hassabis (b. 1976)
 - **Contributions**: DeepMind founder, AlphaGo, AlphaFold
 - **Key Work**: AlphaGo (2016), AlphaFold (2018)
-- **Current**: CEO of DeepMind
+- **Current**: CEOf DeepMind
 
 ## Influential Researchers
 
@@ -59,12 +59,12 @@
 ## Industry Leaders
 
 ### Sam Altman (b. 1985)
-- **Role**: CEO of OpenAI
+- **Role**: CEOf OpenAI
 - **Contributions**: Leadership in AI safety and policy
 - **Current**: Leading development of GPT models and ChatGPT
 
 ### Dario Amodei (b. 1982)
-- **Role**: CEO of Anthropic
+- **Role**: CEOf Anthropic
 - **Contributions**: AI safety research
 - **Previous**: VP of Research at OpenAI
 
@@ -110,4 +110,4 @@
 ## Resources
 - [AI's 10 to Watch](https://www.computer.org/csdl/magazine/expert/2018/03/mex2018030014/13rRUy08Rba)
 - [100 Brilliant Women in AI Ethics](https://alltechishuman.org/100-brilliant-women-in-ai-ethics-hall-of-fame)
-- [The AI Index Report](https://aiindex.stanford.edu/)
+- [The AIndex Report](https://aiindex.stanford.edu/)

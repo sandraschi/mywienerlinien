@@ -2,7 +2,7 @@
 
 ## Introduction: The Crocodile's Dilemma
 
-In an ancient Greek paradox, a crocodile steals a child and promises to return it if the father can guess what the crocodile will do. If the father guesses correctly, the crocodile must decide whether to keep the child (breaking his word) or return it (making the father's guess wrong). This paradox, known as the Crocodile's Dilemma, serves as a perfect entry point into our exploration of rulebooks—the implicit and explicit systems that govern behavior, from biological instincts to artificial intelligence and beyond.
+In ancient Greek paradox, a crocodile steals a child and promises to return it if the father can guess what the crocodile will do. If the father guesses correctly, the crocodile must decide whether to keep the child (breaking his word) or return it (making the father's guess wrong). This paradox, known as the Crocodile's Dilemma, serves as a perfect entry point to our exploration of rulebooks — the implicit and explicit systems that govern behavior, from biological instincts to artificial intelligence and beyond.
 
 ## The Crocodile's Rulebook: Instinct and Evolutionary Programming
 
@@ -87,7 +87,7 @@ In an ancient Greek paradox, a crocodile steals a child and promises to return i
 ## The Posthuman Rulebook: Beyond Biology
 
 ### Transhumanism and the Enhancement Debate
-- Cognitive enhancement
+- Cognitive Enhancement
 - Moral enhancement
 - The ethics of human augmentation
 
@@ -110,7 +110,7 @@ In an ancient Greek paradox, a crocodile steals a child and promises to return i
 
 ### The Simulation Argument (Bostrom)
 1. The human species is very likely to go extinct before reaching a "posthuman" stage
-2. Any posthuman civilization is extremely unlikely to run a significant number of simulations of their evolutionary history
+2. Any posthuman civilization is extremely likely to run a significant number of simulations of their evolutionary history
 3. We are almost certainly living in a computer simulation
 
 ### The Self-Sampling Assumption
@@ -139,7 +139,7 @@ In an ancient Greek paradox, a crocodile steals a child and promises to return i
 
 From the simple, instinct-driven rules of the crocodile to the complex, self-modifying rules of future AI, rulebooks evolve and change, but the fundamental questions remain: Who writes the rules? Can the rules be changed? And is there a rule beyond all rules? In the end, perhaps the wisest approach is not to seek better rules, but to understand the limitations of rule-following itself, and to cultivate the wisdom to know when to follow rules, when to break them, and when to transcend them altogether.
 
-## Further Reading
+## Further reading
 
 - Bostrom, N. (2014). *Superintelligence: Paths, Dangers, Strategies*. Oxford University Press.
 - Nietzsche, F. (1886). *Beyond Good and Evil*. (W. Kaufmann, Trans.). Vintage.

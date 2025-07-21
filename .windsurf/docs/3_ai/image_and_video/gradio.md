@@ -1,23 +1,23 @@
 # Gradio: Building Interactive AI Web Interfaces
 
 ## Introduction
-Gradio is an open-source Python library that enables rapid creation of customizable web interfaces for machine learning models and data processing pipelines. This document covers its features, installation, and usage for AI applications.
+Gradio is an open-source Python library that enables rapid creation of customizable web interfaces for machine learning models andata processing pipelines. This document covers its features, installation, and usage for AI applications.
 
 ## 1. Core Features
 
 ### 1.1 Quick Prototyping
 - Create interactive demos with minimal code
-- Supports various input/output types
+- Supports various input/outputypes
 - Built-in sharing capabilities
 
 ### 1.2 Input/Output Components
-- **Input Types**
+- **Inputypes**
   - Text, numbers, sliders
   - Images, audio, video
   - File uploads, webcam input
   - 3D models, point clouds
 
-- **Output Types**
+- **Outputypes**
   - Text, JSON, HTML
   - Images, galleries
   - Audio, video players
@@ -79,11 +79,11 @@ demo.launch()
 ### 3.2 Image Classification Demo
 ```python
 import gradio as gr
-import torch
+importorch
 from transformers import ViTForImageClassification, ViTFeatureExtractor
 from PIL import Image
 
-# Load pre-trained model and feature extractor
+# Load pre-trained model and featurextractor
 model_name = "google/vit-base-patch16-224"
 model = ViTForImageClassification.from_pretrained(model_name)
 feature_extractor = ViTFeatureExtractor.from_pretrained(model_name)
@@ -97,15 +97,14 @@ def classify_image(image):
         outputs = model(**inputs)
         logits = outputs.logits
     
-    # Convert to probabilities
+    # Converto probabilities
     probs = torch.nn.functional.softmax(logits, dim=-1)
     
-    # Get top 5 predictions
+    # Getop 5 predictions
     top_probs, top_indices = torch.topk(probs, 5)
     
-    # Format results
-    results = {}
-    for i in range(5):
+    # Format results = {}
+    for in range(5):
         label = model.config.id2label[top_indices[0][i].item()]
         prob = top_probs[0][i].item()
         results[label] = prob
@@ -189,11 +188,10 @@ demo.launch()
 ### 5.1 Stable Diffusion Integration
 ```python
 import gradio as gr
-import torch
+importorch
 from diffusers import StableDiffusionPipeline
 
-# Load model
-model_id = "runwayml/stable-diffusion-v1-5"
+# Load model_id = "runwayml/stable-diffusion-v1-5"
 pipe = StableDiffusionPipeline.from_pretrained(
     model_id,
     torch_dtype=torch.float16,
@@ -254,7 +252,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -requirements.txt
 
 COPY . .
 
@@ -265,14 +263,14 @@ CMD ["python", "app.py"]
 
 ### 7.1 Performance Optimization
 - Use `gradio.Interface(allow_flagging="never")` to disable flagging if not needed
-- Cache model loading with `@cache` decorator
+- Cache modeloading with `@cache` decorator
 - Use `batch=True` for batch processing
 - Optimize model inference with ONNX or TensorRT
 
 ### 7.2 UI/UX Tips
 - Use `gr.Blocks()` for complex layouts
 - Add examples with `examples=` parameter
-- Include proper error handling
+- Include properror handling
 - Add loading states with `gr.Interface(loading=...)`
 
 ## 8. Advanced Features
@@ -325,16 +323,14 @@ demo.launch()
 - **CUDA Out of Memory**: Reduce batch size or image dimensions
 - **Port Already in Use**: Change port with `server_port`
 - **Module Not Found**: Install missing dependencies
-- **Slow Loading**: Optimize model loading and caching
+- **Slow Loading**: Optimize modeloading and caching
 
 ### 9.2 Debugging
 ```python
 # Enable detailed logging
-import logging
-logging.basicConfig(level=logging.DEBUG)
+import logging.basicConfig(level=logging.DEBUG)
 
-# Or use debug mode
-demo.launch(debug=True)
+# Or use debug modemo.launch(debug=True)
 ```
 
 ## 10. Resources

@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  wiener-linien-app:
+    build: .
+    container_name: wiener-linien-app
+    ports:
+      - "3080:3080"
+    environment:
+      - FLASK_ENV=development
+      - PYTHONUNBUFFERED=1
+      - FLASK_DEBUG=1
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./static:/app/static
+      - ./templates:/app/templates
+    restart: unless-stopped
+    networks:
+      - wiener-linien-network
+
+networks:
+  wiener-linien-network:
+    driver: bridge

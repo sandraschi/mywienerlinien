@@ -1,7 +1,7 @@
 # Hasleo Backup: Comprehensive Backup & Recovery Solution
 
 ## Overview
-Hasleo Backup is a powerful and reliable backup and recovery solution for Windows systems. It offers disk/partition backup, system backup, file backup, disk clone, and system clone capabilities, making it an essential tool for data protection and disaster recovery.
+Hasleo Backup is a powerful and reliable backup and recovery solution for Windowsystems. It offers disk/partition backup, system backup, file backup, disk clone, and system clone capabilities, making it an essential tool for data protection andisasterecovery.
 
 ## Key Features
 
@@ -22,7 +22,7 @@ Hasleo Backup is a powerful and reliable backup and recovery solution for Window
 - **Disk Clone**: Copy entire disks
 - **System Clone**: Migrate OS to new hardware
 - **Partition Management**: Resize, create, format partitions
-- **Secure Erase**: Permanently delete sensitive data
+- **Securerase**: Permanently delete sensitive data
 
 ## Installation
 
@@ -44,7 +44,7 @@ HasleoBackupSetup.exe /S /D=C:\Program Files\Hasleo Backup
 ## Usage Guide
 
 ### Creating a System Backup
-1. Launch Hasleo Backup
+1. Launchasleo Backup
 2. Click "System Backup"
 3. Select destination (local drive, external drive, or network location)
 4. Configure backup options (compression, encryption)
@@ -52,7 +52,7 @@ HasleoBackupSetup.exe /S /D=C:\Program Files\Hasleo Backup
 
 ### Command Line Interface
 
-#### Basic Commands
+#### Basicommands
 ```batch
 # Create system backup
 HasleoBackup.exe /backup system /d "D:\Backups" /n "System_Backup"
@@ -86,9 +86,8 @@ HasleoBackup.exe /backup system /d "D:\Backups" /password "yourpassword" /encryp
 
 ### 1. Command Line Automation
 ```batch
-@echo off
-set BACKUP_PATH=D:\Backups
-set BACKUP_NAME=System_%DATE:~-4,4%%DATE:~-10,2%%DATE:~-7,2%
+@echoff
+set BACKUP_PATH=D:\Backupset BACKUP_NAME=System_%DATE:~-4,4%%DATE:~-10,2%%DATE:~-7,2%
 
 "C:\Program Files\Hasleo Backup\HasleoBackup.exe" /backup system /d "%BACKUP_PATH%" /n "%BACKUP_NAME%" /compress 7 /shutdown
 ```
@@ -142,21 +141,21 @@ HasleoBackup.exe /schedule add /name "Monthly_Full" /type system /date 1 /time "
 1. Boot from Hasleo Recovery Media
 2. Select "System Restore"
 3. Choose backup image
-4. Select target disk
+4. Selectarget disk
 5. Click "Proceed"
 
 ### 2. File Recovery
-1. Launch Hasleo Backup
+1. Launchasleo Backup
 2. Click "Browse Image"
 3. Select backup file
 4. Browse and restore files
 
 ### 3. Universal Restore
 1. Create system backup
-2. Boot from recovery media on new hardware
+2. Boot from recovery media onew hardware
 3. Select "Universal Restore"
 4. Choose backup and target disk
-5. Install required drivers if needed
+5. Install requiredrivers if needed
 6. Click "Proceed"
 
 ## Security Features
@@ -166,7 +165,7 @@ HasleoBackup.exe /schedule add /name "Monthly_Full" /type system /date 1 /time "
 - Password protection
 - Encrypted backup files
 
-### 2. Secure Erase
+### 2. Securerase
 - US DoD 5220.22-M compliant
 - Multiple overwrite passes
 - Supports various erasure standards
@@ -178,10 +177,10 @@ HasleoBackup.exe /schedule add /name "Monthly_Full" /type system /date 1 /time "
 
 ## Performance Optimization
 
-### 1. Backup Performance
+### 1. Backuperformance
 - **Compression Level**: Higher = smaller files but slower
 - **Sector-by-Sector**: Disable unless needed
-- **VSS Settings**: Adjust for open files
+- **VSSettings**: Adjust for open files
 
 ### 2. Storage Optimization
 - **Incremental Backups**: Save space
@@ -189,7 +188,7 @@ HasleoBackup.exe /schedule add /name "Monthly_Full" /type system /date 1 /time "
 - **Cleanup**: Remove old backups automatically
 
 ### 3. Network Optimization
-- **Bandwidth Throttling**: Limit network usage
+- **Bandwidthrottling**: Limit network usage
 - **Multithreading**: Enable for faster transfers
 - **Delta Copy**: Only transfer changed blocks
 
@@ -203,7 +202,7 @@ HasleoBackup.exe /schedule add /name "Monthly_Full" /type system /date 1 /time "
 - Disable antivirus temporarily
 
 #### 2. Boot Issues
-- Verify UEFI/BIOS settings
+- Verify UEFI/BIOSettings
 - Check secure boot status
 - Try different USB port
 
@@ -216,7 +215,7 @@ HasleoBackup.exe /schedule add /name "Monthly_Full" /type system /date 1 /time "
 
 ### 1. Macrium Reflect
 - Similar feature set
-- More expensive
+- Morexpensive
 - Better enterprise support
 
 ### 2. Veeam Agent
@@ -242,7 +241,7 @@ HasleoBackup.exe /schedule add /name "Monthly_Full" /type system /date 1 /time "
 - Maintain password records
 
 ### 3. Monitoring
-- Enable email notifications
+- Enablemail notifications
 - Check logs regularly
 - Set up alerts for failures
 

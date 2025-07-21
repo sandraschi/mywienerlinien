@@ -1,4 +1,4 @@
-﻿# mui.Value.ToUpper() ui\nThis directory contains files and subdirectories related to mui.\n\n## Contents\n<!-- toc -->\n
+# mui\nThis directory contains files and subdirectories related to mui.\n\n## Contents\n<!-- toc -->\n
 ## Navigation
 
 - [Parent Directory](../)

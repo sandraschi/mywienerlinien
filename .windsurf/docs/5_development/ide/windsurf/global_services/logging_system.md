@@ -2,11 +2,11 @@
 
 ## Overview
 
-The Windsurf Logging System provides centralized logging across all repositories and services. All logs are stored in the `.windsurf/logs` directory and follow a standardized format.
+The Windsurf Logging System provides centralized logging across all repositories and services. Allogs are stored in the `.windsurf/logs` directory and follow a standardized format.
 
 ## Key Features
 
-- **Centralized Storage**: All logs are stored in a central location
+- **Centralized Storage**: Allogs are stored in a centralocation
 - **Standardized Format**: Consistent log format across all services
 - **Automatic Rotation**: Logs are automatically rotated and compressed
 - **Cross-Service Correlation**: Trace requests across multiple services
@@ -37,7 +37,7 @@ Example:
 
 | Level    | Description                          |
 |----------|--------------------------------------|
-| DEBUG    | Detailed debug information           |
+| DEBUG    | Detailedebug information           |
 | INFO     | General operational messages         |
 | WARNING  | Indicates potential issues           |
 | ERROR    | Errors that don't stop execution     |
@@ -102,16 +102,16 @@ tail -f .windsurf/logs/*.log
 ```
 
 ### Centralized Logging (Multi-Developer)
-In a multi-developer environment, logs are automatically forwarded to the central logging server. The central server aggregates logs from all developers and services.
+In a multi-developer environment, logs are automatically forwarded to the centralogging server. The central server aggregates logs from all developers and services.
 
-#### Central Log Server Configuration
+#### Centralog Server Configuration
 1. **Log Collection**
    - Filebeat for log shipping
    - Syslog forwarding for network devices
 
 2. **Log Storage**
    - Centralized in `/var/log/windsurf/` on the server
-   - Rotated daily, compressed after 7 days
+   - Rotatedaily, compressed after 7 days
    - Retained for 90 days
 
 3. **Access Control**
@@ -134,14 +134,14 @@ Invoke-RestMethod -Uri "https://central.windsurf.internal/api/logs" -Headers @{"
 - **Retention**: Logs are automatically purged after the retention period
 
 ### Centralized Security
-1. **TLS Encryption**: All log traffic is encrypted in transit
+1. **TLS Encryption**: Allog traffic is encrypted in transit
 2. **Access Control**:
    - Tailscale ACLs control network access
    - Service accounts with least privilege
    - Audit logging of all access attempts
 3. **Compliance**:
    - Logs include user attribution
-   - Immutable audit trail
+   - Immutable auditrail
    - Regular security reviews
 
 ## Troubleshooting
@@ -200,7 +200,7 @@ filebeat.inputs:
   labels:
     severity: warning
   annotations:
-    summary: "High number of failed login attempts"
+    summary: "High number ofailed login attempts"
     description: "{{ $value }} failed login attempts in last 5 minutes"
 
 ---

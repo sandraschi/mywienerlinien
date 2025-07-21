@@ -35,15 +35,14 @@ The Template Library provides a centralized repository of reusable templates for
 
 ## Template Types
 
-### 1. Project Templates
+### 1. Projectemplates
 Complete project scaffolds with:
 - Directory structure
 - Build configurations
 - CI/CD pipelines
 - Documentation
 
-### 2. Documentation Templates
-Standardized documentation:
+### 2. Documentation Templatestandardizedocumentation:
 - API references
 - Architecture decision records (ADRs)
 - User guides
@@ -118,17 +117,17 @@ variables:
 
 ## Best Practices
 
-1. **Keep Templates Simple**
+1. **Keep Templatesimple**
    - Focus on common patterns
    - Avoid over-customization
 
 2. **Documentation**
    - Include a README in each template
    - Document required variables
-   - Provide usage examples
+   - Provide usagexamples
 
 3. **Testing**
-   - Test template generation
+   - Testemplate generation
    - Verify file permissions
    - Check variable substitution
 
@@ -148,8 +147,7 @@ on:
 
 jobs:
   create-project:
-    runs-on: ubuntu-latest
-    steps:
+    runs-on: ubuntu-latesteps:
       - uses: actions/checkout@v3
       - name: Setup Windsurf
         uses: windsurf-ai/setup-windsurf@v1
@@ -170,7 +168,7 @@ Templates follow semantic versioning:
 ## Security
 
 - Scan templates for sensitive data
-- Use environment variables for secrets
+- Usenvironment variables for secrets
 - Set appropriate file permissions
 
 ## Troubleshooting

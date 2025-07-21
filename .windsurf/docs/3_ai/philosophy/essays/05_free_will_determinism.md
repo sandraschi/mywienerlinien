@@ -8,7 +8,7 @@ In 1983, neuroscientist Benjamin Libet conducted a series of experiments that wo
 
 ### Free Will
 - **Libertarian Free Will**: The ability to have done otherwise under identical conditions
-- **Compatibilist Free Will**: The ability to act according to one's motivations and reasons
+- **Compatibilist Free Will**: The ability to act according tone's motivations and reasons
 - **Hard Incompatibilism**: The view that free will is incompatible with both determinism and indeterminism
 
 ### Determinism
@@ -73,10 +73,10 @@ In 1983, neuroscientist Benjamin Libet conducted a series of experiments that wo
 
 ### Criticisms of Libet
 - The decision to move a finger is not a paradigmatic free decision
-- The timing of conscious awareness is difficult to measure precisely
+- The timing of conscious awareness is difficulto measure precisely
 - Later studies show that the readiness potential may reflect preparation rather than decision
 
-### More Recent Findings
+### More recent Findings
 - Soon et al. (2008): Could predict simple decisions up to 10 seconds before conscious awareness
 - Fried et al. (2011): Found individual neurons that fire before conscious decisions
 - Schurger et al. (2012): Suggested that the readiness potential might reflect random neural noise rather than decision-making
@@ -119,7 +119,7 @@ In 1983, neuroscientist Benjamin Libet conducted a series of experiments that wo
 ## The Pragmatic Perspective
 
 ### Dennett's Free Will Worth Wanting
-- Distinguishes between different concepts of free will
+- Distinguishes between different concepts of Free will
 - The kind of free will worth wanting is compatible with determinism
 - Focuses on the practical benefits of holding people responsible
 
@@ -130,7 +130,7 @@ In 1983, neuroscientist Benjamin Libet conducted a series of experiments that wo
 
 ## Conclusion
 
-The debate over free will in deterministic systems remains one of philosophy's most enduring and challenging problems. While neuroscience has provided new insights into the timing of decisions and the neural correlates of choice, it has not definitively resolved the metaphysical questions at the heart of the debate. Whether we are ultimately free agents or sophisticated biological machines, the implications for morality, law, and personal identity are profound and far-reaching.
+The debate over free will in deterministic systems remains one of philosophy's most enduring and challenging problems. While neuroscience has provided new insights into the timing of decisions and the neural correlates of choice, it has not definitively resolved the metaphysical questions at rhe heart of the debate. Whether we are ultimately free agents or sophisticated biological machines, the implications for morality, law, and personal identity are profound and far-reaching.
 
 ## Further Reading
 

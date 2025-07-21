@@ -1,17 +1,17 @@
 # Obsidian - A Powerful Knowledge Base
 
 ## Overview
-Obsidian is a versatile knowledge base that works on top of a local folder of Markdown files. It excels at creating and managing interconnected notes with powerful linking and visualization features.
+Obsidian is a versatile knowledge base that works on top of a local folder of Markdown files. It excels at creating and managing interconnected notes with powerfulinking and visualization features.
 
 ## Key Features
 
 ### 1. Graph View
-- Visualize connections between notes
-- Discover relationships in your knowledge base
+- Visualize connections betweenotes
+- Discoverelationships in your knowledge base
 - Filter and group related notes
 
 ### 2. Linking
-- Wiki-style `[[links]]` between notes
+- Wiki-style `[[links]]` betweenotes
 - Backlinks to see what links to each note
 - Unlinked mentions to discover potential connections
 
@@ -23,11 +23,11 @@ Obsidian is a versatile knowledge base that works on top of a local folder of Ma
 ### 4. Markdown Support
 - Full CommonMark and GitHub Flavored Markdown
 - Math expressions with LaTeX
-- Mermaid diagrams
+- Mermaidiagrams
 - Dataview for advanced queries
 
 ### 5. Local-First
-- Files stored as plain Markdown
+- Filestored as plain Markdown
 - No vendor lock-in
 - Works with Git for version control
 
@@ -35,7 +35,7 @@ Obsidian is a versatile knowledge base that works on top of a local folder of Ma
 
 ### Recommended Setup
 1. **Vault Location**: Point Obsidian to your `docs` folder
-2. **Templates**: Create note templates for consistency
+2. **Templates**: Create notemplates for consistency
 3. **Links**: Use relative paths for cross-references
 4. **Images**: Store in an `assets` or `images` folder
 
@@ -52,10 +52,10 @@ Obsidian is a versatile knowledge base that works on top of a local folder of Ma
 - **Graph View**: Visualize note relationships
 - **Outline**: Navigate document structure
 - **Search**: Powerful search across all notes
-- **Templates**: Create note templates
+- **Templates**: Create notemplates
 
 ### Recommended Community Plugins
-1. **Dataview**: Query your notes like a database
+1. **Dataview**: Queryour notes like a database
 2. **Templates**: Enhanced template functionality
 3. **Calendar**: Daily notes and journaling
 4. **Excalidraw**: Hand-drawn diagrams
@@ -71,7 +71,7 @@ Obsidian is a versatile knowledge base that works on top of a local folder of Ma
 | Toggle Sidebar | Ctrl+Shift+L | ⌘+⇧+L |
 | Toggle Graph View | Ctrl+G | ⌘G |
 | Create Link | Ctrl+K | ⌘K |
-| Toggle Edit/Preview | Ctrl+E | ⌘E |
+| Toggledit/Preview | Ctrl+E | ⌘E |
 
 ## Installation
 

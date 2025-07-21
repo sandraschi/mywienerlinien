@@ -12,7 +12,7 @@ The *arr ecosystem is a collection of open-source applications designed to autom
 - Automatic downloading of TV episodes
 - Quality management and upgrades
 - Renaming and organization
-- Failed download handling
+- Failedownload handling
 - Calendar view
 
 **Installation**:
@@ -63,7 +63,7 @@ services:
 ```
 
 ### 3. Lidarr (Music)
-**Purpose**: Music collection management
+**Purpose**: Musicollection management
 
 **Key Features**:
 - Artist and album tracking
@@ -107,7 +107,7 @@ services:
 
 ### 3. Overseerr/Ombi
 **Request Management**
-- User request system
+- Userequest system
 - Approval workflows
 - Multi-user support
 - Notifications
@@ -122,7 +122,7 @@ services:
 ### 2. Media Servers
 - **Plex**: Most widely used
 - **Jellyfin**: Open-source alternative
-- **Emby**: Commercial alternative
+- **Emby**: Commercialternative
 
 ### 3. Notification Services
 - **Gotify**: Self-hosted notifications
@@ -187,7 +187,7 @@ sqlite3 /path/to/sonarr/sonarr.db ".backup '/backup/sonarr.db.bak'"
 
 ### 1. Network Security
 - VPN for download traffic
-- Isolated Docker networks
+- Isolatedocker networks
 - Firewall rules
 
 ### 2. Access Control
@@ -235,7 +235,7 @@ sqlite3 /path/to/sonarr/sonarr.db ".backup '/backup/sonarr.db.bak'"
 
 ### Upcoming Features
 - Enhanced metadata support
-- Improved mobile experience
+- Improved mobilexperience
 - Additional integration options
 - Performance optimizations
 
@@ -246,4 +246,4 @@ sqlite3 /path/to/sonarr/sonarr.db ".backup '/backup/sonarr.db.bak'"
 4. Follow coding standards
 
 ## License
-All *arr applications are released under the GPL-3.0 License.
+All *arr applications areleased under the GPL-3.0 License.

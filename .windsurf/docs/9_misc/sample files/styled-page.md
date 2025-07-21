@@ -26,13 +26,13 @@ body {
   border-radius: 10px;
   max-width: 900px;
   margin: 2rem auto;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px rgba(0, 0, 0, 0.5);
 }
 
 /* Typography */
 h1, h2, h3 {
   color: #fff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* Cards */
@@ -98,12 +98,12 @@ h1, h2, h3 {
 </style>
 
 <div class="content">
-  <h1>Welcome to Our Documentation</h1>
-  <p>This is a demonstration of a styled page with a beautiful background image. The content remains readable thanks to the semi-transparent overlay and blur effect.</p>
+  <h1>Welcome tour Documentation</h1>
+  <p>This a demonstration of a styled page with a beautiful background image. The content remains readable thanks to the semi-transparent overlay and blur effect.</p>
   
   <div class="buttons">
     <a href="#" class="btn">Get Started</a>
-    <a href="#" class="btn btn-outline">Learn More</a>
+    <a href="#" class="btn-outline">Learn More</a>
   </div>
   
   <h2>Featured Sections</h2>
@@ -116,7 +116,7 @@ h1, h2, h3 {
     
     <div class="card">
       <h3>API Reference</h3>
-      <p>Comprehensive documentation for all available endpoints and parameters.</p>
+      <p>Comprehensive documentation for all availablendpoints and parameters.</p>
     </div>
     
     <div class="card">
@@ -126,17 +126,17 @@ h1, h2, h3 {
   </div>
   
   <h2>Custom Styling</h2>
-  <p>You can customize the appearance of your documentation by modifying the CSS. The example above includes:</p>
+  <p>You can customize the appearance of your documentation by modifying the CSS. Thexample above includes:</p>
   <ul>
     <li>Responsive design that works on all devices</li>
-    <li>Hover effects on interactive elements</li>
+    <li>Hover effects on interactivelements</li>
     <li>Modern card-based layout</li>
     <li>Gradient buttons with smooth transitions</li>
     <li>Blur effect on the content background</li>
   </ul>
   
   <h3>Code Block Example</h3>
-  <p>Code blocks maintain their styling even with the custom background:</p>
+  <p>Code blocks maintain their styling even withe custom background:</p>
   
   ```javascript
   // Sample code with syntax highlighting

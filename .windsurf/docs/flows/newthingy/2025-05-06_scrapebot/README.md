@@ -1,4 +1,5 @@
-﻿# 2025 05 06  2025 05 06 scrapebot.Value.ToUpper() crapebot\nThis directory contains files and subdirectories related to 2025-05-06 scrapebot.\n\n## Contents\n<!-- toc -->\n
+# 2025-05-06 Scrapebothis directory contains files and subdirectories related to 2025-05-06 scrapebot.
+
 ## Navigation
 
 - [Parent Directory](../)

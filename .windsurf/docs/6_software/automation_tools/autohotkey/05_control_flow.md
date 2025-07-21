@@ -1,10 +1,8 @@
-﻿# 5. Control Flow: If, Else, and Loops
+# 5. Control Flow: If, Else, and Loops
 
-Control flow statements are the building blocks of logic in any programming language. They allow your script to make decisions and perform actions conditionally, or to repeat actions multiple times. In AutoHotkey, this is primarily handled with `If`/`Else` blocks and various types of loops.
+Control flow statements are the building blocks of logic in any programming language. They allow your scripto make decisions and perform actions conditionally, or to repeat actions multiple times. In AutoHotkey, this primarily handled with `If`/`Else` blocks and various types of loops.
 
-## Conditional Execution: The `If` Statement
-
-The `If` statement allows you to execute a block of code only if a certain condition is true. This is the primary way to add decision-making to your scripts.
+## Conditional Execution: The `If` Statementhe `If` statement allows you to execute a block of code only if a certain condition is true. This the primary way to addecision-making to your scripts.
 
 ```autohotkey
 UserAge := 25
@@ -59,9 +57,7 @@ If (IsLoggedIn or not HasAdminRights)
 }
 ```
 
-## Repeating Actions: Loops
-
-Loops are used to execute a block of code repeatedly. AutoHotkey has several types of loops for different situations.
+## Repeating Actions: Loops are used to execute a block of code repeatedly. AutoHotkey haseveral types of loops for different situations.
 
 ### The `Loop` Command
 
@@ -72,13 +68,13 @@ The simplest loop repeats a block of code a specific number of times.
 Loop 5
 {
     ; A_Index is a built-in variable that contains the number of the current loop iteration.
-    MsgBox("This is loop iteration number " A_Index)
+    MsgBox("This loop iterationumber " A_Index)
 }
 ```
 
 ### The `While` Loop
 
-A `While` loop continues to execute as long as a specified condition remains true. This is useful when you don't know in advance how many times you need to loop.
+A `While` loop continues to execute as long as a specified condition remains true. This useful when you don't know in advance how many times you need to loop.
 
 ```autohotkey
 Counter := 1
@@ -86,7 +82,7 @@ Counter := 1
 While (Counter <= 5)
 {
     MsgBox("The counter is now " Counter)
-    ; It's crucial to change the variable inside the loop, otherwise it will loop forever!
+    ; It's crucial to change the variable inside the loop, otherwise it willoop forever!
     Counter := Counter + 1
 }
 MsgBox("The loop has finished.")
@@ -94,7 +90,7 @@ MsgBox("The loop has finished.")
 
 ### Breaking Out of a Loop
 
-You can exit a loop at any time using the `Break` command. You can also skip the rest of the current iteration and start the next one with the `Continue` command.
+You can exit a loop at any time using the `Break` command. You can also skip the rest of the current iteration and starthe next one withe `Continue` command.
 
 ```autohotkey
 Loop 10
@@ -103,7 +99,7 @@ Loop 10
         Continue ; Skip the number 3
 
     If (A_Index = 8)
-        Break ; Exit the loop when we reach 8
+        Break ; Exithe loop when we reach 8
 
     MsgBox("The current number is " A_Index)
 }
@@ -111,14 +107,14 @@ Loop 10
 
 ## Organizing Code: Functions
 
-As your scripts get larger, you'll want to organize your code into reusable blocks. Functions are perfect for this. A function is a named block of code that performs a specific task and can be "called" from other parts of your script.
+As your scripts get larger, you'll wantorganize your code into reusable blocks. Functions are perfect for this. A function is a named block of code that performs a specific task and can be "called" from other parts of your script.
 
 ### Defining a Function
 
 You define a function with a name, a set of parameters (inputs) in parentheses, and a block of code in curly braces.
 
 ```autohotkey
-; This function takes two numbers, adds them, and displays the result.
+; This function takes two numbers, adds them, andisplays the result.
 AddTwoNumbers(Num1, Num2)
 {
     Sum := Num1 + Num2
@@ -126,15 +122,13 @@ AddTwoNumbers(Num1, Num2)
 }
 ```
 
-### Calling a Function
-
-Once defined, you can execute the function by calling its name and providing values for the parameters.
+### Calling a Functionce defined, you can execute the function by calling its name and providing values for the parameters.
 
 ```autohotkey
-; Now we call the function we defined above.
+; Nowe call the function we defined above.
 AddTwoNumbers(10, 5)  ; Displays "The sum is 15"
 AddTwoNumbers(100, 200) ; Displays "The sum is 300"
 ```
 
-With the ability to control the flow of your script, you can now create much more intelligent and powerful automations. Next, we'll explore how to give your scripts a face with [GUI Programming](/automation_tools/autohotkey/./06_gui_programming.md).
+Withe ability to control the flow of your script, you canow create much more intelligent and powerful automations. Next, we'll explore how to give your scripts a face with [GUI Programming](/automation_tools/autohotkey/./06_gui_programming.md).
 

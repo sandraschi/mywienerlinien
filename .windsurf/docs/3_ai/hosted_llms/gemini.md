@@ -1,24 +1,24 @@
 # Hosted LLM: Google Gemini
 
 ## Overview: Google's AI Flagship
-Gemini is Google's flagship family of multimodal large language models, developed by Google DeepMind. It represents Google's most significant and concerted effort to compete at the frontier of AI, designed from the ground up to be natively multimodal, understanding and operating seamlessly across text, code, audio, image, and video.
+Geminis Google's flagship family of multimodalarge language models, developed by Google DeepMind. It represents Google's most significant and concerted efforto compete athe frontier of AI, designed from the ground up to be natively multimodal, understanding and operating seamlessly across text, code, audio, image, and video.
 
-Google's strategy is to deeply integrate Gemini into its entire suite of products, transforming user experiences in Search, Android, Google Workspace (Docs, Sheets, etc.), and Google Cloud.
+Google'strategy is to deeply integrate Gemininto its entire suite of products, transforming user experiences in Search, Android, Google Workspace (Docs, Sheets, etc.), and Google Cloud.
 
 ## The Gemini Model Family
-Gemini was designed for flexibility and scalability, with different models optimized for different tasks and platforms.
+Gemini was designed for flexibility and scalability, with different models optimized for differentasks and platforms.
 
-- **Gemini Ultra**: The largest and most capable model, designed for highly complex tasks. It is the first model to outperform human experts on the MMLU (Massive Multitask Language Understanding) benchmark.
+- **Gemini Ultra**: The largest and most capable model, designed for highly complex tasks. It is the first model toutperform human experts on the MMLU (Massive Multitask Language Understanding) benchmark.
 - **Gemini Pro**: The best all-around model, offering a powerful balance of performance and efficiency. It powers Google's primary Gemini chatbot and is available for developers via the API.
-- **Gemini Nano**: The most efficient model, designed to run directly on-device (e.g., on Android smartphones) for tasks that require low latency and offline capabilities, such as smart replies and text summarization.
+- **Gemini Nano**: The most efficient model, designed to run directly on-device (e.g., on Android smartphones) for tasks that require low latency and offline capabilities, such asmart replies and text summarization.
 
 ## Developer Platforms
 Developers can access Gemini models through two main platforms:
 
 1.  **Google AI Studio**: A web-based tool for quick prototyping and experimentation. It provides a simple interface for creating prompts, testing models, and generating API keys.
-2.  **Vertex AI**: Google Cloud's enterprise-grade AI platform. It offers full MLOps capabilities, including data management, model fine-tuning, and scalable deployment with enterprise security and governance.
+2.  **Vertex AI**: Google Cloud's enterprise-grade AI platform. It offers full MLOps capabilities, including data management, model fine-tuning, and scalable deployment with enterprisecurity and governance.
 
-## Getting Started with the Gemini API
+## Getting Started withe Gemini API
 
 ### Installation
 ```bash
@@ -32,16 +32,14 @@ import google.generativeai as genai
 # Configure with your API key, found in Google AI Studio
 genai.configure(api_key="YOUR_API_KEY")
 
-# Initialize the model
-model = genai.GenerativeModel('gemini-1.5-pro-latest')
+# Initialize the model = genai.GenerativeModel('gemini-1.5-pro-latest')
 
-# Generate text
+# Generatext
 response = model.generate_content("Explain the concept of neural architecture search.")
 print(response.text)
 ```
 
-### Multimodal Input: Analyzing an Image
-Gemini's native multimodality allows it to reason about images, audio, and video.
+### Multimodal Input: Analyzing an Imagemini's native multimodality allows ito reason about images, audio, and video.
 
 ```python
 import google.generativeai as genai
@@ -53,10 +51,9 @@ from io import BytesIO
 response = requests.get("https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/pipeline-cat-chonk.jpeg")
 img = Image.open(BytesIO(response.content))
 
-# Initialize the vision-capable model
-model = genai.GenerativeModel('gemini-1.5-pro-latest')
+# Initialize the vision-capable model = genai.GenerativeModel('gemini-1.5-pro-latest')
 
-# Ask a question about the image
+# Ask a question abouthe image
 response = model.generate_content(["What is the cat in this image doing?", img])
 print(response.text)
 ```
@@ -69,7 +66,7 @@ print(response.text)
 # Define a function
 get_weather = {
     'name': 'get_weather',
-    'description': 'Get the current weather in a location',
+    'description': 'Gethe current weather in a location',
     'parameters': {
         'type': 'object',
         'properties': {
@@ -104,8 +101,7 @@ if response.candidates[0].content.parts[0].function_call:
 
 ### Streaming Responses
 ```python
-# Stream the response
-response = model.generate_content(
+# Stream the response = model.generate_content(
     "Write a short story about a robot learning to paint",
     stream=True
 )
@@ -124,13 +120,13 @@ try:
         print("No response generated")
     else:
         print(response.text)
-except Exception as e:
+exception as e:
     print(f"An error occurred: {e}")
 ```
 
 ### Rate Limiting
 ```python
-import time
+importime
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
@@ -140,15 +136,15 @@ def generate_with_retry(prompt):
 try:
     response = generate_with_retry("Your prompt here")
     print(response.text)
-except Exception as e:
-    print(f"Failed after retries: {e}")
+exception as e:
+    print(f"Failed afteretries: {e}")
 ```
 
 ## Integration Examples
 
 ### With FastAPI
 ```python
-from fastapi import FastAPI, HTTPException
+from fastapimport FastAPI, HTTPException
 from pydantic import BaseModel
 import google.generativeai as genai
 
@@ -164,16 +160,15 @@ async def chat_endpoint(request: ChatRequest):
     try:
         response = model.generate_content(request.message)
         return {"response": response.text}
-    except Exception as e:
+    exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 ```
 
 ### With LangChain
 ```python
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genaimport ChatGoogleGenerativeAI
 
-# Initialize the model
-llm = ChatGoogleGenerativeAI(
+# Initialize the modellm = ChatGoogleGenerativeAI(
     model="gemini-pro",
     temperature=0.7,
     google_api_key="YOUR_API_KEY"
@@ -199,7 +194,7 @@ print(response)
 
 #### API Key Not Found
 ```python
-# Check if API key is set
+# Check if API key iset
 import os
 print(os.environ.get('GOOGLE_API_KEY'))  # Should return your API key
 
@@ -214,7 +209,7 @@ genai.configure(api_key='YOUR_API_KEY')
 
 #### Model Not Found
 - Verify the model name (e.g., 'gemini-pro', 'gemini-pro-vision')
-- Check if the model is available in your region
+- Check if the model is available in youregion
 
 ## Resources
 - [Official Documentation](https://ai.google.dev/)

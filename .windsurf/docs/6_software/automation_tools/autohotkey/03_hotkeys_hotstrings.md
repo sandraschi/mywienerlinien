@@ -1,4 +1,4 @@
-﻿# 3. Hotkeys and Hotstrings: The Core of AHK
+# 3. Hotkeys and Hotstrings: The Core of AHK
 
 Hotkeys and Hotstrings are the bread and butter of AutoHotkey. They are the simplest features to learn and provide the most immediate payoff in terms of productivity. Mastering them is the first major step to taking control of your workflow.
 
@@ -10,7 +10,7 @@ The syntax is `Modifiers & Key:: { Action }`.
 
 ### Modifier Symbols
 
-AutoHotkey uses special symbols to represent the modifier keys (Ctrl, Alt, Shift, Win). This makes defining hotkeys quick and readable.
+AutoHotkey usespecial symbols to representhe modifier keys (Ctrl, Alt, Shift, Win). This makes defining hotkeys quick and readable.
 
 | Symbol | Represents | Example | Description |
 | :--- | :--- | :--- | :--- |
@@ -22,14 +22,14 @@ AutoHotkey uses special symbols to represent the modifier keys (Ctrl, Alt, Shift
 **Combining Modifiers:** You can combine these symbols to create more complex hotkeys.
 
 ```autohotkey
-; Press Ctrl+Alt+T to run this hotkey
+; Press Ctrl+Alt+To run this hotkey
 ^!t::
 {
     ; The Run function launches a program or opens a file/website.
     Run("notepad.exe")
 }
 
-; Press Ctrl+Shift+Escape to open the Task Manager
+; Press Ctrl+Shift+Escape topen the Task Manager
 ^+Esc::
 {
     Run("taskmgr")
@@ -43,16 +43,16 @@ One of AutoHotkey's most powerful features is the ability to make hotkeys that o
 The `#HotIf` directive is used for this. You specify a condition, and all hotkeys defined below it will only fire if that condition is true.
 
 ```autohotkey
-; This hotkey will ONLY work when Notepad is the active window.
+; This hotkey will ONLY work whenotepad is the active window.
 #HotIf WinActive("ahk_class Notepad")
 
 ^s::
 {
-    ; This will send a different string instead of the normal Ctrl+S save command.
-    Send("This hotkey only works in Notepad!")
+    ; This will send a different string instead of the normal Ctrl+Save command.
+    Send("This hotkey only works inotepad!")
 }
 
-; It's good practice to reset the context when you're done.
+; It's good practice to resethe context when you're done.
 #HotIf
 
 ; This hotkey works everywhere.
@@ -68,16 +68,16 @@ The `#HotIf` directive is used for this. You specify a condition, and all hotkey
 
 ## Hotstrings: Automated Text Expansion
 
-A hotstring is a short piece of text that, when typed, is automatically replaced by a longer piece of text. This is incredibly useful for things you type frequently, like your email address, code snippets, or standard replies.
+A hotstring is a short piece of texthat, when typed, is automatically replaced by a longer piece of text. This incredibly useful for things you type frequently, like your email address, code snippets, or standard replies.
 
 The syntax is `::trigger::replacement`.
 
 ### Basic Hotstrings
 
-This is the simplest form. You type the trigger text, and as soon as you type an ending character (like a space, period, or enter), it gets replaced.
+This the simplest form. You type the trigger text, and asoon as you type an ending character (like a space, period, or enter), it gets replaced.
 
 ```autohotkey
-; Type "eml" and press space to replace it with your email address.
+; Type "eml" and presspace to replace it with your email address.
 ::eml::my.email@example.com
 
 ; Useful for standard replies
@@ -89,11 +89,11 @@ This is the simplest form. You type the trigger text, and as soon as you type an
 
 ### Hotstring Options
 
-You can customize a hotstring's behavior using options placed between the first two colons.
+You can customize a hotstring's behavior using options placed between the firstwo colons.
 
--   `*`: The ending character is not required. The replacement happens as soon as you type the trigger. `:*o:btw::by the way`
+-   `*`: Thending character is not required. The replacement happens asoon as you type the trigger. `:*o:btw::by the way`
 -   `?`: The hotstring will trigger even if it's inside another word. `:?o:alot::a lot`
--   `C`: Case-sensitive. The trigger must be typed with the exact case. `:Co:CEO::Chief Executive Officer`
+-   `C`: Case-sensitive. The trigger must be typed withexact case. `:Co:CEO::Chief Executive Officer`
 
 ```autohotkey
 ; No ending character needed. Type "btw" and it instantly becomes "by the way"

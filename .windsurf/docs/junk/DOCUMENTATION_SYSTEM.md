@@ -4,10 +4,10 @@
 The SxS (Side-by-Side) Documentation System provides a robust, maintainable way to manage and serve documentation for the Windsurf project. It features:
 
 - **Markdown-based** - Easy to write and maintain
-- **Version Controlled** - All documentation is stored in Git
+- **Version Controlled** - All documentation istored in Git
 - **Searchable** - Full-text search across all documents
 - **Responsive** - Works on desktop and mobile
-- **Themable** - Light and dark themes
+- **Themable** - Light andark themes
 - **Extensible** - Plugins for additional functionality
 
 ## Quick Start
@@ -15,18 +15,18 @@ The SxS (Side-by-Side) Documentation System provides a robust, maintainable way 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (LTS version recommended)
 - [Git](https://git-scm.com/)
-- [Docker](https://www.docker.com/) (optional, for containerized deployment)
-- [Tailscale](https://tailscale.com/) (for secure remote access)
+- [Docker](https://www.docker.com/) (optional, for containerizedeployment)
+- [Tailscale](https://tailscale.com/) (for securemote access)
 
 ### Local Development
 
-1. **Start the development server**:
+1. **Starthe development server**:
    ```powershell
    .\scripts\start-docs.ps1 -Mode local -Port 3000
    ```
    - Access at: http://localhost:3000
 
-2. **With Tailscale** (for remote access):
+2. **With Tailscale** (foremote access):
    ```powershell
    .\scripts\start-docs.ps1 -Mode local -Port 3000 -Tailscale
    ```
@@ -42,7 +42,7 @@ The SxS (Side-by-Side) Documentation System provides a robust, maintainable way 
 
 #### Option 2: Docker Compose (with Nginx)
 ```powershell
-# Start the full stack
+# Starthe full stack
 .\scripts\start-docs.ps1 -Mode compose -Port 80
 ```
 
@@ -60,19 +60,19 @@ The SxS (Side-by-Side) Documentation System provides a robust, maintainable way 
 ```
 
 ### Update Documentation
-1. Edit the markdown files in `.windsurf/docs/`
+1. Edithe markdown files in `.windsurf/docs/`
 2. The development server will automatically reload
 3. Commit and push your changes to version control
 
 ## Features
 
-### Last Modified Dates
-Each page automatically shows when it was last modified at the top.
+### Last Modifiedates
+Each page automatically shows when it was last modified athe top.
 
 ### Search
 Full-text search is available in the top-right corner.
 
-### Dark/Light Theme
+### Dark/Lightheme
 Toggle using the sun/moon icon in the top-right corner.
 
 ### Code Copy
@@ -129,4 +129,4 @@ docker-compose -f docker-compose.docs.yml build --no-cache
 MIT - See [LICENSE](../LICENSE) for more information.
 
 ## Support
-For help, please open an issue in the repository or contact the maintainers.
+For help, please open an issue in the repository or contacthe maintainers.

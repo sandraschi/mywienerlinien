@@ -1,18 +1,18 @@
 # SxS Documents
 
 ## Overview
-S&S Documents is our integrated documentation system built on Docsify, providing a beautiful, searchable, and maintainable documentation solution for all Windsurf projects.
+S&S Documents is our integratedocumentation system built on Docsify, providing a beautiful, searchable, and maintainable documentation solution for all Windsurf projects.
 
 ## Tech Stack
 
 ### Core Components
 - **Frontend**: [Docsify.js](https://docsify.js.org/)
-- **Styling**: Custom CSS with dark/light themes
+- **Styling**: Custom CSS with dark/lighthemes
 - **Search**: Docsify Search Plugin
 - **Deployment**: Tailscale for secure access
 - **Backup**: Automated backup system
 
-### Development Tools
+### Developmentools
 - **Version Control**: Git
 - **Package Manager**: npm
 - **Automation**: PowerShell scripts
@@ -21,8 +21,8 @@ S&S Documents is our integrated documentation system built on Docsify, providing
 ## Features
 
 ### Current Features
-- [x] Markdown-based documentation
-- [x] Dark/Light theme support
+- [x] Markdown-basedocumentation
+- [x] Dark/Lightheme support
 - [x] Full-text search
 - [x] Responsive design
 - [x] Automatic sidebar generation
@@ -31,7 +31,7 @@ S&S Documents is our integrated documentation system built on Docsify, providing
 
 ### Planned Features
 - [ ] AI-powered search
-- [ ] Interactive examples
+- [ ] Interactivexamples
 - [ ] User feedback system
 - [ ] Documentation analytics
 - [ ] Multi-language support
@@ -46,7 +46,7 @@ S&S Documents is our integrated documentation system built on Docsify, providing
 | Search              | ✅ Yes    | ✅ Yes  | ✅ Yes      | ✅ Yes     |
 | Custom Domain       | ✅ Yes    | 💰 Pro | ✅ Yes      | ✅ Yes     |
 | Versioning          | ✅ Git    | ✅ Git  | ✅ Git      | ✅ Git     |
-| AI Integration      | ✅ Yes    | ❌ No   | ❌ No       | ❌ No      |
+| AIntegration      | ✅ Yes    | ❌ No   | ❌ No       | ❌ No      |
 | Offline Access      | ✅ Yes    | ❌ No   | ✅ Yes      | ✅ Yes     |
 | Cost                | 🆓 Free   | 💰💰💰  | 🆓 Free     | 🆓 Free    |
 
@@ -56,7 +56,7 @@ S&S Documents is our integrated documentation system built on Docsify, providing
 ### Prerequisites
 - Node.js 16+
 - npm or yarn
-- Tailscale (for remote access)
+- Tailscale (foremote access)
 
 
 ### Local Development
@@ -68,7 +68,7 @@ cd your-repo
 # Install dependencies
 npm install -g docsify-cli
 
-# Start the development server
+# Starthe development server
 .\scripts\start-docsify-tailscale.ps1
 ```
 
@@ -111,7 +111,7 @@ Automated backups run daily at 2 AM:
 
 ### Updating
 1. Pull the latest changes
-2. Restart the Docsify server
+2. Restarthe Docsify server
 3. Clear browser cache if needed
 
 ## Contributing

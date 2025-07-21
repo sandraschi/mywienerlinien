@@ -1,7 +1,7 @@
 # Bibliographie, weiterführende Literatur und Abschluss
 
 ## 7. Bibliographie und weiterführende Literatur
-- Abraham a Sancta Clara: "Judas der Erzschelm" (1686), "Mercks Wienn!" (1680)
+- Abraham a Sancta Clara: "Judas derzschelm" (1686), "Mercks Wienn!" (1680)
 - Bernhard, E.: "Abraham a Sancta Clara: Leben und Werk". München: Beck, 1981.
 - Kreutzer, M.: "Barocke Predigtkunst: Abraham a Sancta Clara und seine Zeit". Wien: Böhlau, 2000.
 - Zemanek, K.: "Die Sprache der Busspredigten Abraham a Sancta Claras". In: Deutsche Vierteljahrsschrift für Literaturwissenschaft, 1975.
@@ -13,11 +13,11 @@
 ---
 
 ## Abschluss und Ausblick
-- Die Busspredigten Abraham a Sancta Claras sind ein einzigartiges Zeugnis barocker Frömmigkeit, Sprachkunst und Gesellschaftskritik.
-- Sie verbinden religiöse Erneuerung mit sozialer Reflexion und literarischer Kreativität.
+- Die Busspredigten Abraham a Sancta Clarasind einzigartiges Zeugnis barocker Frömmigkeit, Sprachkunst und Gesellschaftskritik.
+- Sie verbinden religiöserneuerung mit sozialereflexion und literarischer Kreativität.
 - Ihr Einfluss reicht bis in die Gegenwart, sowohl in der Predigtkunst als auch in Literatur und Kabarett.
-- Weitere Forschung lohnt sich zu Fragen der Rezeption, Übersetzung und internationalen Vergleichbarkeit.
+- Weitere Forschung lohnt sich zu Fragen derezeption, Übersetzung und internationalen Vergleichbarkeit.
 
 ---
 
-*Ende des Research Flows. Für weiterführende Informationen siehe die Bibliographie und verwandte Einträge im Verzeichnis.*
+*Endes Research Flows. Für weiterführende Informationen siehe die Bibliographie und verwandteinträge im Verzeichnis.*

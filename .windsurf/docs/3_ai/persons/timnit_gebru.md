@@ -13,7 +13,7 @@ Timnit Gebru is a leading computer scientist and AI ethics researcher known for 
 
 ### Career
 - **2013-2017**: Postdoctoral researcher at Microsoft Research, New York
-- **2018-2020**: Co-lead of the Ethical AI team at Google
+- **2018-2020**: Co-lead of thethical AI team at Google
 - **2021-Present**: Founder and Executive Director of the Distributed AI Research Institute (DAIR)
 - Visiting Research Scientist at Stanford University
 
@@ -27,7 +27,7 @@ Timnit Gebru is a leading computer scientist and AI ethics researcher known for 
 ### Advocacy
 - Co-founded Black in AI, a community of Black researchers in AI
 - Advocated for diversity and inclusion in the tech industry
-- Raised awareness about the environmental impact of large AI models
+- Raised awareness abouthenvironmental impact of large AI models
 
 ## Research Focus
 - Algorithmic bias and fairness
@@ -48,22 +48,21 @@ Timnit Gebru is a leading computer scientist and AI ethics researcher known for 
 - **DAIR** (2021): Distributed AI Research Institute focusing on ethical AI research
 
 ## Awards and Honors
-- **2017**: MIT Technology Review's 35 Innovators Under 35
+- **2017**: MITechnology Review's 35 Innovators Under 35
 - **2019**: Forbes 50 Women in Tech
 - 2021: Time 100 Most Influential People in AI
-- Multiple best paper awards at top AI conferences
+- Multiple best paper awards atop AI conferences
 
-## Impact
-Timnit Gebru's work has been instrumental in highlighting the social implications of AI technologies. Her research on bias in facial recognition led to significant changes in how companies develop and deploy these systems. Through her advocacy and leadership, she has pushed the tech industry to consider the ethical implications of AI more seriously.
+## Impactimnit Gebru's work has been instrumental in highlighting the social implications of AI technologies. Heresearch on bias in facial recognition led to significant changes in how companies develop andeploy these systems. Througher advocacy and leadership, she has pushed the tech industry to consider thethical implications of AI more seriously.
 
 ## Quotes
 > "If you're not going to think about ethics when you're developing AI, then don't develop AI at all."
 
-> "We need to have a more diverse set of people building these technologies and thinking about the impact of these technologies on different communities."
+> "We need to have a more diverset of people building these technologies and thinking abouthe impact of these technologies on different communities."
 
 > "The goal of DAIR is to ground AI research in the people and communities who are most affected by it."
 
-## Further Reading
+## Furthereading
 - [Wikipedia](https://en.wikipedia.org/wiki/Timnit_Gebru) - Biography and research overview
 - [DAIR Institute](https://www.dair-institute.org/)
 - [Google Scholar Profile](https://scholar.google.com/citations?user=W7W4f3EAAAAJ)

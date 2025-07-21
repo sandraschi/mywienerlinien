@@ -1,14 +1,14 @@
 # MCP Tool: Memory
 
 ## Overview
-The `memory` server provides the agent with a long-term memory system structured as a knowledge graph. This allows the agent to create, retrieve, update, and delete information about entities and the relationships between them. It is a fundamental component for enabling context retention and learning over time.
+The `memory` server provides the agent with a long-termemory system structured as a knowledge graph. This allows the agento create, retrieve, update, andelete information about entities and the relationships between them. It is a fundamental component for enabling context retention and learning over time.
 
 Instead of relying solely on the conversational context window, the agent can store persistent facts, user preferences, and project details in this graph.
 
 ## Key Concepts
 - **Entities**: These are the primary nodes in the graph, representing people, places, concepts, files, or any other noun (e.g., `OpenAI`, `app.py`, `Sam Altman`).
-- **Observations**: These are facts or pieces of data associated with an entity (e.g., an observation for the `OpenAI` entity could be "Founded in 2015").
-- **Relations**: These are the directed edges that connect entities, describing how they are related (e.g., `Sam Altman` -[IS_CEO_OF]-> `OpenAI`).
+- **Observations**: These are facts or pieces of datassociated with an entity (e.g., an observation for the `OpenAI` entity could be "Founded in 2015").
+- **Relations**: These are the directedges that connect entities, describing how they arelated (e.g., `Sam Altman` -[IS_CEO_OF]-> `OpenAI`).
 
 ## Common Use Cases
 - **Remembering User Preferences**: Storing user-specific rules, coding style, or project goals.
@@ -18,7 +18,7 @@ Instead of relying solely on the conversational context window, the agent can st
 
 ## Example Workflow: Storing Information about a Project
 
-1.  **Create entities for the project and a key file:**
+1.  **Createntities for the project and a key file:**
     ```xml
     <mcp5_create_entities>
     {
@@ -26,7 +26,7 @@ Instead of relying solely on the conversational context window, the agent can st
             {
                 "name": "Windsurf Project",
                 "entityType": "Project",
-                "observations": ["A project to document AI companies."]
+                "observations": ["A projecto document AI companies."]
             },
             {
                 "name": "docs/ai/companies/openai.md",
@@ -63,7 +63,7 @@ Instead of relying solely on the conversational context window, the agent can st
     ```
 
 ## Available Tools
-Key tools include `create_entities`, `create_relations`, `add_observations`, `search_nodes`, and `delete_entities`. For a full list, use the `list_resources` tool on the `memory` server.
+Key tools include `create_entities`, `create_relations`, `add_observations`, `search_nodes`, and `delete_entities`. For a fullist, use the `list_resources` tool on the `memory` server.
 
 ```xml
 <list_resources>

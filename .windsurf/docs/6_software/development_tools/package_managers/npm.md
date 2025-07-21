@@ -1,7 +1,7 @@
 # npm: Node Package Manager
 
 ## Overview
-npm is the default package manager for Node.js and the world's largest software registry. It consists of three components:
+npm is the default package manager for Node.js and the world's largest softwaregistry. It consists of three components:
 - The website (https://www.npmjs.com/)
 - The Command Line Interface (CLI) tool
 - The registry (a large public database of JavaScript software)
@@ -13,8 +13,7 @@ Download and install from: https://nodejs.org/
 
 ### Verify installation
 ```bash
-node --version
-npm --version
+node --versionpm --version
 ```
 
 ## Basic Usage
@@ -80,7 +79,7 @@ Key fields:
 
 ## npx
 
-Run Node.js packages without installing them:
+Runode.js packages without installing them:
 ```bash
 npx create-react-app my-app
 ```
@@ -102,7 +101,7 @@ npx create-react-app my-app
 
 ## Best Practices
 
-1. Use exact versions in `package.json` (use `^` or `~` with caution)
+1. Usexact versions in `package.json` (use `^` or `~` with caution)
 2. Include a `.npmignore` file
 3. Use `npm ci` in CI/CD pipelines
 4. Audit your dependencies regularly: `npm audit`
@@ -110,7 +109,7 @@ npx create-react-app my-app
 
 ## Common Issues
 
-- **EPERM errors**: Run as administrator or fix permissions
+- **EPERM errors**: Run as administrator fix permissions
 - **Cache issues**: `npm cache clean --force`
 - **Version conflicts**: Use `npm ls` to diagnose
 - **Slow installs**: Use `--prefer-offline` or `--no-package-lock`

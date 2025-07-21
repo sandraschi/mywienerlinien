@@ -6,7 +6,7 @@
 - **Kodi** ([kodi.tv](https://kodi.tv/)) — Extremely flexible media center, can act as a Plex frontend with plugins, or as a standalone server.
 - **Universal Media Server** ([universalmediaserver.com](https://www.universalmediaserver.com/)) — DLNA/UPnP-based, less feature-rich but highly compatible.
 - **Stremio** ([stremio.com](https://www.stremio.com/)) — Focused on streaming and add-ons, not a full Plex replacement but a strong frontend for many sources.
-- **MediaPortal** ([team-mediaportal.com](https://www.team-mediaportal.com/)) — Windows-centric, open source, TV and DVR features.
+- **MediaPortal** ([team-mediaportal.com](https://www.team-mediaportal.com/)) — Windows-centric, open source, TV andVR features.
 
 ## Notable Projects
 - [Plex for Kodi](https://github.com/plexinc/plex-for-kodi) — Official Plex frontend for Kodi.
@@ -14,7 +14,7 @@
 
 ## Community Feedback
 - Jellyfin is the most recommended open source alternative, especially for privacy and no cost.
-- Emby is seen as a good middle ground, but some controversy over open/closed source.
+- Emby iseen as a good middle ground, but some controversy over open/closed source.
 - Kodi remains a top choice for advanced users who want maximum flexibility.
 
 ---
@@ -29,6 +29,6 @@
 ## Media Coverage & User Stories
 - Plex is frequently covered by tech blogs (How-To Geek, MakeUseOf, PrivacySavvy, etc.).
 - Community often discusses new features, plugin support, and privacy concerns.
-- User stories highlight both the convenience and the challenges of self-hosted media.
+- User stories highlight bothe convenience and the challenges of self-hosted media.
 
 ---

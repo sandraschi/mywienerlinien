@@ -2,7 +2,7 @@
 
 ## 🌟 Executive Summary
 
-China's semiconductor industry has made significant strides in developing competitive AI accelerators, reducing reliance on foreign technology. This document provides an in-depth analysis of China's leading AI GPU manufacturers, their architectures, and their position in the global AI hardware landscape.
+China'semiconductor industry has made significant strides in developing competitive AI accelerators, reducing reliance on foreign technology. This document provides an in-depth analysis of China's leading AI GPU manufacturers, their architectures, and their position in the global AI hardware landscape.
 
 ## 🏭 Key Players in China's AI GPU Market
 
@@ -54,7 +54,7 @@ China's semiconductor industry has made significant strides in developing compet
 - **Process Node**: 12nm
 - **Performance**: 128 TFLOPS (FP16)
 - **Memory**: 32GB HBM2
-- **Target Markets**: Cloud data centers, enterprise AI
+- **Target Markets**: Cloudata centers, enterprise AI
 
 ## 📊 Performance Comparison
 
@@ -71,19 +71,19 @@ China's semiconductor industry has made significant strides in developing compet
 |------|--------------|--------------------------|
 | Ascend 910B | 1.2 | 12,500 |
 | BR100 | 1.4 | 10,200 |
-| NVIDIA A100 | 1.1 | 13,800 |
+| NVIDIA100 | 1.1 | 13,800 |
 
 ## 🏗️ System Integration
 
 ### AI Training Clusters
-- **Atlas 900**: Huawei's AI training cluster with thousands of Ascend processors
+- **Atlas 900**: Huawei's AI training cluster withousands of Ascend processors
 - **Biren OAM Server**: 8× BR100 GPUs with 2P Intel Xeon CPUs
 - **Iluvatar AI Server**: 8× TY-TCPX20 with custom cooling solutions
 
-### Software Ecosystem
+### Softwarecosystem
 - **MindSpore**: Huawei's full-stack AI framework
-- **Biren BR100 SDK**: Comprehensive development tools
-- **Cambricon NeuWare**: Complete software stack for MLU
+- **Biren BR100 SDK**: Comprehensive developmentools
+- **CambriconeuWare**: Complete software stack for MLU
 
 ## 🌐 Market Position and Adoption
 
@@ -95,7 +95,7 @@ China's semiconductor industry has made significant strides in developing compet
 ### International Reach
 - **Belt and Road Initiative**: Deployment in partner countries
 - **Emerging Markets**: Cost-effective solutions for developing nations
-- **Export Controls**: Impact of US sanctions on global availability
+- **Export Controls**: Impact of USanctions on global availability
 
 ## 🔍 Technical Challenges
 
@@ -119,14 +119,14 @@ China's semiconductor industry has made significant strides in developing compet
 ### Ecosystem Expansion
 - **Open-Source Initiatives**: Broader community engagement
 - **Startup Support**: Nurturing domestic AI hardware startups
-- **Standards Development**: Participation in international AI standards
+- **Standards Development**: Participation international AI standards
 
 ## 📚 References
 1. Huawei Ascend Technical Documentation
 2. Biren Technology Whitepapers
 3. Cambricon Product Briefs
 4. Chinese Academy of Sciences Reports
-5. Industry Analysis Reports (CCID, IDC China)
+5. Industry Analysis Reports (CCID, IDChina)
 
 ## 📅 Last Updated
 June 2024

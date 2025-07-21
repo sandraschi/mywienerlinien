@@ -19,4 +19,4 @@ for clip_id, clip in clips.items():
     # Write tags into Resolve metadata
     clip.SetMetadata('Keywords', ','.join(tags))
 ```
-*You can adapt this to call any AI service (face, speech, etc.) and write any metadata field supported by Resolve.*
+*You can adapthis to call any AI service (face, speech, etc.) and write any metadata field supported by Resolve.*

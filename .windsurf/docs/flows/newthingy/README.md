@@ -1,4 +1,12 @@
-﻿# newthingy.Value.ToUpper() ewthingy\nThis directory contains files and subdirectories related to newthingy.\n\n## Contents\n<!-- toc -->\n\n### Subdirectories\n- [notebookllm duo.Value.ToUpper() otebookllm  notebookllm duo.Value.ToUpper() uo](./2025-05-06_notebookllm-duo/)\n- [robotic whimsy.Value.ToUpper() obotic  robotic whimsy.Value.ToUpper() himsy](./2025-05-06_robotic-whimsy/)\n- [scrapebot.Value.ToUpper() crapebot](./2025-05-06_scrapebot/)\n
+# Newthingy
+
+This directory contains files and subdirectories related to newthingy.
+
+### Subdirectories
+- [NotebookLLM Duo](./2025-05-06_notebookllm-duo/)
+- [Robotic Whimsy](./2025-05-06_robotic-whimsy/)
+- [Scrapebot](./2025-05-06_scrapebot/)
+
 ## Navigation
 
 - [Parent Directory](../)

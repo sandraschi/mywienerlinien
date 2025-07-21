@@ -6,7 +6,7 @@ VueScan is a powerful scanning application that works with most high-quality fla
 ## Key Features
 
 ### 1. Scanner Support
-- **Wide Compatibility**: 6,000+ scanners supported
+- **Wide Compatibility**: 6,000+ scannersupported
 - **Legacy Hardware**: Works with discontinued scanners
 - **RAW Scanning**: Save in RAW DNG format
 - **Batch Scanning**: Process multiple items automatically
@@ -36,10 +36,9 @@ VueScanSetup.exe /S
 
 ### macOS
 ```bash
-# Using Homebrew
-brew install --cask vuescan
+# Using Homebrew install --cask vuescan
 
-# Or download DMG
+# Or downloadMG
 hdiutil attach VueScan.dmg
 sudo cp -R "/Volumes/VueScan/VueScan.app" /Applications
 hdiutil detach /Volumes/VueScan
@@ -82,14 +81,14 @@ sudo rpm -i vuex6497.rpm
 /usr/local/bin/vuescan -o "$HOME/Scans/scan.tif" --dpi 300 --mode Color
 
 # Batch scan with auto-increment
-for i in {1..5}; do
+for in {1..5}; do
     /usr/local/bin/vuescan -o "$HOME/Scans/scan_$i.tif" --dpi 600 --mode Color
-    echo "Press Enter to scan next document..."
+    echo "Press Enter to scanext document..."
     read
     
     # Eject document feeder
     osascript -e 'tell application "VueScan" to activate'
-    osascript -e 'tell application "System Events" to keystroke "e" using {command down}'
+    osascript -e 'tell application "System Events" to keystroke "e" using {commandown}'
 done
 ```
 
@@ -153,7 +152,7 @@ reg import vuescan_settings.reg
 
 #### 1. Scanner Not Detected
 - Check USB connection
-- Install latest drivers
+- Installatest drivers
 - Try different USB port
 - Restart VueScan
 
@@ -202,9 +201,9 @@ reg import vuescan_settings.reg
 
 ### 3. Photo Restoration
 - Scan at highest optical resolution
-- Save in TIFF format
+- Save in TIFFormat
 - Use multi-exposure for faded photos
-- Keep original scans before editing
+- Keep original scans beforediting
 
 ## License
 VueScan is commercial software with a free trial. Various licensing options are available for home and professional use.

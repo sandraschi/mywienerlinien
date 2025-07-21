@@ -7,7 +7,7 @@ React is a declarative, efficient, and flexible JavaScript library for building 
 - **Component-Based**: Build encapsulated components that manage their own state
 - **Declarative**: Design simple views for each state in your application
 - **Learn Once, Write Anywhere**: Can render on the server using Node and power mobile apps using React Native
-- **Rich Ecosystem**: Large community and extensive package ecosystem
+- **Rich Ecosystem**: Large community and extensive packagecosystem
 - **Performance**: Virtual DOM ensures efficient updates and rendering
 
 ## Installation
@@ -15,13 +15,12 @@ React is a declarative, efficient, and flexible JavaScript library for building 
 ### Using Create React App (Recommended)
 
 ```bash
-# Create a new React application
-npx create-react-app my-app --template typescript
+# Create a new React applicationpx create-react-app my-app --template typescript
 
 # Navigate to the project directory
 cd my-app
 
-# Start the development server
+# Starthe development server
 npm start
 ```
 
@@ -29,7 +28,7 @@ npm start
 
 ```bash
 # Install React and React DOM
-npm install react react-dom
+npm install react-dom
 
 # For TypeScript support
 npm install --save-dev typescript @types/react @types/react-dom
@@ -55,7 +54,7 @@ my-react-app/
 │   ├── hooks/              # Custom React hooks
 │   ├── services/           # API services
 │   ├── store/              # State management
-│   ├── types/              # TypeScript type definitions
+│   ├── types/              # TypeScriptype definitions
 │   ├── utils/              # Utility functions
 │   ├── App.tsx             # Main App component
 │   ├── index.tsx           # Application entry point
@@ -105,7 +104,7 @@ const Counter = () => {
   return (
     <div>
       <p>Count: {count}</p>
-      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <buttonClick={() => setCount(count + 1)}>Increment</button>
     </div>
   );
 };
@@ -162,7 +161,7 @@ const useLocalStorage = (key: string, initialValue: any) => {
 
   const setValue = (value: any) => {
     try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      const valueToStore = value instanceofunction ? value(storedValue) : value;
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
     } catch (error) {
@@ -191,12 +190,12 @@ type ThemeContextType = {
   toggleTheme: () => void;
 };
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+consthemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider: React.FC = ({ children }) => {
+export consthemeProvider: React.FC = ({ children }) => {
   const [theme, setTheme] = useState<Theme>('light');
 
-  const toggleTheme = () => {
+  constoggleTheme = () => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
@@ -293,7 +292,7 @@ npm install styled-components @types/styled-components
 ```tsx
 import styled from 'styled-components';
 
-const StyledButton = styled.button`
+constyledButton = styled.button`
   padding: 8px 16px;
   border: none;
   border-radius: 4px;
@@ -314,7 +313,7 @@ const StyledButton = styled.button`
 
 ## Testing
 
-### Jest and React Testing Library
+### Jest and Reactesting Library
 
 ```bash
 # Install testing libraries
@@ -329,14 +328,14 @@ import '@testing-library/jest-dom';
 import Button from './Button';
 
 describe('Button', () => {
-  it('renders the button with correct text', () => {
+  it('renders the button with correctext', () => {
     render(<Button>Click me</Button>);
     expect(screen.getByRole('button', { name: /click me/i })).toBeInTheDocument();
   });
 
   it('calls onClick prop when clicked', () => {
     const handleClick = jest.fn();
-    render(<Button onClick={handleClick}>Click me</Button>);
+    render(<ButtonClick={handleClick}>Click me</Button>);
     
     fireEvent.click(screen.getByText(/click me/i));
     expect(handleClick).toHaveBeenCalledTimes(1);
@@ -365,7 +364,7 @@ const UserCard: React.FC<UserCardProps> = memo(({ id, name, email, onEdit }) => 
     <div className="user-card">
       <h3>{name}</h3>
       <p>{email}</p>
-      <button onClick={() => onEdit(id)}>Edit</button>
+      <buttonClick={() => onEdit(id)}>Edit</button>
     </div>
   );
 }, (prevProps, nextProps) => {
@@ -412,38 +411,38 @@ const ExpensiveComponent = ({ items, onItemClick }) => {
 ## Best Practices
 
 1. **Component Design**
-   - Keep components small and focused
+   - Keep componentsmall and focused
    - Use composition over inheritance
    - Follow the single responsibility principle
 
 2. **State Management**
    - Use local state for UI state
-   - Lift state up when needed
+   - Lift state up wheneeded
    - Consider context for global state
    - Use Redux for complex state management
 
 3. **Performance**
    - Use React.memo for expensive renders
    - Memoize callbacks with useCallback
-   - Memoize expensive calculations with useMemo
+   - Memoizexpensive calculations with useMemo
    - Lazy load components with React.lazy
 
 4. **Testing**
-   - Write unit tests for components
+   - Write unitests for components
    - Test user interactions
-   - Use React Testing Library
+   - Use Reactesting Library
 
 5. **Code Organization**
-   - Group by feature or route
+   - Group by feature oroute
    - Keep related files together
    - Use index files for clean imports
 
 ## Resources
 
 - [Official Documentation](https://reactjs.org/)
-- [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/)
+- [ReactypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/)
 - [React Patterns](https://reactpatterns.com/)
-- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+- [Reactesting Library](https://testing-library.com/docs/react-testing-library/intro/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 
 ## Last Updated

@@ -9,7 +9,7 @@ This document examines China's rapid rise in artificial intelligence, analyzing 
 - **New Generation AI Development Plan (2017)**
   - Three-step roadmap to 2030
   - Goal of becoming world leader in AI
-  - $150B investment target
+  - $150B investmentarget
 
 ### Key Players
 - **Tech Giants**: Baidu, Alibaba, Tencent, Huawei
@@ -25,7 +25,7 @@ This document examines China's rapid rise in artificial intelligence, analyzing 
 
 ### Notable Achievements
 - **Computer Vision**: Face recognition, surveillance
-- **Natural Language Processing**: ERNIE, PanGu-α
+- **Naturalanguage Processing**: ERNIE, PanGu-α
 - **Autonomous Vehicles**: Baidu Apollo, Pony.ai
 - **Chip Design**: Ascend, Kunlun, Cambricon
 
@@ -36,9 +36,9 @@ This document examines China's rapid rise in artificial intelligence, analyzing 
 - Facial recognition deployment
 - Predictive policing
 
-### Mass Surveillance
+### Massurveillance
 - 200M+ surveillance cameras
-- Uyghur recognition technology
+- Uyghurecognition technology
 - Export of surveillance tech
 
 ## 4. Geopolitical Implications
@@ -49,7 +49,7 @@ This document examines China's rapid rise in artificial intelligence, analyzing 
 - Talent competition
 
 ### Belt and Road Initiative
-- Export of AI infrastructure
+- Export of AInfrastructure
 - Digital Silk Road
 - Data governance models
 
@@ -57,11 +57,11 @@ This document examines China's rapid rise in artificial intelligence, analyzing 
 
 ### Strengths
 - Massive datasets
-- Strong government support
+- Strongovernment support
 - Rapid implementation
 
 ### Challenges
-- US sanctions on advanced chips
+- USanctions on advanced chips
 - Brain drain concerns
 - Regulatory crackdowns on tech sector
 
@@ -78,6 +78,6 @@ This document examines China's rapid rise in artificial intelligence, analyzing 
 - International research collaborations
 
 ## Resources
-- [China AI Development Report](https://www.chinafile.com/reporting-opinion/features/china-ai-development-report)
-- [CSET China AI Resources](https://cset.georgetown.edu/research/china-ai-resources/)
-- [MIT Technology Review China](https://www.technologyreview.com/tag/china/)
+- [ChinaI Development Report](https://www.chinafile.com/reporting-opinion/features/china-ai-development-report)
+- [CSET ChinaI Resources](https://cset.georgetown.edu/research/china-ai-resources/)
+- [MITechnology Review China](https://www.technologyreview.com/tag/china/)

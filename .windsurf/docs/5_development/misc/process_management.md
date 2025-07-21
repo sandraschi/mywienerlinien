@@ -2,25 +2,25 @@
 
 ## Overview
 
-The process management system provides a robust way to handle application lifecycle in Windows environments, focusing on graceful shutdowns, proper cleanup, and port conflict prevention. This system is implemented in PowerShell for maximum compatibility and control.
+The process management system provides a robust way to handle application lifecycle in Windows environments, focusing on graceful shutdowns, proper cleanup, and port conflict prevention. Thisystem is implemented in PowerShell for maximum compatibility and control.
 
 ## Core Principles
 
 1. **Graceful Shutdown**
-   - Applications should have a chance to clean up resources
-   - Database connections should be properly closed
-   - File handles should be released
-   - Temporary files should be removed
+   - Applicationshould have a chance to clean up resources
+   - Database connectionshould be properly closed
+   - File handleshould be released
+   - Temporary fileshould be removed
 
 2. **Process Tracking**
    - Track process IDs (PIDs) of managed applications
-   - Maintain process state
+   - Maintain processtate
    - Handle parent-child process relationships
 
 3. **Port Management**
    - Detect port conflicts before starting
    - Gracefully handle port-in-use scenarios
-   - Support for both TCP and UDP protocols
+   - Support for both TCP and UDProtocols
 
 ## Implementation Details
 
@@ -38,11 +38,10 @@ function Start-ManagedProcess {
     
     # Check for port conflicts
     if ($Port -and (Test-PortInUse -Port $Port)) {
-        $existingProcess = Get-ProcessByPort -Port $Port
-        throw "Port $Port is in use by process $($existingProcess.Id) ($($existingProcess.ProcessName))"
+        $existingProcess = Get-ProcessByPort -Port $Porthrow "Port $Port is in use by process $($existingProcess.Id) ($($existingProcess.ProcessName))"
     }
     
-    # Start the process
+    # Starthe process
     $processInfo = New-Object System.Diagnostics.ProcessStartInfo
     $processInfo.FileName = $Command
     $processInfo.Arguments = $Arguments
@@ -59,7 +58,7 @@ function Start-ManagedProcess {
     $process.OutputDataReceived += { Write-Host $_.Data }
     $process.ErrorDataReceived += { Write-Error $_.Data }
     
-    # Start the process
+    # Starthe process
     $process.Start() | Out-Null
     $process.BeginOutputReadLine()
     $process.BeginErrorReadLine()
@@ -140,12 +139,12 @@ function Get-ProcessByPort {
 }
 ```
 
-## Usage Examples
+## Usagexamples
 
 ### Starting a Managed Process
 
 ```powershell
-# Start a Node.js server
+# Start a Node.jserver
 $nodeProcess = Start-ManagedProcess \
     -Command "node" \
     -Arguments "server.js --port 3000" \
@@ -153,7 +152,7 @@ $nodeProcess = Start-ManagedProcess \
     -Port 3000
 
 # Register for process exit
-Register-ObjectEvent -InputObject $nodeProcess -EventName Exited -Action {
+Register-ObjectEvent -InputObject $nodeProcess -EventNamexited -Action {
     Write-Host "Node.js process exited with code: $($sender.ExitCode)"
 }
 ```
@@ -164,7 +163,7 @@ Register-ObjectEvent -InputObject $nodeProcess -EventName Exited -Action {
 function Stop-Application {
     param([System.Diagnostics.Process]$Process)
     
-    Write-Host "Initiating graceful shutdown..."
+    Write-Host "Initiatingraceful shutdown..."
     
     # 1. Notify the application to shut down
     if ($Process.HasExited -eq $false) {
@@ -201,18 +200,18 @@ function Stop-Application {
 ## Best Practices
 
 1. **Always Handle Cleanup**
-   - Use `try/finally` blocks to ensure resources are released
+   - Use `try/finally` blocks to ensuresources areleased
    - Implement proper signal handling in your applications
-   - Clean up temporary files and database connections
+   - Clean up temporary files andatabase connections
 
 2. **Log Everything**
-   - Log process start/stop events
+   - Log processtart/stop events
    - Record exit codes and any errors
    - Include timestamps for debugging
 
 3. **Handle Orphaned Processes**
    - Implement process tracking to detect and clean up orphans
-   - Use process names and command-line arguments to identify your processes
+   - Use process names and command-line arguments to identifyour processes
 
 4. **Port Management**
    - Always check for port availability before starting
@@ -221,10 +220,10 @@ function Stop-Application {
 
 ## Advanced Integration Examples
 
-### 1. Windows Service with Auto-Restart
+### 1. Windowservice with Auto-Restart
 
 ```powershell
-# Install as a Windows Service with auto-restart
+# Install as a Windowservice with auto-restart
 $serviceName = "MyAppService"
 $scriptPath = "C:\\path\\to\\start.ps1"
 
@@ -235,7 +234,7 @@ New-Service \
     -DisplayName "My Application Service" \
     -StartupType Automatic
 
-# Configure recovery options
+# Configurecovery options
 $action1 = New-ScheduledTaskAction -Execute "net.exe" -Argument "start $serviceName"
 $trigger = New-ScheduledTaskTrigger -AtStartup
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -DontStopOnIdleEnd
@@ -253,21 +252,21 @@ Register-ScheduledTask \
 ### 2. Docker Container Integration
 
 ```powershell
-# Start a container with health checks and auto-restart
+# Start a container withealth checks and auto-restart
 $containerName = "myapp"
 $port = 8080
 
 # Pull the latest image
 docker pull myapp:latest
 
-# Stop and remove existing container
+# Stop and removexisting container
 if (docker ps -a --filter "name=^${containerName}$" -q) {
     docker stop $containerName | Out-Null
-    docker rm $containerName | Out-Null
+    dockerm $containerName | Out-Null
 }
 
-# Start new container with health check
-docker run -d \
+# Start new container withealth check
+dockerun -d \
     --name $containerName \
     -p "${port}:8080" \
     --restart unless-stopped \
@@ -281,18 +280,14 @@ docker run -d \
 ### 3. CI/CD Pipeline (GitHub Actions)
 
 ```yaml
-name: Deploy Application
-
-on:
+name: Deploy Application:
   push:
     branches: [ main ]
   workflow_dispatch:
 
 jobs:
   deploy:
-    runs-on: windows-latest
-    
-    steps:
+    runs-on: windows-latesteps:
     - name: Checkout code
       uses: actions/checkout@v2
       
@@ -444,7 +439,7 @@ class FileLockManager {
                 $kvp.Value.Close()
                 $kvp.Value.Dispose()
             } catch {
-                Write-Warning "Error releasing lock on $($kvp.Key): $_"
+                Write-Warning "Erroreleasing lock on $($kvp.Key): $_"
             }
         }
         $this.FileLocks.Clear()
@@ -452,7 +447,7 @@ class FileLockManager {
 }
 ```
 
-## Troubleshooting Guide
+## Troubleshootinguide
 
 ### Common Issues and Solutions
 
@@ -499,7 +494,7 @@ function Find-ProcessUsingPort {
 - Implement port reuse with `SO_REUSEADDR`
 - Wait and retry with exponential backoff
 
-#### 2. Process Won't Terminate
+#### 2. Process Won'terminate
 
 **Symptoms**:
 - Process remains in Task Manager after shutdown
@@ -586,7 +581,7 @@ function Test-ProcessPermission {
 
 **Diagnosis**:
 ```powershell
-# Monitor resource usage
+# Monitoresource usage
 function Get-ProcessResources {
     param([int]$ProcessId)
     
@@ -600,8 +595,7 @@ function Get-ProcessResources {
     [PSCustomObject]@{
         ProcessId = $process.Id
         ProcessName = $process.ProcessName
-        Handles = $handleCount
-        Threads = $threadCount
+        Handles = $handleCounthreads = $threadCount
         MemoryMB = $memoryMB
         CPU = $process.TotalProcessorTime
         StartTime = $process.StartTime
@@ -617,7 +611,7 @@ function Get-ProcessResources {
 
 ## Performance Considerations
 
-1. **Process Startup**
+1. **Processtartup**
    - Minimize startup time
    - Use warm-up routines
    - Consider pre-starting services
@@ -629,14 +623,14 @@ function Get-ProcessResources {
 
 3. **Network Efficiency**
    - Reuse connections
-   - Implement timeouts and retries
+   - Implementimeouts and retries
    - Use connection pooling
 
 ## Security Best Practices
 
 1. **Principle of Least Privilege**
    - Run with minimal required permissions
-   - Use service accounts
+   - Uservice accounts
    - Implement proper access controls
 
 2. **Secure Communication**
@@ -655,7 +649,7 @@ function Get-ProcessResources {
 
 ```powershell
 # Create performance counters
-function New-PerformanceCounter {
+functionew-PerformanceCounter {
     param(
         [string]$CategoryName,
         [string]$CounterName,
@@ -712,7 +706,7 @@ try {
     # Application code here
     Write-EventLogEntry -Source 'MyApplication' -Message 'Application started successfully'
 } catch {
-    Write-EventLogEntry -Source 'MyApplication' -Message "Error: $_" -EntryType Error -EventId 5000
+    Write-EventLogEntry -Source 'MyApplication' -Message "Error: $_" -EntryTyperror -EventId 5000
     throw
 }
 ```
@@ -722,4 +716,4 @@ try {
 - [Windows Process Management](https://docs.microsoft.com/en-us/windows/win32/procthread/processes-and-threads)
 - [PowerShell Process Cmdlets](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/?view=powershell-7.2#process)
 - [Graceful Shutdown Patterns](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/graceful-shutdown)
-- [Windows Service Recovery Options](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/dn486827(v=ws.11))
+- [Windowservice Recovery Options](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/dn486827(v=ws.11))

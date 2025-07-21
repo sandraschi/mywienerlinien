@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Shared Libraries system provides a centralized repository of reusable code components that can be shared across multiple projects. It promotes code reuse, consistency, and maintainability across the Windsurf ecosystem.
+The Shared Librariesystem provides a centralized repository of reusable code components that can be shared across multiple projects. It promotes code reuse, consistency, and maintainability across the Windsurf ecosystem.
 
 ## Directory Structure
 
@@ -89,7 +89,7 @@ import { ApiClient } from '@windsurf/api-client';
    │   └── my_library/
    │       ├── __init__.py
    │       └── module.py
-   ├── tests/              # Unit tests
+   ├── tests/              # Unitests
    └── docs/               # API documentation
    ```
 
@@ -112,7 +112,7 @@ Libraries are automatically published when changes are merged to main:
 ### Manual Publishing
 ```bash
 # Build package
-windsurf lib build my-library
+windsurf libuild my-library
 
 # Publish to registry
 windsurf lib publish my-library --version 1.0.0
@@ -122,11 +122,11 @@ windsurf lib publish my-library --version 1.0.0
 
 1. **Single Responsibility**
    - Each library should have a single, focused purpose
-   - Keep libraries small and focused
+   - Keep librariesmall and focused
 
 2. **Documentation**
    - Include comprehensive API documentation
-   - Add usage examples
+   - Add usagexamples
    - Document version compatibility
 
 3. **Testing**
@@ -164,14 +164,12 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    steps:
+    runs-on: ubuntu-latesteps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
       - name: Install dependencies
         run: |
-          pip install poetry
-          poetry install
+          pip install poetry install
       - name: Run tests
         run: poetry run pytest
 ```

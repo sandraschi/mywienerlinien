@@ -5,25 +5,25 @@
 - **How it works:** Acts as a layer between the Service Control Manager and Remote Desktop Services, loading termsrv.dll with altered parameters.
 - **Features:**
   - Enables RDP host/server on any Windows edition (Vista+)
-  - Allows console and remote sessions at the same time
+  - Allows console and remote sessions athe same time
   - Supports up to 15+ concurrent sessions (hardware/OS dependent)
   - Multi-monitor support, session shadowing
 - **Installation:**
-  1. Download the latest RDP Wrapper release from [GitHub](https://github.com/stascorp/rdpwrap/releases)
+  1. Download the latest RDP Wrapperelease from [GitHub](https://github.com/stascorp/rdpwrap/releases)
   2. Run `install.bat` as administrator
   3. Update `rdpwrap.ini` for latest Windows builds ([ini file here](https://raw.githubusercontent.com/sebaxakerhtc/rdpwrap.ini/master/rdpwrap.ini))
   4. Use `RDPConf.exe` to check status
 - **Notes:**
   - Does not modify system files, but may be flagged as PUA/malware by antivirus
-  - May break after Windows updates until ini is updated
+  - May break after Windows updates until inis updated
 
 ## termsrv.dll Patching
-- **What it is:** Directly modifies the Windows system file (`termsrv.dll`) to remove the single-session restriction.
+- **What it is:** Directly modifies the Windowsystem file (`termsrv.dll`) to remove the single-session restriction.
 - **How it works:**
-  - Patch replaces specific byte patterns in `termsrv.dll`
+  - Patch replacespecific byte patterns in `termsrv.dll`
   - Tools/scripts available on GitHub (e.g., TermsrvPatcher)
 - **Risks:**
-  - Modifies Windows system files (potential for system instability or boot failure)
+  - Modifies Windowsystem files (potential for system instability or boot failure)
   - Will be overwritten/reset by Windows Updates
   - Clear licensing violation (see next chunk)
 - **Installation:**

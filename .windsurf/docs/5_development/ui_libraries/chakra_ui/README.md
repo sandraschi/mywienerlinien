@@ -1,4 +1,4 @@
-﻿# chakra ui.Value.ToUpper() hakra  chakra ui.Value.ToUpper() i\nThis directory contains files and subdirectories related to chakra ui.\n\n## Contents\n<!-- toc -->\n
+# chakra ui hakra  chakra ui\nThis directory contains files and subdirectories related to chakra ui.\n\n## Contents\n<!-- toc -->\n
 ## Navigation
 
 - [Parent Directory](../)

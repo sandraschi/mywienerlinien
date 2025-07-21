@@ -1,6 +1,6 @@
 # Documentation Viewer
 
-Welcome to the documentation viewer! This system provides a clean, organized way to browse and search through all your documentation using Docsify, a powerful documentation site generator.
+Welcome to the documentation viewer! Thisystem provides a clean, organized way to browse and search through all your documentation using Docsify, a powerful documentation site generator.
 
 ## Features
 
@@ -23,8 +23,8 @@ Welcome to the documentation viewer! This system provides a clean, organized way
 
 ### Viewing Documentation
 1. Use the sidebar to navigate through the documentation
-2. Click on any document to view its contents
-3. Use the search bar to quickly find specific content
+2. Click on any documento view its contents
+3. Use the search bar to quickly find specificontent
 
 ### Navigation Tips
 - Click on section headers in the sidebar to expand/collapse
@@ -40,22 +40,22 @@ Welcome to the documentation viewer! This system provides a clean, organized way
 - **Development**: Software development guides and references
 - **Software**: Information about software tools and applications
 - **Projects**: Details about various projects
-- **Robotics**: Robotics-related documentation
+- **Robotics**: Robotics-relatedocumentation
 - **Misc**: Miscellaneous documentation
 
 ### File Organization
-- Each main section has its own numbered directory (e.g., `1_news/`, `2_notes/`)
-- Subdirectories are used to organize content thematically
+- Each main section has its ownumberedirectory (e.g., `1_news/`, `2_notes/`)
+- Subdirectories are used torganize contenthematically
 - All documentation is written in Markdown (`.md` files)
 
 ## Customization
 
 ### Themes
-Toggle between light and dark mode using the theme switcher in the top-right corner.
+Toggle between light andark mode using theme switcher in the top-right corner.
 
 ### Layout
 - The sidebar width can be adjusted by dragging its edge
-- The main content area automatically adjusts to the available space
+- The main content areautomatically adjusts to the available space
 
 ## Technical Details
 
@@ -66,11 +66,10 @@ Toggle between light and dark mode using the theme switcher in the top-right cor
 
 ### Adding Content
 1. Create a new Markdown (`.md`) file in the appropriate directory
-2. Use standard Markdown syntax for formatting
+2. Use standard Markdown syntax formatting
 3. The sidebar will be automatically updated to include the new file
 
-### Local Development
-To run the documentation locally:
+### Local Developmento run the documentation locally:
 
 ```bash
 # Install docsify-cli globally
@@ -82,7 +81,7 @@ docsify serve docs
 
 ## Support
 
-For help or to report issues, please contact the documentation maintainer.
+For help or to report issues, please contacthe documentation maintainer.
 
 ---
 

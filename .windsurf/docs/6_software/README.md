@@ -1,4 +1,21 @@
-﻿# 6  6 software.Value.ToUpper() oftware\nThis directory contains files and subdirectories related to 6 software.\n\n## Contents\n<!-- toc -->\n\n### Subdirectories\n- [audio tools.Value.ToUpper() udio  audio tools.Value.ToUpper() ools](./audio_tools/)\n- [automation tools.Value.ToUpper() utomation  automation tools.Value.ToUpper() ools](./automation_tools/)\n- [cloud.Value.ToUpper() loud](./cloud/)\n- [databases.Value.ToUpper() atabases](./databases/)\n- [development tools.Value.ToUpper() evelopment  development tools.Value.ToUpper() ools](./development_tools/)\n- [file tools.Value.ToUpper() ile  file tools.Value.ToUpper() ools](./file_tools/)\n- [media servers.Value.ToUpper() edia  media servers.Value.ToUpper() ervers](./media_servers/)\n- [misc tools.Value.ToUpper() isc  misc tools.Value.ToUpper() ools](./misc_tools/)\n- [operating systems.Value.ToUpper() perating  operating systems.Value.ToUpper() ystems](./operating_systems/)\n- [productivity.Value.ToUpper() roductivity](./productivity/)\n- [security.Value.ToUpper() ecurity](./security/)\n- [text tools.Value.ToUpper() ext  text tools.Value.ToUpper() ools](./text_tools/)\n
+# Software
+
+This directory contains files and subdirectories related to software.
+
+### Subdirectories
+- [Audio Tools](./audio_tools/)
+- [Automation Tools](./automation_tools/)
+- [Cloud](./cloud/)
+- [Databases](./databases/)
+- [Developmentools](./development_tools/)
+- [File Tools](./file_tools/)
+- [Media Servers](./media_servers/)
+- [Misc Tools](./misc_tools/)
+- [Operating Systems](./operating_systems/)
+- [Productivity](./productivity/)
+- [Security](./security/)
+- [Text Tools](./text_tools/)
+
 ## Navigation
 
 - [Parent Directory](../)

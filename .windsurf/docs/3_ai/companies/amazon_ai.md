@@ -7,9 +7,9 @@ Amazon AI represents Amazon's comprehensive artificial intelligence initiatives,
 - **Founded**: 2014 (as Amazon AI team), with AI research dating to 1990s
 - **Key Leadership**:
   - Andy Jassy (CEO, Amazon)
-  - Rohit Prasad (SVP and Head Scientist, Alexa AI)
+  - Rohit Prasad (SVP and Head Scientist, AlexaI)
   - Swami Sivasubramanian (VP of AI, AWS)
-  - Prem Natarajan (VP of Alexa AI)
+  - Prem Natarajan (VP of AlexaI)
 - **Headquarters**: Seattle, Washington, USA
 - **Employees**: 10,000+ in AI/ML roles across Amazon
 - **Parent Company**: Amazon.com, Inc. (Market Cap: ~$1.3T as of 2023)
@@ -22,8 +22,8 @@ Amazon AI represents Amazon's comprehensive artificial intelligence initiatives,
   - Amazon CodeWhisperer
   - Amazon Bedrock (foundation models)
   - Amazon Titan (LLMs)
-  - Amazon One (palm recognition)
-  - Just Walk Out technology
+  - Amazone (palm recognition)
+  - Just Walk Outechnology
 
 ## AI Focus Areas
 - Conversational AI
@@ -40,7 +40,7 @@ Amazon AI represents Amazon's comprehensive artificial intelligence initiatives,
 - **Amazon SageMaker**: End-to-end ML platform
 - **Amazon Rekognition**: Computer vision service
 - **Amazon Lex**: Conversational AI service
-- **Amazon Kendra**: Intelligent enterprise search
+- **Amazon Kendra**: Intelligenterprisearch
 - **Amazon CodeWhisperer**: AI coding companion
 - **Amazon Bedrock**: Foundation model service
 - **Trainium & Inferentia**: Custom AI chips
@@ -55,16 +55,16 @@ Amazon AI represents Amazon's comprehensive artificial intelligence initiatives,
   - Ring ($1B in 2018)
   - Zoox ($1.2B in 2020)
   - iRobot ($1.7B in 2022, pending)
-- **AI Investments**:
+- **AInvestments**:
   - $4B investment in Anthropic (2023)
   - Multiple AI startup investments through Alexa Fund
 
 ## Recent News
 - 2023: Launched Amazon Bedrock for foundation models
 - 2023: Announced $4B investment in Anthropic
-- 2023: Released Titan family of foundation models
+- 2023: Released Titan family ofoundation models
 - 2022: Launched CodeWhisperer, AI coding companion
-- 2021: Introduced Trainium and Inferentia AI chips
+- 2021: Introduced Trainium and InferentiaI chips
 - 2020: Expanded Alexa's AI capabilities
 - 2019: Announced $700M investment in self-driving startup Aurora
 - 2018: Launched AWS DeepRacer, educational reinforcement learning platform
@@ -80,18 +80,18 @@ Amazon AI represents Amazon's comprehensive artificial intelligence initiatives,
 
 ## Key People
 - **Andy Jassy**: CEO, Amazon
-- **Rohit Prasad**: SVP and Head Scientist, Alexa AI
+- **Rohit Prasad**: SVP and Head Scientist, AlexaI
 - **Swami Sivasubramanian**: VP of AI, AWS
-- **Prem Natarajan**: VP of Alexa AI
+- **Prem Natarajan**: VP of AlexaI
 - **Dilip Kumar**: VP of AWS AI
 - **Ruslan Salakhutdinov**: Director of AI Research
 - **Bernhard Schölkopf**: Director, Empirical Inference
-- **Neil Lawrence**: Director of Machine Learning, Amazon
+- **Neilawrence**: Director of Machine Learning, Amazon
 - **Zachary Lipton**: Director of ML, Amazon Science
 - **Rita Singh**: Director of AI, Alexa Speech
 
 ## Research Areas
-- **Conversational AI**: Speech recognition, natural language understanding
+- **Conversational AI**: Speech recognition, naturalanguage understanding
 - **Computer Vision**: Object detection, image analysis
 - **Recommendation Systems**: Personalization algorithms
 - **Reinforcement Learning**: Robotics, optimization
@@ -123,18 +123,18 @@ Amazon AI represents Amazon's comprehensive artificial intelligence initiatives,
 - **Responsible AI Principles**: Fairness, explainability, privacy, security
 - **AI Service Cards**: Transparency documentation
 - **AI Fairness 360**: Open-source fairness toolkit
-- **AI for Good**: Humanitarian and environmental applications
+- **AI for Good**: Humanitariand environmental applications
 - **Customer Trust**: Data protection and privacy controls
 - **Bias Mitigation**: Tools and best practices
 - **AI Ethics Board**: Oversight and guidance
 
-## Developer Resources
+## Developeresources
 - **AWS AI/ML Training**: Free courses and certifications
 - **Amazon SageMaker Studio**: ML development environment
-- **Alexa Skills Kit**: Build voice experiences
+- **Alexa Skills Kit**: Build voicexperiences
 - **AWS DeepRacer**: Learn reinforcement learning
 - **AI/ML Blog**: Technical tutorials and announcements
-- **AWS Samples**: Example code and projects
+- **AWSamples**: Example code and projects
 - **AI/ML Events**: re:Invent, summits, webinars
 
 ## Future Directions
@@ -143,5 +143,5 @@ Amazon AI represents Amazon's comprehensive artificial intelligence initiatives,
 - **AI Chips**: Next-gen Trainium and Inferentia
 - **Responsible AI**: Enhanced fairness and explainability
 - **AI for Sustainability**: Climate change solutions
-- **AI at Scale**: Larger, more efficient models
+- **AI at Scale**: Larger, morefficient models
 - **Democratization**: Making AI accessible to all developers

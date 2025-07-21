@@ -1,7 +1,7 @@
 # SambaNova Systems
 
 ## Overview
-SambaNova Systems is an AI innovation company that builds advanced AI hardware and integrated systems. Their flagship offering is the DataScale system, powered by the Reconfigurable Dataflow Unit (RDU) architecture, specifically designed for AI and machine learning workloads.
+SambaNova Systems is an AInnovation company that builds advanced AI hardware and integrated systems. Their flagship offering is the DataScale system, powered by the Reconfigurable Dataflow Unit (RDU) architecture, specifically designed for AI and machine learning workloads.
 
 ## Key Technologies
 
@@ -14,7 +14,7 @@ SambaNova Systems is an AI innovation company that builds advanced AI hardware a
 ### SambaNova Cloud
 - Fully managed AI service
 - Pre-configured environments for ML workloads
-- Pay-as-you-go or dedicated instances
+- Pay-as-you-gor dedicated instances
 - Integration with popular ML frameworks
 
 ### Software Stack
@@ -23,8 +23,7 @@ SambaNova Systems is an AI innovation company that builds advanced AI hardware a
 - Optimized model zoo
 - Enterprise-grade security and management
 
-## Integration with Cline
-Cline provides native support for SambaNova's platform, enabling:
+## Integration with Cline provides native support for SambaNova's platform, enabling:
 - Seamless model deployment
 - Resource management
 - Performance monitoring
@@ -51,15 +50,13 @@ Cline provides native support for SambaNova's platform, enabling:
 
 ### Prerequisites
 - SambaNova Cloud account
-- Cline CLI installed
+- Cline CLInstalled
 - Python 3.8+
 
 ### Basic Usage
 ```python
 # Example: Running a model on SambaNova
-from cline import SambaNovaClient
-
-client = SambaNovaClient(api_key="your_api_key")
+from cline import SambaNovaClient = SambaNovaClient(api_key="your_api_key")
 model = client.load_model("llama2-7b")
 result = model.generate("Your prompt here")
 print(result)

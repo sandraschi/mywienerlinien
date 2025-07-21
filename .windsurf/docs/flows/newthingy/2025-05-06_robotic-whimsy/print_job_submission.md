@@ -1,7 +1,6 @@
 # 3D Print Job Submission
 
-## Purpose
-Enable users (or agentic flows) to submit requests for 3D printing placards, robot parts, or protest art for use in whimsical, meta interventions.
+## Purposenable users (or agentic flows) to submit requests for 3D printing placards, robot parts, or protest art for use in whimsical, meta interventions.
 
 ## API Design (Draft)
 - POST /api/3d_print

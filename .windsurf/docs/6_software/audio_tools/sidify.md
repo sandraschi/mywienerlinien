@@ -1,7 +1,7 @@
-# Sidify: Music Converter and DRM Removal Tool
+# Sidify: Musiconverter andRM Removal Tool
 
 ## Overview
-Sidify is a powerful audio conversion tool designed to convert music from various streaming platforms to multiple formats while maintaining high audio quality. It's particularly popular for converting DRM-protected music to DRM-free formats like MP3, AAC, FLAC, and WAV.
+Sidify is a powerful audio conversion tool designed to convert music from varioustreaming platforms to multiple formats while maintaining high audio quality. It's particularly popular for converting DRM-protected music to DRM-free formats like MP3, AAC, FLAC, and WAV.
 
 ## Key Features
 
@@ -39,7 +39,7 @@ Sidify.exe /S
 # Using Homebrew (cask)
 brew install --cask sidify-converter
 
-# Or download DMG from official site
+# Or downloadMG from official site
 hdiutil attach Sidify.dmg
 sudo cp -R "/Volumes/Sidify/Sidify.app" /Applications
 hdiutil detach /Volumes/Sidify
@@ -53,10 +53,10 @@ hdiutil detach /Volumes/Sidify
 
 ## Usage Guide
 
-### Basic Conversion
+### Basiconversion
 1. Launch Sidify
 2. Log in to your music streaming account (if required)
-3. Drag and drop tracks or paste URLs
+3. Drag androp tracks or paste URLs
 4. Select output format and quality
 5. Click "Convert"
 
@@ -64,7 +64,7 @@ hdiutil detach /Volumes/Sidify
 
 #### Windows CMD
 ```batch
-# Basic conversion
+# Basiconversion
 "C:\Program Files\Sidify\Sidify.exe" -i "C:\Music\input.m4a" -o "C:\Output" -f mp3 -q 320
 
 # Batch convert folder
@@ -76,7 +76,7 @@ for %%f in (C:\Music\*.m4a) do (
 #### PowerShell
 ```powershell
 # Convert single file
-& "C:\Program Files\Sidify\Sidify.exe" -i "C:\Music\song.m4a" -o "C:\Output" -f flac
+& "C:\Program Files\Sidify\Sidify.exe" -i "C:\Music\song.m4a" -o "C:\Output" -flac
 
 # Process all files in directory
 Get-ChildItem -Path "C:\Music" -Filter *.m4a | ForEach-Object {
@@ -97,14 +97,14 @@ find ~/Music -name "*.m4a" -exec /Applications/Sidify.app/Contents/MacOS/Sidify 
 
 #### Metadata Management
 ```batch
-# Set custom metadata
-Sidify.exe -i input.m4a -o output.mp3 --title "Song Title" --artist "Artist Name" --album "Album Name" --track 1 --year 2023 --genre "Pop"
+# Set custometadata
+Sidify.exe -input.m4a -output.mp3 --title "Song Title" --artist "Artist Name" --album "Album Name" --track 1 --year 2023 --genre "Pop"
 ```
 
 #### Output Naming
 ```batch
 # Custom output filename pattern
-Sidify.exe -i input.m4a -o "C:\Output\[artist] - [title]" -f mp3
+Sidify.exe -input.m4a -o "C:\Output\[artist] - [title]" -f mp3
 
 # Available placeholders:
 # [artist], [title], [album], [track], [year], [genre], [bitrate], [samplerate]
@@ -114,8 +114,8 @@ Sidify.exe -i input.m4a -o "C:\Output\[artist] - [title]" -f mp3
 
 ### 1. Music Tag Editors
 ```batch
-# Convert then tag with MusicBrainz Picard
-Sidify.exe -i input.m4a -o "temp.mp3"
+# Converthen tag with MusicBrainz Picard
+Sidify.exe -input.m4a -o "temp.mp3"
 picard "temp.mp3"
 ```
 
@@ -123,7 +123,7 @@ picard "temp.mp3"
 ```bash
 # Convert and add to Plex library
 for f in /path/to/input/*.m4a; do
-    /Applications/Sidify.app/Contents/MacOS/Sidify -i "$f" -o "/Volumes/Plex/Music/" -f flac
+    /Applications/Sidify.app/Contents/MacOS/Sidify -i "$f" -o "/Volumes/Plex/Music/" -flac
     # Update Plex library
     curl -X PUT "http://plex:32400/library/sections/1/refresh?X-Plex-Token=YOUR_TOKEN"
 done
@@ -150,10 +150,10 @@ $files | ForEach-Object -Parallel {
 ### 1. Account Security
 - Use app-specific passwords
 - Enable 2FA on streaming accounts
-- Store credentials securely
+- Store credentialsecurely
 
 ### 2. File Permissions
-- Run as standard user when possible
+- Run astandard user when possible
 - Set appropriate file permissions
 - Secure output directories
 
@@ -198,7 +198,7 @@ $files | ForEach-Object -Parallel {
 ### 1. File Organization
 ```batch
 # Organize by artist/album
-Sidify.exe -i input.m4a -o "C:\Music\[artist]\[album]\[track] - [title]" -f flac
+Sidify.exe -input.m4a -o "C:\Music\[artist]\[album]\[track] - [title]" -flac
 ```
 
 ### 2. Metadata Management

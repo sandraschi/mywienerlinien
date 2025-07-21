@@ -1,7 +1,7 @@
 # Immich: Self-Hosted Photo and Video Backup Solution
 
 ## Overview
-Immich is a high-performance, self-hosted photo and video backup solution that provides a Google Photos-like experience. It's designed to be fast, reliable, and privacy-focused, allowing you to maintain full control over your personal media.
+Immich is a high-performance, self-hosted photo and video backup solution that provides a Google Photos-likexperience. It's designed to be fast, reliable, and privacy-focused, allowing you to maintain full control over your personal media.
 
 ## Key Features
 
@@ -13,8 +13,8 @@ Immich is a high-performance, self-hosted photo and video backup solution that p
 - **Search**: Powerful search by date, location, people, and objects
 
 ### 2. Backup & Sync
-- **Mobile Apps**: Automatic backup from iOS and Android
-- **Web Upload**: Drag and drop from any browser
+- **Mobile Apps**: Automatic backup from iOS android
+- **Web Upload**: Drag androp from any browser
 - **CLI Tool**: For advanced users and automation
 - **Selective Sync**: Choose which albums to sync
 
@@ -28,7 +28,7 @@ Immich is a high-performance, self-hosted photo and video backup solution that p
 ### Core Components
 1. **Server**: Main application server (Node.js + NestJS)
 2. **Web**: React-based web interface
-3. **Mobile**: React Native apps for iOS and Android
+3. **Mobile**: React Native apps for iOS android
 4. **Microservices**:
    - Machine Learning (face/object recognition)
    - Reverse Proxy (Nginx)
@@ -46,7 +46,7 @@ Immich is a high-performance, self-hosted photo and video backup solution that p
 ## Installation
 
 ### Prerequisites
-- Docker and Docker Compose
+- Docker andocker Compose
 - At least 4GB RAM (8GB+ recommended)
 - 64-bit system
 
@@ -55,7 +55,7 @@ Immich is a high-performance, self-hosted photo and video backup solution that p
 # Create project directory
 mkdir immich && cd immich
 
-# Download docker-compose.yml
+# Downloadocker-compose.yml
 wget -O docker-compose.yml https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml
 
 # Create .env file
@@ -66,8 +66,7 @@ DB_USERNAME=postgres
 DB_PASSWORD=postgres
 DB_DATABASE_NAME=immich
 
-# Redis
-REDIS_HOSTNAME=immich_redis
+# Redis_HOSTNAME=immich_redis
 
 # Upload location (change as needed)
 UPLOAD_LOCATION=/usr/src/app/upload
@@ -110,12 +109,12 @@ services:
 
 #### Required
 - `UPLOAD_LOCATION`: Where to store uploaded files
-- `JWT_SECRET`: Secret for JWT token generation
+- `JWT_SECRET`: Secret for JWToken generation
 - `DB_*`: Database connection details
 - `REDIS_HOSTNAME`: Redis hostname
 
 #### Optional
-- `NODE_ENV`: Set to 'production' for production
+- `NODE_ENV`: Seto 'production' for production
 - `TYPESENSE_ENABLED`: Enable/disable search (default: true)
 - `MACHINE_LEARNING_ENABLED`: Enable/disable ML features
 - `THUMBNAIL_WIDTH`: Width of generated thumbnails (default: 250)
@@ -151,7 +150,7 @@ server {
 
 ### Mobile Apps
 1. Download from [GitHub Releases](https://github.com/immich-app/immich-mobile/releases)
-2. Connect to your server URL
+2. Connecto your server URL
 3. Enable auto-backup in settings
 
 ### CLI Tool
@@ -160,9 +159,9 @@ server {
 npm install -g @immich/cli
 
 # Login
-immich login --server http://your-server-address --api-key your-api-key
+immich login --server http://your-server-address --api-keyour-api-key
 
-# Upload directory
+# Uploadirectory
 immich upload /path/to/photos
 
 # View status
@@ -177,7 +176,7 @@ immich status
 docker exec immich_postgres pg_dump -U postgres immich > immich_backup_$(date +%Y%m%d).sql
 
 # Restore
-cat immich_backup.sql | docker exec -i immich_postgres psql -U postgres immich
+cat immich_backup.sql | docker exec -immich_postgres psql -U postgres immich
 ```
 
 ### 2. Media Backups
@@ -190,7 +189,7 @@ rsync -avz /path/to/immich/upload/ user@backup-server:/backup/immich/
 
 ### Updates
 ```bash
-# Pull latest images
+# Pullatest images
 docker-compose pull
 
 # Restart services
@@ -202,10 +201,10 @@ docker-compose run --rm immich_server npm run migration:run
 
 ### Cleanup
 ```bash
-# Remove unused Docker resources
+# Remove unusedockeresources
 docker system prune
 
-# Clean up old Docker images
+# Clean up oldocker images
 docker image prune -a
 ```
 
@@ -237,8 +236,8 @@ curl http://localhost:2283/api/server-info/statistics
 - 2FA (Two-Factor Authentication)
 
 ### Data Protection
-- Files stored with random UUIDs
-- Optional client-side encryption
+- Filestored with random UUIDs
+- Optional client-sidencryption
 - Role-based access control
 
 ## Performance Tuning
@@ -266,9 +265,9 @@ services:
 #### 1. Upload Failures
 - Check disk space
 - Verify file permissions
-- Increase client timeout settings
+- Increase clientimeout settings
 
-#### 2. Face Recognition Not Working
+#### 2. Face Recognitionot Working
 - Ensure MACHINE_LEARNING_ENABLED=true
 - Check GPU availability for ML processing
 - Verify sufficient system resources
@@ -281,8 +280,7 @@ services:
 ## API Documentation
 
 ### Authentication
-```http
-POST /auth/login
+```httpOST /auth/login
 Content-Type: application/json
 
 {
@@ -292,8 +290,7 @@ Content-Type: application/json
 ```
 
 ### Upload Asset
-```http
-POST /asset/upload
+```httpOST /asset/upload
 Authorization: Bearer YOUR_JWT_TOKEN
 Content-Type: multipart/form-data
 

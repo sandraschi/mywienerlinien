@@ -3,7 +3,7 @@ research: Windsurf Wave 8 Analytics, Scalability, and Enterprise Features :resea
 ## Advanced Analytics for Data-Driven Decision Making
 - **Updated Analytics Dashboard:** Provides insights on lines of code suggested/accepted, tool usage, and credit consumption.
 - **Granular Filtering:** Admins can drill down into specific metrics, giving a detailed view of team and subteam performance.
-- **AI Adoption Impact:** Analytics help enterprises measure the effectiveness of AI tools and identify areas for workflow improvement.
+- **AI Adoption Impact:** Analytics help enterprises measure theffectiveness of AI tools and identify areas for workflow improvement.
 - **Actionable Insights:** Enables organizations to refine processes, boost efficiency, and achieve better outcomes.
 
 ## Flexible Plans for Scalable Solutions

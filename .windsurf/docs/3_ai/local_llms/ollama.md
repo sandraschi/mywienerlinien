@@ -1,14 +1,14 @@
-# Ollama: Local LLM Management
+# Ollama: LocalLManagement
 
 ## Overview
-Ollama is a powerful tool for running large language models locally on your machine. It provides a simple way to download, run, and manage various open-source LLMs with minimal setup.
+Ollama is a powerful tool forunning large language models locally on your machine. It provides a simple way to download, run, and manage various open-source LLMs with minimal setup.
 
 ## Installation
 
 ### Windows
 ```powershell
 # Download and install
-curl -o ollama_installer.exe https://ollama.ai/download/OllamaSetup.exe
+curl -ollama_installer.exe https://ollama.ai/download/OllamaSetup.exe
 Start-Process -Wait -FilePath ".\ollama_installer.exe" -ArgumentList "/S"
 
 # Add to PATH if needed
@@ -18,11 +18,10 @@ $env:Path += ";$env:USERPROFILE\AppData\Local\Programs\Ollama"
 
 ### macOS
 ```bash
-# Install via Homebrew
-brew install ollama
+# Install via Homebrew install ollama
 
-# Start the service
-brew services start ollama
+# Starthe service
+brew servicestart ollama
 ```
 
 ### Linux
@@ -30,7 +29,7 @@ brew services start ollama
 # Install
 curl -fsSL https://ollama.com/install.sh | sh
 
-# Start the service
+# Starthe service
 sudo systemctl start ollama
 ```
 
@@ -42,10 +41,10 @@ sudo systemctl start ollama
 ollama list
 
 # Pull a model (e.g., Llama 3)
-ollama pull llama3
+ollama pullama3
 
 # Pull a specific version
-ollama pull llama3:8b-instruct-q4_0
+ollama pullama3:8b-instruct-q4_0
 ```
 
 ### Running Models
@@ -74,27 +73,27 @@ ollama cp llama3 my-llama3
 
 ## Advanced Usage
 
-### Custom Models with Modelfile
+### Customodels with Modelfile
 Create a `Modelfile`:
 ```dockerfile
 FROM llama3
 SYSTEM """
-You are a helpful AI assistant specialized in Windows system administration.
+You are a helpful AI assistant specialized in Windowsystem administration.
 You provide concise, accurate PowerShell commands and explanations.
 """
 PARAMETER num_ctx 4096
 PARAMETER temperature 0.7
 ```
 
-Then create the custom model:
+Then create the customodel:
 ```powershell
 ollama create my-admin -f Modelfile
 ```
 
 ### API Server
-Start the Ollama API server:
+Starthe OllamaPI server:
 ```powershell
-# Start the server
+# Starthe server
 ollama serve
 
 # In another terminal, make API calls
@@ -134,7 +133,7 @@ ollama run llama3
 ollama run llama3 --num_ctx 4096
 
 # Reduce memory usage with quantization
-ollama pull llama3:8b-instruct-q4_0  # 4-bit quantization
+ollama pullama3:8b-instruct-q4_0  # 4-bit quantization
 ```
 
 ## Common Issues
@@ -150,11 +149,10 @@ ollama run llama3 --num_ctx 2048
 
 ### Slow Performance
 ```powershell
-# Check GPU utilization
-nvidia-smi  # For NVIDIA GPUs
+# Check GPUtilizationvidia-smi  # For NVIDIA GPUs
 
 # Try a quantized model
-ollama pull llama3:8b-instruct-q4_0
+ollama pullama3:8b-instruct-q4_0
 ```
 
 ## Example Scripts
@@ -164,7 +162,7 @@ ollama pull llama3:8b-instruct-q4_0
 $prompts = @(
     "Explain quantum computing",
     "Write a haiku about AI",
-    "What is the capital of France?"
+    "What is the capital ofrance?"
 )
 
 foreach ($prompt in $prompts) {
@@ -184,12 +182,12 @@ cd ollama-webui
 # Install dependencies (requires Node.js)
 npm install
 
-# Start the web UI
+# Starthe web UI
 npm run dev
 ```
 
 ## Resources
 - [Official Documentation](https://github.com/ollama/ollama)
-- [Model Library](https://ollama.ai/library)
+- [Modelibrary](https://ollama.ai/library)
 - [API Reference](https://github.com/ollama/ollama/blob/main/docs/api.md)
 - [Community Models](https://ollama.ai/library?sort=popular)

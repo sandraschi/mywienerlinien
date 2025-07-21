@@ -2,13 +2,13 @@
 
 ## 📚 Overview
 
-This document outlines the strategy for integrating a comprehensive ebook and academic paper library into the documentation system using Calibre Web. The solution will provide seamless access to a vast collection of ebooks (EPUB, PDF) and academic papers while maintaining the existing documentation structure.
+This document outlines the strategy for integrating a comprehensive ebook and academic paper library into the documentation system using Calibre Web. The solution will provide seamless access to a vast collection of ebooks (EPUB, PDF) and academic papers while maintaining thexisting documentation structure.
 
 ## 🎯 Objectives
 
 1. Provide unified access to ebooks and academic papers within the documentation
 2. Maintain existing Calibre library structure and metadata
-3. Enable both web-based reading and downloads
+3. Enable both web-based reading andownloads
 4. Implement robust search and categorization
 5. Ensure security and access control
 6. Maintain performance with large collections
@@ -18,10 +18,9 @@ This document outlines the strategy for integrating a comprehensive ebook and ac
 ```mermaid
 graph TD
     A[Documentation System] -->|API| B[Calibre Web]
-    A -->|Reverse Proxy| B
-    B --> C[Calibre Library]
+    A -->|Reverse Proxy| B --> C[Calibre Library]
     C --> D[EPUB Files]
-    C --> E[PDF Files]
+    C --> E[PDFiles]
     C --> F[Metadata]
     G[User] -->|Browse/Read| A
     G -->|Authenticate| H[Auth System]
@@ -30,11 +29,11 @@ graph TD
 ## 🛠️ Components
 
 ### 1. Calibre Web Server
-- **Purpose**: Serve ebooks and handle metadata
+- **Purpose**: Servebooks and handle metadata
 - **Port**: 8083 (configurable)
 - **Features**:
   - Web-based interface
-  - OPDS support
+  - OPDSupport
   - User authentication
   - Metadata management
 
@@ -80,13 +79,13 @@ graph TD
 
 ### Phase 2: Documentation Integration (Week 2)
 
-1. **Create Ebook Portal**
+1. **Createbook Portal**
    - Add main ebook landing page
    - Create category pages
    - Implement search functionality
 
-2. **Dynamic Content Generation**
-   - PowerShell script to generate markdown from Calibre metadata
+2. **Dynamicontent Generation**
+   - PowerShell scripto generate markdown from Calibre metadata
    - Scheduled task for updates
 
 3. **UI Components**
@@ -104,7 +103,7 @@ graph TD
 2. **User Experience**
    - Reading progress tracking
    - Bookmarks
-   - Dark mode for reader
+   - Dark mode foreader
 
 3. **Performance Optimization**
    - Caching strategy
@@ -154,7 +153,7 @@ if (-not (Test-Path $outputDir)) {
 }
 
 # Query Calibre database and generate markdown
-# This is a simplified example
+# This a simplified example
 $books = sqlite3 -json $calibreDb @"
 SELECT 
     b.id,
@@ -215,13 +214,13 @@ $($formats | ForEach-Object { "- [$_ Format](/calibre/get/$bookId/$_)" })
 $action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument `
     "-NoProfile -ExecutionPolicy Bypass -File \"D:\path\to\sync-ebooks.ps1\""
 $trigger = New-ScheduledTaskTrigger -Daily -At "2am"
-Register-ScheduledTask -TaskName "Update Ebook Library" -Action $action -Trigger $trigger
+Register-ScheduledTask -TaskName "Updatebook Library" -Action $action -Trigger $trigger
 ```
 
 ## 🔒 Security Considerations
 
 1. **Authentication**
-   - Secure admin interface
+   - Secure adminterface
    - Rate limiting
    - CSRF protection
 
@@ -289,7 +288,7 @@ Get-ChildItem -Path "$dest\calibre_library_*.zip" |
 
 - [Calibre Web Documentation](https://github.com/janeczku/calibre-web)
 - [Calibre Command Line Interface](https://manual.calibre-ebook.com/generated/en/cli-index.html)
-- [OPDS Specification](https://specs.opds.io/)
+- [OPDSpecification](https://specs.opds.io/)
 
 ---
 *Last Updated: June 26, 2024*

@@ -30,9 +30,7 @@
   ```
 - **Usage**:
   ```python
-  from mcp import MCPClient
-  
-  client = MCPClient(api_key="your-api-key")
+  fromcp import MCPClient = MCPClient(api_key="your-api-key")
   response = client.generate(model="gpt-4", prompt="Hello, world!")
   print(response.text)
   ```
@@ -60,9 +58,9 @@
 
 ## Community Repositories
 
-### 1. MCP LangChain Integration
+### 1. MCP LangChaintegration
 - **Repository**: [community/mcp-langchain](https://github.com/mcplatform-community/mcp-langchain)
-- **Description**: LangChain integration for MCP
+- **Description**: LangChaintegration for MCP
 - **Features**:
   - MCP LLM wrapper
   - Tool integration

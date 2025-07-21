@@ -1,4 +1,4 @@
-# Node.js Development Tools
+# Node.js Developmentools
 
 ## Overview
 Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It allows developers to run JavaScript on the server-side and build scalable network applications.
@@ -10,8 +10,7 @@ Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It allow
 2. Run the installer and follow the prompts
 3. Verify installation:
    ```powershell
-   node --version
-   npm --version
+   node --versionpm --version
    ```
 
 ### macOS/Linux
@@ -28,7 +27,7 @@ sudo apt-get install -y nodejs
 
 ## npm (Node Package Manager)
 
-### Basic Commands
+### Basicommands
 ```bash
 # Initialize a new project
 npm init
@@ -62,7 +61,7 @@ Key fields:
 - `dependencies`: Production dependencies
 - `devDependencies`: Development dependencies
 
-## npx (Node Package Execute)
+## npx (Node Packagexecute)
 
 ### Usage
 ```bash
@@ -72,7 +71,7 @@ npx package-name
 # Execute local binaries
 npx local-package
 
-# Run a specific command
+# Run a specificommand
 npx -p @angular/cli ng new my-app
 ```
 
@@ -89,7 +88,7 @@ python -m ensurepip --upgrade
 python3 -m ensurepip --upgrade
 ```
 
-#### Basic Commands
+#### Basicommands
 ```bash
 # Install a package
 pip install package-name
@@ -98,7 +97,7 @@ pip install package-name
 pip install package-name==1.0.0
 
 # Install from requirements.txt
-pip install -r requirements.txt
+pip install -requirements.txt
 
 # List installed packages
 pip list
@@ -114,20 +113,19 @@ pip freeze > requirements.txt
 # Using pipx (recommended)
 pipx install uv
 
-# Or using pip
-pip install uv
+# Or using pip install uv
 ```
 
-#### Basic Commands
+#### Basicommands
 ```bash
 # Install packages
 uv pip install package-name
 
 # Install with requirements
-uv pip install -r requirements.txt
+uv pip install -requirements.txt
 
 # Create virtual environment
-uv venv
+uvenv
 
 # Run Python in virtual environment
 uv run python script.py

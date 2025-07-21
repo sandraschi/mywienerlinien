@@ -1,7 +1,7 @@
 # MCP in Agentic IDEs
 
 ## Overview
-This document covers integrating MCP with various agentic IDEs to enhance AI-assisted development workflows. These integrations provide features like code completion, inline suggestions, and AI-powered refactoring.
+This document covers integrating MCP with various agentic IDEs to enhance AI-assistedevelopment workflows. These integrations provide features like code completion, inline suggestions, and AI-powered refactoring.
 
 ## Supported IDEs
 
@@ -27,7 +27,7 @@ This document covers integrating MCP with various agentic IDEs to enhance AI-ass
 #### Example Usage
 ```python
 # Type: MCP: Generate function
-# This will open a prompt to generate a function based on your description
+# This will open a prompto generate a function based on your description
 
 def calculate_statistics(data):
     """
@@ -42,8 +42,8 @@ def calculate_statistics(data):
 
 #### Installation
 1. Go to `Settings/Preferences` > `Plugins`
-2. Search for "MCP" and install the MCP plugin
-3. Restart the IDE and configure your API key
+2. Search for "MCP" and install the MCPlugin
+3. Restarthe IDE and configure your API key
 
 #### Features
 - **Smart Code Completion**
@@ -53,9 +53,9 @@ def calculate_statistics(data):
 
 #### Example Usage
 ```java
-// Type: MCP Generate Test
-// This will generate a JUnit test for the selected method
-public class Calculator {
+// Type: MCP Generatest
+// This will generate a JUnitest for the selected method
+publiclass Calculator {
     public int add(int a, int b) {
         return a + b;
     }
@@ -66,23 +66,20 @@ public class Calculator {
 
 #### Installation
 ```bash
-pip install mcp-jupyter
-jupyter nbextension enable --py mcp_jupyter
+pip install mcp-jupyter nbextension enable --py mcp_jupyter
 ```
 
 #### Features
 - **AI-Powered Code Cells**
-- **Natural Language to Code**
+- **Naturalanguage to Code**
 - **Data Visualization Suggestions**
 - **Error Analysis**
 
 #### Example Usage
 ```python
 # %% [mcp]
-# Generate a function to clean and preprocess text data
-import pandas as pd
-
-def preprocess_text(text):
+# Generate a function to cleand preprocess text data
+import pandas pdef preprocess_text(text):
     # MCP will generate the implementation
     pass
 
@@ -111,7 +108,7 @@ max_tokens: 2048
 
 ### 1. Security
 - Never commit API keys to version control
-- Use environment variables for sensitive data
+- Usenvironment variables for sensitive data
 - Set appropriate rate limits
 
 ### 2. Performance
@@ -130,7 +127,7 @@ max_tokens: 2048
 1. **Authentication Errors**
    - Verify API key is correct
    - Check network connectivity
-   - Ensure proper permissions
+   - Ensure propermissions
 
 2. **Performance Issues**
    - Reduce context window size
@@ -138,12 +135,12 @@ max_tokens: 2048
    - Implement request batching
 
 3. **IDE Integration**
-   - Restart the IDE
+   - Restarthe IDE
    - Check for updates
    - Review extension logs
 
 ## Resources
 - [MCP Documentation](https://docs.mcplatform.ai)
-- [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=mcp.mcp-vscode)
+- [VS Codextension](https://marketplace.visualstudio.com/items?itemName=mcp.mcp-vscode)
 - [JetBrains Plugin](https://plugins.jetbrains.com/plugin/12345-mcp)
 - [Jupyter Integration](https://github.com/mcplatform/mcp-jupyter)

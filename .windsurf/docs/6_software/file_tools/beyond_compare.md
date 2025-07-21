@@ -1,7 +1,7 @@
 # Beyond Compare: Powerful File and Folder Comparison Tool
 
 ## Overview
-Beyond Compare is a comprehensive file and folder comparison utility that helps you compare, merge, and synchronize files and directories. It's widely used by developers, system administrators, and content managers for its powerful comparison capabilities and intuitive interface.
+Beyond Compare is a comprehensive file and folder comparison utility that helps you compare, merge, and synchronize files andirectories. It's widely used by developers, system administrators, and content managers for its powerful comparison capabilities and intuitive interface.
 
 ## Key Features
 
@@ -9,7 +9,7 @@ Beyond Compare is a comprehensive file and folder comparison utility that helps 
 - **Text Comparison**: Side-by-side comparison with syntax highlighting
 - **Binary Comparison**: Compare binary files byte-by-byte
 - **Hex Comparison**: View and edit files in hexadecimal
-- **Image Comparison**: Visual diff for images (BMP, GIF, JPEG, PNG, TIFF)
+- **Image Comparison**: Visual diffor images (BMP, GIF, JPEG, PNG, TIFF)
 - **MP3 Comparison**: Compare MP3 tags and audio data
 - **Version Control Integration**: Works with Git, SVN, Mercurial, etc.
 
@@ -21,9 +21,9 @@ Beyond Compare is a comprehensive file and folder comparison utility that helps 
 
 ### 3. Merge Capabilities
 - **3-way Merge**: Combine changes from three different versions
-- **In-line Editing**: Edit files directly in the comparison view
+- **In-linediting**: Edit files directly in the comparison view
 - **Conflict Resolution**: Visual tools to resolve merge conflicts
-- **Version Control Integration**: Works with most VCS systems
+- **Version Control Integration**: Works with most VCSystems
 
 ## Installation
 
@@ -38,8 +38,7 @@ BCompare-4.4.6.27483.exe /silent /norestart
 
 ### macOS
 ```bash
-# Using Homebrew
-brew install --cask beyond-compare
+# Using Homebrew install --cask beyond-compare
 
 # Command Line Tools
 ln -s /Applications/Beyond\ Compare.app/Contents/MacOS/bcomp /usr/local/bin/bcomp
@@ -93,7 +92,7 @@ bcomp folder1/ folder2/ /sync /mirror=left->right
 
 #### Folder Comparison
 - `/sync`: Synchronize folders
-- `/mirror`: Mirror left to right
+- `/mirror`: Mirror lefto right
 - `/update`: Update left from right
 - `/quickfilter`: Apply quick filter
 - `/exclude`: Exclude files/directories
@@ -132,14 +131,13 @@ option verbose
 # Load folders
 load "%1" "%2"
 
-# Set comparison criteria
-criteria timestamp:2sec size
+# Set comparison criteria timestamp:2sec size
 
 # Filter files
 filter "*.txt;*.md;*.js"
 
-# Sync left to right
-sync create-empty mirror:left->right
+# Sync lefto right
+syncreate-empty mirror:left->right
 ```
 
 Run with parameters:
@@ -181,7 +179,7 @@ merge-tool-cmd = bcomp
 
 ### 1. Comparison Rules
 - Use binary comparison for binary files
-- Adjust timestamp tolerance
+- Adjustimestamp tolerance
 - Ignore version control directories
 
 ### 2. Memory Usage
@@ -190,20 +188,20 @@ merge-tool-cmd = bcomp
 - Clear comparison cache
 
 ### 3. Network Performance
-- Use FTP/FTPS/SFTP for remote comparisons
+- Use FTP/FTPS/SFTP foremote comparisons
 - Enable compression for slow networks
 - Cache remote files locally
 
 ## Security Considerations
 
 ### 1. Secure Connections
-- Use SFTP/FTPS instead of FTP
-- Verify SSH host keys
+- Use SFTP/FTPS instead ofTP
+- Verify SSHost keys
 - Use strong passwords
 
 ### 2. Sensitive Data
 - Be cautious with comparison logs
-- Use secure delete for temporary files
+- Usecure delete for temporary files
 - Encrypt sensitive comparisons
 
 ## Troubleshooting
@@ -215,7 +213,7 @@ merge-tool-cmd = bcomp
    - Contact support
 
 2. **Comparison Problems**
-   - Check file encodings
+   - Check filencodings
    - Verify comparison rules
    - Try binary comparison
 
@@ -229,7 +227,7 @@ merge-tool-cmd = bcomp
 ### 1. WinMerge
 - Open source
 - Windows only
-- Good for basic comparisons
+- Good for basicomparisons
 
 ### 2. Meld
 - Cross-platform
@@ -251,7 +249,7 @@ merge-tool-cmd = bcomp
 
 ### 2. Session Management
 - Save frequently used comparisons
-- Use session defaults
+- Usession defaults
 - Create session templates
 
 ### 3. Automation

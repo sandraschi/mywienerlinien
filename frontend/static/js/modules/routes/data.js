@@ -5,13 +5,13 @@
 import { CONFIG } from '../../config.js';
 import { ROUTE_TYPES } from '../../constants.js';
 import { logger } from '../utils/logger.js';
-import { fetchWithTimeout } from '../utils/api.js';
+import loadRoutesFromMarkdown from './markdownLoader.js';
 
 // Cache for route data
 let routesCache = null;
 
 /**
- * Load routes data from the API or cache
+ * Load routes data from markdown files or cache
  * @returns {Promise<Array>} Array of route objects
  */
 export async function loadRoutesData() {
@@ -22,34 +22,37 @@ export async function loadRoutesData() {
             return routesCache;
         }
         
-        logger.info('Loading routes data...');
+        logger.info('Loading routes data from markdown...');
         
-        // Fetch routes from the API
-        const response = await fetchWithTimeout(`${CONFIG.API.BASE_URL}${CONFIG.API.ENDPOINTS.ROUTES}`);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        let routes = await response.json();
+        // Load routes from markdown files
+        let routes = await loadRoutesFromMarkdown();
         
         // Process and normalize route data
-        routes = routes.map(route => ({
-            ...route,
-            // Ensure type is lowercase and valid
-            type: normalizeRouteType(route.type),
-            // Ensure color has a default based on type
-            color: route.color || getDefaultColor(route.type)
-        }));
+        routes = routes.map(route => {
+            const normalizedRoute = {
+                ...route,
+                // Ensure type is lowercase and valid
+                type: normalizeRouteType(route.type || ''),
+                // Ensure color has a default based on type
+                color: route.color || getDefaultColor(route.type || ''),
+                // Ensure coordinates is an array
+                coordinates: route.coordinates || [],
+                // Ensure stops is an array
+                stops: route.stops || []
+            };
+            
+            logger.debug(`Processed route: ${route.id} (${route.name}), type: ${normalizedRoute.type}, stops: ${normalizedRoute.stops.length}`);
+            return normalizedRoute;
+        });
         
         // Cache the processed routes
         routesCache = routes;
         
-        logger.info(`Loaded ${routes.length} routes`);
+        logger.info(`Loaded ${routes.length} routes from markdown`);
         return routes;
         
     } catch (error) {
-        logger.error('Failed to load routes data:', error);
+        logger.error('Failed to load routes data from markdown:', error);
         throw error;
     }
 }

@@ -1,6 +1,6 @@
 # Example: AI-Driven Color Matching with External Tools
 
-This script integrates DaVinci Resolve’s Python API with an external AI color analysis tool to ensure consistent grading across clips.
+Thiscript integrates DaVinci Resolve’s Python API with an external AI color analysis tool to ensure consistent grading across clips.
 
 ```python
 import DaVinciResolveScript as dvr

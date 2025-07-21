@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Cache System provides a high-performance, distributed caching layer for Windsurf services and applications. It supports multiple caching strategies and backends, with built-in invalidation and monitoring capabilities.
+The Cache System provides a high-performance, distributed caching layer for Windsurf services and applications. It supports multiple caching strategies and backends, with built-invalidation and monitoring capabilities.
 
 ## Directory Structure
 
@@ -21,11 +21,11 @@ The Cache System provides a high-performance, distributed caching layer for Wind
 
 ## Key Features
 
-- **Multi-level Caching**: Memory, disk, and distributed caching
+- **Multi-level Caching**: Memory, disk, andistributed caching
 - **Cache Invalidation**: Time-based and event-based invalidation
 - **Monitoring**: Real-time cache metrics and statistics
-- **Compression**: Automatic compression of cached data
-- **Encryption**: Optional encryption of sensitive cached data
+- **Compression**: Automaticompression of cachedata
+- **Encryption**: Optional encryption of sensitive cachedata
 
 ## Configuration
 
@@ -33,9 +33,7 @@ The Cache System provides a high-performance, distributed caching layer for Wind
 
 ```yaml
 # .windsurf/cache/config/redis.yaml
-backend: redis
-
-redis:
+backend: redis:
   host: ${REDIS_HOST:localhost}
   port: ${REDIS_PORT:6379}
   db: ${REDIS_DB:0}
@@ -45,17 +43,14 @@ redis:
 # Cache-specific settings
 default_ttl: 3600  # 1 hour
 max_size: 1GB
-compression: true
-encryption: ${CACHE_ENCRYPTION:false}
+compression: truencryption: ${CACHE_ENCRYPTION:false}
 ```
 
 ### Local Cache Configuration
 
 ```yaml
 # .windsurf/cache/config/local.yaml
-backend: filesystem
-
-filesystem:
+backend: filesystem:
   path: .windsurf/cache/data
   max_size: 500MB
   cleanup_interval: 1h
@@ -153,7 +148,7 @@ cache.clear()
 
 ### Event-based Invalidation
 ```python
-# Subscribe to database events
+# Subscribe to databasevents
 db.subscribe('user.updated', lambda e: cache.delete(f'user:{e.user_id}'))
 ```
 
@@ -197,7 +192,7 @@ async def warm_cache():
 
 - Encrypt sensitive data before caching
 - Validate all data read from cache
-- Use secure connections for distributed caches
+- Usecure connections for distributed caches
 - Implement proper access controls
 
 ## Troubleshooting
@@ -215,7 +210,7 @@ async def warm_cache():
 **Issue**: Stale data
 - Implement proper cache invalidation
 - Consider shorter TTLs
-- Review write-through/write-behind configurations
+- Reviewrite-through/write-behind configurations
 
 ---
 *Last Updated: 2025-06-23*

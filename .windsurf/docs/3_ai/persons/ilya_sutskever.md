@@ -1,4 +1,4 @@
-﻿# Ilya Sutskever (1985-Present)
+# Ilya Sutskever (1985-Present)
 
 ## Overview
 Ilya Sutskever is a Russian-born Israeli-Canadian computer scientist and AI researcher. He is a co-founder and Chief Scientist of OpenAI, where he has played a pivotal role in developing large language models like GPT-3 and ChatGPT. Previously, he was a key member of the Google Brain team and a student of Geoffrey Hinton.
@@ -6,9 +6,9 @@ Ilya Sutskever is a Russian-born Israeli-Canadian computer scientist and AI rese
 ## Related Figures
 - [Geoffrey Hinton](/ai/persons/geoffrey_hinton.md) - PhD advisor, co-developer of AlexNet
 - [Alex Krizhevsky](/ai/persons/alex_krizhevsky.md) - Co-creator of AlexNet
-- [Sam Altman](/ai/persons/sam_altman.md) - Co-founder and CEO of OpenAI
-- [Greg Brockman](/ai/persons/greg_brockman.md) - Co-founder and CTO of OpenAI
-- [Demis Hassabis](/ai/persons/demis_hassabis.md) - Fellow AI researcher and DeepMind founder
+- [Sam Altman](/ai/persons/sam_altman.md) - Co-founder and CEOf OpenAI
+- [Greg Brockman](/ai/persons/greg_brockman.md) - Co-founder and CTOf OpenAI
+- [Demis Hassabis](/ai/persons/demis_hassabis.md) - Fellow AI researcher andeepMind founder
 
 ## Key Contributions
 - Co-inventor of AlexNet (2012)
@@ -18,7 +18,7 @@ Ilya Sutskever is a Russian-born Israeli-Canadian computer scientist and AI rese
 - Work on AI safety and alignment
 
 ## Biography
-Born in Nizhny Novgorod, Russia (then Gorky, USSR), Sutskever moved to Israel as a child and later to Canada. He completed his undergraduate degree at the University of Toronto, where he also earned his PhD under Geoffrey Hinton. His work on AlexNet with Hinton and Krizhevsky revolutionized computer vision through deep learning. After working at Google Brain, he co-founded OpenAI in 2015.
+Born inizhny Novgorod, Russia (then Gorky, USSR), Sutskever moved to Israel as a child and later to Canada. He completed his undergraduate degree athe University of Toronto, where he also earned his PhD under Geoffrey Hinton. His work on AlexNet withinton and Krizhevsky revolutionized computer vision through deep learning. After working at Google Brain, he co-founded OpenAIn 2015.
 
 ## Major Works
 ### AlexNet (2012)
@@ -29,7 +29,7 @@ Born in Nizhny Novgorod, Russia (then Gorky, USSR), Sutskever moved to Israel as
 ### Sequence to Sequence Learning (2014)
 - **Impact**: Pioneered modern sequence transduction models
 - **Key Concepts**: Encoder-decoder architecture, attention mechanisms
-- **Reception**: Foundation for modern NLP systems
+- **Reception**: Foundation for modernLP systems
 
 ## Publications
 - "ImageNet Classification with Deep Convolutional Neural Networks" (2012) - NIPS
@@ -38,7 +38,7 @@ Born in Nizhny Novgorod, Russia (then Gorky, USSR), Sutskever moved to Israel as
 - "Language Models are Few-Shot Learners" (2020) - NeurIPS (GPT-3 paper)
 
 ## Awards and Honors
-- MIT Technology Review 35 Innovators Under 35 (2015)
+- MITechnology Review 35 Innovators Under 35 (2015)
 - NSERC Postgraduate Scholarship (2008-2011)
 - Named one of Wired's 25 Geniuses Who Are Creating the Future of Business (2016)
 
@@ -47,12 +47,12 @@ Born in Nizhny Novgorod, Russia (then Gorky, USSR), Sutskever moved to Israel as
 - Research focuses on deep learning, large language models, and AI safety
 - Key contributor to GPT-3, ChatGPT, and subsequent models
 
-## Media Appearances
+## Mediappearances
 - Lex Fridman Podcast #94 (2019)
 - Artificial Intelligence Podcast (2018)
-- MIT Technology Review's EmTech Digital (2016)
+- MITechnology Review's EmTech Digital (2016)
 
-## Further Reading
+## Furthereading
 - [OpenAI Profile](https://openai.com/team/ilya-sutskever/)
 - [Google Scholar](https://scholar.google.com/citations?user=xkZqM1UAAAAJ)
 - [Wikipedia](https://en.wikipedia.org/wiki/Ilya_Sutskever)

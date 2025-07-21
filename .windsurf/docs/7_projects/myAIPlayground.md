@@ -1,22 +1,22 @@
 # myAIPlayground
 
 ## Overview
-An interactive playground for experimenting with various AI/ML models, including language models, image generation, and other machine learning applications. Designed for both learning and practical experimentation.
+An interactive playground for experimenting with various AI/ML models, including language models, imageneration, and other machine learning applications. Designed for both learning and practical experimentation.
 
 ## Key Features
 - **Model Zoo**: Collection of pre-trained models (GPT, Stable Diffusion, etc.)
 - **Notebook Interface**: Jupyter-style interface with code cells
 - **Visual Tools**: Model visualization and result interpretation
 - **Dataset Management**: Tools for loading and preprocessing datasets
-- **Experiment Tracking**: Track and compare different model runs
-- **Deployment**: Easy export to API endpoints
+- **Experimentracking**: Track and compare different model runs
+- **Deployment**: Easy exporto API endpoints
 
 ## Supported Models
 - **Language Models**: GPT-3.5, LLaMA, Mistral
-- **Image Generation**: Stable Diffusion, DALL-E
+- **Imageneration**: Stable Diffusion, DALL-E
 - **Computer Vision**: YOLO, CLIP
 - **Embeddings**: OpenAI, Sentence Transformers
-- **Custom Models**: Bring your own PyTorch/TensorFlow models
+- **Customodels**: Bring your own PyTorch/TensorFlow models
 
 ## Technical Stack
 - **Core**: Python 3.10+

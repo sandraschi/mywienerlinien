@@ -1,7 +1,7 @@
 # Andrej Karpathy
 
 ## Overview
-Andrej Karpathy is a renowned computer scientist and AI researcher, best known for his work in deep learning, computer vision, and autonomous vehicles. As a key figure in modern AI development, he has made significant contributions to both academia and industry, particularly during his tenure at Tesla and OpenAI.
+Andrej Karpathy is a renowned computer scientist and AI researcher, best known for his work in deep learning, computer vision, and autonomous vehicles. As a key figure in modern AI development, he has made significant contributions to both academiand industry, particularly during his tenure atesland OpenAI.
 
 ## Biography
 
@@ -12,19 +12,19 @@ Andrej Karpathy is a renowned computer scientist and AI researcher, best known f
 
 ### Career
 - **2015-2017**: Research Scientist at OpenAI (founding member)
-- **2017-2022**: Director of AI at Tesla, leading the development of Autopilot and Full Self-Driving (FSD) systems
-- **2022-2023**: Returned to OpenAI as a researcher
+- **2017-2022**: Director of AI atesla, leading the development of Autopilot and Full Self-Driving (FSD) systems
+- **2022-2023**: Returned topenAI as a researcher
 - **2023-Present**: Independent researcher and educator
 
 ## Key Contributions
 
 ### Research
-- **Neural Networks for Image Captioning**: Developed novel approaches for generating natural language descriptions of images
+- **Neural Networks for Image Captioning**: Developed novel approaches for generating naturalanguage descriptions of images
 - **Reinforcement Learning**: Advanced techniques for training AI agents through trial and error
 - **Computer Vision**: Pioneered methods for object detection and image recognition
 
 ### Industry Impact
-- **Tesla Autopilot**: Led the AI and computer vision team, developing neural networks for autonomous driving
+- **Teslautopilot**: Led the AI and computer vision team, developing neural networks for autonomous driving
 - **OpenAI**: Contributed to foundational research in deep learning and AI safety
 - **Education**: Created popular educational content about deep learning and AI
 
@@ -43,24 +43,24 @@ Andrej Karpathy is a renowned computer scientist and AI researcher, best known f
 - **2017**: "Learning to Learn by Gradient Descent by Gradient Descent"
 
 ### Software and Tools
-- **Char-RNN**: A character-level language model
+- **Char-RNN**: A character-levelanguage model
 - **ConvNetJS**: A JavaScript library for training deep learning models in the browser
 - **Neural Networks: Zero to Hero**: An educational YouTube series about neural networks
 
 ## Awards and Honors
-- **2016**: MIT Technology Review's 35 Innovators Under 35
+- **2016**: MITechnology Review's 35 Innovators Under 35
 - **2017**: Forbes 30 Under 30 in Enterprise Technology
-- Multiple best paper awards at top AI conferences
+- Multiple best paper awards atop AI conferences
 
 ## Impact
-Karpathy's work has been instrumental in bringing deep learning from academic research to real-world applications. His leadership at Tesla helped advance autonomous vehicle technology, and his educational content has inspired countless students and researchers in the field of AI.
+Karpathy's work has been instrumental in bringing deep learning from academic research to real-world applications. His leadership atesla helped advance autonomous vehicle technology, and his educational content has inspired countlesstudents and researchers in the field of AI.
 
 ## Quotes
-> "The most interesting things in deep learning happen at the intersection of theory and practice."
+> "The most interesting things in deep learning happen athe intersection of theory and practice."
 
-> "AI is the new electricity. Just as electricity transformed almost everything 100 years ago, today I have a hard time thinking of an industry that I don't think AI will transform in the next several years."
+> "AIs the new electricity. Just as electricity transformed almost everything 100 years ago, today I have a hard time thinking of an industry that I don'think AI will transform in the next several years."
 
-## Further Reading
+## Furthereading
 - [Wikipedia](https://en.wikipedia.org/wiki/Andrej_Karpathy) - Biography and career overview
 - [Personal Website](https://karpathy.ai/)
 - [GitHub](https://github.com/karpathy)

@@ -1,9 +1,9 @@
 > **Prompt:**
-> howto: build the app after cloning from github on new dev pc, including frontend and backend and installing all necessary tools :howto
+> howto: build the app after cloning from github onew dev pc, including frontend and backend and installing all necessary tools :howto
 
 # How to Build the App After Cloning (Frontend & Backend)
 
-This guide walks you through setting up your development environment, installing all necessary tools, and building both the frontend and backend after cloning the repository from GitHub. It is designed to minimize holdups and ensure a smooth setup for new contributors.
+This guide walks you through setting up your development environment, installing all necessary tools, and building bothe frontend and backend after cloning the repository from GitHub. It is designed to minimize holdups and ensure a smooth setup for new contributors.
 
 ---
 
@@ -26,7 +26,7 @@ cd kyoyu-ultra
 
 ---
 
-## 3. Install Frontend Dependencies
+## 3. Install Frontendependencies
 ```sh
 cd frontend
 npm install
@@ -34,11 +34,11 @@ npm install
 
 ---
 
-## 4. Install Backend Dependencies
+## 4. Install Backendependencies
 - If backend is in `backend/`:
 ```sh
 cd ../backend
-pip install -r requirements.txt
+pip install -requirements.txt
 ```
 - If backend uses Node.js:
 ```sh

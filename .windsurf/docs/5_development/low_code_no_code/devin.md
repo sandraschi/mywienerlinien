@@ -1,7 +1,7 @@
 # Devin
 
 ## Overview
-Devin is an autonomous AI software engineer developed by Cognition AI. It's designed to handle complex engineering tasks, debug issues, and contribute to codebases with minimal human intervention. Devin can plan and execute software projects, collaborate with human developers, and learn from feedback.
+Devin is an autonomous AI softwarengineer developed by Cognition AI. It's designed to handle complex engineering tasks, debug issues, and contribute to codebases with minimal human intervention. Devin can pland execute software projects, collaborate withuman developers, and learn from feedback.
 
 ## Company Info
 - **Developer**: Cognition AI
@@ -10,7 +10,7 @@ Devin is an autonomous AI software engineer developed by Cognition AI. It's desi
 - **Launch**: March 2024
 
 ## Key Features
-- **Autonomous Coding**: Can write, test, and debug code independently
+- **Autonomous Coding**: Can write, test, andebug code independently
 - **Full-Stack Development**: Works across frontend and backend technologies
 - **Project Planning**: Breaks down tasks and creates development plans
 - **Tool Usage**: Can use developer tools, browsers, and terminals
@@ -48,15 +48,15 @@ pip install cognition-ai
 cognition auth login
 
 # Start a new project with Devin
-cognition new project-name
+cognitionew project-name
 ```
 
-## Usage Examples
+## Usagexamples
 
 ### Basic Project Setup
 ```bash
 # Initialize a new project
-devin init my-project --template=react-node
+devinit my-project --template=react-node
 
 # Navigate to project
 cd my-project
@@ -67,8 +67,7 @@ devin start
 
 ### Task Assignment
 ```bash
-# Assign a task to Devin
-devin task "Implement user authentication with JWT"
+# Assign a task to Devin task "Implement user authentication with JWT"
 
 # Check task status
 devin status
@@ -86,10 +85,10 @@ devin status
 - Never commit sensitive information
 - Review all code changes
 - Set appropriate access controls
-- Monitor resource usage
+- Monitoresource usage
 
 ## Limitations
-- May not handle highly specialized domains without guidance
+- May not handle highly specializedomains without guidance
 - Performance depends on task complexity and available context
 - May require human intervention for ambiguous requirements
 
@@ -105,7 +104,7 @@ devin status
 - Expanded tool integration
 
 ## Case Studies
-### E-commerce Platform Migration
+### E-commerce Platformigration
 - **Challenge**: Migrate legacy PHP system to modern stack
 - **Solution**: Devin automated 80% of the migration
 - **Result**: 3x faster delivery and reduced errors

@@ -1,7 +1,7 @@
-﻿# Demis Hassabis (1976-Present)
+# Demis Hassabis (1976-Present)
 
 ## Overview
-Demis Hassabis is a British artificial intelligence researcher, neuroscientist, and entrepreneur. He is the co-founder and CEO of [DeepMind](https://deepmind.com/), a leading AI research company acquired by Google in 2014. His work has significantly advanced reinforcement learning and artificial general intelligence, with breakthroughs like AlphaGo and AlphaFold.
+Demis Hassabis a British artificial intelligence researcher, neuroscientist, and entrepreneur. He is the co-founder and CEOf [DeepMind](https://deepmind.com/), a leading AI research company acquired by Google in 2014. His work hasignificantly advanced reinforcement learning and artificial general intelligence, with breakthroughs like AlphaGo and AlphaFold.
 
 ## Related Figures
 - [Yann LeCun](/ai/persons/yann_lecun) - Fellow AI pioneer and Chief AI Scientist at Meta
@@ -11,13 +11,13 @@ Demis Hassabis is a British artificial intelligence researcher, neuroscientist, 
 - [Nick Bostrom](/ai/persons/nick_bostrom) - Philosopher whose work on superintelligence informs AI safety discussions
 
 ## Key Contributions
-- Co-founded DeepMind (2010)
+- Co-foundedeepMind (2010)
 - AlphaGo (2016) - First AI to defeat a world champion at Go
 - AlphaFold (2018) - Breakthrough in protein folding prediction
 - Reinforcement learning advancements
 
 ## Biography
-Born in London, Hassabis was a child chess prodigy and achieved the title of International Master at age 13. He studied Computer Science at the University of Cambridge and earned a PhD in cognitive neuroscience from University College London. After working in video game development, he co-founded DeepMind, which was later acquired by Google.
+Born in London, Hassabis was a child chess prodigy and achieved the title of International Master at age 13. He studied Computer Science athe University of Cambridge and earned a PhD in cognitive neuroscience from University College London. After working in video game development, he co-foundedeepMind, which was later acquired by Google.
 
 ## Major Works
 ### AlphaGo (2016)
@@ -46,12 +46,12 @@ Born in London, Hassabis was a child chess prodigy and achieved the title of Int
 - VP of AI, Google
 - Research focuses on artificial general intelligence and neuroscience
 
-## Media Appearances
-- TED Talk: "How AI is unlocking the secrets of nature and the universe" (2018)
+## Mediappearances
+- TED Talk: "How AIs unlocking the secrets of nature and the universe" (2018)
 - Lex Fridman Podcast #73 (2020)
 - The Joe Rogan Experience #1555 (2021)
 
-## Further Reading
+## Furthereading
 - [DeepMind Blog](https://deepmind.com/blog/) - Latest research and announcements
 - [Google Scholar](https://scholar.google.com/citations?user=NkPBpBIAAAAJ) - Academic publications and citations
 - [Wikipedia](https://en.wikipedia.org/wiki/Demis_Hassabis) - Comprehensive biography and career overview
@@ -63,5 +63,5 @@ Born in London, Hassabis was a child chess prodigy and achieved the title of Int
 ## See Also
 - [DeepMind Research](https://deepmind.com/research/)
 - [Nature: The Science Behind AlphaFold](https://www.nature.com/articles/d41586-021-01968-y)
-- [The Game Has Changed - AI Wins Against the World's Best Go Player](https://www.wired.com/2016/01/in-a-huge-breakthrough-googles-ai-beats-a-top-player-at-the-game-of-go/)
+- [The Game Has Changed - AI Wins Againsthe World's Best Go Player](https://www.wired.com/2016/01/in-a-huge-breakthrough-googles-ai-beats-a-top-player-at-the-game-of-go/)
 

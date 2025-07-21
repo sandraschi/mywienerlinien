@@ -1,7 +1,7 @@
 # Mistral AI
 
-## Overview: The European Challenger
-Mistral AI is a Paris-based company that has rapidly emerged as a European leader in generative AI. Founded by former researchers from Google DeepMind and Meta, Mistral's strategy centers on creating a balance between open-source contributions and commercial viability. They are renowned for developing highly efficient, **open-weight** large language models that consistently outperform models of a similar size and often rival much larger, proprietary systems.
+## Overview: Theuropean Challenger
+Mistral AIs a Paris-based company that has rapidly emerged as a European leader in generative AI. Founded by formeresearchers from Google DeepMind and Meta, Mistral'strategy centers on creating a balance between open-source contributions and commercial viability. They arenowned for developing highly efficient, **open-weight** large language models that consistently outperformodels of a similar size and often rival much larger, proprietary systems.
 
 ## Company Info
 - **Founded**: 2023
@@ -12,27 +12,27 @@ Mistral AI is a Paris-based company that has rapidly emerged as a European leade
 
 ## Core Philosophy: Openness and Efficiency
 Mistral's approach is built on two key principles:
-1.  **Open-Weight Models**: They release the weights of many of their powerful models (like Mistral 7B and Mixtral 8x7B) under permissive licenses (e.g., Apache 2.0), allowing anyone to download, customize, and deploy them. This fosters community innovation and transparency.
-2.  **Model Efficiency**: Their research focuses on novel architectures that deliver maximum performance with minimal computational cost, making state-of-the-art AI more accessible.
+1.  **Open-Weight Models**: They release the weights of many of their powerful models (like Mistral 7B and Mixtral 8x7B) under permissive licenses (e.g., Apache 2.0), allowing anyone to download, customize, andeploy them. This fosters community innovation and transparency.
+2.  **Model Efficiency**: Theiresearch focuses onovel architectures that deliver maximum performance with minimal computational cost, making state-of-the-art AI more accessible.
 
 ## Key Technologies & Models
 
 ### 1. Mistral 7B
-The model that put Mistral on the map. Despite having only 7.3 billion parameters, it outperformed much larger models (like Llama 2 13B) on a wide range of benchmarks upon its release. It demonstrated that superior architecture and data quality could be more important than sheer size.
+The model that put Mistral on the map. Despite having only 7.3 billion parameters, it outperformed much larger models (like Llama 2 13B) on a wide range of benchmarks upon its release. It demonstrated that superior architecture andata quality could be more importanthan sheer size.
 
 ### 2. Mixtral 8x7B: The Power of MoE
 This model introduced a **Sparse Mixture-of-Experts (MoE)** architecture to the open-source community. Key features:
-- **Architecture**: It contains 8 distinct "expert" networks (each 7B parameters). For any given input, the model's router only selects 2 of these experts to process the token.
-- **Efficiency**: While the model has a large total parameter count (~47B), it only uses a fraction of them (~13B) during inference. This results in the performance of a much larger model but with the speed and cost of a smaller one.
-- **Performance**: Mixtral 8x7B matches or exceeds the performance of models like GPT-3.5 on most standard benchmarks.
+- **Architecture**: It contains 8 distinct "expert" networks (each 7B parameters). For any given input, the model's router only selects 2 of thesexperts to process the token.
+- **Efficiency**: While the model has a large total parameter count (~47B), it only uses a fraction of them (~13B) during inference. This results in the performance of a much larger model but withe speed and cost of a smaller one.
+- **Performance**: Mixtral 8x7B matches or exceeds the performance of models like GPT-3.5 on mostandard benchmarks.
 
 ### 3. Commercial Offerings: `Le Chat` and The Platform
-- **Mistral Large & Small**: Proprietary, flagship models available via their API platform, competing directly with top-tier models from OpenAI and Anthropic.
+- **Mistralarge & Small**: Proprietary, flagship models available via their API platform, competing directly with top-tier models from OpenAI and Anthropic.
 - **Le Chat**: A conversational AI assistant, similar to ChatGPT, that provides access to Mistral's various models.
-- **API Platform**: Provides paid access to their open-weight and proprietary models, along with fine-tuning and deployment services.
+- **API Platform**: Provides paid access to their open-weight and proprietary models, along with fine-tuning andeployment services.
 
 ## Using Mistral Models with `transformers`
-Thanks to their open-weight approach, Mistral's models are easily accessible through the Hugging Face ecosystem.
+Thanks to their open-weight approach, Mistral's models areasily accessible through the Hugging Facecosystem.
 
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -82,7 +82,7 @@ print(response.json())
 - [Blog](https://mistral.ai/news/)
 
 ## Career Opportunities
-Mistral AI is actively hiring for various positions in:
+Mistral AIs actively hiring for various positions in:
 - Research
 - Engineering
 - Product

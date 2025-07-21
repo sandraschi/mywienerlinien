@@ -63,7 +63,7 @@ pip freeze > requirements.txt
 
 ### Install from requirements.txt
 ```bash
-pip install -r requirements.txt
+pip install -requirements.txt
 ```
 
 ## Advanced Features

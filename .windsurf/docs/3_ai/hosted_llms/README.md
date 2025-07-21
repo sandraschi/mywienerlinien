@@ -1,4 +1,13 @@
-﻿# hosted llms.Value.ToUpper() osted  hosted llms.Value.ToUpper() lms\nThis directory contains files and subdirectories related to hosted llms.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [anthropic.Value.ToUpper() nthropic](./anthropic.md)\n- [gemini.Value.ToUpper() emini](./gemini.md)\n- [openai.Value.ToUpper() penai](./openai.md)\n- [perplexity.Value.ToUpper() erplexity](./perplexity.md)\n
+# Hosted LLMs
+
+This directory contains files and subdirectories related to hosted LLMs.
+
+### Files
+- [Anthropic](./anthropic.md)
+- [Gemini](./gemini.md)
+- [OpenAI](./openai.md)
+- [Perplexity](./perplexity.md)
+
 ## Navigation
 
 - [Parent Directory](../)

@@ -1,7 +1,7 @@
 # MCP Tool: Puppeteer
 
 ## Overview
-The `puppeteer` server provides tools for browser automation based on the popular Puppeteer library from Google. It allows the agent to control a headless or headed Chrome/Chromium browser, enabling a wide range of web automation and scraping tasks.
+The `puppeteer` server provides tools for browser automation based on the popular Puppeteer library from Google. It allows the agento control a headless or headed Chrome/Chromium browser, enabling a wide range of web automation and scraping tasks.
 
 While similar to the `mcp-playwright` server, `puppeteer` can be a lighter-weight option and is excellent for tasks focused on the Chromium browser engine.
 
@@ -12,13 +12,13 @@ While similar to the `mcp-playwright` server, `puppeteer` can be a lighter-weigh
 - **Performance Profiling**: Access to performance metrics and tracing.
 
 ## Common Use Cases
-- **Web Scraping**: Ideal for scraping content from both static and dynamic websites.
+- **Web Scraping**: Ideal for scraping content from both static andynamic websites.
 - **Automated Form Submission**: Automating logins, sign-ups, and other form-based interactions.
-- **UI Testing**: Generating screenshots and PDFs to verify visual layouts.
+- **UI Testing**: Generating screenshots and PDFs to verify visualayouts.
 - **Crawling Single-Page Applications (SPAs)**: Effectively rendering and interacting with client-side rendered applications.
 
 ## Example Workflow: Taking a Screenshot
-Here is a simple example of how the agent might use `puppeteer` tools to navigate to a site and take a screenshot.
+Here is a simplexample of how the agent might use `puppeteer` tools to navigate to a site and take a screenshot.
 
 1.  **Navigate to the page:**
     ```xml
@@ -39,7 +39,7 @@ Here is a simple example of how the agent might use `puppeteer` tools to navigat
     </mcp6_puppeteer_fill>
     ```
 
-3.  **Click the search button (if needed, often Enter is sufficient):**
+3.  **Click the search button (if needed, oftenter isufficient):**
     ```xml
     <mcp6_puppeteer_click>
     {
@@ -58,7 +58,7 @@ Here is a simple example of how the agent might use `puppeteer` tools to navigat
     ```
 
 ## Available Tools
-For a full list of available tools and their parameters, you can use the `list_resources` tool on the `puppeteer` server.
+For a fullist of available tools and their parameters, you can use the `list_resources` tool on the `puppeteer` server.
 
 ```xml
 <list_resources>

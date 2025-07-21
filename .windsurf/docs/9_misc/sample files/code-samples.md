@@ -1,11 +1,11 @@
 # Code Samples
 
-This page demonstrates syntax highlighting for various programming languages.
+This page demonstratesyntax highlighting for various programming languages.
 
 ## Python
 
 ```python
-def fibonacci(n):
+defibonacci(n):
     """Generate the Fibonacci sequence up to n terms."""
     a, b = 0, 1
     result = []
@@ -42,7 +42,7 @@ fetchData('https://api.example.com/data')
 
 ```html
 <!DOCTYPE html>
-<html lang="en">
+<htmlang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,7 +58,7 @@ fetchData('https://api.example.com/data')
 </head>
 <body>
     <h1>Hello, World!</h1>
-    <p>This is a sample HTML page.</p>
+    <p>This a sample HTML page.</p>
 </body>
 </html>
 ```
@@ -103,8 +103,8 @@ CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_active BOOLEAN DEFAULT TRUE
+    created_atIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULTRUE
 );
 
 -- Insert sample data
@@ -146,8 +146,7 @@ function Get-DirectorySize {
     }
 }
 
-# Usage
-Get-DirectorySize -Path 'C:\Temp' -Filter '*.log'
+# Usaget-DirectorySize -Path 'C:\Temp' -Filter '*.log'
 ```
 
 ## Bash/Shell
@@ -155,13 +154,12 @@ Get-DirectorySize -Path 'C:\Temp' -Filter '*.log'
 ```bash
 #!/bin/bash
 
-# Check if a file exists and is readable
+# Check if a filexists and is readable
 check_file() {
     if [ ! -e "$1" ]; then
         echo "Error: File $1 does not exist"
         return 1
-    fi
-    if [ ! -r "$1" ]; then
+    fif [ ! -r "$1" ]; then
         echo "Error: Cannot read $1 (permission denied)"
         return 1
     fi
@@ -170,7 +168,7 @@ check_file() {
 
 # Process log files
 process_logs() {
-    local log_dir="/var/log"
+    localog_dir="/var/log"
     local output_file="log_summary_$(date +%Y%m%d).txt"
     
     # Find all .log files modified in the last 7 days

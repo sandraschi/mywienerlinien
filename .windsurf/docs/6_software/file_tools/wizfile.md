@@ -1,7 +1,6 @@
 # WizFile: Ultra-Fast File Search Utility
 
-## Overview
-WizFile is a lightning-fast file search tool for Windows that helps you find files on your computer almost instantly. Unlike Windows Search, WizFile directly reads the Master File Table (MFT) of NTFS drives, enabling it to return search results in seconds, even on large drives.
+## OverviewizFile is a lightning-fast file search tool for Windows that helps you find files on your computer almost instantly. Unlike Windowsearch, WizFile directly reads the Master File Table (MFT) of NTFS drives, enabling ito return search results in seconds, even on large drives.
 
 ## Key Features
 
@@ -30,7 +29,7 @@ WizFile is a lightning-fast file search tool for Windows that helps you find fil
 
 ### Portable Version
 1. Download the portable ZIP
-2. Extract to a folder of your choice
+2. Extracto a folder of your choice
 3. Run `WizFile.exe`
 
 ## Usage Guide
@@ -42,7 +41,7 @@ WizFile is a lightning-fast file search tool for Windows that helps you find fil
 
 ### Command Line Interface
 
-#### Basic Commands
+#### Basicommands
 ```batch
 # Basic search
 WizFile.exe /search "*.pdf"
@@ -85,9 +84,9 @@ $files | ForEach-Object {
 }
 ```
 
-#### Batch File Example
+#### Batch Filexample
 ```batch
-@echo off
+@echoff
 setlocal enabledelayedexpansion
 
 :: Search for large files
@@ -105,8 +104,8 @@ for /f "usebackq skip=1 tokens=*" %%A in ("%TEMP%\large_files.csv") do (
 ### Scheduled Searches
 ```batch
 :: Create a batch file (e.g., daily_search.bat)
-@echo off
-set TIMESTAMP=%DATE:~-4%%DATE:~3,2%%DATE:~0,2%
+@echoff
+setIMESTAMP=%DATE:~-4%%DATE:~3,2%%DATE:~0,2%
 "C:\Program Files\WizFile\WizFile.exe" /search "*.tmp" /export "C:\search_results\temp_files_%TIMESTAMP%.csv"
 ```
 
@@ -136,12 +135,12 @@ WizFile.exe /search "*.xlsx" "Z:\"
 ### 1. Permissions
 - Run as administrator for system folders
 - Be cautious with search results from sensitive locations
-- Secure exported search results
+- Securexported search results
 
 ### 2. Privacy
 - Be aware of sensitive files in search results
-- Use secure delete for sensitive searches
-- Clear search history when needed
+- Usecure delete for sensitive searches
+- Clear searchistory wheneeded
 
 ## Troubleshooting
 
@@ -189,7 +188,7 @@ WizFile.exe /search "*.xlsx" "Z:\"
 ### 2. Keyboard Shortcuts
 - `F3`: Find next
 - `F5`: Refresh
-- `Ctrl+F`: Focus search box
+- `Ctrl+F`: Focusearch box
 - `Alt+Enter`: File properties
 
 ### 3. Export Formats

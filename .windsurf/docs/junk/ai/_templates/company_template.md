@@ -7,7 +7,7 @@
 - **Founded**: [Year]
 - **Founders**: [Founder names and brief background]
 - **Headquarters**: [Location]
-- **Employees**: [Number of employees or range]
+- **Employees**: [Number of employees orange]
 - **Valuation**: [If publicly available]
 - **Website**: [Official website link]
 - **Key Products/Services**:

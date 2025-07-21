@@ -1,7 +1,7 @@
 # Globale Auswirkungen, Meta-Aspekte und Bibliographie
 
 ## 6. Auswirkungen auf die globale Rechte / Right-Wing Politics
-- Trump und Muskox als Vorbilder für rechtspopulistische Bewegungen weltweit.
+- Trump und Muskox als Vorbilder fürechtspopulistische Bewegungen weltweit.
 - Einfluss auf Wahlkampagnen, Social-Media-Strategien und politische Diskurse (Brasilien, Ungarn, UK, Indien, Australien).
 - Export von Verschwörungstheorien, Anti-Establishment-Rhetorik und "Fake News"-Taktiken.
 - Internationale Vernetzung rechtspopulistischer Akteure und Think Tanks.
@@ -10,7 +10,7 @@
 
 ## 7. Meta-Aspekte, Kontroversen und Rezeption
 - Debatten über die Rolle charismatischer Führer und Tech-Milliardäre in der Politik.
-- Kritik an der "Infotainmentisierung" der Politik und der Macht von Social Media.
+- Kritik an der "Infotainmentisierung" der Politik under Macht von Social Media.
 - Rechtliche und ethische Fragen: Verantwortung für Desinformation, internationale Regulierung.
 - Medienanalyse: Polarisierung, Meme-Kultur, Einfluss auf die öffentliche Meinung.
 

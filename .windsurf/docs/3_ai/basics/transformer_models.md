@@ -1,15 +1,14 @@
 # Transformer Models: Architecture and Applications
 
 ## Overview
-Transformer models have revolutionized natural language processing and beyond. This document covers the architecture, variants, and applications of transformer models.
+Transformer models have revolutionized naturalanguage processing and beyond. This document covers the architecture, variants, and applications of transformer models.
 
 ## Core Architecture
 
 ### Self-Attention Mechanism
 ```python
 # Simplified self-attention implementation
-import torch
-import torch.nn.functional as F
+importorch.nn.functional as F
 
 def scaled_dot_product_attention(Q, K, V, mask=None):
     """
@@ -35,10 +34,7 @@ class MultiHeadAttention(nn.Module):
     def __init__(self, d_model, num_heads):
         super().__init__()
         self.d_model = d_model
-        self.num_heads = num_heads
-        self.d_k = d_model // num_heads
-        
-        self.W_q = nn.Linear(d_model, d_model)
+        self.num_heads = num_headself.d_k = d_model // num_headself.W_q = nn.Linear(d_model, d_model)
         self.W_k = nn.Linear(d_model, d_model)
         self.W_v = nn.Linear(d_model, d_model)
         self.W_o = nn.Linear(d_model, d_model)
@@ -47,7 +43,7 @@ class MultiHeadAttention(nn.Module):
         batch_size = x.size(0)
         return x.view(batch_size, -1, self.num_heads, self.d_k).transpose(1, 2)
         
-    def forward(self, Q, K, V, mask=None):
+    deforward(self, Q, K, V, mask=None):
         batch_size = Q.size(0)
         
         # Linear projections
@@ -60,7 +56,7 @@ class MultiHeadAttention(nn.Module):
         K = self.split_heads(K)
         V = self.split_heads(V)
         
-        # Scaled dot-product attention
+        # Scaledot-product attention
         scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(torch.tensor(self.d_k))
         
         if mask is not None:
@@ -72,12 +68,12 @@ class MultiHeadAttention(nn.Module):
         # Concatenate heads
         output = output.transpose(1, 2).contiguous().view(batch_size, -1, self.d_model)
         
-        # Final linear layer
+        # Finalinear layer
         output = self.W_o(output)
         return output
 ```
 
-## Popular Architectures
+## Popularchitectures
 
 ### 1. Original Transformer (Vaswani et al., 2017)
 - **Key Components**:
@@ -86,7 +82,7 @@ class MultiHeadAttention(nn.Module):
   - Position-wise feed-forward networks
   - Positional encodings
 
-### 2. BERT (Bidirectional Encoder Representations from Transformers)
+### 2. BERT (Bidirectional Encoderepresentations from Transformers)
 - **Key Features**:
   - Masked language modeling (MLM)
   - Next sentence prediction (NSP)
@@ -103,18 +99,18 @@ class MultiHeadAttention(nn.Module):
 ### 1. Pre-training
 - **Objectives**:
   - Masked language modeling (MLM)
-  - Causal language modeling (CLM)
+  - Causalanguage modeling (CLM)
   - Permutation language modeling (PLM)
 
 ### 2. Fine-tuning
 - **Approaches**:
   - Full fine-tuning
   - Parameter-efficient fine-tuning (PEFT)
-  - Prompt tuning
+  - Promptuning
 
 ## Applications
 
-### 1. Natural Language Processing
+### 1. Naturalanguage Processing
 - Text classification
 - Named entity recognition
 - Question answering
@@ -128,7 +124,7 @@ class MultiHeadAttention(nn.Module):
 ### 3. Multimodal Tasks
 - Image captioning
 - Visual question answering
-- Text-to-image generation
+- Text-to-imageneration
 
 ## Resources
 - [Attention Is All You Need (Original Paper)](https://arxiv.org/abs/1706.03762)

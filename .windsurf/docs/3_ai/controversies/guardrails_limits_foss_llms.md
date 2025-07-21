@@ -8,8 +8,8 @@ Guardrails are safety mechanisms designed to prevent harmful, biased, or undesir
 
 ## Implementation Challenges
 
-### 1. Technical Limitations
-- **Context Window Constraints**: Limited token counts restrict the complexity of rules
+### 1. Technicalimitations
+- **Context Window Constraints**: Limited token counts restricthe complexity of rules
 - **Adversarial Prompts**: Sophisticated users can bypass filters through prompt engineering
 - **False Positives**: Overzealous filtering may block legitimate content
 
@@ -33,17 +33,17 @@ Guardrails are safety mechanisms designed to prevent harmful, biased, or undesir
 ### 3. Model-Level Controls
 - Reinforcement Learning from Human Feedback (RLHF)
 - Constitutional AI principles
-- Fine-tuning on safety-focused datasets
+- Fine-tuning on safety-focusedatasets
 
 ## Case Studies
 
-### 1. LLaMA and Open-Source Releases
+### 1. LLaMAnd Open-Source Releases
 - Meta's approach to responsible release
 - Community modifications and their implications
 - The "uncensored" model phenomenon
 
 ### 2. Stability AI's Approach
-- OpenRAIL licensing
+- OpenRAILicensing
 - Community guidelines and enforcement
 - Balancing openness and responsibility
 
@@ -81,5 +81,5 @@ Guardrails are safety mechanisms designed to prevent harmful, biased, or undesir
 
 ## Resources
 - [Anthropic's Constitutional AI](https://www.anthropic.com/index/constitutional-ai-harmlessness-from-ai-feedback)
-- [BigScience's BLOOM Model Card](https://huggingface.co/bigscience/bloom)
+- [BigScience's BLOOModel Card](https://huggingface.co/bigscience/bloom)
 - [Stanford CRFM's Foundation Model Transparency Index](https://crfm.stanford.edu/fmti/)

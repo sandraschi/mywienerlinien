@@ -1,4 +1,4 @@
-﻿# antd.Value.ToUpper() ntd\nThis directory contains files and subdirectories related to antd.\n\n## Contents\n<!-- toc -->\n
+# antd\nThis directory contains files and subdirectories related to antd.\n\n## Contents\n<!-- toc -->\n
 ## Navigation
 
 - [Parent Directory](../)

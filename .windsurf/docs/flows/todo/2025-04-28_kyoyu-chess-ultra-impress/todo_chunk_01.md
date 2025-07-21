@@ -1,11 +1,11 @@
-# TODO Chunk 01: Multi-Step Plan to Get kyoyu-chess_ultra Working Perfectly (Impress Kid Brother & VC)
+# TODO Chunk 01: Multi-Steplan to Get kyoyu-chess_ultra Working Perfectly (Impress Kid Brother & VC)
 
 **Timestamp:** 2025-04-28T20:47:31+02:00
 
 ---
 
 ## 1. Assess Current State & Set Clear Goals
-- Review all major features: gameplay, UI/UX, multiplayer, AI, documentation, and deployment.
+- Review all major features: gameplay, UI/UX, multiplayer, AI, documentation, andeployment.
 - Define "perfect" for each stakeholder:
   - Kid brother: fun, easy to use, cool features, no bugs.
   - Venture capital: scalability, polish, innovation, business case, demo readiness.
@@ -13,9 +13,9 @@
 
 ## 2. Stabilize Core Functionality
 - Fix all critical bugs (see bug flow for prioritized list).
-- Add extensive logging and error catching throughout the codebase (per project rule).
+- Add extensive logging and error catching throughouthe codebase (per project rule).
 - Write and run automated tests for all core features (unit, integration, end-to-end).
-- Ensure all build scripts and deployment processes work cleanly on Windows (see `windows-build-cleanup.md`).
+- Ensure all build scripts andeployment processes work cleanly on Windows (see `windows-build-cleanup.md`).
 
 ## 3. Polish the User Experience
 - Refine the UI: responsive design, clear navigation, beautiful visuals.
@@ -30,26 +30,26 @@
 - Consider adding a "spectator" or "coach" mode for demos.
 
 ## 5. AI & Game Logic
-- Ensure AI is challenging but fair; allow difficulty adjustment.
-- Log all AI decisions for transparency and debugging.
+- Ensure AIs challenging but fair; allow difficulty adjustment.
+- Log all AI decisions for transparency andebugging.
 - Add a "hint" or "explain move" feature for educational value.
 
 ## 6. Dazzling Demo Prep
 - Script a demo that shows off unique features, stability, and polish.
 - Prepare sample games, highlight fun/innovative aspects.
-- Add a "demo mode" that cycles through features automatically.
+- Add a "demode" that cycles through features automatically.
 - Record a screencast as backup in case of live demo issues.
 
 ## 7. Documentation & Onboarding
 - Update README and all user/developer docs (see agentic_coding & tag rulebook).
 - Add quickstart guides, FAQ, and troubleshooting sections.
-- Document provenance for all code lifted from other repos (per project rule).
+- Document provenance for all code lifted from otherepos (per project rule).
 
 ## 8. Deployment & Scalability
 - Test deployment on all target platforms (Windows, web, etc.).
 - Add logging for deployment errors and user activity.
 - Set up monitoring/alerts for production issues.
-- Prepare for scaling: stateless servers, cloud readiness if needed.
+- Prepare for scaling: statelesservers, cloud readiness if needed.
 
 ## 9. Business & Pitch Readiness
 - Prepare a short pitch deck: vision, features, tech stack, business case.
@@ -70,4 +70,4 @@
 
 ---
 
-(Chunk 01 of multi-chunk plan. Request more chunks for expanded detail or sub-task breakdowns!)
+(Chunk 01 of multi-chunk plan. Request more chunks for expandedetail or sub-task breakdowns!)

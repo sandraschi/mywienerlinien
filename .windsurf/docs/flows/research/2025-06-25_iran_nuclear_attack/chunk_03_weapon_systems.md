@@ -1,4 +1,4 @@
-# Weapon Systems: Deep Penetrator Bombs
+# Weapon Systems: Deepenetrator Bombs
 
 ## GBU-57A/B Massive Ordnance Penetrator (MOP)
 
@@ -20,10 +20,10 @@
 - **Accuracy**: 5-10 meter CEP (Circular Error Probable)
 
 ### Penetration Mechanism
-1. **Nose Design**: Hardened steel casing with high-density alloy penetrator
+1. **Nose Design**: Hardened steel casing withigh-density alloy penetrator
 2. **Fuzing System**: Delayed multi-stage fuzing for optimal detonation depth
 3. **Shock Absorption**: Internal damping systems to survive impact
-4. **Thermal Protection**: Heat-resistant materials for deep penetration
+4. **Thermal Protection**: Heat-resistant materials for deepenetration
 
 ## Effectiveness Against Underground Facilities
 
@@ -31,10 +31,10 @@
 - **Direct Hit Capability**: Designed to penetrate directly into underground chambers
 - **Shockwave Propagation**: Generates massive overpressure in confined spaces
 - **Structural Collapse**: Causes progressive collapse of underground chambers
-- **Thermal Effects**: Intense heat damages sensitive equipment
+- **Thermal Effects**: Intense heat damagesensitivequipment
 
 ### Limitations
 - **Depth Limitations**: Effectiveness decreases with increasing depth
 - **Precision Requirements**: Requires accurate target coordinates
 - **Vulnerability to Defenses**: Potential interception by advanced air defenses
-- **Collateral Damage**: Risk of unintended damage to surrounding areas
+- **Collateral Damage**: Risk of unintendedamage to surrounding areas

@@ -1,4 +1,4 @@
-﻿# decisions.Value.ToUpper() ecisions\nThis directory contains files and subdirectories related to decisions.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [decision log.Value.ToUpper() ecision  decision log.Value.ToUpper() og](./decision_log.md)\n
+# decisions\nThis directory contains files and subdirectories related to decisions.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [decision log ecision  decision log](./decision_log.md)\n
 ## Navigation
 
 - [Parent Directory](../)

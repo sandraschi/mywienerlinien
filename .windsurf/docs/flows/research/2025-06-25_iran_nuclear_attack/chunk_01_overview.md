@@ -1,7 +1,7 @@
-# American Attack on Iranian Nuclear Facilities: Natanz and Fordo
+# American Attack on Iranianuclear Facilities: Natanz and Fordo
 
 ## Overview
-This document provides a comprehensive analysis of the American attack on Iranian nuclear facilities in Natanz and Fordo, focusing on the technical aspects of the targets, the weapons used, and the operational outcomes.
+This document provides a comprehensive analysis of the American attack on Iranianuclear facilities inatanz and Fordo, focusing on the technical aspects of the targets, the weapons used, and the operational outcomes.
 
 ## Table of Contents
 1. [Facility Descriptions](#facility-descriptions)

@@ -1,12 +1,12 @@
 # Notion - The All-in-One Workspace
 
 ## Overview
-Notion is an all-in-one workspace that combines notes, tasks, wikis, and databases. It's highly customizable and works well for both personal and team documentation needs.
+Notion is an all-in-one workspace that combines notes, tasks, wikis, andatabases. It's highly customizable and works well for both personal and team documentationeeds.
 
 ## Key Features
 
 ### 1. Blocks and Pages
-- Everything in Notion is a block (text, images, to-dos, etc.)
+- Everything inotion is a block (text, images, to-dos, etc.)
 - Pages can be nested infinitely
 - Drag-and-drop interface for easy organization
 
@@ -14,10 +14,10 @@ Notion is an all-in-one workspace that combines notes, tasks, wikis, and databas
 - Create powerful databases with multiple views (table, board, calendar, gallery, list, timeline)
 - Link between databases
 - Advanced filtering and sorting
-- Formula and rollup properties
+- Formuland rolluproperties
 
 ### 3. Templates
-- Built-in templates for various use cases
+- Built-in templates for variouse cases
 - Create and share custom templates
 - Template button for quick content creation
 
@@ -35,7 +35,7 @@ Notion is an all-in-one workspace that combines notes, tasks, wikis, and databas
 ## Usage with Docsify
 
 ### Exporting to Markdown
-1. In Notion, click the three dots menu in the top-right
+1. Inotion, click the three dots menu in the top-right
 2. Select "Export"
 3. Choose "Markdown & CSV" format
 4. Uncheck "Include subpages" if needed
@@ -119,4 +119,4 @@ const notion = new Client({ auth: process.env.NOTION_TOKEN });
 1. Start with a small test export
 2. Check the Markdown output
 3. Set up redirects if needed
-4. Consider using a script to clean up the exported files
+4. Consider using a scripto clean up thexported files

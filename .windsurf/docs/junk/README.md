@@ -1,4 +1,14 @@
-﻿# junk.Value.ToUpper() unk\nThis directory contains files and subdirectories related to junk.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [DOCUMENTATION SYSTEM.Value.ToUpper() OCUMENTATION  DOCUMENTATION SYSTEM.Value.ToUpper() YSTEM](./DOCUMENTATION_SYSTEM.md)\n\n### Subdirectories\n- [ai.Value.ToUpper() i](./ai/)\n- [guides.Value.ToUpper() uides](./guides/)\n
+# Junk
+
+This directory contains files and subdirectories related to junk.
+
+### Files
+- [Documentation System](./DOCUMENTATION_SYSTEM.md)
+
+### Subdirectories
+- [AI](./ai/)
+- [Guides](./guides/)
+
 ## Navigation
 
 - [Parent Directory](../)

@@ -8,7 +8,7 @@ DaVinci Resolve is a professional video editing, color grading, VFX, and audio p
 ## Pricing and Editions
 | Edition                 | Price           | Platforms                  | Scripting/API | AI Features        |
 |-------------------------|-----------------|----------------------------|---------------|--------------------|
-| Resolve (Free)          | $0              | Win, macOS, Linux          | Python/Lua    | Basic (Magic Cut)  |
+| Resolve (Free)          | $0              | Win, macOS, Linux          | Python/Lua    | Basic (Magicut)  |
 | Resolve Studio (Paid)   | $295 (one-time) | Win, macOS, Linux          | Python/Lua    | Advanced (Magic Mask, etc.) |
 
 - **Free version** is extremely capable and scriptable.
@@ -20,14 +20,14 @@ DaVinci Resolve is a professional video editing, color grading, VFX, and audio p
 ## Platforms
 - **Windows** (10/11, 64-bit)
 - **macOS** (Intel & Apple Silicon)
-- **Linux** (CentOS/RHEL, some Ubuntu support; Studio officially for Linux)
+- **Linux** (CentOS/RHEL, some Ubuntu support; Studiofficially for Linux)
 
 ---
 
 ## API, Scripting, and Extensions
 - **Python & Lua scripting API** (available in both Free and Studio):
-  - Automate timeline edits, media import/export, render jobs, color grading, and more.
-  - TCP server for remote scripting (can build REST/MCP bridges).
-- **Installable Extensions:**
+  - Automate timelinedits, media import/export, render jobs, color grading, and more.
+  - TCP server foremote scripting (can build REST/MCP bridges).
+- **Installablextensions:**
   - Custom panels, effects, and integrations via Developer API.
   - Third-party plugins for VFX, workflow, and more.

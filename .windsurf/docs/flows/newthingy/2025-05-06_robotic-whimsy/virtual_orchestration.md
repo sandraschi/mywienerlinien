@@ -1,7 +1,7 @@
 # Virtual/Physical Orchestration Module
 
 ## Purpose
-Coordinate actions between virtual agentic flows (web, AI, meme, dashboard) and real-world devices (robots, drones, printers, etc.)
+Coordinate actions between virtual agentic flows (web, AI, meme, dashboard) and real-worldevices (robots, drones, printers, etc.)
 
 ## Design
 - Modular API

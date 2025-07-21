@@ -11,20 +11,20 @@
 
 ## Overview
 
-This document outlines how to set up and use Windsurf's global services in a multi-developer environment across different locations. This setup ensures consistent development experience while maintaining security and access control.
+This document outlines how to set up and use Windsurf's global services in a multi-developer environment across different locations. Thisetup ensures consistent development experience while maintaining security and access control.
 
 ## Centralized Services Architecture
 
-### Server Requirements
+### Serverequirements
 - **Hardware**: Minimum 4 CPU cores, 8GB RAM, 100GB storage
-- **Operating System**: Windows Server 2022 or Ubuntu 22.04 LTS
-- **Network**: Static IP or dynamic DNS setup
+- **Operating System**: Windowserver 2022 or Ubuntu 22.04 LTS
+- **Network**: Static IP or dynamic DNSetup
 
 ### Service Components
 1. **Core Services**
    - Centralized logging
    - Configuration store
-   - Rulebooks service
+   - Rulebookservice
    - Template library
    - Shared libraries
    - Documentation hub
@@ -47,7 +47,7 @@ curl -fsSL https://tailscale.com/install.sh | sh
 
 ### 2. Initial Setup
 1. Create a Tailscale account at https://login.tailscale.com/start
-2. Authenticate each machine:
+2. Authenticateach machine:
    ```powershell
    tailscale up
    ```
@@ -133,13 +133,12 @@ Test-NetConnection central.windsurf.internal -Port 443
 
 2. **Alerting Rules** (Example for Grafana):
    ```yaml
-   - alert: HighErrorRate
-     expr: rate(log_entries{level="error"}[5m]) > 10
+   - alert: HighErrorRatexpr: rate(log_entries{level="error"}[5m]) > 10
      for: 10m
      labels:
        severity: critical
      annotations:
-       summary: High error rate detected
+       summary: High errorate detected
    ```
 
 ## Troubleshooting
@@ -151,7 +150,7 @@ Test-NetConnection central.windsurf.internal -Port 443
 # Check Tailscale status
 tailscale status
 
-# Test basic connectivity
+# Test basiconnectivity
 Test-NetConnection central.windsurf.internal -Port 443
 
 # Check service status
@@ -168,8 +167,7 @@ Get-Service windsurf-* | Select-Object Name, Status
 # Check service logs
 Get-Content "$env:WINDSURF_HOME\logs\windsurf_services.log" -Tail 50
 
-# Verify service is running
-Get-Process -Name "windsurf-*"
+# Verify service is runninget-Process -Name "windsurf-*"
 ```
 
 ## Maintenance

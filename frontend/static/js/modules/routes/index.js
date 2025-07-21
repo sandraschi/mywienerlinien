@@ -1,86 +1,124 @@
 /**
- * Routes module - Manages route visualization and interaction
+ * Main routes module
  */
 
 import { logger } from '../utils/logger.js';
-import { initRouteUI } from './ui.js';
-import { loadRoutesData } from './data.js';
-import { setupRouteVisualization } from './visualization.js';
+import { loadRoutes } from './data.js';
+import { initRouteUI, updateRouteToggleState } from './ui.js';
+import { setupRouteVisualization, showRoute, hideRoute, highlightRoute } from './visualization.js';
 
-// Store routes data
+// Store references to route data and map
 let routes = [];
+let map = null;
 let routeLayers = new Map();
-const activeRoutes = new Set();
+let activeRoutes = new Set();
+
+// Store the current route data
+let routeData = {
+    routes: [],
+    stops: [],
+    loading: false,
+    error: null
+};
 
 /**
  * Initialize the routes module
- * @param {L.Map} map - The Leaflet map instance
- * @returns {Promise<void>}
+ * @param {L.Map} leafletMap - The Leaflet map instance
  */
-export async function initRoutes(map) {
+export async function initRoutes(leafletMap) {
     try {
         logger.info('Initializing routes module...');
         
-        // Load routes data
-        routes = await loadRoutesData();
+        // Store the map reference
+        map = leafletMap;
         
-        // Set up route visualization
-        setupRouteVisualization(map, routes, routeLayers, activeRoutes);
+        // Set loading state
+        routeData.loading = true;
+        routeData.error = null;
         
-        // Initialize route UI components
-        initRouteUI(routes, (routeId, isVisible) => {
-            updateRouteVisibility(map, routeId, isVisible, routes, routeLayers, activeRoutes);
-        });
+        try {
+            // Load route data
+            const { routes: loadedRoutes, stops } = await loadRoutes();
+            routes = loadedRoutes;
+            
+            // Update route data
+            routeData = {
+                routes: loadedRoutes,
+                stops: stops || [],
+                loading: false,
+                error: null
+            };
+            
+            logger.info(`Loaded ${routes.length} routes and ${routeData.stops.length} stops`);
+            
+            // Initialize the route visualization
+            setupRouteVisualization(map, routes, routeLayers, activeRoutes);
+            
+            // Initialize the route UI
+            initRouteUI(routes, handleRouteToggle);
+            
+            // Show a default set of routes (e.g., all metro lines)
+            showDefaultRoutes();
+            
+        } catch (error) {
+            logger.error('Failed to load route data:', error);
+            routeData.error = error.message || 'Failed to load route data';
+            routeData.loading = false;
+            throw error;
+        }
         
         logger.info('Routes module initialized');
         
     } catch (error) {
         logger.error('Failed to initialize routes module:', error);
+        routeData.error = error.message || 'Failed to initialize routes module';
+        routeData.loading = false;
         throw error;
     }
 }
 
 /**
- * Update route visibility on the map
- * @param {L.Map} map - The Leaflet map instance
- * @param {string} routeId - ID of the route to update
- * @param {boolean} isVisible - Whether the route should be visible
- * @param {Array} allRoutes - All available routes
- * @param {Map} layers - Map of route layers
- * @param {Set} activeSet - Set of active route IDs
+ * Show all routes by default
  */
-function updateRouteVisibility(map, routeId, isVisible, allRoutes, layers, activeSet) {
-    logger.debug(`Updating route visibility: ${routeId} = ${isVisible}`);
-    
-    // Find all routes with this ID (there might be multiple for different directions)
-    const matchingRoutes = allRoutes.filter(r => r.id === routeId);
-    
-    if (matchingRoutes.length === 0) {
-        logger.warn(`No routes found with ID: ${routeId}`);
-        return;
-    }
-    
-    logger.debug(`Found ${matchingRoutes.length} route(s) with ID ${routeId}`);
-    
-    matchingRoutes.forEach(route => {
-        if (isVisible) {
-            // Add the route to the map if it's not already there
-            if (!route.polyline) {
-                addRouteToMap(map, route, layers);
-            } else {
-                // Show existing route
-                showRoute(map, route, layers);
-            }
-            activeSet.add(routeId);
-        } else {
-            // Hide the route
-            hideRoute(map, route, layers);
-            activeSet.delete(routeId);
+function showDefaultRoutes() {
+    // Show all routes by default
+    routes.forEach(route => {
+        if (!activeRoutes.has(route.id)) {
+            handleRouteToggle(route.id, true);
         }
     });
-    
-    // Save active routes to storage
-    saveActiveRoutes(activeSet);
+}
+
+/**
+ * Handle route toggle events
+ * @private
+ */
+function handleRouteToggle(routeId, isActive) {
+    try {
+        logger.debug(`Route ${routeId} toggled: ${isActive ? 'on' : 'off'}`);
+        
+        // Find the route data
+        const route = routes.find(r => r.id === routeId);
+        if (!route) {
+            logger.warn(`Route ${routeId} not found`);
+            return;
+        }
+        
+        // Update the active routes set
+        if (isActive) {
+            activeRoutes.add(routeId);
+            showRoute(map, routeId, routeLayers, route);
+        } else {
+            activeRoutes.delete(routeId);
+            hideRoute(map, routeId, routeLayers);
+        }
+        
+        // Update the UI to reflect the new state
+        updateRouteToggleState(routeId, isActive);
+        
+    } catch (error) {
+        logger.error(`Failed to toggle route ${routeId}:`, error);
+    }
 }
 
 /**

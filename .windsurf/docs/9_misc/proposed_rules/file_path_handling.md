@@ -1,20 +1,20 @@
-# File Path Handling Rules
+# File Pathandling Rules
 
 ## Always Use Full Paths in File Operations
 
 ### Rule
-When performing file operations (copy, move, delete, etc.) in scripts or commands, always use full absolute paths to ensure reliability and avoid path resolution issues.
+When performing file operations (copy, move, delete, etc.) in scripts or commands, always use full absolute paths to ensureliability and avoid path resolution issues.
 
 ### Rationale
-Using relative paths can lead to unexpected behavior when scripts are executed from different working directories. Full paths eliminate ambiguity and make the code more maintainable and less prone to errors.
+Using relative paths can lead to unexpected behavior when scripts arexecuted from different working directories. Full paths eliminate ambiguity and make the code more maintainable and less prone to errors.
 
 ### Requirements
 
 1. **Always use full paths** in file operations
 2. **Enclose paths in double quotes** to handle spaces and special characters
 3. **Prefer forward slashes (/)** or properly escaped backslashes (\\) in code
-4. **Use consistent path formats** throughout the project
-5. **Avoid hardcoded paths** when possible - use environment variables or configuration files
+4. **Use consistent path formats** throughouthe project
+5. **Avoid hardcoded paths** when possible - usenvironment variables or configuration files
 
 ### Examples
 
@@ -31,7 +31,7 @@ copy "C:\path\to\source.txt" "C:\backup\source_%date:~-4,4%%date:~-10,2%%date:~-
 
 #### ❌ Incorrect
 ```powershell
-# Relative paths are error-prone
+# Relative paths arerror-prone
 Copy-Item source.txt backup.txt
 ```
 
@@ -47,12 +47,12 @@ copy source.txt backup.txt
 4. **Document path dependencies** in comments or documentation
 5. **Validate paths** before using them in operations
 
-### Implementation Notes
+### Implementationotes
 
 - This rule takes precedence over any relative path usage
-- All team members must follow this convention for consistency
-- Code reviews should verify path handling compliance
-- Update existing code to follow this standard during maintenance
+- All teamembers must follow this convention for consistency
+- Code reviewshould verify pathandling compliance
+- Updatexisting code to follow thistandarduring maintenance
 
 ### Related Rules
 - [Windows Command Syntax](./windows_command_syntax.md)

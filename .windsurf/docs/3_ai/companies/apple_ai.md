@@ -1,14 +1,14 @@
 # Apple AI
 
 ## Overview
-Apple's AI initiatives focus on integrating artificial intelligence and machine learning across its product ecosystem while maintaining strong privacy protections. The company emphasizes on-device processing and differential privacy to deliver intelligent features while protecting user data.
+Apple's AInitiatives focus on integrating artificial intelligence and machine learning across its product ecosystem while maintaining strong privacy protections. The company emphasizes on-device processing andifferential privacy to deliver intelligent features while protecting user data.
 
 ## Company Info
 - **Founded**: 2010 (as a dedicated AI/ML team)
 - **Key Leadership**:
   - Tim Cook (CEO)
   - John Giannandrea (SVP, Machine Learning and AI Strategy)
-  - Craig Federighi (SVP, Software Engineering)
+  - Craig Federighi (SVP, Softwarengineering)
   - Kevin Lynch (VP, Technology)
 - **Headquarters**: Cupertino, California, USA
 - **Employees**: 5,000+ in AI/ML roles (estimated)
@@ -28,7 +28,7 @@ Apple's AI initiatives focus on integrating artificial intelligence and machine 
 - On-Device Machine Learning
 - Privacy-Preserving AI
 - Computer Vision
-- Natural Language Processing
+- Naturalanguage Processing
 - Speech Recognition & Synthesis
 - Health & Wellness AI
 - Augmented Reality
@@ -42,7 +42,7 @@ Apple's AI initiatives focus on integrating artificial intelligence and machine 
 - **Turicreate**: Python ML toolkit
 - **SoundAnalysis**: Audio pattern recognition
 - **Vision Framework**: Computer vision API
-- **NaturalLanguage Framework**: NLP processing
+- **NaturalLanguage Framework**: NLProcessing
 - **SiriKit**: Intelligent assistant framework
 
 ## Funding & Investments
@@ -55,16 +55,16 @@ Apple's AI initiatives focus on integrating artificial intelligence and machine 
   - Voysis (2020, undisclosed)
   - AI Music (2022, undisclosed)
   - WaveOne (2023, undisclosed)
-- **AI Investments**:
+- **AInvestments**:
   - Primarily focuses on strategic acquisitions
   - Invests in AI chip development (billions in R&D)
   - AI talent acquisition through company buyouts
 
 ## Recent News
 - 2023: Announced Apple Intelligence at WWDC
-- 2023: Launched next-gen Neural Engine in A17 Pro
+- 2023: Launched next-geneural Engine in A17 Pro
 - 2022: Enhanced on-device speech recognition
-- 2021: Introduced Live Text and Visual Look Up
+- 2021: Introduced Live Text and Visualook Up
 - 2020: Transitioned to Apple Silicon with Neural Engine
 - 2019: Acquired Xnor.ai for edge-based AI
 - 2018: Hired John Giannandrea from Google
@@ -83,7 +83,7 @@ Apple's AI initiatives focus on integrating artificial intelligence and machine 
 ## Key People
 - **Tim Cook**: CEO, Apple
 - **John Giannandrea**: SVP, Machine Learning and AI Strategy
-- **Craig Federighi**: SVP, Software Engineering
+- **Craig Federighi**: SVP, Softwarengineering
 - **Kevin Lynch**: VP, Technology
 - **Samy Bengio**: VP & AI Research Fellow
 - **Ruslan Salakhutdinov**: Director of AI Research (until 2020)
@@ -95,7 +95,7 @@ Apple's AI initiatives focus on integrating artificial intelligence and machine 
 ## Research Areas
 - **On-Device Learning**: Privacy-preserving ML
 - **Computer Vision**: Image and video analysis
-- **Natural Language Understanding**: Siri improvements
+- **Naturalanguage Understanding**: Sirimprovements
 - **Speech Technologies**: Recognition and synthesis
 - **Health AI**: HealthKit and ResearchKit integration
 - **AR/VR**: Machine learning for augmented reality
@@ -113,10 +113,10 @@ Apple's AI initiatives focus on integrating artificial intelligence and machine 
 
 ## Enterprise Solutions
 - **Core ML Enterprise**: On-device ML for business
-- **Create ML Apps**: Custom ML model creation
+- **Create ML Apps**: CustomL model creation
 - **Privacy-Preserving ML**: Differential privacy tools
 - **AI for Accessibility**: Assistive technologies
-- **Enterprise Search**: Intelligent search solutions
+- **Enterprisearch**: Intelligent search solutions
 - **Document Understanding**: AI for business documents
 - **Predictive Analytics**: Business insights
 - **Anomaly Detection**: Security and monitoring
@@ -131,8 +131,8 @@ Apple's AI initiatives focus on integrating artificial intelligence and machine 
 - **Human Review**: Oversight of AI decisions
 - **Accessibility**: AI for all users
 
-## Developer Resources
-- **Xcode**: Integrated development environment
+## Developeresources
+- **Xcode**: Integratedevelopment environment
 - **Swift for TensorFlow**: ML framework
 - **Core ML Models**: Pre-trained models
 - **Create ML App**: No-code ML training

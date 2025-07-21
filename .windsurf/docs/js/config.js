@@ -16,7 +16,7 @@ fetch('_sidebar.md')
     debugLog('Error checking _sidebar.md:', error);
   });
 
-// Docsify configuration
+// Initialize Docsify
 window.$docsify = {
   // Debug hooks
   hooks: {
@@ -49,30 +49,32 @@ window.$docsify = {
   basePath: '/',
   
   // Core settings
-  loadSidebar: true,    // Enable sidebar
-  autoHeader: true,     // Auto generate header anchors
-  auto2top: true,       // Scroll to top on route change
-  coverpage: false,     // Disable coverpage
-  onlyCover: false,     // Don't show only coverpage
+  name: 'Windsurf Documentation',
+  repo: '',
+  themeColor: '#3F51B5',
+  
+  // Content settings
+  autoHeader: true,            // Auto generate header anchors
+  auto2top: true,              // Scroll to top on route change
+  coverpage: false,            // Disable coverpage
+  onlyCover: false,            // Don't show only coverpage
   notFoundPage: '404.md',
-  executeScript: true,  // Execute script tags in markdown
-  noEmoji: false,       // Allow emojis
-  mergeNavbar: false,   // Don't merge navbar with sidebar on mobile
-  relativePath: true,   // Use relative paths
+  executeScript: true,         // Execute script tags in markdown
+  noEmoji: false,              // Allow emojis
+  relativePath: true,          // Use relative paths
   
   // Sidebar configuration
-  loadSidebar: false,          // We're generating the sidebar dynamically
+  loadSidebar: '_sidebar.md',  // Load sidebar from file
   subMaxLevel: 6,              // Maximum nested level for headers
   maxLevel: 6,                 // Maximum header level to include
-  
-  // Collapsible sidebar configuration
-  sidebarDisplayLevel: 1,      // Show all levels by default
-  collapseSidebar: true,       // Enable collapsible sidebar
+  sidebarDisplayLevel: 3,      // Show up to 3 levels by default
   
   // Navigation settings
-  auto2top: true,              // Scroll to top on route change
   loadNavbar: false,           // Disable navbar if not used
   mergeNavbar: false,          // Don't merge navbar with sidebar on mobile
+  
+  // Collapsible sidebar configuration
+  collapseSidebar: true,       // Enable collapsible sidebar
   
   // Alias configuration
   alias: {
@@ -88,6 +90,21 @@ window.$docsify = {
     readyTransition: true,
     responsiveTables: true
   },
+  
+  // Plugins configuration
+  plugins: [
+    // Enable sidebar collapse
+    function(hook) {
+      hook.doneEach(function() {
+        // Initialize sidebar collapse after content is loaded
+        if (window.DocsifySidebarCollapse) {
+          window.DocsifySidebarCollapse.init({
+            sidebarHtml: true
+          });
+        }
+      });
+    }
+  ],
   
   // Search configuration
   search: {

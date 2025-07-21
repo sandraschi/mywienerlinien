@@ -30,7 +30,7 @@ A responsive grid of images:
 
 ## Image with Link
 
-Click the image below to open it in a new tab:
+Click the image below topen it in a new tab:
 
 [![Sample Image](https://picsum.photos/600/300?random=5)](https://picsum.photos/600/300?random=5)
 
@@ -44,11 +44,11 @@ You can add custom styling to images:
 
 Left-aligned image with text wrapping:
 
-<img src="https://picsum.photos/200/200?random=7" style="float: left; margin: 0 20px 20px 0; border-radius: 50%;">
+<img src="https://picsum.photos/200/200?random=7" style="float: left; margin: 0 20px 0; border-radius: 50%;">
 
-This is some sample text that wraps around the circular image. You can use float and margin properties to control how text flows around your images. This is particularly useful when you want to create magazine-style layouts or highlight specific content.
+Thisome sample texthat wraps around the circular image. You can use float and margin properties to control how text flows around your images. This particularly useful when you wanto create magazine-style layouts or highlight specificontent.
 
-Clear the float to continue normal document flow:
+Clear the floato continue normal document flow:
 
 <div style="clear: both;"></div>
 
@@ -62,7 +62,7 @@ For images that should span the full width of the container:
 
 <div style="border: 1px solid #ddd; padding: 10px; display: inline-block; margin: 10px 0;">
   <img src="https://picsum.photos/400/300?random=9" alt="Framed Image">
-  <p style="text-align: center; margin: 10px 0 0 0; font-style: italic;">A nicely framed image with a caption</p>
+  <p style="text-align: center; margin: 10px 0; font-style: italic;">A nicely framed image with a caption</p>
 </div>
 
 ## Image Gallery with Lightbox
@@ -114,7 +114,7 @@ Add this to your custom CSS file to style the image grid:
 }
 
 .gallery a {
-  flex: 1 1 200px;
+  flex: 1 200px;
 }
 
 .gallery img {
@@ -132,7 +132,7 @@ Add this to your custom CSS file to style the image grid:
 
 ## Notes
 
-- Always include descriptive alt text for accessibility
+- Always includescriptive altext for accessibility
 - Optimize images for web to ensure fast loading times
 - Consider using responsive images with `srcset` for different screen sizes
 - Be mindful of copyright when using images from the web

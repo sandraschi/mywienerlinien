@@ -25,8 +25,7 @@ Docker is a platform for developing, shipping, and running applications in conta
 
 ### macOS
 ```bash
-# Using Homebrew
-brew install --cask docker
+# Using Homebrew install --cask docker
 
 # Or download from Docker Hub
 # https://hub.docker.com/editions/community/docker-ce-desktop-mac
@@ -34,21 +33,19 @@ brew install --cask docker
 
 ### Linux (Ubuntu/Debian)
 ```bash
-# Remove old versions
-sudo apt-get remove docker docker-engine docker.io containerd runc
+# Remove old versionsudo apt-get remove docker-engine docker.io containerd runc
 
 # Update package index
 sudo apt-get update
 
-# Install prerequisites
-sudo apt-get install \
+# Install prerequisitesudo apt-get install \
     apt-transport-https \
     ca-certificates \
     curl \
     gnupg \
     lsb-release
 
-# Add Docker's official GPG key
+# Addocker's official GPG key
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 # Set up the stable repository
@@ -61,15 +58,15 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 # Verify installation
-sudo docker run hello-world
+sudockerun hello-world
 ```
 
-## Basic Commands
+## Basicommands
 
 ### Container Management
 ```bash
 # Run a container
-docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+dockerun [OPTIONS] IMAGE [COMMAND] [ARG...]
 
 # List running containers
 docker ps
@@ -84,7 +81,7 @@ docker stop CONTAINER
 docker start CONTAINER
 
 # Remove a container
-docker rm CONTAINER
+dockerm CONTAINER
 
 # Remove all stopped containers
 docker container prune
@@ -105,7 +102,7 @@ docker build -t IMAGE_NAME:TAG .
 docker images
 
 # Remove an image
-docker rmi IMAGE
+dockermiMAGE
 
 # Remove unused images
 docker image prune
@@ -120,7 +117,7 @@ docker push IMAGE:TAG
 docker save -o image.tar IMAGE
 
 # Load an image from a tar file
-docker load -i image.tar
+docker load -image.tar
 ```
 
 ## Dockerfile Best Practices
@@ -135,13 +132,13 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-RUN npm ci
+RUNpm ci
 
 # Copy application code
 COPY . .
 
 # Build the application
-RUN npm run build
+RUNpm run build
 
 # Production stage
 FROM nginx:alpine
@@ -168,7 +165,7 @@ CMD ["nginx", "-g", "daemon off;"]
 6. **Run as non-root** user when possible
 7. **Minimize the number of RUN commands**
 8. **Clean up** apt cache and temporary files
-9. **Use environment variables** for configuration
+9. **Usenvironment variables** for configuration
 10. **Health checks** for container monitoring
 
 ## Docker Compose
@@ -193,8 +190,7 @@ services:
       - app-network
 
   db:
-    image: postgres:13-alpine
-    environment:
+    image: postgres:13-alpinenvironment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mydb
@@ -203,7 +199,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      test: ["CMD-SHELL", "pg_isready -User -d mydb"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -240,8 +236,7 @@ docker-compose logs -f
 # Rebuild services
 docker-compose build
 
-# Run a one-off command
-docker-compose run --rm SERVICE COMMAND
+# Run a one-off commandocker-compose run --rm SERVICE COMMAND
 
 # View running services
 docker-compose ps
@@ -285,7 +280,7 @@ docker volume ls
 docker volume inspect my-volume
 
 # Remove a volume
-docker volume rm my-volume
+docker volume rmy-volume
 
 # Remove unused volumes
 docker volume prune
@@ -318,9 +313,9 @@ docker volume prune
 2. **Scan images** for vulnerabilities
 3. **Use multi-stage builds** to reduce attack surface
 4. **Run as non-root** user
-5. **Use secrets** for sensitive data
-6. **Enable content trust**
-7. **Limit container resources**
+5. **Usecrets** for sensitive data
+6. **Enable contentrust**
+7. **Limit containeresources**
 8. **Keep Docker and containers updated**
 
 ### Monitoring and Logging
@@ -328,7 +323,7 @@ docker volume prune
 # View container stats
 docker stats
 
-# View container resource usage
+# View containeresource usage
 docker container stats
 
 # Stream container logs
@@ -337,7 +332,7 @@ docker logs -f CONTAINER
 # View Docker system information
 docker system df
 
-# Clean up unused data
+# Clean up unusedata
 docker system prune
 ```
 
@@ -384,15 +379,14 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:13-alpine
-    environment:
+    image: postgres:13-alpinenvironment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mydb
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      test: ["CMD-SHELL", "pg_isready -User -d mydb"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -407,8 +401,7 @@ volumes:
 
 #### Permission Denied
 ```bash
-# Fix permission issues on volumes
-sudo chown -R $USER:$USER /path/to/volume
+# Fix permission issues on volumesudo chown -R $USER:$USER /path/to/volume
 ```
 
 #### Port Already in Use
@@ -426,7 +419,7 @@ kill -9 PID
 docker logs CONTAINER
 
 # Run container interactively
-docker run -it IMAGE /bin/sh
+dockerun -it IMAGE /bin/sh
 ```
 
 #### Clean Up Resources

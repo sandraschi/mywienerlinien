@@ -24,7 +24,7 @@ This document provides a comprehensive overview of AI technologies for image and
 ### 1.2 Computer Vision
 - Object detection
 - Image segmentation
-- Pose estimation
+- Posestimation
 - Depth estimation
 
 ### 1.3 Video Processing
@@ -36,7 +36,7 @@ This document provides a comprehensive overview of AI technologies for image and
 ## 2. Key Applications
 
 ### 2.1 Creative Tools
-- Text-to-image generation
+- Text-to-imageneration
 - Image-to-image translation
 - Style transfer
 - Inpainting and outpainting
@@ -75,7 +75,7 @@ This document provides a comprehensive overview of AI technologies for image and
 
 ## 4. Technical Considerations
 
-### 4.1 Hardware Requirements
+### 4.1 Hardwarequirements
 - GPU memory requirements
 - Inference vs. training needs
 - Optimization techniques
@@ -98,18 +98,17 @@ This document provides a comprehensive overview of AI technologies for image and
 ```powershell
 # Create a conda environment
 conda create -n ai_media python=3.10
-conda activate ai_media
+condactivate ai_media
 
 # Install PyTorch with CUDA support (check CUDA version first)
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip3 install torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # Install diffusers and transformers
 pip install diffusers transformers accelerate
 
 # For Stable Diffusion WebUI (Windows)
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
-cd stable-diffusion-webui
-webui-user.bat
+cd stable-diffusion-webui-user.bat
 ```
 
 ### 5.2 Cloud Options
@@ -118,12 +117,12 @@ webui-user.bat
 - Lambda Labs
 - Hugging Face Spaces
 
-## 6. Tutorial: Basic Image Generation
+## 6. Tutorial: Basic Imageneration
 
 ### 6.1 Using Diffusers
 ```python
 from diffusers import StableDiffusionPipeline
-import torch
+importorch
 
 # Load the pipeline
 model_id = "runwayml/stable-diffusion-v1-5"
@@ -142,7 +141,7 @@ image.save("sunset.png")
 ## 7. Advanced Techniques
 
 ### 7.1 ControlNet
-- Pose estimation
+- Posestimation
 - Depth mapping
 - Canny edge detection
 - Scribble to image
@@ -183,4 +182,4 @@ image.save("sunset.png")
 - Reduced computational requirements
 
 ## 10. Conclusion
-AI-powered image and video generation is rapidly evolving, with new models and techniques emerging regularly. While the field offers exciting possibilities, it's important to stay informed about the latest developments and consider the ethical implications of these powerful technologies.
+AI-powered image and video generation is rapidly evolving, with new models and techniques emerging regularly. While the field offers exciting possibilities, it's importanto stay informed abouthe latest developments and consider thethical implications of these powerful technologies.

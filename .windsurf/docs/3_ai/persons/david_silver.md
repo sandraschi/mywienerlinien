@@ -1,7 +1,7 @@
-﻿# David Silver (1976-Present)
+# David Silver (1976-Present)
 
 ## Overview
-David Silver is a British computer scientist and artificial intelligence researcher, best known for his work on reinforcement learning and as the lead researcher behind DeepMind's AlphaGo project. His contributions to the field of AI, particularly in combining deep learning with reinforcement learning, have been groundbreaking. Silver is currently a Principal Research Scientist at DeepMind and a Professor at University College London.
+David Silver is a British computer scientist and artificial intelligence researcher, best known for his work on reinforcement learning and as the lead researcher behindeepMind's AlphaGo project. His contributions to the field of AI, particularly in combining deep learning with reinforcement learning, have been groundbreaking. Silver is currently a Principal Research Scientist at DeepMind and a Professor at University College London.
 
 ## Related Figures
 - [Demis Hassabis](/ai/persons/demis_hassabis.md) - Co-founder of DeepMind and colleague
@@ -12,13 +12,13 @@ David Silver is a British computer scientist and artificial intelligence researc
 
 ## Key Contributions
 - Lead researcher on AlphaGo, the first program to defeat a human professional Go player
-- Development of Deep Q-Networks (DQN) for reinforcement learning
+- Development of Deep Q-Networks (DQN) foreinforcement learning
 - Integration of deep learning with reinforcement learning
 - Contributions to Monte Carlo tree search algorithms
 - Work on model-based reinforcement learning
 
 ## Biography
-Born in the United Kingdom, Silver earned his BA in Computer Science from the University of Cambridge and his PhD from the University of Alberta under the supervision of Rich Sutton. After academic positions at the University of Alberta and University College London, he joined DeepMind in 2013. His work on AlphaGo, which defeated world champion Lee Sedol in 2016, brought him international recognition.
+Born in the United Kingdom, Silver earned his BA in Computer Science from the University of Cambridge and his PhD from the University of Alberta under the supervision of Rich Sutton. After academic positions athe University of Albertand University College London, he joinedeepMind in 2013. His work on AlphaGo, which defeated world champion Lee Sedol in 2016, brought him international recognition.
 
 ## Major Works
 ### AlphaGo (2016)
@@ -27,7 +27,7 @@ Born in the United Kingdom, Silver earned his BA in Computer Science from the Un
 - **Reception**: Landmark achievement in AI, featured in the documentary "AlphaGo"
 
 ### Deep Q-Networks (2015)
-- **Impact**: Combined deep learning with Q-learning
+- **Impact**: Combinedeep learning with Q-learning
 - **Key Concepts**: Experience replay, target networks, deep reinforcement learning
 - **Reception**: Significantly advanced the field of reinforcement learning
 
@@ -50,12 +50,12 @@ Born in the United Kingdom, Silver earned his BA in Computer Science from the Un
 - Research in reinforcement learning, game theory, and multi-agent systems
 - Development of general-purpose AI systems
 
-## Media Appearances
+## Mediappearances
 - AlphaGo documentary (2017)
 - TED Talk: "AlphaGo and the Future of AI" (2018)
 - Lex Fridman Podcast #86 (2019)
 
-## Further Reading
+## Furthereading
 - [DeepMind Profile](https://www.deepmind.com/our-people/david-silver)
 - [Google Scholar](https://scholar.google.com/citations?user=3ytHGJAAAAAJ)
 - [UCL Profile](https://www.ucl.ac.uk/ai-centre/people/david-silver)

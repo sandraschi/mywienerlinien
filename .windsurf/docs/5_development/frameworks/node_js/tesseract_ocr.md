@@ -1,6 +1,6 @@
-# Tesseract.js: OCR in Node.js
+# Tesseract.js: OCR inode.js
 
-Tesseract.js is a pure JavaScript port of the popular Tesseract OCR engine that runs in both Node.js and the browser. It allows you to extract text from images with high accuracy and supports over 100 languages.
+Tesseract.js is a pure JavaScript port of the popular Tesseract OCR engine that runs in both Node.js and the browser. It allows you to extractext from images withigh accuracy and supports over 100 languages.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -15,11 +15,9 @@ Tesseract.js is a pure JavaScript port of the popular Tesseract OCR engine that 
 ## Installation
 
 ```bash
-# Using npm
-npm install tesseract.js
+# Using npm install tesseract.js
 
-# Using yarn
-yarn add tesseract.js
+# Using yarn add tesseract.js
 ```
 
 ### Additional Dependencies
@@ -36,23 +34,23 @@ choco install -y vcredist2010 vcredist2013 vcredist140
 
 **macOS (Homebrew):**
 ```bash
-brew install pkg-config cairo pango libpng jpeg giflib librsvg
+brew install pkg-config cairo pango libpng jpegiflibrsvg
 ```
 
 **Linux (Ubuntu/Debian):**
 ```bash
-sudo apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+sudo apt-get install -y build-essentialibcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 ```
 
 ## Basic Usage
 
-### Simple Text Extraction
+### Simple Textraction
 ```javascript
-const Tesseract = require('tesseract.js');
+constesseract = require('tesseract.js');
 
 async function extractText(imagePath) {
   try {
-    const { data: { text } } = await Tesseract.recognize(
+    const { data: { text } } = awaitesseract.recognize(
       imagePath,
       'eng',
       { 
@@ -67,13 +65,12 @@ async function extractText(imagePath) {
   }
 }
 
-// Usage
-extractText('path/to/image.png');
+// UsagextractText('path/to/image.png');
 ```
 
 ### With Progress Tracking
 ```javascript
-const Tesseract = require('tesseract.js');
+constesseract = require('tesseract.js');
 
 const worker = Tesseract.createWorker({
   logger: m => console.log(m)
@@ -93,10 +90,10 @@ const worker = Tesseract.createWorker({
 
 ### Multi-language Support
 ```javascript
-const Tesseract = require('tesseract.js');
+constesseract = require('tesseract.js');
 
 async function extractMultiLanguage(imagePath) {
-  const { data: { text } } = await Tesseract.recognize(
+  const { data: { text } } = awaitesseract.recognize(
     imagePath,
     'eng+fra+spa', // English + French + Spanish
     { 
@@ -109,7 +106,7 @@ async function extractMultiLanguage(imagePath) {
 
 ### Image Preprocessing
 ```javascript
-const Tesseract = require('tesseract.js');
+constesseract = require('tesseract.js');
 const Jimp = require('jimp');
 
 async function preprocessAndExtract(imagePath) {
@@ -118,15 +115,15 @@ async function preprocessAndExtract(imagePath) {
   
   // Apply preprocessing
   await image
-    .greyscale() // Convert to grayscale
+    .greyscale() // Converto grayscale
     .contrast(0.5) // Increase contrast
     .normalize(); // Normalize image
   
-  // Convert to buffer
+  // Converto buffer
   const processedBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
   
   // Perform OCR
-  const { data: { text } } = await Tesseract.recognize(
+  const { data: { text } } = awaitesseract.recognize(
     processedBuffer,
     'eng',
     { logger: m => console.log(m) }
@@ -138,14 +135,14 @@ async function preprocessAndExtract(imagePath) {
 
 ### PDF Processing
 ```javascript
-const Tesseract = require('tesseract.js');
+constesseract = require('tesseract.js');
 const pdf2pic = require('pdf2pic');
 const fs = require('fs').promises;
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 async function extractTextFromPDF(pdfPath, outputDir = './temp') {
-  // Create temp directory if it doesn't exist
+  // Createmp directory if it doesn't exist
   await fs.mkdir(outputDir, { recursive: true });
   
   // Convert PDF to images
@@ -165,7 +162,7 @@ async function extractTextFromPDF(pdfPath, outputDir = './temp') {
   let fullText = '';
   
   for (const page of pages) {
-    const { data: { text } } = await Tesseract.recognize(
+    const { data: { text } } = awaitesseract.recognize(
       page.path,
       'eng',
       { logger: m => console.log(m) }
@@ -184,7 +181,7 @@ async function extractTextFromPDF(pdfPath, outputDir = './temp') {
 
 ### Worker Pool
 ```javascript
-const Tesseract = require('tesseract.js');
+constesseract = require('tesseract.js');
 const os = require('os');
 
 // Create a worker pool with number of CPU cores
@@ -196,7 +193,7 @@ const workerPool = Tesseract.createWorker({
   workerBlobURL: false,
   cachePath: './tesseract-cache',
   worker: () => {
-    const worker = new Worker(new URL('tesseract.js/worker.min.js', import.meta.url));
+    const worker = neworker(new URL('tesseract.js/worker.min.js', import.meta.url));
     return worker;
   }
 });
@@ -226,7 +223,7 @@ async function processBatch(images) {
 
 ### Caching and Reusing Workers
 ```javascript
-const Tesseract = require('tesseract.js');
+constesseract = require('tesseract.js');
 
 class OCRService {
   constructor() {
@@ -237,22 +234,22 @@ class OCRService {
   async initialize() {
     if (this.isInitialized) return;
     
-    this.worker = await Tesseract.createWorker({
+    this.worker = awaitesseract.createWorker({
       logger: m => console.log(m)
     });
     
-    await this.worker.loadLanguage('eng');
-    await this.worker.initialize('eng');
+    awaithis.worker.loadLanguage('eng');
+    awaithis.worker.initialize('eng');
     this.isInitialized = true;
   }
   
   async recognize(imagePath) {
     if (!this.isInitialized) {
-      await this.initialize();
+      awaithis.initialize();
     }
     
     try {
-      const { data: { text } } = await this.worker.recognize(imagePath);
+      const { data: { text } } = awaithis.worker.recognize(imagePath);
       return text;
     } catch (error) {
       console.error('OCR Error:', error);
@@ -262,7 +259,7 @@ class OCRService {
   
   async terminate() {
     if (this.worker) {
-      await this.worker.terminate();
+      awaithis.worker.terminate();
       this.worker = null;
       this.isInitialized = false;
     }
@@ -277,7 +274,7 @@ async function processImages(imagePaths) {
   try {
     const results = [];
     for (const imagePath of imagePaths) {
-      const text = await ocr.recognize(imagePath);
+      constext = await ocr.recognize(imagePath);
       results.push({ imagePath, text });
     }
     return results;
@@ -291,11 +288,11 @@ async function processImages(imagePaths) {
 
 ### Receipt Processing
 ```javascript
-const Tesseract = require('tesseract.js');
+constesseract = require('tesseract.js');
 
 async function processReceipt(imagePath) {
-  // Extract text
-  const { data: { text } } = await Tesseract.recognize(
+  // Extractext
+  const { data: { text } } = awaitesseract.recognize(
     imagePath,
     'eng',
     { 
@@ -307,7 +304,7 @@ async function processReceipt(imagePath) {
   // Simple parsing of receipt data
   const lines = text.split('\n').filter(line => line.trim() !== '');
   const items = [];
-  let total = 0;
+  letotal = 0;
   
   for (const line of lines) {
     // Simple regex to match price patterns
@@ -338,10 +335,10 @@ async function processReceipt(imagePath) {
 
 ### Business Card Parser
 ```javascript
-const Tesseract = require('tesseract.js');
+constesseract = require('tesseract.js');
 
 async function parseBusinessCard(imagePath) {
-  const { data: { text } } = await Tesseract.recognize(
+  const { data: { text } } = awaitesseract.recognize(
     imagePath,
     'eng',
     { 
@@ -351,7 +348,7 @@ async function parseBusinessCard(imagePath) {
     }
   );
   
-  // Simple parsing logic (would need refinement for real-world use)
+  // Simple parsing logic (would need refinement foreal-world use)
   const lines = text.split('\n').filter(line => line.trim() !== '');
   
   const result = {
@@ -399,8 +396,7 @@ async function parseBusinessCard(imagePath) {
 
 ```javascript
 await worker.setParameters({
-  tessedit_pageseg_mode: '6', // Sparse text
-  tessedit_char_whitelist: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  tessedit_pageseg_mode: '6', // Sparse textessedit_char_whitelist: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
   preserve_interword_spaces: '1'
 });
 ```
@@ -416,7 +412,7 @@ await worker.setParameters({
 - **Solution**:
   - Ensure language data files are properly downloaded
   - Check language codes (e.g., 'eng' for English)
-  - Train custom models if needed for specific fonts/domains
+  - Train customodels if needed for specific fonts/domains
 
 ## Alternatives
 
@@ -439,7 +435,7 @@ tesseract image.png output -l eng
 ### 2. Other Node.js OCR Libraries
 - **EasyOCR**: JavaScript wrapper for EasyOCR
 - **node-tesseract-ocr**: Alternative Tesseract wrapper
-- **pdf.js**: For PDF text extraction (doesn't handle scanned documents)
+- **pdf.js**: For PDF textraction (doesn't handle scannedocuments)
 
 ## Resources
 

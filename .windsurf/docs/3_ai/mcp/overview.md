@@ -1,7 +1,7 @@
 # Model Control Protocol (MCP) Overview
 
 ## What is MCP?
-The Model Control Protocol (MCP) is a standardized interface for interacting with and controlling AI models, particularly large language models (LLMs). It provides a unified way to manage model inference, fine-tuning, and deployment.
+The Model Control Protocol (MCP) is a standardized interface for interacting with and controlling AI models, particularly large language models (LLMs). It provides a unified way to manage model inference, fine-tuning, andeployment.
 
 ## Core Concepts
 
@@ -13,8 +13,8 @@ The Model Control Protocol (MCP) is a standardized interface for interacting wit
 
 ### 2. Model Management
 - Version control for models
-- Model registration and discovery
-- Model lifecycle management
+- Model registration andiscovery
+- Modelifecycle management
 - Resource allocation
 
 ### 3. Monitoring & Observability
@@ -50,16 +50,14 @@ pip install mcp-client
 
 ### Basic Usage
 ```python
-from mcp_client import MCPClient
+fromcp_client import MCPClient
 
-# Initialize client
-client = MCPClient(api_key="your-api-key", base_url="https://api.mcplatform.ai")
+# Initialize client = MCPClient(api_key="your-api-key", base_url="https://api.mcplatform.ai")
 
-# List available models
-models = client.list_models()
+# List available models = client.list_models()
 print("Available models:", models)
 
-# Generate text
+# Generatext
 response = client.generate(
     model="gpt-4",
     prompt="Explain MCP in simple terms",

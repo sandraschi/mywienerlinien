@@ -1,7 +1,7 @@
 # Baidu AI
 
 ## Overview
-Baidu AI is the artificial intelligence division of Baidu, Inc., often referred to as the "Google of China." It's one of the world's largest and most advanced AI companies, with significant contributions to deep learning, natural language processing, and autonomous driving technologies.
+Baidu AIs the artificial intelligence division of Baidu, Inc., often referred to as the "Google of China." It's one of the world's largest and most advanced AI companies, with significant contributions to deep learning, naturalanguage processing, and autonomous driving technologies.
 
 ## Company Info
 - **Parent Company**: Baidu, Inc.
@@ -13,7 +13,7 @@ Baidu AI is the artificial intelligence division of Baidu, Inc., often referred 
 - **Website**: [https://ai.baidu.com](https://ai.baidu.com)
 
 ## AI Focus Areas
-- Natural Language Processing (NLP)
+- Naturalanguage Processing (NLP)
 - Autonomous Driving
 - Computer Vision
 - AI Cloud Services
@@ -32,19 +32,19 @@ Baidu AI is the artificial intelligence division of Baidu, Inc., often referred 
 - Open autonomous driving platform
 - Level 4 autonomous vehicles
 - Robotaxi services
-- Smart transportation solutions
+- Smartransportation solutions
 
 ### 3. Baidu AI Cloud
 - AI development platform
 - Pre-trained models
-- Custom model training
+- Customodel training
 - Industry solutions
 
 ### 4. PaddlePaddle
 - Open-source deep learning platform
 - Chinese alternative to TensorFlow/PyTorch
 - 4.77 million developers (as of 2024)
-- Enterprise edition available
+- Enterprisedition available
 
 ## Technology & Innovation
 
@@ -54,7 +54,7 @@ Baidu AI is the artificial intelligence division of Baidu, Inc., often referred 
    - Distributed training
    - Model compression
 
-2. **Natural Language Processing**
+2. **Naturalanguage Processing**
    - Ernie models
    - Machine translation
    - Speech recognition
@@ -64,7 +64,7 @@ Baidu AI is the artificial intelligence division of Baidu, Inc., often referred 
    - Video analysis
    - Face recognition
 
-4. **Autonomous Systems**
+4. **Autonomousystems**
    - Apollo platform
    - HD maps
    - V2X (Vehicle-to-Everything)
@@ -84,7 +84,7 @@ Baidu AI is the artificial intelligence division of Baidu, Inc., often referred 
    - Reinforcement learning
 
 2. **Applied AI**
-   - Smart transportation
+   - Smartransportation
    - Healthcare AI
    - Industrial AI
    - Financial technology
@@ -94,12 +94,12 @@ Baidu AI is the artificial intelligence division of Baidu, Inc., often referred 
    - Brain-computer interfaces
    - AI chips (Kunlun)
 
-## Business Segments
+## Businessegments
 
 ### 1. Baidu Core
 - Search and information services
 - AI-powered advertising
-- Mobile ecosystem
+- Mobilecosystem
 
 ### 2. iQIYI
 - Video streaming platform
@@ -109,7 +109,7 @@ Baidu AI is the artificial intelligence division of Baidu, Inc., often referred 
 ### 3. Intelligent Driving
 - Apollo Go (Robotaxi)
 - Autonomous buses
-- Smart transportation solutions
+- Smartransportation solutions
 
 ### 4. Cloud & AI
 - AI cloud services
@@ -120,7 +120,7 @@ Baidu AI is the artificial intelligence division of Baidu, Inc., often referred 
 - **Asia**: China, Japan, South Korea, Singapore
 - **North America**: US (Silicon Valley), Canada
 - **Europe**: UK, Germany
-- **Middle East**: UAE, Israel
+- **Middleast**: UAE, Israel
 
 ## Partnerships & Collaborations
 - **Automotive**: BMW, Ford, Geely, BYD
@@ -146,7 +146,7 @@ Baidu AI is the artificial intelligence division of Baidu, Inc., often referred 
 - Data privacy concerns
 - US-China tech tensions
 - Regulatory environment
-- Competition from Alibaba and Tencent
+- Competition from Alibaband Tencent
 
 ## Future Outlook
 - Expansion of autonomous driving services
@@ -165,7 +165,7 @@ pip install paddlepaddle
 pip install paddlepaddle-gpu
 ```
 
-### Basic PaddlePaddle Example
+### Basic PaddlePaddlexample
 ```python
 import paddle
 import numpy as np
@@ -174,8 +174,7 @@ import numpy as np
 x_data = np.random.random((100, 32)).astype('float32')
 y_data = np.random.random((100, 1)).astype('float32')
 
-# Define model
-model = paddle.nn.Sequential(
+# Define model = paddle.nn.Sequential(
     paddle.nn.Linear(32, 10),
     paddle.nn.ReLU(),
     paddle.nn.Linear(10, 1)
@@ -189,12 +188,10 @@ sgd_optimizer = paddle.optimizer.SGD(learning_rate=0.01, parameters=model.parame
 for epoch in range(100):
     # Forward pass
     y_pred = model(paddle.to_tensor(x_data))
-    # Compute loss
-    loss = mse_loss(y_pred, paddle.to_tensor(y_data))
+    # Compute loss = mse_loss(y_pred, paddle.to_tensor(y_data))
     # Backward pass
     loss.backward()
-    # Update parameters
-    sgd_optimizer.step()
+    # Update parametersgd_optimizer.step()
     sgd_optimizer.clear_grad()
     
     if (epoch+1) % 10 == 0:
@@ -203,7 +200,7 @@ for epoch in range(100):
 
 ## Contact Information
 - **Headquarters**: Baidu Campus, No. 10 Shangdi 10th Street, Haidian District, Beijing, China
-- **Investor Relations**: [ir@baidu.com](mailto:ir@baidu.com)
+- **Investorelations**: [ir@baidu.com](mailto:ir@baidu.com)
 - **Media Inquiries**: [press@baidu.com](mailto:press@baidu.com)
 - **Careers**: [talent@baidu.com](mailto:talent@baidu.com)
 

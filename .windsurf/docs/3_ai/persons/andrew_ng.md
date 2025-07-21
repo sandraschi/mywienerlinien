@@ -1,7 +1,7 @@
-﻿# Andrew Ng (1976-Present)
+# Andrew Ng (1976-Present)
 
 ## Overview
-Andrew Ng is a British-American computer scientist, entrepreneur, and educator, widely recognized for his work in machine learning and AI education. He co-founded Google Brain, served as Chief Scientist at Baidu, and co-founded Coursera, revolutionizing online education. Ng is currently the founder and CEO of Landing AI and founder of DeepLearning.AI.
+Andrew Ng is a British-American computer scientist, entrepreneur, and educator, widely recognized for his work in machine learning and AI education. He co-founded Google Brain, served as Chief Scientist at Baidu, and co-founded Coursera, revolutionizing onlineducation. Ng is currently the founder and CEOf Landing AI and founder of DeepLearning.AI.
 
 ## Related Figures
 - [Fei-Fei Li](/ai/persons/fei_fei_li.md) - Colleague at Stanford, collaborator on AI education
@@ -18,7 +18,7 @@ Andrew Ng is a British-American computer scientist, entrepreneur, and educator, 
 - Founder of DeepLearning.AI and Landing AI
 
 ## Biography
-Born in the UK to Hong Kong immigrant parents, Ng grew up in Hong Kong and Singapore. He earned his undergraduate degree from Carnegie Mellon University and completed his PhD at UC Berkeley. After postdoctoral research at MIT, he joined Stanford University's Computer Science Department. His work has significantly impacted both industry and education in AI.
+Born in the UK to Hong Kong immigrant parents, Ngrew up in Hong Kong and Singapore. Hearned his undergraduate degree from Carnegie Mellon University and completed his PhD at UC Berkeley. After postdoctoral research at MIT, he joined Stanford University's Computer Science Department. His work hasignificantly impacted both industry and education in AI.
 
 ## Major Works
 ### Machine Learning Course (2011)
@@ -27,14 +27,14 @@ Born in the UK to Hong Kong immigrant parents, Ng grew up in Hong Kong and Singa
 - **Reception**: One of the most popular MOOCs of all time
 
 ### Google Brain (2011)
-- **Impact**: Advanced deep learning research at scale
+- **Impact**: Advancedeep learning research at scale
 - **Key Concepts**: Large-scale neural networks, deep learning infrastructure
 - **Reception**: Led to breakthroughs in speech and image recognition
 
 ## Publications
 - "Learning Deep Architectures for AI" (2009) - Foundations and Trends in Machine Learning
 - "Deep Learning" (2015) - Nature (with Ian Goodfellow and Aaron Courville)
-- "Spoken Language Understanding Using Long Short-Term Memory Neural Networks" (2014) - IEEE
+- "Spoken Language Understanding Using Long Short-Termemory Neural Networks" (2014) - IEEE
 
 ## Awards and Honors
 - Time 100 Most Influential People (2013)
@@ -48,12 +48,12 @@ Born in the UK to Hong Kong immigrant parents, Ng grew up in Hong Kong and Singa
 - Adjunct Professor, Stanford University
 - Founder, AI Fund
 
-## Media Appearances
-- TED Talk: "What AI is and isn't" (2017)
+## Mediappearances
+- TED Talk: "What AIs and isn't" (2017)
 - Lex Fridman Podcast #73 (2020)
 - The AI Podcast (2019)
 
-## Further Reading
+## Furthereading
 - [Stanford Profile](https://profiles.stanford.edu/andrew-ng)
 - [Google Scholar](https://scholar.google.com/citations?user=W8UeJZYAAAAJ)
 - [Wikipedia](https://en.wikipedia.org/wiki/Andrew_Ng)

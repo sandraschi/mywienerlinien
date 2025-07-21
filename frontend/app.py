@@ -693,4 +693,14 @@ initialize_app()
 
 if __name__ == '__main__':
     logger.info("Starting Wiener Linien Live Map application")
-    socketio.run(app, host='0.0.0.0', port=3080, debug=True)
+    
+    # Check if running in production mode
+    debug_mode = os.environ.get('FLASK_ENV') != 'production'
+    
+    socketio.run(
+        app, 
+        host='0.0.0.0', 
+        port=3080, 
+        debug=debug_mode,
+        allow_unsafe_werkzeug=True
+    )

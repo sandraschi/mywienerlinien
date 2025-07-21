@@ -1,4 +1,4 @@
-﻿# react bootstrap.Value.ToUpper() eact  react bootstrap.Value.ToUpper() ootstrap\nThis directory contains files and subdirectories related to react bootstrap.\n\n## Contents\n<!-- toc -->\n
+# react bootstrap eact  react bootstrap\nThis directory contains files and subdirectories related to react bootstrap.\n\n## Contents\n<!-- toc -->\n
 ## Navigation
 
 - [Parent Directory](../)

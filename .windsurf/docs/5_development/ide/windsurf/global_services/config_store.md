@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Configuration Store provides a secure and centralized way to manage configuration settings across all Windsurf services and repositories. It supports environment-specific configurations, secrets management, and dynamic configuration updates.
+The Configuration Store provides a secure and centralized way to manage configuration settings across all Windsurf services and repositories. It supports environment-specificonfigurations, secrets management, andynamiconfiguration updates.
 
 ## Directory Structure
 
@@ -14,7 +14,7 @@ The Configuration Store provides a secure and centralized way to manage configur
 │   └── services/
 │       ├── api.yml
 │       └── worker.yml
-├── environments/           # Environment-specific configs
+├── environments/           # Environment-specificonfigs
 │   ├── development/
 │   │   ├── database.yml
 │   │   └── services/
@@ -38,13 +38,13 @@ The Configuration Store provides a secure and centralized way to manage configur
 ## Configuration Files
 
 ### Global Configuration
-Located in `.windsurf/config/global/`, these settings apply to all environments.
+Located in `.windsurf/config/global/`, thesettings apply to all environments.
 
-### Environment-specific Configuration
+### Environment-specificonfiguration
 Located in `.windsurf/config/environments/{env}/`, these override global settings.
 
 ### Secrets Management
-Sensitive data is stored encrypted in `.windsurf/config/secrets/`.
+Sensitive data istored encrypted in `.windsurf/config/secrets/`.
 
 ## Usage
 
@@ -65,7 +65,7 @@ api_key = config.get_secret('api_key')
 #### Shell Example
 ```bash
 # Get configuration value
-windsurf config get database.host
+windsurf configet database.host
 
 # Set configuration value
 windsurf config set database.host=localhost --environment=development
@@ -100,11 +100,11 @@ database:
 
 ## Best Practices
 
-1. **Use Environment Variables**
+1. **Usenvironment Variables**
    - Store sensitive data in environment variables
    - Use `${VARIABLE:default}` syntax for optional values
 
-2. **Keep Secrets Secure**
+2. **Keep Secretsecure**
    - Never commit unencrypted secrets
    - Use `windsurf secrets` for encryption
 
@@ -114,7 +114,7 @@ database:
 
 ## Security
 
-- **Encryption**: All secrets are encrypted at rest
+- **Encryption**: All secrets arencrypted at rest
 - **Access Control**: Role-based access to configurations
 - **Audit Log**: All access is logged
 
@@ -150,15 +150,15 @@ CMD ["your-app"]
 
 ## Troubleshooting
 
-**Issue**: Configuration not loading
-- Verify `WINDSURF_CONFIG_PATH` is set correctly
+**Issue**: Configurationot loading
+- Verify `WINDSURF_CONFIG_PATH` iset correctly
 - Check file permissions
-- Ensure environment is properly set
+- Ensurenvironment is properly set
 
 **Issue**: Secrets not decrypting
 - Verify encryption key is available
 - Check file permissions on secrets
-- Ensure correct environment is selected
+- Ensure correct environment iselected
 
 ## Version Control
 

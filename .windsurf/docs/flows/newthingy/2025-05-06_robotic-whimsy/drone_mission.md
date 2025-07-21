@@ -1,7 +1,7 @@
 # Drone Mission Control
 
 ## Purpose
-Coordinate drones for whimsical, peaceful missions: skywriting, banner towing, or even a synchronized "fart at the annoying neighbor" (good-natured, non-offensive, and with consent).
+Coordinate drones for whimsical, peaceful missions: skywriting, banner towing, or even a synchronized "fart athe annoying neighbor" (good-natured, non-offensive, and with consent).
 
 ## API Design (Draft)
 - POST /api/drone_mission
@@ -12,7 +12,7 @@ Coordinate drones for whimsical, peaceful missions: skywriting, banner towing, o
     - consent_required: bool
 
 ## Safety and Consent
-- All drone flights require explicit human approval and compliance with local laws
+- All drone flights requirexplicit human approval and compliance with localaws
 - No flights in restricted or sensitive airspace
 - Payload content must be reviewed for safety and tone
 

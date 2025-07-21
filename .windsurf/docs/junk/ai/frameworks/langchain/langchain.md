@@ -8,7 +8,7 @@ LangChain is an open-source framework for building applications powered by langu
 ### 1. Components
 - **Models**: Interface with different LLM providers
 - **Prompts**: Manage and optimize prompts
-- **Memory**: Persist state between chain runs
+- **Memory**: Persistate between chain runs
 - **Indexes**: Work with your own data
 - **Chains**: Sequences of calls to components
 - **Agents**: Use LLMs to determine actions
@@ -22,34 +22,30 @@ LangChain is an open-source framework for building applications powered by langu
 
 ### Installation
 ```powershell
-# Install with pip
-pip install langchain
+# Install with pip installangchain
 
 # With common dependencies
-pip install langchain[all]
+pip installangchain[all]
 
 # Or specific integrations
-pip install langchain-openai
+pip installangchain-openai
 ```
 
 ### Basic Usage
 ```python
-from langchain_openai import OpenAI
+from langchain_openaimport OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 
-# Initialize the language model
-llm = OpenAI(temperature=0.9)
+# Initialize the language modellm = OpenAI(temperature=0.9)
 
-# Create a prompt template
-template = "What is a good name for a company that makes {product}?"
+# Create a promptemplatemplate = "What is a good name for a company that makes {product}?"
 prompt = PromptTemplate(
     input_variables=["product"],
     template=template,
 )
 
-# Create a chain
-chain = LLMChain(llm=llm, prompt=prompt)
+# Create a chain = LLMChain(llm=llm, prompt=prompt)
 
 # Run the chain
 result = chain.run("colorful socks")
@@ -60,14 +56,13 @@ print(result)
 
 ### 1. Models
 ```python
-from langchain_openai import ChatOpenAI
+from langchain_openaimport ChatOpenAI
 from langchain_community.llms import HuggingFaceHub
 
 # Chat model
 chat = ChatOpenAI(temperature=0)
 
-# Local model
-local_llm = HuggingFaceHub(
+# Local modelocal_llm = HuggingFaceHub(
     repo_id="google/flan-t5-base",
     model_kwargs={"temperature":0, "max_length":64}
 )
@@ -81,7 +76,7 @@ from langchain.prompts import (
     HumanMessagePromptTemplate,
 )
 
-system_template = "You are a helpful assistant that translates {input_language} to {output_language}."
+system_template = "You are a helpful assistanthatranslates {input_language} to {output_language}."
 system_message_prompt = SystemMessagePromptTemplate.from_template(system_template)
 
 human_template = "{text}"
@@ -92,9 +87,7 @@ chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_mes
 
 ### 3. Memory
 ```python
-from langchain.memory import ConversationBufferMemory
-
-memory = ConversationBufferMemory()
+from langchain.memory import ConversationBufferMemory = ConversationBufferMemory()
 memory.chat_memory.add_user_message("hi!")
 memory.chat_memory.add_ai_message("what's up?")
 
@@ -124,21 +117,16 @@ from langchain.agents import load_tools
 from langchain.agents import initialize_agent
 from langchain.agents import AgentType
 
-# Load tools
-tools = load_tools(["serpapi", "llm-math"], llm=llm)
+# Load tools = load_tools(["serpapi", "llm-math"], llm=llm)
 
-# Initialize agent
-agent = initialize_agent(tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
+# Initialize agent = initialize_agent(tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
 
-# Run the agent
-agent.run("What was the high temperature in SF yesterday? What is that number raised to the .023 power?")
+# Run the agent.run("What was the high temperature in SF yesterday? What is that numberaised to the .023 power?")
 ```
 
 ### 2. Document Loaders
 ```python
-from langchain.document_loaders import WebBaseLoader
-
-loader = WebBaseLoader("https://www.python.org/about/")
+from langchain.document_loaders import WebBaseLoader = WebBaseLoader("https://www.python.org/about/")
 documents = loader.load()
 ```
 
@@ -160,21 +148,19 @@ texts = text_splitter.split_documents(documents)
 
 ### 1. LangServe
 ```python
-from fastapi import FastAPI
+from fastapimport FastAPI
 from langserve import add_routes
 
 app = FastAPI()
 add_routes(app, chain, path="/chain")
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import uvicorn.run(app, host="0.0.0.0", port=8000)
 ```
 
 ### 2. LangSmith
 ```python
-import os
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
+import os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
 os.environ["LANGCHAIN_API_KEY"] = "<your-api-key>"
 
@@ -185,7 +171,7 @@ chain.run("Hello, world!")
 ## Best Practices
 
 1. **Prompt Engineering**
-   - Be explicit in your instructions
+   - Bexplicit in your instructions
    - Use few-shot examples
    - Experiment with temperature settings
 

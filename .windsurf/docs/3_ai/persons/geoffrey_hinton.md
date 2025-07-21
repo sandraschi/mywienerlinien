@@ -1,4 +1,4 @@
-﻿# Geoffrey Hinton (1947-Present)
+# Geoffrey Hinton (1947-Present)
 
 ## Overview
 Geoffrey Everest Hinton is a British-Canadian cognitive psychologist and computer scientist, most noted for his work on artificial neural networks. He is one of the most influential figures in the development of deep learning and neural networks, co-recipient of the 2018 Turing Award (often called the "Nobel Prize of Computing") with Yann LeCun and Yoshua Bengio.
@@ -12,13 +12,13 @@ Geoffrey Everest Hinton is a British-Canadian cognitive psychologist and compute
 
 ## Key Contributions
 - Backpropagation algorithm for training neural networks
-- Boltzmann machines and deep belief networks
+- Boltzmann machines andeep belief networks
 - Dropout regularization technique
 - Capsule networks (CapsNets)
 - Co-author of the seminal paper on backpropagation (1986)
 
 ## Biography
-Born in Wimbledon, London, Hinton comes from a family of prominent scientists. He studied experimental psychology at the University of Cambridge and received his PhD in Artificial Intelligence from the University of Edinburgh in 1978. After working at various institutions, he joined the University of Toronto in 1987. He later split his time between the university and Google Brain, where he worked until 2023 when he left to speak freely about AI risks.
+Born in Wimbledon, London, Hinton comes from a family of prominent scientists. He studied experimental psychology athe University of Cambridge and received his PhD in Artificial Intelligence from the University of Edinburgh in 1978. After working at various institutions, he joined the University of Toronto in 1987. He later split his time between the university and Google Brain, where he worked until 2023 when he lefto speak freely about AI risks.
 
 ## Major Works
 ### Backpropagation (1986)
@@ -47,16 +47,16 @@ Born in Wimbledon, London, Hinton comes from a family of prominent scientists. H
 - Chief Scientific Advisor, Vector Institute
 - Independent researcher focusing on AI safety and new neural network architectures
 
-## Media Appearances
+## Mediappearances
 - The AI Revolution - CBS 60 Minutes (2023)
 - Lex Fridman Podcast #339 (2023)
 - The AI Podcast (2020)
 
-## Further Reading
+## Furthereading
 - [University of Toronto Faculty Page](https://www.cs.toronto.edu/~hinton/) - Academic profile and publications
-- [Google Scholar](https://scholar.google.com/citations?user=JicYPdAAAAAJ) - Academic citations
+- [Google Scholar](https://scholar.google.com/citations?user=JicYPdAAAAAJ) - Academicitations
 - [Wikipedia](https://en.wikipedia.org/wiki/Geoffrey_Hinton) - Comprehensive biography
-- [The New York Times Interview](https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html) - On leaving Google and AI risks
+- [The New York Times Interview](https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html) - On leavingoogle and AI risks
 
 ## In Calibre
 [Link to Geoffrey Hinton's works in Calibre Web]
@@ -65,5 +65,5 @@ Born in Wimbledon, London, Hinton comes from a family of prominent scientists. H
 - [Vector Institute](https://vectorinstitute.ai/)
 - [The Deep Learning Book](https://www.deeplearningbook.org/)
 - [Neural Networks for Machine Learning](https://www.coursera.org/learn/neural-networks) - Hinton's online course
-- [The Godfather in Conversation: Why Geoffrey Hinton is worried about the future of AI](https://www.cbc.ca/radio/ideas/the-godfather-in-conversation-why-geoffrey-hinton-is-worried-about-the-future-of-ai-1.6830779) - CBC Ideas
+- [The Godfather in Conversation: Why Geoffrey Hinton is worried abouthe future of AI](https://www.cbc.ca/radio/ideas/the-godfather-in-conversation-why-geoffrey-hinton-is-worried-about-the-future-of-ai-1.6830779) - CBC Ideas
 

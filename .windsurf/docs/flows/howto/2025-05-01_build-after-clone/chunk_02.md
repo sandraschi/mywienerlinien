@@ -34,10 +34,10 @@ npm start
 ---
 
 ## 8. Additional Setup
-- Some projects require environment variables (see `.env.example`).
-- For database setup, check the backend README.
+- Some projects requirenvironment variables (see `.env.example`).
+- For databasetup, check the backend README.
 - For agentic tools (like Windsurf/Cascade):
-  - Follow their install instructions, ensure agentic coding rules are followed (logging, error catching, provenance, verbose builds).
+  - Follow their install instructions, ensure agenticoding rules are followed (logging, error catching, provenance, verbose builds).
 
 ---
 

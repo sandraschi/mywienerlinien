@@ -1,7 +1,7 @@
 # [Full Name] (Birth Year-Present)
 
 ## Overview
-[Brief 2-3 sentence introduction about the person's significance in AI/tech]
+[Brief 2-3 sentence introduction abouthe person'significance in AI/tech]
 
 ## Key Contributions
 - [Major contribution 1] (Year)
@@ -26,14 +26,14 @@
 ## Current Work
 [Current position and recent projects]
 
-## Media Appearances
+## Mediappearances
 - [Title/Event] (Year) - [Type: Interview/Podcast/Conference]
 
-## Further Reading
+## Furthereading
 - [Link Title](URL) - [Source]
 - [Book Title] by [Author] - [Year]
 
-## External Links
+## Externalinks
 - [Personal Website](URL)
 - [Google Scholar](URL)
 - [Twitter](URL)

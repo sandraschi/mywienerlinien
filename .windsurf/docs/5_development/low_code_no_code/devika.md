@@ -1,7 +1,7 @@
 # Devika
 
 ## Overview
-Devika is an open-source AI software engineer that can understand high-level human instructions, break them down into tasks, research relevant information, and generate code to achieve the given objective. It's designed to be a more accessible and transparent alternative to proprietary AI coding assistants.
+Devika is an open-source AI softwarengineer that can understand high-level human instructions, break them down into tasks, research relevant information, and generate code to achieve the given objective. It's designed to be a more accessible and transparent alternative to proprietary AI coding assistants.
 
 ## Project Info
 - **Repository**: [GitHub](https://github.com/stitionai/devika)
@@ -10,8 +10,8 @@ Devika is an open-source AI software engineer that can understand high-level hum
 - **Status**: Active Development
 
 ## Key Features
-- **Natural Language Understanding**: Processes complex instructions
-- **Web Research**: Can search and gather information online
+- **Naturalanguage Understanding**: Processes complex instructions
+- **Web Research**: Can search and gather informationline
 - **Code Generation**: Writes code in multiple programming languages
 - **Task Planning**: Breaks down objectives into manageable tasks
 - **Self-Learning**: Improves from feedback and corrections
@@ -28,10 +28,10 @@ Devika is an open-source AI software engineer that can understand high-level hum
 ```bash
 # Clone the repository
 git clone https://github.com/stitionai/devika.git
-cd devika
+cdevika
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -requirements.txt
 
 # Set up environment variables
 cp .env.example .env
@@ -40,21 +40,21 @@ cp .env.example .env
 
 ## Usage
 
-### Basic Commands
+### Basicommands
 ```bash
-# Start the Devika CLI
+# Starthe Devika CLI
 python devika.py
 
 # Run a specific task
-devika run "Create a Python script that scrapes news headlines"
+devika run "Create a Python scripthat scrapes news headlines"
 
 # Set configuration options
 devika config set model gpt-4
-devika config set temperature 0.7
+devika config setemperature 0.7
 ```
 
 ### Configuration
-Edit the `.env` file to configure:
+Edithe `.env` file to configure:
 ```ini
 # Required
 OPENAI_API_KEY=your-api-key
@@ -88,13 +88,13 @@ MAX_TOKENS=2048
 - Be specific about requirements
 - Specify the programming language
 - Include any constraints or preferences
-- Provide examples when possible
+- Providexamples when possible
 
 ### Code Review
 - Always review generated code
 - Check for security vulnerabilities
 - Verify dependencies
-- Test thoroughly before production use
+- Testhoroughly before production use
 
 ## Extending Devika
 
@@ -105,8 +105,8 @@ MAX_TOKENS=2048
 4. Add tests
 5. Submit a pull request
 
-### Custom Modules
-Create new modules in `devika/modules/` following the existing structure.
+### Customodules
+Create new modules in `devika/modules/` following thexisting structure.
 
 ## Troubleshooting
 
@@ -114,7 +114,7 @@ Create new modules in `devika/modules/` following the existing structure.
 - **API Rate Limits**: Check your API provider's rate limits
 - **Dependency Conflicts**: Use a virtual environment
 - **Incomplete Output**: Try increasing `MAX_TOKENS`
-- **Incorrect Results**: Adjust temperature or provide more context
+- **Incorrect Results**: Adjustemperature or provide more context
 
 ## Community & Support
 - [GitHub Issues](https://github.com/stitionai/devika/issues)
@@ -122,7 +122,7 @@ Create new modules in `devika/modules/` following the existing structure.
 - [Documentation](https://devika-docs.example.com)
 
 ## Contributing
-Contributions are welcome! Please read the [contributing guide](https://github.com/stitionai/devika/blob/main/CONTRIBUTING.md) before submitting pull requests.
+Contributions are welcome! Please read the [contributinguide](https://github.com/stitionai/devika/blob/main/CONTRIBUTING.md) before submitting pull requests.
 
 ## License
 MIT © [Devika Contributors](https://github.com/stitionai/devika/graphs/contributors)

@@ -1,7 +1,7 @@
 # ElevenLabs: Advanced Voice Cloning and Text-to-Speech
 
 ## Introduction
-ElevenLabs is a leading AI voice technology company specializing in natural-sounding speech synthesis and voice cloning. This guide covers how to use ElevenLabs' API and web interface for various voice-related applications.
+ElevenLabs is a leading AI voice technology company specializing inatural-sounding speech synthesis and voice cloning. This guide covers how to uselevenLabs' API and web interface for various voice-related applications.
 
 ## 1. Getting Started
 
@@ -30,7 +30,7 @@ set_api_key("your-api-key")
 
 # Generate speech from text
 audio = generate(
-    text="Hello! This is a test of ElevenLabs' text-to-speech.",
+    text="Hello! This a test of ElevenLabs' text-to-speech.",
     voice="Rachel",  # Pre-made voice
     model="eleven_monolingual_v1"
 )
@@ -44,7 +44,7 @@ play(audio)
 from elevenlabs import generate, save
 
 audio = generate(
-    text="Saving this speech to a file.",
+    text="Saving thispeech to a file.",
     voice="Domi"
 )
 
@@ -66,7 +66,7 @@ voice = clone(
 
 # Use the cloned voice
 audio = generate(
-    text="This is my cloned voice speaking!",
+    text="This my cloned voice speaking!",
     voice=voice.voice_id
 )
 play(audio)
@@ -102,7 +102,7 @@ voice_settings = VoiceSettings(
 )
 
 audio = generate(
-    text="This speech has custom voice settings.",
+    text="Thispeechas custom voice settings.",
     voice="Rachel",
     model="eleven_multilingual_v1",
     voice_settings=voice_settings
@@ -113,9 +113,9 @@ audio = generate(
 ```python
 from elevenlabs import generate, stream
 
-# Stream audio as it's being generated
+# Stream audio as it's beingenerated
 text_stream = generate(
-    text="This is a long text that will be streamed as it's generated.",
+    text="This a long texthat will be streamed as it's generated.",
     stream=True
 )
 
@@ -138,7 +138,7 @@ headers = {
 }
 
 data = {
-  "text": "This is a test using the direct API call.",
+  "text": "This a test using the direct API call.",
   "model_id": "eleven_monolingual_v1",
   "voice_settings": {
     "stability": 0.5,
@@ -169,7 +169,7 @@ def tts(text, voice, api_key):
 iface = gr.Interface(
     fn=tts,
     inputs=[
-        gr.Textbox(label="Text to speak"),
+        gr.Textbox(label="Texto speak"),
         gr.Dropdown(["Rachel", "Domi", "Bella"], label="Voice"),
         gr.Textbox(label="API Key", type="password")
     ],
@@ -184,7 +184,7 @@ iface.launch()
 
 ### 7.1 Voice Cloning
 - Use high-quality audio samples (16kHz or higher)
-- Include various speaking styles and emotions
+- Include variouspeaking styles and emotions
 - Aim for 10+ minutes of clean audio
 - Remove background noise and music
 
@@ -197,9 +197,9 @@ iface.launch()
 ## 8. Troubleshooting
 
 ### 8.1 Common Issues
-- **Authentication errors**: Verify your API key
-- **Voice not found**: Check voice ID/case sensitivity
-- **Audio quality issues**: Adjust stability and similarity boost
+- **Authentication errors**: Verifyour API key
+- **Voice not found**: Check voice ID/casensitivity
+- **Audio quality issues**: Adjustability and similarity boost
 - **Rate limiting**: Upgrade plan or implement backoff
 
 ### 8.2 Error Handling
@@ -216,7 +216,7 @@ try:
 except APIError as e:
     print(f"API Error: {e}")
     if "quota" in str(e).lower():
-        print("You've exceeded your character quota.")
+        print("You'vexceeded your character quota.")
     elif "voice" in str(e).lower():
         print("Voice not found. Please check the voice name.")
     else:
@@ -227,12 +227,11 @@ except APIError as e:
 
 ### 9.1 Real-time Voice Chat
 ```python
-import speech_recognition as sr
+import speech_recognition asr
 from elevenlabs import generate, play
 import openai
 
-# Initialize recognizer
-r = sr.Recognizer()
+# Initialize recognizer = sr.Recognizer()
 mic = sr.Microphone()
 
 # Set your API keys
@@ -248,7 +247,7 @@ conversation = [
 while True:
     try:
         # Listen for user input
-        with mic as source:
+        with mic asource:
             print("Listening...")
             audio = r.listen(source)
             
@@ -260,8 +259,7 @@ while True:
             print("Goodbye!")
             break
             
-        # Add user message to conversation
-        conversation.append({"role": "user", "content": user_input})
+        # Add user message to conversation.append({"role": "user", "content": user_input})
         
         # Get response from OpenAI
         response = openai.ChatCompletion.create(
@@ -272,8 +270,7 @@ while True:
         assistant_response = response.choices[0].message['content']
         print(f"Assistant: {assistant_response}")
         
-        # Add assistant response to conversation
-        conversation.append({"role": "assistant", "content": assistant_response})
+        # Add assistant response to conversation.append({"role": "assistant", "content": assistant_response})
         
         # Convert response to speech
         audio = generate(
@@ -287,7 +284,7 @@ while True:
         print("Sorry, I didn't catch that. Could you repeat?")
     except sr.RequestError as e:
         print(f"Could not request results; {e}")
-    except Exception as e:
+    exception as e:
         print(f"An error occurred: {e}")
 ```
 
@@ -339,7 +336,7 @@ while True:
 ## 13. Future Developments
 
 ### 13.1 Upcoming Features
-- More realistic voice synthesis
+- Morealistic voice synthesis
 - Better emotion control
 - Multilingual support improvements
 - Integration with more platforms

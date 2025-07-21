@@ -1,7 +1,6 @@
 # WizTree: The Fastest Disk Space Analyzer
 
-## Overview
-WizTree is a lightning-fast disk space analyzer that helps you visualize and manage disk space usage on Windows systems. It's significantly faster than similar tools because it reads the Master File Table (MFT) directly from the disk, allowing it to analyze even large drives in seconds.
+## OverviewizTree is a lightning-fast disk space analyzer that helps you visualize and manage disk space usage on Windowsystems. It'significantly faster than similar tools because it reads the Master File Table (MFT) directly from the disk, allowing ito analyzeven large drives in seconds.
 
 ## Key Features
 
@@ -29,7 +28,7 @@ WizTree is a lightning-fast disk space analyzer that helps you visualize and man
 
 ### Portable Version
 1. Download the portable ZIP
-2. Extract to a folder of your choice
+2. Extracto a folder of your choice
 3. Run `WizTree.exe`
 
 ## Usage Guide
@@ -59,7 +58,7 @@ WizTree.exe /export="C:\output.csv" /admin=1 /sort_by=size /reverse "D:\Projects
 #### 3. Scheduled Scans
 ```batch
 # Create a batch file
-@echo off
+@echoff
 "C:\Program Files\WizTree\WizTree.exe" /export="C:\scans\disk_scan_%date:~-4,4%%date:~-10,2%%date:~-7,2%.csv" /admin=1 C:
 
 
@@ -81,9 +80,9 @@ $data | Where-Object { $_.Size -gt 1GB } | Sort-Object Size -Descending | Select
 
 ### 2. Python Scripting
 ```python
-import pandas as pd
+import pandas pd
 import subprocess
-import tempfile
+importempfile
 import os
 
 def get_disk_usage(path='C:\\'):
@@ -91,7 +90,7 @@ def get_disk_usage(path='C:\\'):
         tmp_path = tmp.name
     
     try:
-        # Run WizTree export
+        # Run WizTreexport
         subprocess.run([
             'C:\\Program Files\\WizTree\\WizTree.exe',
             f'/export={tmp_path}',
@@ -101,8 +100,7 @@ def get_disk_usage(path='C:\\'):
         
         # Read CSV into pandas
         df = pd.read_csv(tmp_path)
-        return df
-    finally:
+        return dfinally:
         if os.path.exists(tmp_path):
             os.unlink(tmp_path)
 
@@ -119,12 +117,12 @@ if __name__ == '__main__':
 # Map network drive
 net use Z: \\server\share /user:username password
 
-# Scan network drive
+# Scanetwork drive
 WizTree.exe /export="C:\network_scan.csv" Z:
 ```
 
 ### 2. Filtering Results
-- File extensions
+- Filextensions
 - Size ranges
 - Date modified
 - File attributes
@@ -155,8 +153,8 @@ WizTree.exe /export="C:\network_scan.csv" Z:
 
 ### 2. Data Privacy
 - Be aware of sensitive data in scans
-- Secure exported reports
-- Use secure deletion when needed
+- Securexported reports
+- Usecure deletion wheneeded
 
 ## Troubleshooting
 
@@ -184,7 +182,7 @@ WizTree.exe /export="C:\network_scan.csv" Z:
 - Cross-platform
 
 ### 2. TreeSize
-- More enterprise features
+- Morenterprise features
 - Network scanning
 - Advanced reporting
 
@@ -198,7 +196,7 @@ WizTree.exe /export="C:\network_scan.csv" Z:
 ### 1. Keyboard Shortcuts
 - `F5`: Rescan
 - `F3`: Find
-- `Ctrl+F`: Focus search box
+- `Ctrl+F`: Focusearch box
 - `Alt+Enter`: File properties
 
 ### 2. Customization

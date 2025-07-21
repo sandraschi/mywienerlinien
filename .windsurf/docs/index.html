@@ -9,18 +9,121 @@
   <link rel="icon" href="favicon.ico">
   
   <!-- Docsify CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4.13.0/lib/themes/vue.css">
+  <link rel="stylesheet" href="plugins/docsify.min.css">
   
   <!-- Prism CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+  <link rel="stylesheet" href="plugins/prism-tomorrow.css">
+  <link rel="stylesheet" href="plugins/prism-css.min.css">
+  <link rel="stylesheet" href="plugins/sidebar-collapse.min.css">
   
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/theme.css">
-  <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="css/print.css" media="print">
+  <!-- <link rel="stylesheet" href="css/theme.css"> -->
+  <!-- <link rel="stylesheet" href="css/sidebar.css"> -->
+  <!-- <link rel="stylesheet" href="css/print.css" media="print"> -->
   
-  <!-- Theme Toggle Button -->
+  <!-- Theme CSS Variables and Styles -->
   <style>
+    :root {
+      /* Light theme variables */
+      --bg-color: #ffffff;
+      --text-color: #333333;
+      --sidebar-bg: #fafafa;
+      --sidebar-text: #333333;
+      --border-color: #e1e4e8;
+      --link-color: #0366d6;
+      --code-bg: #f6f8fa;
+      --code-text: #24292e;
+      --blockquote-bg: #f6f8fa;
+      --blockquote-border: #dfe2e5;
+      --table-border: #dfe2e5;
+      --table-header-bg: #f6f8fa;
+    }
+
+    [data-theme="dark"] {
+      /* Dark theme variables */
+      --bg-color: #1a1a1a;
+      --text-color: #e1e1e1;
+      --sidebar-bg: #2d2d2d;
+      --sidebar-text: #e1e1e1;
+      --border-color: #404040;
+      --link-color: #58a6ff;
+      --code-bg: #2d2d2d;
+      --code-text: #e1e1e1;
+      --blockquote-bg: #2d2d2d;
+      --blockquote-border: #404040;
+      --table-border: #404040;
+      --table-header-bg: #2d2d2d;
+    }
+
+    /* Apply theme variables */
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Sidebar theming */
+    .sidebar {
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+    }
+
+    .sidebar ul li a {
+      color: var(--sidebar-text);
+    }
+
+    .sidebar ul li a:hover {
+      color: var(--link-color);
+    }
+
+    /* Content theming */
+    .markdown-section {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    .markdown-section h1,
+    .markdown-section h2,
+    .markdown-section h3,
+    .markdown-section h4,
+    .markdown-section h5,
+    .markdown-section h6 {
+      color: var(--text-color);
+    }
+
+    .markdown-section a {
+      color: var(--link-color);
+    }
+
+    .markdown-section code {
+      background-color: var(--code-bg);
+      color: var(--code-text);
+    }
+
+    .markdown-section pre {
+      background-color: var(--code-bg);
+      border: 1px solid var(--border-color);
+    }
+
+    .markdown-section blockquote {
+      background-color: var(--blockquote-bg);
+      border-left: 4px solid var(--blockquote-border);
+    }
+
+    .markdown-section table {
+      border: 1px solid var(--table-border);
+    }
+
+    .markdown-section table th {
+      background-color: var(--table-header-bg);
+    }
+
+    .markdown-section table td,
+    .markdown-section table th {
+      border: 1px solid var(--table-border);
+    }
+
+    /* Theme Toggle Button */
     .theme-toggle, .console-toggle, .config-toggle {
       position: fixed;
       background: var(--theme-color, #3F51B5);
@@ -91,7 +194,7 @@
       right: 0;
       height: 8px;
       cursor: row-resize;
-      background: transparent;
+      background: #333;
       z-index: 1001;
     }
     
@@ -101,10 +204,69 @@
       top: 8px;
       left: 0;
       right: 0;
-      bottom: 0;
+      bottom: 30px;
       overflow: auto;
       padding: 10px;
       box-sizing: border-box;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    
+    /* Console input */
+    #console-input {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 30px;
+      background: #252526;
+      border-top: 1px solid #444;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      display: flex;
+    }
+    
+    #console-input span {
+      color: #9cdcfe;
+      margin-right: 5px;
+      line-height: 20px;
+    }
+    
+    #console-input input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #f0f0f0;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 13px;
+      outline: none;
+    }
+    
+    /* Console output */
+    .console-output {
+      white-space: pre-wrap;
+      margin: 0 0 5px 0;
+    }
+    
+    .console-prompt {
+      color: #9cdcfe;
+    }
+    
+    .console-command {
+      color: #ce9178;
+    }
+    
+    .console-message {
+      color: #9cdcfe;
+    }
+    
+    .console-error {
+      color: #f48771;
+    }
+    
+    .console-warning {
+      color: #ffcc66;
     }
     
     .console-toggle.console-open {
@@ -115,12 +277,12 @@
     #config-panel {
       position: fixed;
       top: 0;
-      right: -300px;
-      width: 300px;
+      right: -450px;
+      width: 450px;
       height: 100%;
-      background: #fff;
-      z-index: 1002;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+      background: var(--theme-bg, #fff);
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
       transition: right 0.3s ease;
       padding: 20px;
       box-sizing: border-box;
@@ -177,44 +339,54 @@
   </button>
   
   <!-- Docsify container -->
-  <div id="app"></div>
+  <!-- Main content -->
+  <div id="app">
+    <!-- Cover page will be loaded here if enabled -->
+    <div data-app-cover class="app-cover"></div>
+    
+    <!-- Main content area -->
+    <div class="content">
+      <div data-app-navbar></div>
+      <div data-app-sidebar></div>
+      <div data-app-content>
+        <div data-app-loading>Loading...</div>
+      </div>
+    </div>
+  </div>
   
   <!-- Docsify Scripts -->
   <script>
+    // Initialize Docsify with configuration
     window.$docsify = {
       name: 'Windsurf Documentation',
       repo: '',
-      loadSidebar: true,
-      subMaxLevel: 3,
+      loadSidebar: '_sidebar.md',
+      coverpage: '_coverpage.md',
       auto2top: true,
       themeColor: '#3F51B5',
       executeScript: true,
       noEmoji: false,
       relativePath: true,
       maxLevel: 6,
+      subMaxLevel: 6,
       loadNavbar: false,
       mergeNavbar: false,
-      coverpage: true,
       onlyCover: false,
       loadFooter: false,
-      pagination: {
-        previousText: 'Previous',
-        nextText: 'Next',
-        crossChapter: true,
-        crossChapterText: true,
-        theme: 'bootstrap'
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: 'Search',
+        noData: 'No Results',
+        depth: 6,
+        hideOtherSidebarContent: false,
+        namespace: 'windsurf-docs'
       },
       alias: {
         '/.*/_sidebar.md': '/_sidebar.md',
         '/.*/_coverpage.md': '/_coverpage.md'
       },
       plugins: [
-        function(hook, vm) {
-          hook.beforeEach(function(content) {
-            return content;
-          });
-        },
-        // Enable sidebar collapse
         function(hook) {
           hook.doneEach(function() {
             // Initialize sidebar collapse after content is loaded
@@ -227,6 +399,11 @@
         }
       ]
     };
+    
+    // Load additional config from external file if needed
+    if (window.$docsifyConfig) {
+      window.$docsify = { ...window.$docsify, ...window.$docsifyConfig };
+    }
     
     // Theme management
     document.addEventListener('DOMContentLoaded', function() {
@@ -259,24 +436,45 @@
     });
   </script>
   
-  <!-- Load Docsify -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4.13.0/lib/docsify.min.js"></script>
+  <!-- Load Docsify and plugins -->
+  <script src="plugins/docsify.min.js"></script>
+  <!-- ALL PLUGINS COMMENTED OUT -->
+  <script src="plugins/docsify-sidebar-collapse.min.js"></script>
+  <!-- <script src="plugins/docsify-tabs.min.js"></script> -->
+  <script src="plugins/docsify-copy-code.min.js"></script>
+  <script src="plugins/prism.js"></script>
+  <script src="plugins/prism-bash.min.js"></script>
+  <script src="plugins/prism-javascript.min.js"></script>
+  <script src="plugins/prism-python.min.js"></script>
+  <script src="plugins/prism-json.min.js"></script>
+  <script src="plugins/prism-yaml.min.js"></script>
+  <script src="plugins/prism-powershell.min.js"></script>
+  <script src="plugins/docsify-search.min.js"></script>
+  <!-- <script src="plugins/docsify-sidebar-collapse.js"></script> -->
+  <!-- <script src="plugins/docsify-copy-code.js"></script> -->
+  <script src="plugins/docsify-pagination.js"></script>
+  <!-- <script src="plugins/docsify-tabs.js"></script> -->
   
-  <!-- Load plugins -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4.13.0/lib/plugins/search.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2.1.1/dist/docsify-copy-code.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-console/dist/docsify-console.min.js"></script>
-  
-  <!-- Prism for syntax highlighting -->
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-powershell.min.js"></script>
+  <!-- Initialize Docsify -->
+  <script>
+    // Initialize Docsify
+    window.$docsify = window.$docsify || {};
+    
+    // Debug logging
+    console.log('Docsify config:', window.$docsify);
+    
+    // Check if sidebar is loaded
+    fetch('_sidebar.md')
+      .then(response => response.text())
+      .then(text => console.log('Sidebar content:', text.substring(0, 200) + '...'))
+      .catch(err => console.error('Error loading sidebar:', err));
+      
+    // Check if coverpage is loaded
+    fetch('_coverpage.md')
+      .then(response => response.text())
+      .then(text => console.log('Coverpage content:', text.substring(0, 200) + '...'))
+      .catch(err => console.error('Error loading coverpage:', err));
+  </script>
   
   <!-- Initialize console and sidebar -->
   <!-- Config Panel -->
@@ -356,10 +554,26 @@
       // Create console content area
       const consoleContent = document.createElement('div');
       consoleContent.id = 'console-content';
+      
+      // Create console input
+      const consoleInput = document.createElement('div');
+      consoleInput.id = 'console-input';
+      consoleInput.innerHTML = '<span>></span><input type="text" id="console-command" placeholder="Type a command...">';
+      
+      // Assemble console
       consoleEl.appendChild(consoleContent);
+      consoleEl.appendChild(consoleInput);
       
       // Add welcome message
-      consoleContent.textContent = 'Console ready. Type commands here...';
+      const welcomeMsg = document.createElement('div');
+      welcomeMsg.className = 'console-message';
+      welcomeMsg.textContent = 'Windsurf Console - Type "help" for available commands';
+      consoleContent.appendChild(welcomeMsg);
+      
+      // Command history
+      const commandHistory = [];
+      let historyIndex = -1;
+      let currentCommand = '';
       
       document.body.appendChild(consoleEl);
       
@@ -383,6 +597,14 @@
         
         consoleEl.style.display = consoleVisible ? 'block' : 'none';
         consoleToggle.classList.toggle('console-open', consoleVisible);
+        
+        // Focus input when console is shown
+        if (consoleVisible) {
+          setTimeout(() => {
+            const input = document.getElementById('console-command');
+            if (input) input.focus();
+          }, 100);
+        }
         
         // Trigger window resize to update layout
         window.dispatchEvent(new Event('resize'));
@@ -433,6 +655,131 @@
           toggleConsole();
         }
       });
+      
+      // Console command handling
+      document.addEventListener('DOMContentLoaded', function() {
+        const commandInput = document.getElementById('console-command');
+        if (!commandInput) return;
+        
+        // Handle command submission
+        commandInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            const command = this.value.trim();
+            if (command) {
+              // Add to history
+              commandHistory.unshift(command);
+              historyIndex = -1;
+              
+              // Process command
+              processCommand(command);
+              
+              // Clear input
+              this.value = '';
+            }
+          } 
+          // Command history navigation
+          else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (historyIndex < commandHistory.length - 1) {
+              historyIndex++;
+              this.value = commandHistory[historyIndex];
+              // Move cursor to end
+              this.selectionStart = this.selectionEnd = this.value.length;
+            }
+          } 
+          else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (historyIndex > 0) {
+              historyIndex--;
+              this.value = commandHistory[historyIndex];
+            } else if (historyIndex === 0) {
+              historyIndex--;
+              this.value = currentCommand;
+            }
+          }
+        });
+        
+        // Save current command when typing
+        commandInput.addEventListener('keyup', function(e) {
+          if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') {
+            currentCommand = this.value;
+          }
+        });
+      });
+      
+      // Process console commands
+      function processCommand(command) {
+        const args = command.split(' ');
+        const cmd = args[0].toLowerCase();
+        
+        // Create command output element
+        const output = document.createElement('div');
+        output.className = 'console-output';
+        
+        // Show the command that was entered
+        const prompt = document.createElement('span');
+        prompt.className = 'console-prompt';
+        prompt.textContent = '> ';
+        output.appendChild(prompt);
+        
+        const cmdSpan = document.createElement('span');
+        cmdSpan.className = 'console-command';
+        cmdSpan.textContent = command;
+        output.appendChild(cmdSpan);
+        
+        document.getElementById('console-content').appendChild(output);
+        
+        // Process the command
+        let result;
+        switch(cmd) {
+          case 'help':
+            result = 'Available commands:\n' +
+                     '  help         - Show this help message\n' +
+                     '  clear        - Clear the console\n' +
+                     '  theme [dark|light] - Change theme\n' +
+                     '  reload       - Reload the page\n' +
+                     '  version      - Show version info';
+            break;
+            
+          case 'clear':
+            document.getElementById('console-content').innerHTML = '';
+            return; // Don't show any output for clear
+            
+          case 'theme':
+            const theme = args[1] || 'dark';
+            if (theme === 'dark' || theme === 'light') {
+              setTheme(theme);
+              result = `Theme set to ${theme} mode`;
+            } else {
+              result = 'Error: Theme must be either "light" or "dark"';
+            }
+            break;
+            
+          case 'reload':
+            window.location.reload();
+            return;
+            
+          case 'version':
+            result = 'Windsurf Documentation Console v1.0.0\n' +
+                    'Docsify v' + (window.Docsify ? Docsify.version : 'unknown');
+            break;
+            
+          default:
+            result = `Unknown command: ${cmd}. Type "help" for a list of commands.`;
+        }
+        
+        // Display the result
+        if (result) {
+          const resultEl = document.createElement('div');
+          resultEl.className = 'console-message';
+          resultEl.textContent = result;
+          document.getElementById('console-content').appendChild(resultEl);
+        }
+        
+        // Auto-scroll to bottom
+        const consoleContent = document.getElementById('console-content');
+        consoleContent.scrollTop = consoleContent.scrollHeight;
+      }
       
       // Initialize config panel toggle
       const configToggle = document.getElementById('configToggle');
@@ -531,18 +878,19 @@
       hideMissingTitles: true
     };
     
+    // ALL PLUGINS COMMENTED OUT
     // Initialize sidebar collapse after Docsify is loaded
-    window.$docsify.plugins = window.$docsify.plugins || [];
-    window.$docsify.plugins.push(function(hook, vm) {
-      hook.doneEach(function() {
-        if (window.DocsifySidebarCollapse) {
-          window.DocsifySidebarCollapse.init({
-            sidebarHtml: true,
-            collapseAll: false
-          });
-        }
-      });
-    });
+    // window.$docsify.plugins = window.$docsify.plugins || [];
+    // window.$docsify.plugins.push(function(hook, vm) {
+    //   hook.doneEach(function() {
+    //     if (window.DocsifySidebarCollapse) {
+    //       window.DocsifySidebarCollapse.init({
+    //           sidebarHtml: true,
+    //           collapseAll: false
+    //         });
+    //       }
+    //     });
+    //   });
   </script>
 </body>
 </html>

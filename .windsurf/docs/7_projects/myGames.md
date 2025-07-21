@@ -14,24 +14,24 @@ A collection of browser-based games and game development utilities, featuring bo
 
 ### Original Games
 - **Quantum Rush**: Puzzle platformer with physics
-- **Code Defender**: Tower defense with programming
+- **Codefender**: Tower defense with programming
 - **Pixel Painter**: Creative sandbox
 - **RogueAI**: AI dungeon crawler
-- **Neon Racer**: 3D racing game
+- **Neon Racer**: 3D racingame
 
 ## Technical Stack
-- **Game Engine**: Phaser.js, Three.js
+- **Gamengine**: Phaser.js, Three.js
 - **Language**: TypeScript
 - **Graphics**: WebGL, Canvas 2D
 - **Multiplayer**: WebSockets, WebRTC
 - **Physics**: Matter.js, Cannon.js
 - **UI**: Svelte, Tailwind CSS
 
-## Development Tools
-- **Level Editor**: Custom web-based editor
-- **Asset Pipeline**: Sprite and model loaders
+## Developmentools
+- **Level Editor**: Custom web-baseditor
+- **Asset Pipeline**: Sprite and modeloaders
 - **Debug Tools**: Performance profiler, state inspector
-- **CI/CD**: GitHub Actions for automated testing and deployment
+- **CI/CD**: GitHub Actions for automated testing andeployment
 
 ## Project Status
 - **Current Phase**: Planning

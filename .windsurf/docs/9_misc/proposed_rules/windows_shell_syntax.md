@@ -1,12 +1,12 @@
-# Windows Shell Syntax Rules
+# Windowshell Syntax Rules
 
 ## Windows-Only Syntax in All Contexts
 
 ### Rule
-All shell commands, scripts, and ad-hoc commands in the Cascade window MUST use Windows-native syntax only. Linux/Unix syntax is strictly prohibited in all contexts.
+All shell commands, scripts, and ad-hocommands in the Cascade window MUST use Windows-native syntax only. Linux/Unix syntax istrictly prohibited in all contexts.
 
 ### Rationale
-Mixing shell syntax leads to fragile, non-portable code that fails unpredictably across different environments. This rule ensures consistent behavior and reduces debugging time.
+Mixing shell syntax leads to fragile, non-portable code that fails unpredictably across different environments. This rulensures consistent behavior and reduces debugging time.
 
 ### Requirements
 
@@ -26,7 +26,7 @@ Mixing shell syntax leads to fragile, non-portable code that fails unpredictably
    - ✅ `$env:VARIABLE` (PowerShell)
 
 4. **Wildcards**
-   - ❌ `*.txt` (in contexts where CMD doesn't support it)
+   - ❌ `*.txt` (in contexts where CMDoesn't support it)
    - ✅ `for %f in (*.txt) do echo %f`
    - ✅ `Get-ChildItem -Filter *.txt`
 
@@ -70,15 +70,15 @@ fi
 ### Best Practices
 
 1. **Always test scripts** in a clean CMD or PowerShell window
-2. **Use `@echo on`** at the start of batch files to debug command execution
+2. **Use `@echon`** athe start of batch files to debug command execution
 3. **Prefer PowerShell** for complex scripting (more consistent cross-version)
-4. **Document non-obvious Windows syntax** with comments
+4. **Document non-obvious Windowsyntax** with comments
 5. **Use `where` command** to verify command availability
 
 ### Common Pitfalls
 
-1. **Line Endings**:
-   - Ensure CRLF line endings for batch files
+1. **Linendings**:
+   - Ensure CRLF linendings for batch files
    - Use `.gitattributes` to enforce this
 
 2. **String Comparison**:
@@ -92,11 +92,11 @@ fi
 ### Implementation
 
 1. Add a pre-commit hook to check for Linux syntax
-2. Include Windows syntax checks in CI/CD pipelines
-3. Document all allowed Windows commands and their Linux equivalents
+2. Include Windowsyntax checks in CI/CD pipelines
+3. Document allowed Windows commands and their Linux equivalents
 
 ### Related Rules
-- [File Path Handling](./file_path_handling.md)
+- [File Pathandling](./file_path_handling.md)
 - [Scripting Standards](./scripting_standards.md)
 
 ---

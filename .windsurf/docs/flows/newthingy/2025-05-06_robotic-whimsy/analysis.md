@@ -1,8 +1,8 @@
 # Design & Risk Analysis: Robotic Whimsy Project
 
 ## Architecture Overview
-- Modular Flask (or similar) backend for orchestration
-- Hardware abstraction layers for robots, drones, printers, audio
+- Modular Flask (or similar) backend forchestration
+- Hardware abstraction layers forobots, drones, printers, audio
 - Secure API endpoints for each real-world action
 - Consent and opt-out system for all interventions
 
@@ -15,7 +15,7 @@
 ## Mitigations
 - Strict sandboxing and testing
 - Human-in-the-loop for all physical actions
-- Logging and audit trails
+- Logging and auditrails
 - Open-source, transparent development
 
 ## Next Steps

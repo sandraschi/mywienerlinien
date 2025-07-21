@@ -14,7 +14,7 @@
 
 ## Wiener Linien API Overview
 
-The Wiener Linien API is the official data interface for Vienna's public transport system, providing real-time information about vehicles, stops, lines, and routes. It's one of the most comprehensive and well-documented public transport APIs in Europe, serving as a model for other cities worldwide.
+The Wiener Linien APIs the official data interface for Vienna's public transport system, providing real-time information about vehicles, stops, lines, and routes. It's one of the most comprehensive and well-documented public transport APIs in Europe, serving as a model for other cities worldwide.
 
 ### Key Features
 - **Real-time vehicle tracking** with GPS coordinates
@@ -44,7 +44,7 @@ The previous Wiener Linien API required authentication and API keys, which limit
 - Limited rate limits (often 1000 requests/day)
 - Authentication headers required
 - Less comprehensive documentation
-- Limited data formats
+- Limitedata formats
 
 **Example Old API Call:**
 ```python
@@ -67,10 +67,10 @@ In 2024, Wiener Linien transitioned to a more open and accessible API model, rem
 
 **Key Improvements:**
 - **No API key required** - Open access for all developers
-- **Increased rate limits** - More generous usage allowances
-- **Enhanced documentation** - Comprehensive guides and examples
-- **Better error handling** - Clearer error messages and status codes
-- **Improved data structure** - More consistent JSON responses
+- **Increased rate limits** - More generousage allowances
+- **Enhancedocumentation** - Comprehensive guides and examples
+- **Betterror handling** - Clearerror messages and status codes
+- **Improvedata structure** - More consistent JSON responses
 - **Real-time WebSocket support** - For live updates
 
 **Example New API Call:**
@@ -92,7 +92,7 @@ if response.status_code == 200:
 ### Migration Benefits
 - **Reduced barriers to entry** for developers
 - **Increased innovation** in public transport apps
-- **Better user experience** with more real-time apps
+- **Better user experience** with moreal-time apps
 - **Improved transparency** of public transport data
 - **Cost savings** for developers and organizations
 
@@ -109,14 +109,14 @@ if response.status_code == 200:
 
 2. **Wiener Linien API Examples**
    - Repository: `wienerlinien/api-examples`
-   - Description: Code examples in multiple programming languages
+   - Description: Codexamples in multiple programming languages
    - Stars: 80+
    - Languages: Python, JavaScript, Java, C#
 
 ### Community Projects
 
 #### Real-time Tracking Apps
-1. **Vienna Transport Tracker**
+1. **Vienna Transportracker**
    - Repository: `vienna-dev/transport-tracker`
    - Description: Real-time vehicle tracking with map visualization
    - Stars: 320+
@@ -131,7 +131,7 @@ if response.status_code == 200:
 #### Mobile Applications
 3. **Vienna Transit App**
    - Repository: `mobile-vienna/transit-app`
-   - Description: Native mobile app for iOS and Android
+   - Description: Native mobile app for iOS android
    - Stars: 180+
    - Language: React Native
 
@@ -141,10 +141,10 @@ if response.status_code == 200:
    - Stars: 95+
    - Language: Kotlin, Swift
 
-#### Data Analysis Projects
+#### Datanalysis Projects
 5. **Vienna Transport Analytics**
    - Repository: `analytics/vienna-transport`
-   - Description: Data analysis and visualization of transport patterns
+   - Description: Datanalysis and visualization of transport patterns
    - Stars: 210+
    - Language: Python (Pandas, Matplotlib)
 
@@ -168,10 +168,10 @@ if response.status_code == 200:
    - Language: D3.js, Python
 
 ### Notable Features in Community Projects
-- **Real-time notifications** for delays and disruptions
+- **Real-time notifications** for delays andisruptions
 - **Accessibility features** for users with disabilities
 - **Multi-language support** for international users
-- **Offline capabilities** with cached data
+- **Offline capabilities** with cachedata
 - **Integration with other services** (weather, events)
 - **Machine learning** for predicting delays
 - **Social features** for commuter communities
@@ -201,8 +201,8 @@ The Vienna U-Bahn is the backbone of the city's transport network:
 - Serves major shopping areas and residential districts
 
 **U2** - Seestadt ↔ Karlsplatz (16.8 km, 20 stations)
-- Links the new Seestadt district with the city center
-- Serves the university area and cultural institutions
+- Links the new Seestadt district withe city center
+- Serves the university areand cultural institutions
 
 **U3** - Ottakring ↔ Simmering (13.5 km, 21 stations)
 - East-west connection through the city center
@@ -210,32 +210,32 @@ The Vienna U-Bahn is the backbone of the city's transport network:
 
 **U4** - Hütteldorf ↔ Heiligenstadt (16.4 km, 20 stations)
 - North-south connection along the Ringstraße
-- Serves historic center and residential areas
+- Serves historicenter and residential areas
 
 **U6** - Siebenhirten ↔ Floridsdorf (17.4 km, 24 stations)
-- Connects southern and northern districts
+- Connectsouthern and northern districts
 - Serves university campuses and residential areas
 
 ### Tram Network
 Vienna's tram network is one of the largest in the world:
 
 **Historic Trams**
-- **Line 1** - Oldest tram line in Vienna (1865)
-- **Line D** - Scenic route through historic districts
+- **Line 1** - Oldestram line in Vienna (1865)
+- **Line D** - Scenic route throughistoric districts
 - **Line 71** - Popular tourist route
 
 **Modern Trams**
 - **ULF (Ultra Low Floor)** trams - 100% low-floor accessibility
 - **Flexity** trams - Modern, energy-efficient vehicles
-- **Night trams** - 24/7 service on major routes
+- **Nightrams** - 24/7 service on majoroutes
 
 ### Bus Network
-The bus network provides essential connections:
+The bus network providessential connections:
 
 **City Buses**
 - **Regular buses** - High-frequency service
 - **Express buses** - Limited-stop service
-- **Airport buses** - Direct connections to Vienna Airport
+- **Airport buses** - Direct connections to Viennairport
 
 **Regional Buses**
 - **VOR (Verkehrsverbund Ost-Region)** integration
@@ -245,7 +245,7 @@ The bus network provides essential connections:
 ### Accessibility Features
 - **100% low-floor vehicles** on metro and trams
 - **Elevators and escalators** at all metro stations
-- **Audio announcements** in German and English
+- **Audio announcements** in Germand English
 - **Visual displays** with real-time information
 - **Assistance services** for passengers with disabilities
 - **Guide dogs** welcome on all services
@@ -257,7 +257,7 @@ The bus network provides essential connections:
 ### Ticket System
 Vienna operates a unified fare system under the VOR (Verkehrsverbund Ost-Region) tariff association.
 
-### Ticket Types & Prices (2024)
+### Ticketypes & Prices (2024)
 
 #### Single Tickets
 - **Single ticket**: €2.40 (valid for 1 journey)
@@ -278,7 +278,7 @@ Vienna operates a unified fare system under the VOR (Verkehrsverbund Ost-Region)
 
 #### Special Tickets
 - **Vienna Card**: €17.00 (72 hours + discounts)
-- **Airport transfer**: €4.30
+- **Airportransfer**: €4.30
 - **Night bus**: €2.40 (same as regular fare)
 
 ### Financial Performance (2023)
@@ -298,7 +298,7 @@ Vienna operates a unified fare system under the VOR (Verkehrsverbund Ost-Region)
 
 #### Investment
 - **Annual investment**: €300 million
-- **Infrastructure expansion**: €150 million
+- **Infrastructurexpansion**: €150 million
 - **Vehicle renewal**: €100 million
 - **Digitalization**: €50 million
 
@@ -351,11 +351,11 @@ Vienna operates a unified fare system under the VOR (Verkehrsverbund Ost-Region)
 - **Employee discounts** on transport
 
 ### Training & Development
-- **Apprenticeship programs** for technical roles
+- **Apprenticeshiprograms** for technical roles
 - **Leadership development** for managers
 - **Digital skills training** for all employees
 - **Safety training** and certification
-- **Customer service excellence** programs
+- **Customer servicexcellence** programs
 
 ---
 
@@ -399,7 +399,7 @@ Vienna operates a unified fare system under the VOR (Verkehrsverbund Ost-Region)
 - **Mercer Quality of Living Survey**: #1 for public transport
 - **Sustainable Cities Index**: #2 for sustainable mobility
 - **European Green Capital**: Vienna 2020 winner
-- **Global Liveability Index**: #1 for infrastructure
+- **Globaliveability Index**: #1 for infrastructure
 
 ### Media Coverage
 
@@ -417,7 +417,7 @@ Vienna operates a unified fare system under the VOR (Verkehrsverbund Ost-Region)
 ### Academic Recognition
 
 #### Research Publications
-- **Transportation Research**: 50+ papers citing Vienna's system
+- **Transportation Research**: 50+ papers citing Vienna'system
 - **Urban Studies**: 30+ studies on Vienna's transport planning
 - **Sustainability Science**: 25+ papers on environmental impact
 
@@ -444,12 +444,12 @@ Vienna operates a unified fare system under the VOR (Verkehrsverbund Ost-Region)
 
 #### Climate Action
 - **Carbon footprint**: 85% reduction since 1990
-- **Renewable energy**: 100% green electricity
+- **Renewablenergy**: 100% green electricity
 - **Emission standards**: Euro 6 for all vehicles
 - **Green infrastructure**: Solar panels on stations
 
 #### Sustainability Awards
-- **European Green Deal**: Best practice example
+- **European Green Deal**: Best practicexample
 - **Climate Alliance**: Leadership in climate action
 - **C40 Cities**: Climate leadership award
 - **ICLEI**: Sustainable transport award
@@ -458,7 +458,7 @@ Vienna operates a unified fare system under the VOR (Verkehrsverbund Ost-Region)
 
 ## Technical Implementation Guide
 
-### Getting Started with the API
+### Getting Started withe API
 
 #### Basic Setup
 ```python
@@ -490,12 +490,12 @@ class WienerLinienAPI:
 #### Error Handling
 ```python
 def handle_api_response(response: requests.Response) -> Dict:
-    """Handle API responses with proper error handling."""
+    """Handle API responses with properror handling."""
     try:
         if response.status_code == 200:
             return response.json()
         elif response.status_code == 429:
-            print("Rate limit exceeded. Please wait before making more requests.")
+            print("Rate limit exceeded. Please wait before making morequests.")
             return {}
         elif response.status_code == 503:
             print("Service temporarily unavailable.")
@@ -510,7 +510,7 @@ def handle_api_response(response: requests.Response) -> Dict:
 
 #### Rate Limiting
 ```python
-import time
+importime
 from functools import wraps
 
 def rate_limit(seconds: int):
@@ -523,21 +523,19 @@ def rate_limit(seconds: int):
             func_name = func.__name__
             current_time = time.time()
             
-            if func_name in last_call:
+            ifunc_name in last_call:
                 time_since_last = current_time - last_call[func_name]
                 if time_since_last < seconds:
-                    sleep_time = seconds - time_since_last
-                    time.sleep(sleep_time)
+                    sleep_time = seconds - time_since_lastime.sleep(sleep_time)
             
             last_call[func_name] = time.time()
             return func(*args, **kwargs)
         
-        return wrapper
-    return decorator
+        return wrappereturn decorator
 
 # Usage
 @rate_limit(15)  # 15-second minimum interval
-def fetch_vehicle_data(rbl_number: str):
+defetch_vehicle_data(rbl_number: str):
     # API call here
     pass
 ```
@@ -546,9 +544,7 @@ def fetch_vehicle_data(rbl_number: str):
 
 #### Data Caching
 ```python
-from flask_caching import Cache
-
-cache = Cache(config={
+from flask_caching import Cache = Cache(config={
     'CACHE_TYPE': 'SimpleCache',
     'CACHE_DEFAULT_TIMEOUT': 15
 })
@@ -580,7 +576,7 @@ def log_api_request(url: str, params: Dict, response_time: float):
 #### Flask Application
 ```python
 from flask import Flask, jsonify, request
-from wiener_linien_api import WienerLinienAPI
+from wiener_linien_apimport WienerLinienAPI
 
 app = Flask(__name__)
 api = WienerLinienAPI()
@@ -593,9 +589,9 @@ def get_vehicles():
             data = api.get_vehicle_positions([rbl])
             return jsonify(data)
         else:
-            return jsonify({'error': 'RBL parameter required'}), 400
-    except Exception as e:
-        return jsonify({'error': 'Internal server error'}), 500
+            return jsonify({'error': 'RBL parameterequired'}), 400
+    exception as e:
+        return jsonify({'error': 'Internal serverror'}), 500
 ```
 
 #### JavaScript Integration
@@ -624,12 +620,11 @@ async function fetchVehiclePositions(rblNumbers) {
 
 #### Performance Monitoring
 ```python
-import time
+importime
 from dataclasses import dataclass
 from typing import List
 
-@dataclass
-class APIMetrics:
+@dataclass APIMetrics:
     request_count: int = 0
     success_count: int = 0
     error_count: int = 0

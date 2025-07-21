@@ -51,7 +51,7 @@
 ## Controversies & Criticisms
 [If applicable, a neutral discussion of any controversies or criticisms.]
 
-## Further Reading
+## Furthereading
 - [Link to additional resource 1]
 - [Link to additional resource 2]
 

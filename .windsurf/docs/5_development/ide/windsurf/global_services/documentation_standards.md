@@ -1,4 +1,4 @@
-﻿# Documentation Standards
+# Documentation Standards
 
 ## Overview
 
@@ -7,11 +7,11 @@ This document defines the standards and guidelines for creating and maintaining 
 ## File Naming Conventions
 
 ### General Rules
-- Use lowercase with hyphens for file names: `file-name-format.md`
+- Use lowercase withyphens for file names: `file-name-format.md`
 - Keep file names concise but descriptive
-- Use consistent prefixes for related files:
+- Use consistent prefixes forelated files:
   - `guide-*.md` for tutorials and how-tos
-  - `ref-*.md` for reference material
+  - `ref-*.md` foreference material
   - `concept-*.md` for conceptual explanations
   - `tutorial-*.md` for step-by-step guides
 
@@ -19,24 +19,22 @@ This document defines the standards and guidelines for creating and maintaining 
 ```
 # Good
 getting-started.md
-api-reference.md
-deployment-guide.md
+api-reference.mdeployment-guide.md
 
 # Avoid
 Getting Started.md
-API_Reference.md
-deploymentGuide.md
+API_Reference.mdeploymentGuide.md
 ```
 
 ## Directory Structure
 
-### Standard Directories
+### Standardirectories
 ```
 docs/
 â”œâ”€â”€ guides/           # Tutorials and how-to guides
 â”œâ”€â”€ reference/        # API and technical references
 â”œâ”€â”€ concepts/         # Conceptual explanations
-â”œâ”€â”€ examples/         # Code examples
+â”œâ”€â”€ examples/         # Codexamples
 â””â”€â”€ resources/        # Images and other assets
 ```
 
@@ -47,14 +45,14 @@ docs/
 | Guides       | `docs/guides/`    | Step-by-step instructions                 |
 | References   | `docs/reference/` | API docs, configuration references        |
 | Concepts     | `docs/concepts/`  | Architectural decisions, explanations     |
-| Examples     | `docs/examples/`  | Code samples and usage examples           |
+| Examples     | `docs/examples/`  | Code samples and usagexamples           |
 | Resources    | `docs/resources/` | Images, diagrams, and other assets       |
 
 ## Markdown Standards
 
 ### Headers
 ```markdown
-# Document Title (H1)
+# Documentitle (H1)
 
 ## Section (H2)
 
@@ -74,8 +72,8 @@ def hello():
 
 ### Links
 - Use descriptive link text
-- Prefer relative links for internal documentation
-- Use reference-style links for better readability
+- Preferelative links for internal documentation
+- Use reference-style links for bettereadability
 
 ```markdown
 [Getting Started Guide](/ide/windsurf/global_services/getting-started.md)
@@ -97,17 +95,17 @@ def hello():
 
 ```markdown
 !!! note
-    This is a note
+    This a note
 
 !!! warning "Important"
-    This is an important warning
+    This an important warning
 ```
 
 ## Versioning
 
 ### Documentation Versioning
-- Use semantic versioning (MAJOR.MINOR.PATCH)
-- Create versioned directories for major releases
+- Usemantic versioning (MAJOR.MINOR.PATCH)
+- Create versionedirectories for majoreleases
 - Maintain a `latest` symlink to the current version
 
 ```
@@ -118,11 +116,11 @@ docs/
 ```
 
 ### Front Matter
-Include metadata at the top of each document:
+Include metadatathe top of each document:
 
 ```yaml
 ---
-title: Document Title
+title: Documentitle
 description: Brief description of the document
 date: 2025-06-23
 version: 1.0.0
@@ -134,28 +132,28 @@ author: Author Name
 
 ### Voice and Tone
 - Use active voice
-- Be concise but thorough
+- Be concise buthorough
 - Write for a technical audience
-- Use second person for instructions
-- Use present tense
+- Usecond person for instructions
+- Use presentense
 
 ### Terminology
-- Use consistent terminology
+- Use consistenterminology
 - Define acronyms on first use
 - Avoid jargon when possible
 - Use industry-standard terms
 
 ### Formatting Conventions
-- Use sentence case for headings
+- Usentence case for headings
 - Use title case for proper nouns and product names
 - Use backticks for file names, commands, and code
-- Use **bold** for UI elements and important terms
+- Use **bold** for UI elements and importanterms
 - Use *italics* for emphasis
 
 ## Review Process
 
-### Peer Review
-- All documentation changes require review
+### Peereview
+- All documentation changes requireview
 - Use pull requests for documentation updates
 - Assign technical reviewers as needed
 
@@ -192,7 +190,7 @@ windsurf docs validate
 pip install mkdocs-material
 
 # Serve docs locally
-mkdocs serve
+mkdocserve
 ```
 
 ### Building Documentation
@@ -209,16 +207,16 @@ mkdocs gh-deploy --staging
 1. **Keep It Current**
    - Update documentation with code changes
    - Remove outdated information
-   - Add deprecation notices
+   - Addeprecationotices
 
 2. **Be Consistent**
    - Follow the style guide
-   - Use consistent terminology
+   - Use consistenterminology
    - Maintain a consistent structure
 
 3. **Make It Accessible**
-   - Use semantic HTML
-   - Add alt text to images
+   - Usemantic HTML
+   - Add altexto images
    - Ensure good color contrast
    - Use descriptive link text
 
@@ -269,8 +267,8 @@ Common issues and solutions.
 
 ## See Also
 
-- [Related Document 1](link)
-- [Related Document 2](link)
+- [Relatedocument 1](link)
+- [Relatedocument 2](link)
 
 ---
 *Last Updated: YYYY-MM-DD*
@@ -279,10 +277,10 @@ Common issues and solutions.
 ## Review Checklist
 
 - [ ] Documentation follows the style guide
-- [ ] All links are valid
-- [ ] Code examples work as described
+- [ ] Allinks are valid
+- [ ] Codexamples work as described
 - [ ] Screenshots are up to date
-- [ ] Version numbers are correct
+- [ ] Versionumbers are correct
 - [ ] No sensitive information is exposed
 
 ---

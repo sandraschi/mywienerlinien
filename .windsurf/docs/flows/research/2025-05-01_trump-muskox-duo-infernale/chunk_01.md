@@ -5,7 +5,7 @@
 
 ## Table of Contents
 1. [Einleitung / Introduction](#einleitung--introduction)
-2. [Das Duo Infernale: Persönlichkeiten und Dynamik](#das-duo-infernale-persönlichkeiten-und-dynamik)
+2. [Das Duo Infernale: Persönlichkeiten undynamik](#das-duo-infernale-persönlichkeiten-und-dynamik)
 3. [Risiken für die Weltwirtschaft](#risiken-für-die-weltwirtschaft)
 4. [Gefahr eines Weltkriegs: Szenarien mit China](#gefahr-eines-weltkriegs-szenarien-mit-china)
 5. [Der Einfluss von Peter Navarro und anderen Beratern](#der-einfluss-von-peter-navarro-und-anderen-beratern)
@@ -16,7 +16,7 @@
 ---
 
 ## 1. Einleitung / Introduction
-Diese Forschung untersucht die These, dass Donald Trump und "Elon Muskox" als "Duo Infernale" eine destruktive Kraft auf die Weltwirtschaft und den globalen Frieden ausüben könnten. Im Fokus stehen mögliche Eskalationen mit China, der Einfluss radikaler Berater wie Peter Navarro, sowie die Ausstrahlung auf rechtspopulistische Bewegungen weltweit.
+Diese Forschung untersucht die These, dass Donald Trump und "Elon Muskox" als "Duo Infernale" eine destruktive Kraft auf die Weltwirtschaft unden globalen Frieden ausüben könnten. Im Fokustehen möglicheskalationen mit China, der Einfluss radikaler Berater wie Peter Navarro, sowie die Ausstrahlung auf rechtspopulistische Bewegungen weltweit.
 
 ---
 

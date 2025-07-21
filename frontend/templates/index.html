@@ -32,9 +32,18 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
-        .container {
+        .app-container {
             display: flex;
-            height: 100vh;
+            flex-direction: column;
+            min-height: 100vh;
+            max-width: 100%;
+            overflow: hidden;
+        }
+        
+        .content-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
         }
         
         .sidebar {
@@ -45,11 +54,13 @@
             overflow-y: auto;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
             z-index: 1000;
+            position: relative;
         }
         
         .main-content {
             flex: 1;
             position: relative;
+            overflow: hidden;
         }
         
         #map {
@@ -58,21 +69,47 @@
         }
         
         .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1001;
         }
         
-        .header h1 {
-            color: #333;
-            font-size: 24px;
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 5px;
         }
         
-        .header p {
-            color: #666;
+        .header h1 {
+            color: white;
+            font-size: 20px;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .header-info {
+            display: flex;
+            gap: 15px;
             font-size: 14px;
+        }
+        
+        .build-info {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #a0a0a0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        
+        .connection-status, .vehicle-count {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .control-section {
@@ -317,18 +354,20 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <!-- Header -->
         <header class="header">
-            <h1>Wiener Linien Live Map</h1>
+            <div class="header-top">
+                <h1>Wiener Linien Live Map</h1>
+                <div class="build-info" id="build-info">Build: <span id="build-timestamp"></span></div>
+            </div>
             <div class="header-info">
                 <div class="connection-status" id="connection-status">Connecting...</div>
                 <div class="vehicle-count">Vehicles: <span id="vehicle-count">0</span></div>
             </div>
         </header>
 
-        <!-- Main Content -->
-        <div class="main-content">
+        <div class="content-container">
             <!-- Sidebar -->
             <aside class="sidebar">
                 <!-- Filters Section -->
@@ -389,6 +428,15 @@
                     </div>
                 </section>
 
+                <!-- Route Toggles Section -->
+                <section class="routes-section">
+                    <h3>Routes <span class="toggle-all-routes">[Show All]</span></h3>
+                    <div id="route-toggles" class="route-toggles">
+                        <!-- Route toggles will be added here by JavaScript -->
+                        <div class="loading-routes">Loading routes...</div>
+                    </div>
+                </section>
+
                 <!-- System Status Section -->
                 <section class="status-section">
                     <h3>System Status</h3>
@@ -446,15 +494,24 @@
     <!-- Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 
-    <script>
-        // Vienna center coordinates
-        const VIENNA_CENTER = [48.2082, 16.3738];
-
-        // Initialize the application when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the map and WebSocket connection
-            initializeMap();
-        });
-    </script>
-</body>
+            // Initialize the application when DOM is loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                // Display build date and time
+                const now = new Date();
+                const buildTime = now.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                });
+                document.getElementById('build-timestamp').textContent = buildTime;
+                
+                // Initialize the map and WebSocket connection
+                initializeMap();
+            });
+        </script>
+    </body>
 </html>

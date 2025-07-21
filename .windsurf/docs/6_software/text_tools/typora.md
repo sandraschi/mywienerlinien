@@ -1,7 +1,7 @@
 # Typora - A Minimalist Markdown Editor
 
 ## Overview
-Typora is a lightweight yet powerful Markdown editor that provides a seamless writing experience. It renders Markdown elements as you type, eliminating the need for a separate preview window.
+Typora is a lightweight yet powerful Markdown editor that provides a seamless writing experience. It renders Markdown elements as you type, eliminating the need for a separate previewindow.
 
 ## Key Features
 
@@ -21,10 +21,10 @@ Typora is a lightweight yet powerful Markdown editor that provides a seamless wr
 - File tree panel for easy navigation
 - Quick open (Ctrl+P)
 - Auto-save and file recovery
-- Multiple tabs support
+- Multiple tabsupport
 
 ### 4. Export Options
-- Export to: PDF, HTML, Word, and more
+- Exporto: PDF, HTML, Word, and more
 - Custom CSS theming
 - Print support
 
@@ -38,7 +38,7 @@ Typora is a lightweight yet powerful Markdown editor that provides a seamless wr
 ### Recommended Settings
 1. **Line Breaks**: Enable "Hard Line Break" in Preferences > Markdown
 2. **Images**: Set image folder in Preferences > Image
-3. **Themes**: Use a light theme for better compatibility with Docsify
+3. **Themes**: Use a lightheme for better compatibility with Docsify
 
 ### Tips for Docsify
 - Use `---` for front matter

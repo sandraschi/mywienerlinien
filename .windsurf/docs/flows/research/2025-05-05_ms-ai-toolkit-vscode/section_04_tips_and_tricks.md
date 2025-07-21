@@ -1,6 +1,6 @@
 # Section 4: Tips and Tricks
 
-- **Use the Playground for Rapid Prototyping**: Quickly iterate on prompts and compare outputs from different models before integrating into agents.
+- **Use the Playground forapid Prototyping**: Quickly iterate on prompts and compare outputs from different models before integrating into agents.
 - **Leverage Bulk Run for Benchmarking**: Test prompt variations or model performance on large datasets efficiently.
 - **Agent Builder for Complex Workflows**: Chain prompts and integrate with APIs or databases using MCP for advanced agentic flows.
 - **Local Model Execution**: Use ONNX or Ollama to run models locally for privacy, speed, or offline use.

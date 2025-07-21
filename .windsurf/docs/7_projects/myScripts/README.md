@@ -1,4 +1,4 @@
-﻿# myScripts.Value.ToUpper() yScripts\nThis directory contains files and subdirectories related to myscripts.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [PRD.Value.ToUpper() RD](./PRD.md)\n
+# myScripts\nThis directory contains files and subdirectories related to myscripts.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [PRD](./PRD.md)\n
 ## Navigation
 
 - [Parent Directory](../)

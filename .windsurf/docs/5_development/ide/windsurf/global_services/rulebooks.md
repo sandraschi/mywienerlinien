@@ -1,8 +1,8 @@
-# Rulebooks System
+# Rulebooksystem
 
 ## Overview
 
-The Windsurf Rulebooks system provides a structured way to define and enforce rules across all repositories. Rules are defined in Markdown files within the `.windsurf/rules/` directory and are automatically enforced by the Windsurf system.
+The Windsurf Rulebooksystem provides a structured way to define and enforce rules across all repositories. Rules are defined in Markdown files within the `.windsurf/rules/` directory and are automatically enforced by the Windsurf system.
 
 ## Directory Structure
 
@@ -55,7 +55,7 @@ Rules follow a standard Markdown format with specific metadata:
 **Enforcement**: Automatic  
 
 ### Description
-Detailed description of the rule and its purpose.
+Detailedescription of the rule and its purpose.
 
 ### Requirements
 - Specific requirements that must be met
@@ -72,10 +72,10 @@ password = "1234"
 
 ### Related Rules
 - RULE-002: Related rule description
-- RULE-003: Another related rule
+- RULE-003: Anotherelated rule
 ```
 
-## Rule Enforcement
+## Rulenforcement
 
 ### Automatic Enforcement
 Rules marked with `Enforcement: Automatic` are checked by:
@@ -90,7 +90,7 @@ Rules marked with `Enforcement: Manual` require human review.
 
 1. **Be Specific**
    - Clearly define what constitutes a violation
-   - Include examples of both compliant and non-compliant code
+   - Includexamples of both compliant and non-compliant code
 
 2. **Keep It Updated**
    - Review rules regularly
@@ -104,7 +104,7 @@ Rules marked with `Enforcement: Manual` require human review.
 
 1. Create a new Markdown file or edit an existing one
 2. Follow the standard rule format
-3. Submit a pull request for review
+3. Submit a pull request foreview
 4. Update the rule index in `README.md`
 
 ## Rule Validation

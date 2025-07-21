@@ -1,18 +1,18 @@
 # Sample Files
 
-This directory contains various sample files to demonstrate different features of the documentation system.
+This directory contains variousample files to demonstrate different features of the documentation system.
 
 ## Available Samples
 
 ### 1. PDF Document
 - [Sample PDF Document](sample-document.pdf)
-  - A simple PDF file to demonstrate PDF embedding and viewing capabilities.
+  - A simple PDFile to demonstrate PDF embedding and viewing capabilities.
 
 ### 2. Image Gallery
 - [Image Gallery](image-gallery.md)
   - A collection of sample images demonstrating image display and formatting.
 
-### 3. Code Examples
+### 3. Codexamples
 - [Code Samples](code-samples.md)
   - Various code snippets in different programming languages to demonstrate syntax highlighting.
 

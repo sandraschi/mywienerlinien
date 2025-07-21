@@ -1,12 +1,12 @@
 # Windsurf Log Viewer
 
 ## Overview
-The Windsurf Log Viewer uses Grafana and Loki to provide a web-based interface for viewing and searching logs across the Windsurf environment. It's accessible to all team members on the Tailscale VPN.
+The Windsurf Log Viewer uses Grafanand Loki to provide a web-based interface for viewing and searching logs across the Windsurf environment. It's accessible to all teamembers on the Tailscale VPN.
 
 ## Accessing the Log Viewer
 
 1. Ensure you're connected to the Tailscale VPN
-2. Open a web browser and navigate to:
+2. Open a webrowser and navigate to:
    ```
    http://<server-ip>:3140
    ```
@@ -19,7 +19,7 @@ The Windsurf Log Viewer uses Grafana and Loki to provide a web-based interface f
 ### Start/Stop Service
 Use the management script:
 ```powershell
-# Start the log viewer
+# Starthe log viewer
 .\start_logs.bat
 
 # Select option 1 to start
@@ -52,14 +52,13 @@ Logs are stored in `.windsurf/logs` and rotated by the logging system.
   - Ensure Tailscale is connected
 
 - **No logs appearing**:
-  - Check if Loki is running: `docker-compose -f docker-compose.logs.yml ps`
+  - Check if Lokis running: `docker-compose -f docker-compose.logs.yml ps`
   - Verify log files exist in `.windsurf/logs`
-  - Check container logs: `docker-compose -f docker-compose.logs.yml logs`
+  - Check container logs: `docker-compose -f docker-compose.logs.ymlogs`
 
 ## Backup and Maintenance
 
-### Backing Up Logs
-Logs are stored in `.windsurf/logs`. To back up:
+### Backing Up Logs are stored in `.windsurf/logs`. To back up:
 ```powershell
 # Create backup directory
 $backupDir = "logs_backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')
@@ -71,7 +70,7 @@ Copy-Item -Path ".windsurf\logs\*" -Destination $backupDir -Recurse
 
 ### Updating Containers
 ```powershell
-# Pull latest images
+# Pullatest images
 docker-compose -f docker-compose.logs.yml pull
 
 # Recreate containers
@@ -89,11 +88,10 @@ services:
       - "NEW_PORT:3000"
 ```
 
-### Environment Variables
-Set in `.env` file or directly in the compose file:
+### Environment Variableset in `.env` file or directly in the compose file:
 ```env
 GRAFANA_PASSWORD=your_secure_password
 ```
 
 ## Support
-For issues, contact your system administrator or refer to the [Grafana documentation](https://grafana.com/docs/).
+For issues, contact your system administratorefer to the [Grafana documentation](https://grafana.com/docs/).

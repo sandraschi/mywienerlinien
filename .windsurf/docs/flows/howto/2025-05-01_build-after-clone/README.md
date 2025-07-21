@@ -1,4 +1,4 @@
-﻿# 2025 05 01  2025 05 01 build after clone.Value.ToUpper() uild  2025 05 01 build after clone.Value.ToUpper() fter  2025 05 01 build after clone.Value.ToUpper() lone\nThis directory contains files and subdirectories related to 2025-05-01 build-after-clone.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [chunk 01.Value.ToUpper() hunk 01](./chunk_01.md)\n- [chunk 02.Value.ToUpper() hunk 02](./chunk_02.md)\n
+# 2025 05 01  2025 05 01 build after clone uild  2025 05 01 build after clone fter  2025 05 01 build after clone\nThis directory contains files and subdirectories related to 2025-05-01 build-after-clone.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [chunk 01 hunk 01](./chunk_01.md)\n- [chunk 02 hunk 02](./chunk_02.md)\n
 ## Navigation
 
 - [Parent Directory](../)

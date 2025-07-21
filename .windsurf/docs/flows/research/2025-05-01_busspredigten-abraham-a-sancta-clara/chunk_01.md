@@ -1,5 +1,5 @@
 > **Prompt:**
-> research: die busspredigten abraham a sancta claras , ihre religiöse and soziale bedeutung, ihre bildgewaltige barocke sprache und kontemporäre und spätere literarische ähnliche werke. vergleichbares im englischen sprachraum :research
+> research: die busspredigten abraham a sancta claras , ihreligiöse and soziale bedeutung, ihre bildgewaltige barocke sprache und kontemporäre und spätere literarische ähnliche werke. vergleichbares im englischen sprachraum :research
 
 # Die Busspredigten Abraham a Sancta Claras: Bedeutung, Sprache und Wirkung
 
@@ -15,7 +15,7 @@
 ---
 
 ## 1. Einleitung
-Abraham a Sancta Clara (1644–1709) war ein bedeutender Prediger und Schriftsteller der Barockzeit. Seine Busspredigten sind berühmt für ihre bildreiche Sprache, ihren satirischen Witz und ihre starke gesellschaftliche Wirkung. In dieser Forschung werden die religiösen und sozialen Dimensionen seiner Predigten, die sprachlichen Besonderheiten, Parallelen zu anderen Werken sowie vergleichbare Erscheinungen im englischen Sprachraum untersucht.
+Abraham a Sancta Clara (1644–1709) war ein bedeutender Prediger und Schriftsteller der Barockzeit. Seine Busspredigten sind berühmt für ihre bildreiche Sprache, ihren satirischen Witz und ihre starke gesellschaftliche Wirkung. In dieser Forschung werden die religiösen und sozialen Dimensionen seiner Predigten, die sprachlichen Besonderheiten, Parallelen zu anderen Werken sowie vergleichbarerscheinungen im englischen Sprachraum untersucht.
 
 ---
 

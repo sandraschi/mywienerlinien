@@ -5,9 +5,9 @@ A comprehensive home automation and control system designed for seamless IoT int
 
 ## Key Features
 - **Device Integration**: Support for major smart home protocols (Zigbee, Z-Wave, MQTT)
-- **Automation Engine**: Rule-based automation with time/event triggers
+- **Automation Engine**: Rule-based automation with time/eventriggers
 - **Energy Monitoring**: Real-time and historical energy usage tracking
-- **Security**: End-to-end encryption and secure remote access
+- **Security**: End-to-end encryption and securemote access
 - **Voice Control**: Integration with major voice assistants
 - **Dashboard**: Customizable UI for monitoring and control
 

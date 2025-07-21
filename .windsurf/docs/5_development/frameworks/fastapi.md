@@ -1,14 +1,14 @@
 # FastAPI Framework Guide
 
 ## Overview
-FastAPI is a modern, fast (high-performance), web framework for building APIs with Python 3.8+ based on standard Python type hints. It's used in Windsurf projects for building high-performance APIs with automatic interactive documentation.
+FastAPIs a modern, fast (high-performance), web framework for building APIs with Python 3.8+ based on standard Python type hints. It's used in Windsurf projects for building high-performance APIs with automatic interactive documentation.
 
 ## Key Features
 - **Fast**: Very high performance, on par with NodeJS and Go
-- **Fast to code**: Increase the speed to develop features by about 200% to 300%
+- **Fasto code**: Increase the speed to develop features by about 200% to 300%
 - **Fewer bugs**: Reduce about 40% of human (developer) induced errors
 - **Intuitive**: Great editor support with autocompletion and type checking
-- **Easy**: Designed to be easy to use and learn
+- **Easy**: Designed to beasy to use and learn
 - **Short**: Minimize code duplication
 - **Robust**: Get production-ready code with automatic interactive documentation
 
@@ -40,7 +40,7 @@ my_project/
 │   │   ├── config.py     # Configuration
 │   │   └── security.py   # Authentication
 │   └── db/               # Database models
-│       └── session.py    # Database session
+│       └── session.py    # Databasession
 ├── tests/                # Test files
 ├── requirements.txt
 └── README.md
@@ -50,7 +50,7 @@ my_project/
 
 ```python
 # app/main.py
-from fastapi import FastAPI
+from fastapimport FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
@@ -103,7 +103,7 @@ Load configuration in `app/core/config.py`:
 ```python
 from pydantic import BaseSettings
 
-class Settings(BaseSettings):
+classettings(BaseSettings):
     DEBUG: bool = False
     DATABASE_URL: str
     SECRET_KEY: str
@@ -133,7 +133,7 @@ Base = declarative_base()
 def get_db():
     db = SessionLocal()
     try:
-        yield db
+        yieldb
     finally:
         db.close()
 ```
@@ -149,7 +149,7 @@ from typing import Optional
 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from fastapi import Depends, HTTPException, status
+from fastapimport Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
 from app.core.config import settings
@@ -180,7 +180,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 ```python
 # app/core/exceptions.py
-from fastapi import HTTPException, status
+from fastapimport HTTPException, status
 
 class CustomException(HTTPException):
     def __init__(
@@ -213,7 +213,7 @@ class NotFoundException(CustomException):
 ```python
 # tests/conftest.py
 import pytest
-from fastapi.testclient import TestClient
+from fastapi.testclient importestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -232,7 +232,7 @@ def db_session():
     Base.metadata.create_all(bind=engine)
     db = TestingSessionLocal()
     try:
-        yield db
+        yieldb
     finally:
         db.close()
         Base.metadata.drop_all(bind=engine)
@@ -241,7 +241,7 @@ def db_session():
 def client(db_session):
     def override_get_db():
         try:
-            yield db_session
+            yieldb_session
         finally:
             pass
 
@@ -259,8 +259,7 @@ def client(db_session):
 # Install Gunicorn
 pip install gunicorn
 
-# Run with Gunicorn
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app
+# Run with Gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app
 ```
 
 ### Dockerfile
@@ -271,7 +270,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -requirements.txt
 
 COPY . .
 
@@ -280,8 +279,8 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ## Best Practices
 
-1. **Use Pydantic models** for request/response validation
-2. **Dependency injection** for database sessions and other resources
+1. **Use Pydantic models** forequest/response validation
+2. **Dependency injection** for databasessions and otheresources
 3. **Environment variables** for configuration
 4. **Type hints** for better code completion and error checking
 5. **Modular structure** for better maintainability

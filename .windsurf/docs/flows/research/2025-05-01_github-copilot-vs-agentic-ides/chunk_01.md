@@ -1,20 +1,20 @@
 # Improvements and Limitations of the New Version of GitHub Copilot (2025)
 
 ## 1. Introduction
-This research explores the improvements and limitations of the latest version of GitHub Copilot, with a particular focus on how it compares to other agentic AI IDEs, such as Windsurf. The goal is to provide a comprehensive, up-to-date, and unbiased overview for technical decision-makers and developers considering advanced AI coding assistants.
+This research explores the improvements and limitations of the latest version of GitHub Copilot, with a particular focus on how it compares tother agentic AIDEs, such as Windsurf. The goal is to provide a comprehensive, up-to-date, and unbiased overview for technical decision-makers andevelopers considering advanced AI coding assistants.
 
 ---
 
 ## 2. Improvements in the New Version of GitHub Copilot
 
 ### a. Enhanced Context Awareness
-- The new Copilot leverages larger context windows, allowing it to consider more of the surrounding code and project structure.
+- The new Copilot leverages larger context windows, allowing ito consider more of the surrounding code and project structure.
 - Improved ability to infer developer intent from comments and code patterns.
 
 ### b. Better Integration with IDEs
 - Deep integration with Visual Studio Code, JetBrains IDEs, and Neovim.
 - Real-time code suggestions, inline completions, and multi-line code generation.
-- Enhanced support for refactoring, code navigation, and documentation generation.
+- Enhanced support forefactoring, code navigation, andocumentation generation.
 
 ### c. AI Model Upgrades
 - Uses the latest OpenAI Codex and potentially GPT-4-class models, improving code generation quality and language support.
@@ -31,9 +31,9 @@ This research explores the improvements and limitations of the latest version of
 
 ## 3. Limitations of the New GitHub Copilot
 
-### a. Lack of Full Agentic Autonomy
+### a. Lack ofull Agentic Autonomy
 - Copilot remains primarily a code completion and suggestion tool, not a fully agentic system.
-- Cannot autonomously plan, execute, and verify complex multi-step tasks or refactorings.
+- Cannot autonomously plan, execute, and verify complex multi-step tasks orefactorings.
 
 ### b. Limited Workflow Automation
 - No built-in support for automated multi-file refactoring, dependency management, or test orchestration.
@@ -48,18 +48,18 @@ This research explores the improvements and limitations of the latest version of
 
 ---
 
-## 4. Comparison with Agentic AI IDEs (e.g., Windsurf)
+## 4. Comparison with Agentic AIDEs (e.g., Windsurf)
 
-### a. Agentic Capabilities
+### a. Agenticapabilities
 - **Windsurf** and similar agentic IDEs can autonomously plan, execute, and verify entire coding tasks, not just suggest code.
-- Support for multi-step task management, debugging, and error recovery.
+- Support for multi-step task management, debugging, and errorecovery.
 
 ### b. Memory and Project Context
 - Agentic IDEs maintain persistent memory of project state, past actions, and user preferences.
-- Copilot has limited or no persistent memory across sessions.
+- Copilot has limited or no persistent memory acrossessions.
 
 ### c. Automation and Orchestration
-- Agentic IDEs can run scripts, tests, and builds, and can reason about their results.
+- Agentic IDEs can run scripts, tests, and builds, and can reason aboutheiresults.
 - Copilot cannot initiate or manage such workflows autonomously.
 
 ### d. Extensibility and Customization

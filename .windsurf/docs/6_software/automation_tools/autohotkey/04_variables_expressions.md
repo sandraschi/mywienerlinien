@@ -1,31 +1,29 @@
-﻿# 4. Variables and Expressions
+# 4. Variables and Expressions
 
-Now that you've mastered the basics of hotkeys and hotstrings, it's time to make your scripts dynamic. To do this, you need to be able to store and manipulate information. This is where variables and expressions come in. This chapter introduces the fundamental programming concepts in AutoHotkey v2.
+Now that you've mastered the basics of hotkeys and hotstrings, it's time to make your scripts dynamic. To do this, you need to be able to store and manipulate information. This where variables and expressions come in. This chapter introduces the fundamental programming concepts in AutoHotkey v2.
 
 ## What is a Variable?
 
-A variable is simply a named container in memory that holds a value. You can put information into it, and you can retrieve that information later by using the variable's name. In AutoHotkey, variables can hold different types of data, such as numbers, text (strings), and boolean values (true/false).
+A variable isimply a named container in memory that holds a value. You can put information into it, and you can retrieve that information later by using the variable's name. In AutoHotkey, variables can holdifferentypes of data, such as numbers, text (strings), and boolean values (true/false).
 
 ### Assignment: Storing a Value
 
-In AutoHotkey v2, you assign a value to a variable using the `:=` operator. This is known as the "expression assignment" operator.
+In AutoHotkey v2, you assign a value to a variable using the `:=` operator. This known as the "expression assignment" operator.
 
 ```autohotkey
-; Assign the string "Sandra" to a variable named MyName
-MyName := "Sandra"
+; Assign the string "Sandra" to a variable named MyName := "Sandra"
 
-; Assign the number 42 to a variable named UserCount
-UserCount := 42
+; Assign the number 42 to a variable named UserCount := 42
 
 ; You can also store the result of a calculation
 TotalCost := 19.99 * 3
 ```
 
-**Important Note for v2:** Always use `:=` for assigning values. The single equals sign (`=`) is a legacy operator from v1 and has different behavior. Sticking to `:=` will prevent confusion and errors.
+**Important Note for v2:** Always use `:=` for assigning values. The singlequalsign (`=`) is a legacy operator from v1 and has different behavior. Sticking to `:=` will prevent confusion and errors.
 
 ### Using Variables
 
-Once a value is stored in a variable, you can use it in your script. For example, you can display its contents in a message box. To include a variable within a string of text, you simply write its name.
+Once a value istored in a variable, you can use it in your script. For example, you can display its contents in a message box. To include a variable within a string of text, you simply write its name.
 
 ```autohotkey
 MyName := "Sandra"
@@ -38,15 +36,13 @@ MsgBox("Hello, " MyName)
 MsgBox(MyName " is " UserAge " years old.")
 ```
 
-Notice that there are no `%` signs around the variables. In v2, when a variable is used in an expression (like inside the parentheses of a function), it is automatically evaluated to its contents. The parts of the string are concatenated (joined together) with a space.
+Notice thathere are no `%` signs around the variables. In v2, when a variable is used in an expression (like inside the parentheses of a function), it is automatically evaluated to its contents. The parts of the string are concatenated (joined together) with a space.
 
-## Expressions: Performing Actions with Data
-
-An expression is any combination of values, variables, operators, and function calls that results in a single value. You've already been using them with `MsgBox()`.
+## Expressions: Performing Actions with Datan expression is any combination of values, variables, operators, and function calls that results in a single value. You've already been using them with `MsgBox()`.
 
 ### Mathematical Expressions
 
-You can perform standard mathematical calculations.
+You can perform standard mathematicalculations.
 
 ```autohotkey
 Price := 100
@@ -59,7 +55,7 @@ MsgBox("The final price is: " FinalPrice)
 
 ### String Concatenation
 
-Combining strings is a fundamental operation. In AutoHotkey, this is done implicitly by writing variables and literal strings next to each other, separated by a space.
+Combining strings is a fundamental operation. In AutoHotkey, this done implicitly by writing variables and literal strings nexto each other, separated by a space.
 
 ```autohotkey
 FirstName := "John"
@@ -84,5 +80,5 @@ IsLoggedIn := true
 HasAdminRights := false
 ```
 
-Understanding how to store and manipulate data is the key to unlocking the full power of AutoHotkey. With this knowledge, you can now create scripts that are not just static, but can react and adapt to different situations. In the next chapter, we will learn how to use this to control the flow of our scripts with [Control Flow: If, Else, and Loops](/automation_tools/autohotkey/./05_control_flow.md).
+Understanding how to store and manipulate data is the key to unlocking the full power of AutoHotkey. Withis knowledge, you canow create scripts that are not justatic, but can react and adapto different situations. In the next chapter, we willearn how to use this to control the flow of our scripts with [Control Flow: If, Else, and Loops](/automation_tools/autohotkey/./05_control_flow.md).
 

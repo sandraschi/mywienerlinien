@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This research document explores digital tools designed to filter, block, or counter content related to Donald Trump, MAGA rhetoric, and fascist ideologies. These tools range from simple browser extensions that replace or hide Trump-related content to more sophisticated applications that identify and counter fascist narratives online.
+This research document explores digital tools designed to filter, block, or counter content related to Donald Trump, MAGA rhetoric, and fascist ideologies. These tools range from simple browser extensions that replace or hide Trump-related contento more sophisticated applications that identify and counter fascist narratives online.
 
 ## Browser Extensions
 
@@ -10,23 +10,23 @@ This research document explores digital tools designed to filter, block, or coun
 
 1. **Trump Filter**
    - **Developer**: Rob Spectre
-   - **Platform**: Chrome Extension
+   - **Platform**: Chromextension
    - **Functionality**: Detects and removes Trump-related content from web pages
    - **Features**: Adjustable filter levels (mild, aggressive, vindictive)
-   - **Status**: Released during 2016 campaign, may not be actively maintained
+   - **Status**: Releaseduring 2016 campaign, may not be actively maintained
    - **Link**: [Chrome Web Store](https://chrome.google.com/webstore/detail/trump-filter/lhondapiaknegjpellpodegmeonigjic)
 
 2. **Detrumpify**
    - **Developer**: Dave Weasel
-   - **Platform**: Chrome Extension
+   - **Platform**: Chromextension
    - **Functionality**: Replaces mentions of Trump with alternative text
-   - **Features**: Customizable replacement text, image filtering
-   - **Status**: Gained popularity during Trump presidency, updated versions may exist
+   - **Features**: Customizable replacementext, image filtering
+   - **Status**: Gained popularity during Trumpresidency, updated versions may exist
    - **Link**: [GitHub Repository](https://github.com/daveWid/detrumpify)
 
 3. **Make America Kittens Again (MAKA)**
    - **Developer**: Tom Royal
-   - **Platform**: Chrome Extension
+   - **Platform**: Chromextension
    - **Functionality**: Replaces images of Trump with pictures of kittens
    - **Features**: Image recognition, customizable settings
    - **Status**: Still available, periodic updates
@@ -55,7 +55,7 @@ This research document explores digital tools designed to filter, block, or coun
 
 3. **FascismDetector**
    - **Platform**: Browser extension
-   - **Functionality**: Analyzes text for fascist rhetoric and dog whistles
+   - **Functionality**: Analyzes text for fascist rhetoric andog whistles
    - **Features**: Highlights problematic language, provides educational context
    - **Status**: Newer tool, actively developed
 
@@ -70,13 +70,13 @@ This research document explores digital tools designed to filter, block, or coun
 2. **Alt-Right Blocker**
    - **Platform**: Android
    - **Functionality**: Identifies and blocks alt-right content across platforms
-   - **Features**: AI-powered detection, content warnings
+   - **Features**: AI-poweredetection, content warnings
    - **Status**: Active development
 
 3. **Resistance Tools**
    - **Platform**: iOS, Android
    - **Functionality**: Suite of tools for political activism
-   - **Features**: Protest information, representative contact tools, news filters
+   - **Features**: Protest information, representative contactools, news filters
    - **Status**: Updated for 2024 election cycle
 
 ## News Aggregators and Media Tools
@@ -108,13 +108,13 @@ This research document explores digital tools designed to filter, block, or coun
    - Effectiveness: Moderate, prone to false positives
    - Implementation: Straightforward regex or string matching
 
-2. **Natural Language Processing**
+2. **Naturalanguage Processing**
    - Sentiment analysis to identify pro-Trump or fascist rhetoric
    - Context-aware filtering that understands nuance
    - Implementation: Machine learning models, often pre-trained
 
 3. **Image Recognition**
-   - Identifies and filters images containing Trump or related symbols
+   - Identifies and filters images containing Trump orelated symbols
    - Implementation: Computer vision algorithms, neural networks
 
 ### Data Sources
@@ -125,9 +125,9 @@ This research document explores digital tools designed to filter, block, or coun
    - Regular maintenance required
 
 2. **AI-Generated Content Detection**
-   - Automated systems that learn to identify problematic content
-   - Adaptive to evolving language and dog whistles
-   - Requires training data and periodic retraining
+   - Automated systems that learn to identify problematicontent
+   - Adaptive to evolving language andog whistles
+   - Requires training datand periodic retraining
 
 3. **Fact-Checking Databases**
    - Integration with established fact-checking organizations
@@ -145,15 +145,15 @@ This research document explores digital tools designed to filter, block, or coun
 
 2. **Filter Bubbles**
    - Risk of reinforcing echo chambers
-   - Balance between filtering harmful content and diverse perspectives
+   - Balance between filtering harmful content andiverse perspectives
    - Some tools include "educational mode" options
 
-### Technical Limitations
+### Technicalimitations
 
 1. **False Positives/Negatives**
    - Difficulty distinguishing between reporting on Trump and pro-Trump content
    - Context-awareness challenges in automated systems
-   - Evolving language and dog whistles require constant updates
+   - Evolving language andog whistles require constant updates
 
 2. **Platform Restrictions**
    - Browser API limitations
@@ -164,21 +164,21 @@ This research document explores digital tools designed to filter, block, or coun
 
 1. **Terms of Service Compliance**
    - Many platforms restrict automated content filtering
-   - Potential legal challenges from affected parties
+   - Potentialegal challenges from affected parties
    - Compliance with data protection regulations
 
 2. **Free Speech Debates**
-   - Balancing content filtering with free expression principles
-   - Transparency in filtering criteria and decisions
+   - Balancing content filtering with freexpression principles
+   - Transparency in filtering criteriandecisions
    - Options for user control and customization
 
 ## Conclusion
 
-The landscape of anti-Trump and anti-fascist digital tools continues to evolve, particularly with the approach of the 2024 election. These tools employ various technical approaches, from simple keyword filtering to sophisticated AI-powered content analysis. While they offer users ways to customize their online experience and reduce exposure to potentially harmful content, they also raise important questions about filter bubbles, privacy, and the balance between content moderation and free expression.
+The landscape of anti-Trump and anti-fascist digital tools continues to evolve, particularly withe approach of the 2024 election. These tools employ various technical approaches, from simple keyword filtering to sophisticated AI-powered content analysis. While they offer users ways to customize their onlinexperience and reducexposure to potentially harmful content, they also raise important questions about filter bubbles, privacy, and the balance between content moderation and freexpression.
 
-Future development in this space will likely focus on more nuanced, context-aware filtering systems that can better distinguish between reporting on problematic content and the content itself, as well as tools that provide educational context rather than simply removing content entirely.
+Future development in thispace willikely focus on more nuanced, context-aware filtering systems that can better distinguish between reporting on problematicontent and the content itself, as well as tools that provideducational context rather than simply removing contentirely.
 
-## Bibliography and Further Reading
+## Bibliography and Furthereading
 
 ### Academic Articles
 
@@ -186,15 +186,15 @@ Future development in this space will likely focus on more nuanced, context-awar
 
 2. Noble, S. U. (2018). *Algorithms of Oppression: How Search Engines Reinforce Racism*. NYU Press.
 
-3. Marwick, A., & Lewis, R. (2017). "Media Manipulation and Disinformation Online." *Data & Society Research Institute*.
+3. Marwick, A., & Lewis, R. (2017). "Media Manipulation andisinformationline." *Data & Society Research Institute*.
 
 4. Daniels, J. (2018). "The Algorithmic Rise of the 'Alt-Right'." *Contexts*, 17(1), 60-65.
 
-5. Britt, B. C., & Perks, L. G. (2021). "Digital tools for resisting: Exploring digital tools for resistance in the Trump era." *New Media & Society*, 23(11), 3209-3228.
+5. Britt, B. C., & Perks, L. G. (2021). "Digital tools foresisting: Exploring digital tools foresistance in the Trump era." *New Media & Society*, 23(11), 3209-3228.
 
 ### News Articles and Blog Posts
 
-1. Romano, A. (2019). "How the alt-right's sexism lures men into white supremacy." *Vox*. [Link](https://www.vox.com/culture/2019/4/30/18510864/alt-right-sexism-recruitment)
+1. Romano, A. (2019). "How the alt-right'sexism lures men into white supremacy." *Vox*. [Link](https://www.vox.com/culture/2019/4/30/18510864/alt-right-sexism-recruitment)
 
 2. Tiffany, K. (2020). "The People Trying to Make Internet Kinder." *The Atlantic*. [Link](https://www.theatlantic.com/technology/archive/2020/10/internet-moderation-kindness/616895/)
 

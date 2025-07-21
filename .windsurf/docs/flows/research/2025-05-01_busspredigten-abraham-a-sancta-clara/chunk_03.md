@@ -2,8 +2,8 @@
 
 ## 4. Zeitgenössische und spätere literarische Parallelen
 - Einfluss auf deutschsprachige Barockliteratur (z.B. Grimmelshausen, Gryphius).
-- Parallelen zu anderen Predigern: Johann Michael Sailer, Angelus Silesius.
-- Spätere Rezeption: Inspiration für satirische Autoren (Nestroy, Karl Kraus).
+- Parallelen zu anderen Predigern: Johann Michael Sailer, Angelusilesius.
+- Späterezeption: Inspiration für satirische Autoren (Nestroy, Karl Kraus).
 - Elemente der Busspredigten in moderner Literatur und Kabarett.
 - Vergleich mit französischen Moralisten (Bossuet, Bourdaloue).
 
@@ -12,9 +12,9 @@
 ## 5. Vergleichbares im englischen Sprachraum
 - Englische "Sermons of Repentance" (John Donne, Jeremy Taylor) als Parallelen.
 - Puritanische Predigten: Fokus auf Buße, Sünde, göttliche Gnade.
-- Unterschiede: Weniger barocke Bildsprache, stärker rationalistisch geprägt.
-- Spätere Einflüsse: Methodistische und evangelikale Predigttraditionen.
-- Vergleich: Abraham a Sancta Clara als barocker "Showman", englische Prediger oft nüchterner.
+- Unterschiede: Weniger barocke Bildsprache, stärkerationalistisch geprägt.
+- Spätereinflüsse: Methodistische und evangelikale Predigttraditionen.
+- Vergleich: Abraham a Sancta Clarals barocker "Showman", englische Prediger oft nüchterner.
 
 ---
 

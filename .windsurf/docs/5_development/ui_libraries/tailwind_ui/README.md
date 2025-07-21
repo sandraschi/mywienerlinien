@@ -1,4 +1,4 @@
-﻿# tailwind ui.Value.ToUpper() ailwind  tailwind ui.Value.ToUpper() i\nThis directory contains files and subdirectories related to tailwind ui.\n\n## Contents\n<!-- toc -->\n
+# tailwind ui ailwind  tailwind ui\nThis directory contains files and subdirectories related to tailwind ui.\n\n## Contents\n<!-- toc -->\n
 ## Navigation
 
 - [Parent Directory](../)

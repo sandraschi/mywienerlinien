@@ -10,8 +10,7 @@
 - [Troubleshooting](#troubleshooting)
 - [Alternatives](#alternatives)
 
-## Introduction
-Nginx (pronounced "engine-x") is a high-performance web server, reverse proxy, and load balancer. This guide covers using Nginx with our Docsify documentation system.
+## Introductionginx (pronounced "engine-x") is a high-performance web server, reverse proxy, and load balancer. This guide covers usinginx with our Docsify documentation system.
 
 ## When to Use Nginx
 
@@ -20,7 +19,7 @@ Nginx (pronounced "engine-x") is a high-performance web server, reverse proxy, a
 - Need SSL/TLS termination
 - Require advanced caching
 - Need load balancing
-- Want to serve multiple applications
+- Wanto serve multiple applications
 - Need rate limiting or access control
 
 ### Tailscale-Only Alternative
@@ -42,7 +41,7 @@ sudo yum install epel-release
 sudo yum install nginx
 ```
 
-### Basic Configuration
+### Basiconfiguration
 ```nginx
 # /etc/nginx/conf.d/docs.conf
 server {
@@ -51,11 +50,11 @@ server {
     
     location / {
         root /path/to/your/docs;
-        index index.html;
+        index.html;
         
         # Enable gzip compression
         gzip on;
-        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+        gzip_types text/plain text/css application/json application/javascriptext/xml application/xml application/xml+rss text/javascript;
         
         # Handle HTML5 History Mode
         try_files $uri $uri/ /index.html;
@@ -92,7 +91,7 @@ server {
     
     location / {
         root /path/to/your/docs;
-        index index.html;
+        index.html;
         try_files $uri $uri/ /index.html;
     }
 }
@@ -112,15 +111,14 @@ location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
 
 ### Worker Processes
 ```nginx
-# Set to number of CPU cores
+# Seto number of CPU cores
 worker_processes auto;
 
 events {
-    # Max connections per worker
-    worker_connections 1024;
+    # Max connections per worker_connections 1024;
     
     # Efficient connection processing
-    use epoll; # Linux only
+    usepoll; # Linux only
     multi_accept on;
 }
 
@@ -163,14 +161,11 @@ http {
         image/bmp
         image/svg+xml
         image/x-icon
-        text/cache-manifest
-        text/css
+        text/cache-manifestext/css
         text/plain
         text/vcard
         text/vnd.rim.location.xloc
-        text/vtt
-        text/x-component
-        text/x-cross-domain-policy;
+        text/vttext/x-componentext/x-cross-domain-policy;
 }
 ```
 
@@ -181,7 +176,7 @@ http {
 add_header X-Frame-Options "SAMEORIGIN" always;
 add_header X-XSS-Protection "1; mode=block" always;
 add_header X-Content-Type-Options "nosniff" always;
-add_header Referrer-Policy "no-referrer-when-downgrade" always;
+add_headereferrer-Policy "no-referrer-when-downgrade" always;
 add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
 add_header Permissions-Policy "geolocation=(), midi=(), sync-xhr=(), microphone=(), camera=(), magnetometer=(), gyroscope=(), fullscreen=(self)" always;
 ```
@@ -211,9 +206,7 @@ server {
 
 #### Permission Denied
 ```bash
-# Fix Nginx user permissions
-sudo chown -R nginx:nginx /path/to/your/docs
-sudo chmod -R 755 /path/to/your/docs
+# Fix Nginx user permissionsudo chown -R nginx:nginx /path/to/your/docsudo chmod -R 755 /path/to/your/docs
 ```
 
 #### Check Configuration
@@ -229,7 +222,7 @@ sudo systemctl reload nginx
 
 ### For Simple Setups
 - [Caddy](https://caddyserver.com/) - Automatic HTTPS by default
-- [Traefik](https://traefik.io/) - Cloud-native edge router
+- [Traefik](https://traefik.io/) - Cloud-nativedge router
 - [Docsify's built-in server](https://docsify.js.org/#/quickstart) - For development only
 
 ### For Advanced Setups

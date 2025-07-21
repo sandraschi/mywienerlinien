@@ -1,4 +1,4 @@
-﻿# 2025 05 01  2025 05 01 github copilot vs agentic ides.Value.ToUpper() ithub  2025 05 01 github copilot vs agentic ides.Value.ToUpper() opilot  2025 05 01 github copilot vs agentic ides.Value.ToUpper() s  2025 05 01 github copilot vs agentic ides.Value.ToUpper() gentic  2025 05 01 github copilot vs agentic ides.Value.ToUpper() des\nThis directory contains files and subdirectories related to 2025-05-01 github-copilot-vs-agentic-ides.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [chunk 01.Value.ToUpper() hunk 01](./chunk_01.md)\n- [chunk 02.Value.ToUpper() hunk 02](./chunk_02.md)\n
+# 2025 05 01  2025 05 01 github copilot vs agentic ides ithub  2025 05 01 github copilot vs agentic ides opilot  2025 05 01 github copilot vs agentic ides  2025 05 01 github copilot vs agentic ides gentic  2025 05 01 github copilot vs agentic ides\nThis directory contains files and subdirectories related to 2025-05-01 github-copilot-vs-agentic-ides.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [chunk 01 hunk 01](./chunk_01.md)\n- [chunk 02 hunk 02](./chunk_02.md)\n
 ## Navigation
 
 - [Parent Directory](../)

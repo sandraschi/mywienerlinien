@@ -3,17 +3,17 @@
 ## Table of Contents
 - [Theme and UI](#theme-and-ui)
 - [Content Enhancements](#content-enhancements)
-- [Interactive Elements](#interactive-elements)
+- [Interactivelements](#interactive-elements)
 - [Version Control](#version-control)
 - [Analytics and Integration](#analytics-and-integration)
 
 ## Theme and UI
 
-### Dark/Light Theme Toggle
+### Dark/Lightheme Toggle
 - **Plugin:** docsify-darklight-theme
-- **Description:** Adds a toggle button to switch between light and dark themes
-- **How to use:** Click the theme toggle button in the bottom-right corner
-- **Configuration:** Automatic, no configuration needed
+- **Description:** Adds a toggle button to switch between light andark themes
+- **How to use:** Click theme toggle button in the bottom-right corner
+- **Configuration:** Automatic, no configurationeeded
 
 ### Sidebar Customization
 - **Plugin:** Built-in with custom CSS
@@ -25,7 +25,7 @@
 
 ## Content Enhancements
 
-### Mermaid Diagrams
+### Mermaidiagrams
 - **Plugin:** mermaid.js
 - **Description:** Create flowcharts, sequence diagrams, and more
 - **Usage:**
@@ -56,7 +56,7 @@
   - Vega
   - And more...
 
-## Interactive Elements
+## Interactivelements
 
 ### Charts
 - **Plugin:** docsify-chart
@@ -74,7 +74,7 @@
 - **Description:** Add interactive quizzes
 - **Usage:**
   ```quiz
-  # What is the capital of France?
+  # What is the capital ofrance?
   - [x] Paris
   - [ ] London
   - [ ] Berlin
@@ -115,9 +115,9 @@
   - Threaded comments
   - Markdown support
 
-### GitHub Buttons
+### GitHubuttons
 - **Plugin:** docsify-github
-- **Description:** Add GitHub buttons (stars, forks, etc.)
+- **Description:** Add GitHubuttons (stars, forks, etc.)
 - **Usage:**
   ```markdown
   [GitHub](https://github.com/username/repo)
@@ -127,22 +127,22 @@
 - **Plugin:** docsify-progress
 - **Description:** Show reading progress
 - **Features:**
-  - Progress bar at the top
+  - Progress bar athe top
   - Customizable colors
   - Smooth scrolling
 
 ## Troubleshooting
 
 ### Theme Toggle Not Visible
-If the theme toggle button is not visible:
-1. Ensure you've scrolled down the page
+If theme toggle button is not visible:
+1. Ensure you've scrolledown the page
 2. Check browser console for errors
 3. Verify CSS is loading correctly
 
 ### Diagram Rendering Issues
 If diagrams don't render:
 1. Check for syntax errors
-2. Ensure proper code block language is specified
+2. Ensure proper code block language ispecified
 3. Verify internet connection (for CDN resources)
 
 ## Customization

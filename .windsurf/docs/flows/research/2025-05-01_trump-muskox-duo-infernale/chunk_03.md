@@ -1,4 +1,4 @@
-# Risiken eines Weltkriegs und der Einfluss von Beratern
+# Risiken eines Weltkriegs under Einfluss von Beratern
 
 ## 4. Gefahr eines Weltkriegs: Szenarien mit China
 - Eskalationspotenzial: Rhetorik und Politik von Trump und Muskox könnten Spannungen mit China verschärfen.

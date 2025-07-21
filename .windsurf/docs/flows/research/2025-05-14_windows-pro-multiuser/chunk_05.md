@@ -3,13 +3,13 @@
 ## Summary
 - Windows 11 Pro is not designed or licensed for multiple simultaneous remote desktop sessions.
 - Technical workarounds exist (RDP Wrapper, termsrv.dll patching), but all violate Microsoft licensing and carry risks (instability, malware, audit penalties).
-- The only fully legal and supported solution for multi-user RDP is Windows Server with RDS and proper CALs.
-- Third-party solutions (GO-Global, Citrix, VMware, Parallels) offer legal multi-user remote access, but at a cost.
+- The only fully legal and supported solution for multi-userDP is Windowserver with RDS and proper CALs.
+- Third-party solutions (GO-Global, Citrix, VMware, Parallels) offer legal multi-useremote access, but at a cost.
 
 ## Best Practices
-- **For home/lab use:** Understand the risks before experimenting. Never use in production or business settings.
-- **For business/production:** Always use licensed, supported solutions (Windows Server + RDS, or a third-party platform).
-- **Security:** Avoid downloading patches from unknown sources. Monitor for malware and vulnerabilities.
+- **For home/lab use:** Understand the risks beforexperimenting. Never use in production or businessettings.
+- **For business/production:** Always use licensed, supported solutions (Windowserver + RDS, or a third-party platform).
+- **Security:** Avoidownloading patches from unknown sources. Monitor for malware and vulnerabilities.
 - **Licensing:** Ensure you have the correct licenses for Windows, RDS, and any installed software (e.g., Microsoft Office).
 
 ## References

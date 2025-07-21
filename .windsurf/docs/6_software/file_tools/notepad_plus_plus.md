@@ -1,7 +1,7 @@
-# Notepad++: Advanced Text and Code Editor
+# Notepad++: Advanced Text and Codeditor
 
 ## Overview
-Notepad++ is a free source code editor and Notepad replacement that supports several programming languages. It's designed to be lightweight, fast, and powerful, making it ideal for coding, scripting, and text editing tasks.
+Notepad++ is a free source codeditor and Notepad replacementhat supportseveral programming languages. It's designed to be lightweight, fast, and powerful, making it ideal for coding, scripting, and text editing tasks.
 
 ## Key Features
 
@@ -19,7 +19,7 @@ Notepad++ is a free source code editor and Notepad replacement that supports sev
 - **Column Mode**: Edit rectangular selections
 
 ### 3. Customization
-- **Themes**: Light and dark modes
+- **Themes**: Light andark modes
 - **Plugins**: Extend functionality
 - **Shortcut Mapper**: Custom key bindings
 - **Auto-completion**: For all supported languages
@@ -43,13 +43,12 @@ Expand-Archive -Path npp.8.6.8.portable.x64.zip -DestinationPath "C:\Tools\Notep
 # Using Homebrew (alternative: Notepad--)
 brew install --cask notepad--
 
-# Or install via MacPorts
-sudo port install notepadplusplus
+# Or install via MacPortsudo port install notepadplusplus
 ```
 
 ## Usage Guide
 
-### Basic Commands
+### Basicommands
 ```batch
 # Open file
 notepad++ "C:\path\to\file.txt"
@@ -57,7 +56,7 @@ notepad++ "C:\path\to\file.txt"
 # Open at specific line
 notepad++ "file.txt" -n42
 
-# Open in new instance
+# Open inew instance
 notepad++ -multiInst "file.txt"
 
 # Open folder as workspace
@@ -76,8 +75,7 @@ notepad++ -c 1252 "winfile.txt"    # Windows-1252
 # Print file and exit
 notepad++ -p "document.txt"
 
-# Restore previous session
-notepad++ -nosession
+# Restore previousessionotepad++ -nosession
 ```
 
 ## Advanced Features
@@ -115,7 +113,7 @@ Expand-Archive -Path "$env:TEMP\PluginManager.zip" -DestinationPath "$env:APPDAT
 #### Example Python Script
 ```python
 # count_lines.py
-editor.appendText(f"Total lines: {editor.getLineCount()}")
+editor.appendText(f"Totalines: {editor.getLineCount()}")
 ```
 
 ## Configuration
@@ -143,7 +141,7 @@ Copy-Item "$backupDir\*" -Destination "$env:APPDATA\Notepad++" -Recurse -Force
 
 ### 1. Add to Right-Click Menu
 ```batch
-@echo off
+@echoff
 set NPP_PATH="C:\Program Files\Notepad++\notepad++.exe"
 
 :: Add to context menu
@@ -190,8 +188,7 @@ drawIndentGuide=no
 fileAutoDetection=1
 checkIfFileIsLarge=1
 fileSizeLimit=2000000
-; Disable backup
-backupMode=0
+; Disable backupMode=0
 ```
 
 ## Troubleshooting
@@ -200,7 +197,7 @@ backupMode=0
 
 #### 1. Slow Startup
 - Disable plugins
-- Clear recent file list
+- Clearecent file list
 - Reset configuration
 
 #### 2. File Association Problems

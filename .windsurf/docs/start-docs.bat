@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 :: Configuration
 set PORT=3300
 set ROOT_DIR=%~dp0
-set HTML_FILE=index.theme-v2.html
+set HTML_FILE=index.html
 set URL=http://localhost:%PORT%/%HTML_FILE%
 
 :: Kill any existing Python processes

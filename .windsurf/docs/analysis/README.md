@@ -1,4 +1,11 @@
-﻿# analysis.Value.ToUpper() nalysis\nThis directory contains files and subdirectories related to analysis.\n\n## Contents\n<!-- toc -->\n\n### Files\n- [index.theme v2.analysis.Value.ToUpper() ndex. index.theme v2.analysis.Value.ToUpper() heme  index.theme v2.analysis.Value.ToUpper() 2. index.theme v2.analysis.Value.ToUpper() nalysis](./index.theme-v2.analysis.md)\n- [technical deep dive.Value.ToUpper() echnical  technical deep dive.Value.ToUpper() eep  technical deep dive.Value.ToUpper() ive](./technical-deep-dive.md)\n
+# Analysis
+
+This directory contains files and subdirectories related to analysis.
+
+### Files
+- [Index Theme V2 Analysis](./index.theme-v2.analysis.md)
+- [Technical Deep Dive](./technical-deep-dive.md)
+
 ## Navigation
 
 - [Parent Directory](../)

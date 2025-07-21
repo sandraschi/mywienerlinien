@@ -1,7 +1,7 @@
-# Stable Diffusion: Advanced Image Generation
+# Stable Diffusion: Advanced Imageneration
 
 ## Introduction
-Stable Diffusion is a powerful open-source text-to-image generation model that has revolutionized AI art creation. This document provides a comprehensive guide to using and customizing Stable Diffusion for various applications.
+Stable Diffusion is a powerful open-source text-to-imageneration model that has revolutionized AI art creation. This document provides a comprehensive guide to using and customizing Stable Diffusion for various applications.
 
 ## 1. Core Concepts
 
@@ -12,7 +12,7 @@ Stable Diffusion is a powerful open-source text-to-image generation model that h
 - VAE (Variational Autoencoder)
 
 ### 1.2 Key Features
-- Text-to-image generation
+- Text-to-imageneration
 - Image-to-image translation
 - Inpainting and outpainting
 - Image upscaling
@@ -24,10 +24,10 @@ Stable Diffusion is a powerful open-source text-to-image generation model that h
 ```powershell
 # Create and activate conda environment
 conda create -n sd python=3.10 -y
-conda activate sd
+condactivate sd
 
 # Install PyTorch with CUDA support
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip3 install torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # Install diffusers and transformers
 pip install diffusers transformers accelerate
@@ -42,7 +42,7 @@ pip install pillow numpy
 ### 2.2 Basic Usage
 ```python
 from diffusers import StableDiffusionPipeline
-import torch
+importorch
 
 # Load the pipeline
 model_id = "runwayml/stable-diffusion-v1-5"
@@ -91,9 +91,7 @@ image.save("fantasy_landscape.png")
 ```python
 from diffusers import StableDiffusionInpaintPipeline
 from PIL import Image, ImageDraw
-import numpy as np
-
-pipe = StableDiffusionInpaintPipeline.from_pretrained(
+import numpy as npipe = StableDiffusionInpaintPipeline.from_pretrained(
     "runwayml/stable-diffusion-inpainting",
     torch_dtype=torch.float16,
 ).to("cuda")
@@ -132,7 +130,7 @@ pipe = StableDiffusionPipeline.from_pretrained(
 pipe.load_textual_inversion("sd-concepts-library/cat-toy")
 
 # Use the special placeholder in your prompt
-image = pipe("A <cat-toy> in a field of flowers").images[0]
+image = pipe("A <cat-toy> in a field oflowers").images[0]
 image.save("cat_toy.png")
 ```
 
@@ -140,21 +138,21 @@ image.save("cat_toy.png")
 ```python
 # Requires the diffusers training scripts
 !git clone https://github.com/huggingface/diffusers
-%cd diffusers/examples/dreambooth
+%cdiffusers/examples/dreambooth
 
 # Install requirements
-!pip install -r requirements.txt
+!pip install -requirements.txt
 
 # Download and prepare dataset
 !wget https://example.com/your_images.zip
-!unzip your_images.zip -d dataset
+!unzip your_images.zip -dataset
 
-# Start training
+# Startraining
 !accelerate launch train_dreambooth.py \
   --pretrained_model_name_or_path="runwayml/stable-diffusion-v1-5" \
   --instance_data_dir="dataset" \
   --output_dir="model_output" \
-  --instance_prompt="a photo of sks person" \
+  --instance_prompt="a photof sks person" \
   --resolution=512 \
   --train_batch_size=1 \
   --gradient_accumulation_steps=1 \
@@ -204,8 +202,7 @@ pipe = StableDiffusionControlNetPipeline.from_pretrained(
     torch_dtype=torch.float16
 ).to("cuda")
 
-# Process input image
-image = load_image("input.png")
+# Process input image = load_image("input.png")
 image = np.array(image)
 low_threshold = 100
 high_threshold = 200
@@ -215,7 +212,7 @@ image = np.concatenate([image, image, image], axis=2)
 image = Image.fromarray(image)
 
 # Generate image
-prompt = "a futuristic city"
+prompt = "a futuristicity"
 output = pipe(
     prompt,
     image=image,
@@ -225,9 +222,9 @@ output = pipe(
 output.save("controlled_generation.png")
 ```
 
-## 7. Web UI Installation (Automatic1111)
+## 7. Web UInstallation (Automatic1111)
 
-### 7.1 Windows Setup
+### 7.1 Windowsetup
 ```powershell
 # Clone the repository
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
@@ -240,7 +237,7 @@ cd stable-diffusion-webui
 ### 7.2 Key Features
 - Intuitive browser interface
 - Multiple samplers
-- Extensions system
+- Extensionsystem
 - Built-in upscaling
 - Embedding/Textual Inversion support
 - X/Y/Z plot for parameter testing
@@ -261,7 +258,7 @@ cd stable-diffusion-webui
 
 ### 9.1 Copyright and Fair Use
 - Respect artist rights
-- Check model licenses
+- Check modelicenses
 - Be transparent about AI generation
 
 ### 9.2 Safety Measures

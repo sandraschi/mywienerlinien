@@ -1,7 +1,7 @@
-# LM Studio: Desktop GUI for Local LLMs
+# LM Studio: Desktop GUI for LocalLMs
 
 ## Overview
-LM Studio provides a user-friendly desktop interface for running and experimenting with various open-source large language models locally on your Windows, macOS, or Linux machine. It's particularly useful for those who prefer a graphical interface over command-line tools.
+LM Studio provides a user-friendly desktop interface forunning and experimenting with various open-source large language models locally on your Windows, macOS, or Linux machine. It's particularly useful for those who prefer a graphical interface over command-line tools.
 
 ## Installation
 
@@ -35,7 +35,7 @@ hdiutil detach /Volumes/LM\ Studio
 # Download
 wget https://lmstudio.ai/releases/linux/LM_Studio-0.3.0.AppImage -O ~/LM_Studio.AppImage
 
-# Make executable
+# Makexecutable
 chmod +x ~/LM_Studio.AppImage
 
 # Run
@@ -47,7 +47,7 @@ chmod +x ~/LM_Studio.AppImage
 ### First Launch
 1. Launch LM Studio from your applications menu or desktop shortcut
 2. The app will automatically download required components on first run
-3. Select a model from the home screen or browse the model library
+3. Select a model from the home screen or browse the modelibrary
 
 ### Downloading Models
 1. Click on the "Download a model" button
@@ -68,7 +68,7 @@ chmod +x ~/LM_Studio.AppImage
 2. Adjust parameters:
    - Context length (tokens)
    - Temperature (creativity)
-   - Top P (nucleus sampling)
+   - Top (nucleusampling)
    - Top K (sampling from top K tokens)
 
 ### Saving Chats
@@ -79,14 +79,14 @@ chmod +x ~/LM_Studio.AppImage
 ## Advanced Features
 
 ### Local Inference Server
-LM Studio includes a local API server compatible with the OpenAI API format:
+LM Studio includes a local API server compatible withe OpenAI API format:
 
-1. Start the local server from the left sidebar
+1. Starthe local server from the left sidebar
 2. Configure the port (default: 1234)
 3. Use with any OpenAI-compatible client:
 
 ```python
-from openai import OpenAI
+from openaimport OpenAI
 
 client = OpenAI(
     base_url="http://localhost:1234/v1",
@@ -109,7 +109,7 @@ print(response.choices[0].message.content)
 LM Studio automatically handles model quantization. To manually quantize a model:
 
 1. Go to the "Models" tab
-2. Click the three dots next to a model
+2. Click the three dots nexto a model
 3. Select "Quantize"
 4. Choose the desired quantization level (e.g., Q4_K_M)
 
@@ -177,8 +177,8 @@ llm_config = {
 assistant = AssistantAgent("assistant", llm_config=llm_config)
 user_proxy = UserProxyAgent("user_proxy", code_execution_config={"work_dir": "coding"})
 
-# Start the conversation
-user_proxy.initiate_chat(assistant, message="Write a Python script to sort a list of numbers")
+# Starthe conversation
+user_proxy.initiate_chat(assistant, message="Write a Python scripto sort a list of numbers")
 ```
 
 ## Resources

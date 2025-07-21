@@ -1,11 +1,11 @@
-﻿# Peter Norvig (1956-Present)
+# Peter Norvig (1956-Present)
 
 ## Overview
-Peter Norvig is an American computer scientist and Distinguished Education Fellow at the Stanford Institute for Human-Centered AI. He is best known as the co-author of "Artificial Intelligence: A Modern Approach," the leading textbook in the field of AI. Norvig has held leadership positions at Google, NASA, and other prestigious institutions, contributing significantly to both AI research and practical applications.
+Peter Norvig is an American computer scientist andistinguisheducation Fellow athe Stanford Institute for Human-Centered AI. He is best known as the co-author of "Artificial Intelligence: A Modern Approach," the leading textbook in the field of AI. Norvig has held leadershipositions at Google, NASA, and other prestigious institutions, contributing significantly to both AI research and practical applications.
 
 ## Related Figures
 - [Stuart Russell](/ai/persons/stuart_russell.md) - Co-author of "Artificial Intelligence: A Modern Approach"
-- [Sebastian Thrun](/ai/persons/sebastian_thrun.md) - Colleague at Google and online education
+- [Sebastian Thrun](/ai/persons/sebastian_thrun.md) - Colleague at Google and onlineducation
 - [Andrew Ng](/ai/persons/andrew_ng.md) - Fellow AI educator and Coursera co-founder
 - [Ray Kurzweil](/ai/persons/ray_kurzweil.md) - Worked together at Google on machine learning
 - [Jeff Dean](/ai/persons/jeff_dean.md) - Colleague at Google Research
@@ -18,7 +18,7 @@ Peter Norvig is an American computer scientist and Distinguished Education Fello
 - Development of the first web-based programming course (CS212: Design of Computer Programs)
 
 ## Biography
-Born in Boston, Massachusetts, Norvig earned his PhD in Computer Science from the University of California, Berkeley, and his Bachelor's in Applied Mathematics from Brown University. He has worked at Sun Microsystems, NASA Ames Research Center, and Google, where he served as Director of Research and Director of Search Quality. Norvig is a Fellow of the AAAI, ACM, and California Academy of Sciences.
+Born in Boston, Massachusetts, Norvig earned his PhD in Computer Science from the University of California, Berkeley, and his Bachelor's in Applied Mathematics from Brown University. He has worked at Sun Microsystems, NASAmes Research Center, and Google, where he served as Director of Research andirector of Search Quality. Norvig is a Fellow of the AAAI, ACM, and Californiacademy of Sciences.
 
 ## Major Works
 ### Artificial Intelligence: A Modern Approach (1995)
@@ -28,8 +28,8 @@ Born in Boston, Massachusetts, Norvig earned his PhD in Computer Science from th
 
 ### Paradigms of AI Programming (1992)
 - **Impact**: Influential text on AI programming in Lisp
-- **Key Concepts**: Case studies in AI, Common Lisp programming
-- **Reception**: Praised for its practical approach to AI implementation
+- **Key Concepts**: Case studies in AI, Common Lisprogramming
+- **Reception**: Praised for its practical approach to AImplementation
 
 ## Publications
 - "Artificial Intelligence: A Modern Approach" (1995, with Stuart Russell) - Pearson
@@ -45,17 +45,17 @@ Born in Boston, Massachusetts, Norvig earned his PhD in Computer Science from th
 - Fellow of the Association for Computing Machinery (2006)
 
 ## Current Work
-- Distinguished Education Fellow, Stanford Institute for Human-Centered AI
+- Distinguisheducation Fellow, Stanford Institute for Human-Centered AI
 - Researcher at Google (currently on leave)
 - Co-creator of the online AI course at Udacity
 - Member of the National Academy of Engineering
 
-## Media Appearances
+## Mediappearances
 - TED Talk: "The 100,000-student classroom" (2012)
 - Google Tech Talks (various)
 - The AI Podcast (2018)
 
-## Further Reading
+## Furthereading
 - [Stanford Profile](https://profiles.stanford.edu/peter-norvig)
 - [Google Scholar](https://scholar.google.com/citations?user=ZKD7tqMAAAAJ)
 - [Wikipedia](https://en.wikipedia.org/wiki/Peter_Norvig)

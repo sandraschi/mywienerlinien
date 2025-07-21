@@ -3,7 +3,7 @@
 ## Overview
 vLLM is a high-throughput and memory-efficient inference and serving engine for LLMs. It achieves high performance through:
 - PagedAttention for efficient attention computation and memory management
-- Continuous batching for optimal GPU utilization
+- Continuous batching for optimal GPUtilization
 - Tensor parallelism for multi-GPU scaling
 - OpenAI-compatible API server
 
@@ -27,7 +27,7 @@ wsl
 
 # Inside WSL2
 sudo apt update && sudo apt upgrade -y
-sudo apt install -y python3-pip python3-venv
+sudo apt install -y python3-pipython3-venv
 
 # Create and activate virtual environment
 python3 -m venv ~/vllm-env
@@ -46,23 +46,23 @@ python -c "from vllm import LLM; print('vLLM installed successfully')"
 python -m venv .\\vllm-venv
 .\\vllm-venv\\Scripts\\activate
 
-# Install vLLM with Windows support
+# Install vLLM with Windowsupport
 pip install vllm
 
 # Install additional dependencies
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
 ### Linux/macOS
 ```bash
 # Create and activate virtual environment
-python -m venv vllm-env
+python -m venvllm-env
 source vllm-env/bin/activate
 
 # Install vLLM
 pip install vllm
 
-# For ROCm (AMD GPUs)
+# ForOCm (AMD GPUs)
 # pip install vllm --index-url https://pypi.org/simple/
 ```
 
@@ -98,20 +98,18 @@ Invoke-RestMethod -Uri "http://localhost:8000/v1/chat/completions" -Method Post 
 ```python
 from vllm import LLM, SamplingParams
 
-# Initialize the LLM
-llm = LLM(model="meta-llama/Meta-Llama-3-8B-Instruct")
+# Initialize the LLM = LLM(model="meta-llama/Meta-Llama-3-8B-Instruct")
 
-# Configure sampling parameters
-sampling_params = SamplingParams(
+# Configure sampling parametersampling_params = SamplingParams(
     temperature=0.7,
     top_p=0.9,
     max_tokens=100
 )
 
-# Generate text
+# Generatext
 outputs = llm.generate(["Explain quantum computing in simple terms"], sampling_params)
 
-# Print the generated text
+# Printhe generated text
 for output in outputs:
     print(f"Generated text: {output.outputs[0].text}")
 ```
@@ -135,7 +133,7 @@ llm = LLM(
 from vllm.engine.arg_utils import AsyncEngineArgs
 from vllm.engine.async_llm_engine import AsyncLLMEngine
 
-# Configure engine with continuous batching
+# Configurengine with continuous batching
 engine_args = AsyncEngineArgs(
     model="meta-llama/Meta-Llama-3-8B-Instruct",
     tensor_parallel_size=2,  # For multi-GPU
@@ -148,7 +146,7 @@ engine = AsyncLLMEngine.from_engine_args(engine_args)
 
 ### OpenAI-Compatible Server
 ```powershell
-# Start the server with custom settings
+# Starthe server with custom settings
 vllm start \
     --model meta-llama/Meta-Llama-3-8B-Instruct \
     --tensor-parallel-size 2 \
@@ -165,7 +163,7 @@ vllm start \
 vllm benchmark \
     --model meta-llama/Meta-Llama-3-8B-Instruct \
     --tensor-parallel-size 1 \
-    --quantization none \
+    --quantizationone \
     --num-prompts 100 \
     --request-rate 10
 ```
@@ -184,7 +182,7 @@ llm = LLM(
 
 ### With FastAPI
 ```python
-from fastapi import FastAPI
+from fastapimport FastAPI
 from pydantic import BaseModel
 from vllm import LLM, SamplingParams
 
@@ -205,9 +203,7 @@ async def generate_text(request: PromptRequest):
 
 ### With LangChain
 ```python
-from langchain.llms import VLLM
-
-llm = VLLM(
+from langchain.llms import VLLM = VLLM(
     model="meta-llama/Meta-Llama-3-8B-Instruct",
     trust_remote_code=True,
     max_new_tokens=100,
@@ -239,15 +235,14 @@ llm = LLM(
 
 #### Slow Performance
 ```powershell
-# Check GPU utilization
-nvidia-smi
+# Check GPUtilizationvidia-smi
 
 # Check CPU/memory usage
 top  # On Linux/macOS
 Get-Process | Sort-Object CPU -Descending  # On Windows
 ```
 
-#### Model Loading Issues
+#### Modeloading Issues
 ```powershell
 # Clear model cache
 rm -rf ~/.cache/huggingface/hub

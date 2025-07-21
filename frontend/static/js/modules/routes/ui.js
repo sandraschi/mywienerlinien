@@ -3,11 +3,37 @@
  */
 
 import { CONFIG } from '../../config.js';
-import { ROUTE_TYPES, ICONS } from '../../constants.js';
+import { ROUTE_TYPES } from '../../constants.js';
 import { logger } from '../utils/logger.js';
 
 // DOM elements
 let routeToggleContainer = null;
+let activeRoutes = new Set();
+const routeTypeOrder = [ROUTE_TYPES.METRO, ROUTE_TYPES.TRAM, ROUTE_TYPES.BUS, ROUTE_TYPES.NIGHTBUS];
+const routeTypeNames = {
+    [ROUTE_TYPES.METRO]: 'U-Bahn',
+    [ROUTE_TYPES.TRAM]: 'Tram',
+    [ROUTE_TYPES.BUS]: 'Bus',
+    [ROUTE_TYPES.NIGHTBUS]: 'Night Bus'
+};
+
+// Icons for different route types
+const ROUTE_ICONS = {
+    [ROUTE_TYPES.METRO]: 'subway',
+    [ROUTE_TYPES.TRAM]: 'train-tram',
+    [ROUTE_TYPES.BUS]: 'bus',
+    [ROUTE_TYPES.NIGHTBUS]: 'moon',
+    default: 'route'
+};
+
+// Colors for different route types
+const ROUTE_COLORS = {
+    [ROUTE_TYPES.METRO]: '#c70f3e',
+    [ROUTE_TYPES.TRAM]: '#f39200',
+    [ROUTE_TYPES.BUS]: '#0067b1',
+    [ROUTE_TYPES.NIGHTBUS]: '#1a1a1a',
+    default: '#666666'
+};
 
 /**
  * Initialize the routes UI
@@ -18,25 +44,48 @@ export function initRouteUI(routes, onToggle) {
     try {
         logger.info('Initializing routes UI...');
         
-        // Get or create the toggle container
-        routeToggleContainer = document.getElementById('route-toggle-container');
+        // Get the route toggles container
+        routeToggleContainer = document.getElementById('route-toggles');
         if (!routeToggleContainer) {
-            routeToggleContainer = document.createElement('div');
-            routeToggleContainer.id = 'route-toggle-container';
-            routeToggleContainer.className = 'route-toggle-container';
-            document.body.appendChild(routeToggleContainer);
+            logger.error('Route toggles container not found');
+            return;
         }
         
-        // Clear existing content
+        // Clear loading message
         routeToggleContainer.innerHTML = '';
         
         // Group routes by type
         const routesByType = groupRoutesByType(routes);
         
-        // Create toggle controls for each route type
-        Object.entries(routesByType).forEach(([type, typeRoutes]) => {
-            createRouteTypeSection(type, typeRoutes, onToggle);
+        // Sort routes within each type
+        Object.values(routesByType).forEach(routes => {
+            routes.sort((a, b) => {
+                // Extract numbers for proper numeric sorting (e.g., U1, U2, U11)
+                const numA = a.id.match(/\d+/) ? parseInt(a.id.match(/(\d+)/)[0], 10) : 0;
+                const numB = b.id.match(/\d+/) ? parseInt(b.id.match(/(\d+)/)[0], 10) : 0;
+                
+                // If both have numbers, sort numerically
+                if (!isNaN(numA) && !isNaN(numB)) {
+                    return numA - numB;
+                }
+                
+                // Otherwise sort alphabetically
+                return a.id.localeCompare(b.id);
+            });
         });
+        
+        // Create toggle controls for each route type in the specified order
+        routeTypeOrder.forEach(type => {
+            if (routesByType[type] && routesByType[type].length > 0) {
+                createRouteTypeSection(type, routesByType[type], onToggle);
+            }
+        });
+        
+        // Add event listener for the "Show All" button
+        const toggleAllBtn = document.querySelector('.toggle-all-routes');
+        if (toggleAllBtn) {
+            toggleAllBtn.addEventListener('click', () => toggleAllRoutes(routes, onToggle));
+        }
         
         logger.info('Routes UI initialized');
         
@@ -52,11 +101,18 @@ export function initRouteUI(routes, onToggle) {
  */
 function groupRoutesByType(routes) {
     return routes.reduce((groups, route) => {
-        const type = route.type || 'other';
+        // Ensure we have a valid type, default to 'other'
+        const type = routeTypeOrder.includes(route.type) ? route.type : 'other';
         if (!groups[type]) {
             groups[type] = [];
         }
-        groups[type].push(route);
+        
+        // Check for duplicates
+        const exists = groups[type].some(r => r.id === route.id);
+        if (!exists) {
+            groups[type].push(route);
+        }
+        
         return groups;
     }, {});
 }
@@ -69,46 +125,22 @@ function createRouteTypeSection(type, routes, onToggle) {
     try {
         // Create section container
         const section = document.createElement('div');
-        section.className = `route-type-section ${type}`;
+        section.className = `route-type-section`;
         
         // Create section header
-        const header = document.createElement('div');
+        const header = document.createElement('h4');
         header.className = 'route-type-header';
-        
-        // Add icon
-        const icon = document.createElement('i');
-        icon.className = `fas ${ICONS[type] || ICONS.default}`;
-        header.appendChild(icon);
-        
-        // Add type name
-        const typeName = document.createElement('span');
-        typeName.className = 'route-type-name';
-        typeName.textContent = type.charAt(0).toUpperCase() + type.slice(1);
-        header.appendChild(typeName);
-        
-        // Add toggle all button
-        const toggleAllBtn = document.createElement('button');
-        toggleAllBtn.className = 'toggle-all-btn';
-        toggleAllBtn.innerHTML = '<i class="fas fa-eye"></i>';
-        toggleAllBtn.title = 'Toggle all routes of this type';
-        toggleAllBtn.onclick = () => toggleAllRoutes(type, routes, onToggle);
-        header.appendChild(toggleAllBtn);
-        
+        header.textContent = routeTypeNames[type] || type;
         section.appendChild(header);
         
-        // Create route list
+        // Create route list container
         const routeList = document.createElement('div');
         routeList.className = 'route-list';
         
-        // Sort routes by name/number
-        const sortedRoutes = [...routes].sort((a, b) => {
-            return (a.name || '').localeCompare(b.name || '');
-        });
-        
         // Add route toggles
-        sortedRoutes.forEach(route => {
-            const toggle = createRouteToggle(route, onToggle);
-            routeList.appendChild(toggle);
+        routes.forEach(route => {
+            const routeToggle = createRouteToggle(route, onToggle);
+            routeList.appendChild(routeToggle);
         });
         
         section.appendChild(routeList);
@@ -124,67 +156,85 @@ function createRouteTypeSection(type, routes, onToggle) {
  * @private
  */
 function createRouteToggle(route, onToggle) {
-    const toggle = document.createElement('div');
-    toggle.className = 'route-toggle';
+    const toggle = document.createElement('button');
+    toggle.className = `route-toggle ${route.type}`;
     toggle.dataset.routeId = route.id;
     
-    // Create checkbox
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.id = `route-${route.id}`;
-    checkbox.checked = false;
-    checkbox.onchange = (e) => onToggle(route.id, e.target.checked);
+    // Create route icon with the route ID
+    const icon = document.createElement('span');
+    icon.className = 'route-icon';
+    icon.textContent = route.id;
     
-    // Create label
-    const label = document.createElement('label');
-    label.htmlFor = `route-${route.id}`;
-    label.style.borderColor = route.color || CONFIG.ROUTES.DEFAULT_COLORS[route.type] || '#ccc';
+    // Set the background color based on route type
+    const routeColor = ROUTE_COLORS[route.type] || ROUTE_COLORS.default;
+    icon.style.backgroundColor = routeColor;
     
-    // Add route name/number
-    const routeName = document.createElement('span');
-    routeName.className = 'route-name';
-    routeName.textContent = route.name || `Route ${route.id}`;
+    // Create route name (optional, can be removed if not needed)
+    const name = document.createElement('span');
+    name.className = 'route-name';
+    name.textContent = route.name || '';
     
-    // Add route description if available
-    if (route.description) {
-        const routeDesc = document.createElement('span');
-        routeDesc.className = 'route-desc';
-        routeDesc.textContent = route.description;
-        label.appendChild(routeDesc);
+    // Add elements to toggle
+    toggle.appendChild(icon);
+    if (name.textContent) {
+        toggle.appendChild(name);
     }
     
-    label.prepend(routeName);
-    
-    toggle.appendChild(checkbox);
-    toggle.appendChild(label);
+    // Add click handler
+    toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isActive = toggle.classList.toggle('active');
+        
+        // Update active routes set
+        if (isActive) {
+            activeRoutes.add(route.id);
+        } else {
+            activeRoutes.delete(route.id);
+        }
+        
+        // Call the provided callback
+        onToggle(route.id, isActive);
+    });
     
     return toggle;
 }
 
 /**
- * Toggle all routes of a specific type
+ * Toggle all routes
  * @private
  */
-function toggleAllRoutes(type, routes, onToggle) {
+function toggleAllRoutes(routes, onToggle) {
     try {
-        // Check if any route of this type is visible
-        const anyVisible = routes.some(route => {
-            const toggle = document.getElementById(`route-${route.id}`);
-            return toggle?.checked;
+        const allToggles = document.querySelectorAll('.route-toggle');
+        const anyActive = activeRoutes.size > 0;
+        
+        // Clear active routes
+        activeRoutes.clear();
+        
+        // Toggle all routes
+        allToggles.forEach(toggle => {
+            const routeId = toggle.dataset.routeId;
+            const isActive = !anyActive;
+            
+            if (isActive) {
+                toggle.classList.add('active');
+                activeRoutes.add(routeId);
+            } else {
+                toggle.classList.remove('active');
+            }
+            
+            // Call the provided callback for each route
+            onToggle(routeId, isActive);
         });
         
-        // Toggle all routes of this type
-        routes.forEach(route => {
-            const toggle = document.getElementById(`route-${route.id}`);
-            if (toggle) {
-                const shouldBeVisible = !anyVisible;
-                toggle.checked = shouldBeVisible;
-                onToggle(route.id, shouldBeVisible);
-            }
-        });
+        // Update the "Show All" button text
+        const toggleAllBtn = document.querySelector('.toggle-all-routes');
+        if (toggleAllBtn) {
+            toggleAllBtn.textContent = anyActive ? '[Show All]' : '[Hide All]';
+        }
         
     } catch (error) {
-        logger.error(`Failed to toggle all ${type} routes:`, error);
+        logger.error('Failed to toggle all routes:', error);
     }
 }
 
@@ -194,16 +244,27 @@ function toggleAllRoutes(type, routes, onToggle) {
  * @param {boolean} isActive - Whether the route is active
  */
 export function updateRouteToggleState(routeId, isActive) {
-    try {
-        const toggle = document.getElementById(`route-${routeId}`);
-        if (toggle) {
-            toggle.checked = isActive;
-            const label = toggle.nextElementSibling;
-            if (label) {
-                label.classList.toggle('active', isActive);
-            }
+    const toggle = document.querySelector(`.route-toggle[data-route-id="${routeId}"]`);
+    if (toggle) {
+        if (isActive) {
+            toggle.classList.add('active');
+            activeRoutes.add(routeId);
+        } else {
+            toggle.classList.remove('active');
+            activeRoutes.delete(routeId);
         }
-    } catch (error) {
-        logger.error(`Failed to update toggle state for route ${routeId}:`, error);
+    }
+    
+    // Update the "Show All" button text based on active routes
+    const toggleAllBtn = document.querySelector('.toggle-all-routes');
+    if (toggleAllBtn) {
+        const allToggles = document.querySelectorAll('.route-toggle');
+        if (activeRoutes.size === allToggles.length) {
+            toggleAllBtn.textContent = '[Hide All]';
+        } else if (activeRoutes.size === 0) {
+            toggleAllBtn.textContent = '[Show All]';
+        } else {
+            toggleAllBtn.textContent = `[${activeRoutes.size} active]`;
+        }
     }
 }

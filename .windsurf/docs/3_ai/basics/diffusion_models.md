@@ -1,21 +1,21 @@
 # Diffusion Models
 
 ## Overview
-Diffusion models are a class of generative models that learn to generate data by gradually denoising normally distributed noise. They have achieved remarkable results in image generation, audio synthesis, and more.
+Diffusion models are a class of generative models that learn to generate data by gradually denoising normally distributed noise. They have achieved remarkable results in imageneration, audio synthesis, and more.
 
 ## Core Concepts
 
 ### 1. Forward Process (Diffusion)
-Gradually adds Gaussian noise to data over many steps.
+Gradually adds Gaussianoise to data over many steps.
 
 ```python
-import torch
+importorch
 
-def forward_diffusion(x_0, t, beta_t, device='cuda'):
+deforward_diffusion(x_0, t, beta_t, device='cuda'):
     """
     x_0: Original data
     t: Timestep
-    beta_t: Noise schedule at timestep t
+    beta_t: Noise schedule atimestep t
     """
     noise = torch.randn_like(x_0, device=device)
     alpha_t = 1 - beta_t
@@ -39,22 +39,17 @@ class UNet(torch.nn.Module):
             torch.nn.Linear(time_emb_dim * 4, time_emb_dim)
         )
         
-        # Downsample blocks
-        self.down1 = DownBlock(in_channels, 64)
+        # Downsample blockself.down1 = DownBlock(in_channels, 64)
         self.down2 = DownBlock(64, 128)
         # ... more down blocks
         
-        # Middle blocks
-        self.mid = MidBlock(512, 1024)
+        # Middle blockself.mid = MidBlock(512, 1024)
         
-        # Upsample blocks
-        self.up1 = UpBlock(1024, 512)
-        # ... more up blocks
-        
-        self.out = torch.nn.Conv2d(64, out_channels, kernel_size=3, padding=1)
+        # Upsample blockself.up1 = UpBlock(1024, 512)
+        # ... more up blockself.out = torch.nn.Conv2d(64, out_channels, kernel_size=3, padding=1)
     
-    def forward(self, x, t):
-        # Time embedding
+    deforward(self, x, t):
+        # Timembedding
         t_emb = get_timestep_embedding(t, self.time_emb_dim)
         t_emb = self.time_mlp(t_emb)
         
@@ -86,8 +81,7 @@ def train_step(model, x_0, t, beta_t, device='cuda'):
     # Predict noise
     predicted_noise = model(x_t, t)
     
-    # Loss
-    loss = F.mse_loss(predicted_noise, noise)
+    # Loss = F.mse_loss(predicted_noise, noise)
     return loss
 ```
 
@@ -100,9 +94,9 @@ def sample_ddpm(model, shape, n_steps, betas, device='cuda'):
     # Initialize with random noise
     x = torch.randn(shape, device=device)
     
-    # Time steps from T to 1
+    # Time steps from To 1
     for t in reversed(range(n_steps)):
-        # Current timestep
+        # Currentimestep
         t_tensor = torch.full((shape[0],), t, device=device, dtype=torch.long)
         
         # Predict noise
@@ -113,7 +107,7 @@ def sample_ddpm(model, shape, n_steps, betas, device='cuda'):
         alpha_bar_t = torch.prod(1 - betas[:t+1])
         alpha_bar_prev = torch.prod(1 - betas[:t]) if t > 0 else 1
         
-        # Compute mean and variance
+        # Compute meand variance
         posterior_mean = (1 / torch.sqrt(alpha_t)) * (x - (betas[t] / torch.sqrt(1 - alpha_bar_t)) * pred_noise)
         posterior_variance = (1 - alpha_bar_prev) / (1 - alpha_bar_t) * betas[t]
         
@@ -126,7 +120,7 @@ def sample_ddpm(model, shape, n_steps, betas, device='cuda'):
 
 ## Variants and Extensions
 
-### 1. Improved DDPM
+### 1. ImprovedDPM
 - Learned variance
 - Improved noise schedule
 
@@ -141,7 +135,7 @@ def sample_ddpm(model, shape, n_steps, betas, device='cuda'):
 
 ## Applications
 
-### 1. Image Generation
+### 1. Imageneration
 - Text-to-image synthesis
 - Image inpainting
 - Super-resolution

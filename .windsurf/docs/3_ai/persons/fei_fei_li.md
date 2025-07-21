@@ -1,24 +1,24 @@
-﻿# Fei-Fei Li (1976-Present)
+# Fei-Fei Li (1976-Present)
 
 ## Overview
-Fei-Fei Li is a Chinese-American computer scientist known for her work in computer vision and cognitive neuroscience. She is the Sequoia Professor of Computer Science at Stanford University and co-director of Stanford's Human-Centered AI Institute (HAI). Li is best known for creating ImageNet, a large-scale dataset that revolutionized computer vision research through the annual ImageNet Challenge.
+Fei-Fei Lis a Chinese-American computer scientist known for her work in computer vision and cognitive neuroscience. She is the Sequoia Professor of Computer Science at Stanford University and co-director of Stanford's Human-Centered AInstitute (HAI). Lis best known for creating ImageNet, a large-scale datasethat revolutionized computer vision research through the annual ImageNet Challenge.
 
 ## Related Figures
 - [Andrew Ng](/ai/persons/andrew_ng.md) - Co-founder of Google Brain and Coursera
 - [Jia Deng](/ai/persons/jia_deng.md) - Co-creator of ImageNet
-- [Kai-Fu Lee](/ai/persons/kai_fu_lee.md) - Mentor and AI industry leader
+- [Kai-Fu Lee](/ai/persons/kai_fu_lee.md) - Mentor and AIndustry leader
 - [Melanie Mitchell](/ai/persons/melanie_mitchell.md) - Colleague in AI and cognitive science
 - [Jeff Dean](/ai/persons/jeff_dean.md) - Google AI leader who worked with Li on ImageNet
 
 ## Key Contributions
 - Creation of ImageNet and the ImageNet Challenge
-- Pioneering work in computer vision and deep learning
+- Pioneering work in computer vision andeep learning
 - Advocacy for human-centered AI and AI ethics
 - Development of visual recognition algorithms
-- Leadership in AI education and diversity
+- Leadership in AI education andiversity
 
 ## Biography
-Born in Beijing, China, Li moved to the United States at age 16. She earned her undergraduate degree in physics from Princeton University and her PhD in electrical engineering from the California Institute of Technology. After faculty positions at Princeton and the University of Illinois at Urbana-Champaign, she joined Stanford University in 2009. From 2017 to 2018, she served as Vice President at Google and Chief Scientist of AI/ML at Google Cloud.
+Born in Beijing, China, Li moved to the United States at age 16. Shearned her undergraduate degree in physics from Princeton University and her PhD in electrical engineering from the California Institute of Technology. After faculty positions at Princeton and the University of Illinois at Urbana-Champaign, she joined Stanford University in 2009. From 2017 to 2018, she served as Vice President at Google and Chief Scientist of AI/ML at Google Cloud.
 
 ## Major Works
 ### ImageNet (2009)
@@ -35,7 +35,7 @@ Born in Beijing, China, Li moved to the United States at age 16. She earned her 
 - "ImageNet: A large-scale hierarchical image database" (2009) - CVPR
 - "CS231n: Convolutional Neural Networks for Visual Recognition" (2015) - Stanford Course
 - "Progressive Neural Architecture Search" (2018) - ECCV
-- "The Dawn of Human-Centered AI" (2019) - Harvard Data Science Review
+- "The Dawn of Human-Centered AI" (2019) - Harvardata Science Review
 
 ## Awards and Honors
 - ACM Prize in Computing (2019)
@@ -50,12 +50,12 @@ Born in Beijing, China, Li moved to the United States at age 16. She earned her 
 - Founder and Chair, AI4ALL (nonprofit promoting diversity in AI)
 - Author of the memoir "The Worlds I See" (2023)
 
-## Media Appearances
-- TED Talk: "How we're teaching computers to understand pictures" (2015)
+## Mediappearances
+- TED Talk: "Howe're teaching computers to understand pictures" (2015)
 - CBS 60 Minutes (2018) - On AI and the future of work
-- The Economist's The World in 2020 (2019)
+- Theconomist's The World in 2020 (2019)
 
-## Further Reading
+## Furthereading
 - [Stanford Profile](https://profiles.stanford.edu/fei-fei-li)
 - [Google Scholar](https://scholar.google.com/citations?user=rDfyQnIAAAAJ)
 - [Wikipedia](https://en.wikipedia.org/wiki/Fei-Fei_Li)

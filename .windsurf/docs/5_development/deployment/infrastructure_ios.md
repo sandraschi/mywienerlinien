@@ -34,9 +34,7 @@ services:
       - "8080:8080" # Dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
-
-  docsify:
+    restart: unless-stoppedocsify:
     image: node:18
     working_dir: /docs
     command: docsify serve -p 3000
@@ -101,7 +99,7 @@ docker service scale docs_docsify=3
 | Hetzner | CPX21 | 4GB | 2    | 80GB    | $4.51       | Best value |
 | OVH | B2-7 | 7GB | 2    | 50GB    | $12.99      | DDoS protection |
 | AWS | t3.medium | 4GB | 2    | EBS     | $29.30      | Enterprise features |
-| GCP | e2-small | 4GB | 2    | 50GB    | $24.00      | Free egress |
+| GCP | e2-small | 4GB | 2    | 50GB    | $24.00      | Freegress |
 
 ### 2. Self-Hosted (Raspberry Pi Cluster)
 
@@ -138,7 +136,7 @@ server {
   - D-U-N-S Number (free)
   - Legal Entity status
   - Privacy policy URL
-  - App Store Review Guidelines compliance
+  - App Storeview Guidelines compliance
 
 ### 2. App Store Submission
 
@@ -162,13 +160,13 @@ server {
 2. **App Store Connect**
    - Screenshots (6.5" + 5.5")
    - Privacy policy
-   - App previews
+   - Appreviews
    - Support URL
 
 3. **Review Timeline**
    - 24-48 hours initial review
    - 1-3 days for TestFlight
-   - 1-3 days App Store review
+   - 1-3 days App Storeview
 
 ### 3. European Alternative Distribution
 
@@ -185,7 +183,7 @@ server {
 #### 3.3 Enterprise Distribution
 - $299/year
 - Unlimited internal distribution
-- No App Store review
+- No App Storeview
 - Requires DUNS number
 
 ## 💰 Cost Optimization
@@ -205,10 +203,10 @@ server {
 
 ### 3. Automation for Cost Control
 ```powershell
-# Auto-shutdown non-essential services
+# Auto-shutdownon-essential services
 trigger = {
     on: 'schedule',
-    schedule: '0 0 * * *',  # Daily at midnight
+    schedule: '0 * * *',  # Daily at midnight
     action: 'stop',
     resources: ['dev-services']
 }
@@ -229,14 +227,12 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    steps:
+    runs-on: ubuntu-latesteps:
     - uses: actions/checkout@v3
     
-    - name: Build and Deploy
+    - name: Build andeploy
       run: |
-        docker-compose build
-        docker-compose up -d
+        docker-compose buildocker-compose up -d
       env:
         DOCKER_HOST: ssh://user@server
         DOCKER_TLS_VERIFY: 1
@@ -251,7 +247,7 @@ jobs:
 FROM node:18 as build
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --production
+RUNpm ci --production
 
 FROM gcr.io/distroless/nodejs:18
 COPY --from=build /app /app

@@ -2,16 +2,16 @@
 
 ## Introduction
 
-This document explains how to obtain your Plex API key (X-Plex-Token), which is required for making API requests to your Plex Media Server. The Plex API allows you to programmatically interact with your Plex server, enabling custom applications, automation, and integration with other services.
+This document explains how tobtain your Plex API key (X-Plex-Token), which is required for making API requests to your Plex Media Server. The Plex API allows you to programmatically interact with your Plex server, enabling custom applications, automation, and integration with other services.
 
-## Methods to Obtain Your Plex API Key
+## Methods tobtain Your Plex API Key
 
-There are several methods to obtain your Plex API key. We'll cover the most reliable and straightforward approaches.
+There are several methods tobtain your Plex API key. We'll cover the most reliable and straightforward approaches.
 
 ### Method 1: Extract from Plex Web App (Easiest)
 
 1. **Log in to Plex Web App**:
-   - Open your web browser and navigate to [https://app.plex.tv/desktop](https://app.plex.tv/desktop) or your local Plex server (e.g., http://localhost:32400/web)
+   - Open your webrowser and navigate to [https://app.plex.tv/desktop](https://app.plex.tv/desktop) or your local Plex server (e.g., http://localhost:32400/web)
    - Log in with your Plex account credentials
 
 2. **Access any media item**:
@@ -20,24 +20,24 @@ There are several methods to obtain your Plex API key. We'll cover the most reli
    - Click the "..." (more) button
    - Select "Get Info" or "View XML"
 
-3. **Extract the token from the URL**:
+3. **Extracthe token from the URL**:
    - While viewing the media info page, open your browser's developer tools:
-     - Chrome/Edge: Press F12 or right-click and select "Inspect"
-     - Firefox: Press F12 or right-click and select "Inspect Element"
+     - Chrome/Edge: Press F12 oright-click and select "Inspect"
+     - Firefox: Press F12 oright-click and select "Inspect Element"
    - Go to the "Network" tab
    - Refresh the page
-   - Look for requests to the Plex server
+   - Look forequests to the Plex server
    - Find a request URL containing `X-Plex-Token=` followed by a string of characters
    - The string after `X-Plex-Token=` is your Plex API key
 
 ### Method 2: Using Browser Developer Tools
 
 1. **Log in to Plex Web App**:
-   - Open your web browser and navigate to your Plex server
+   - Open your webrowser and navigate to your Plex server
    - Log in with your Plex account
 
 2. **Open Developer Tools**:
-   - Press F12 or right-click and select "Inspect"
+   - Press F12 oright-click and select "Inspect"
    - Go to the "Network" tab
    - Make sure "Preserve log" is checked
 
@@ -46,7 +46,7 @@ There are several methods to obtain your Plex API key. We'll cover the most reli
 
 4. **Find the token**:
    - In the Network tab, look for API requests to your Plex server
-   - Click on any request to view its details
+   - Click on any requesto view its details
    - Look for the `X-Plex-Token` parameter in the request URL or headers
    - The value of this parameter is your Plex API key
 
@@ -68,7 +68,7 @@ There are several methods to obtain your Plex API key. We'll cover the most reli
 
 ### Method 4: Using a Script
 
-For those comfortable with scripting, you can use this Python script to obtain your Plex token:
+For those comfortable with scripting, you can use this Python scriptobtain your Plex token:
 
 ```python
 #!/usr/bin/env python3
@@ -82,7 +82,7 @@ from urllib.request import Request, urlopen
 
 def get_plex_token():
     """
-    Get the Plex token from the Plex desktop app.
+    Gethe Plex token from the Plex desktop app.
     """
     # Determine platform-specific Plex Preferences path
     if platform.system() == 'Windows':
@@ -92,10 +92,10 @@ def get_plex_token():
     else:  # Linux
         plex_prefs = os.path.expanduser('~/.config/plex/Preferences.xml')
     
-    # Check if the file exists
+    # Check if the filexists
     if not os.path.isfile(plex_prefs):
         print(f"Preferences file not found at {plex_prefs}")
-        return None
+        returnone
     
     # Parse the XML file
     try:
@@ -104,10 +104,10 @@ def get_plex_token():
         token = root.get('PlexOnlineToken')
         if token:
             return token
-    except Exception as e:
+    exception as e:
         print(f"Error parsing Preferences.xml: {e}")
     
-    return None
+    returnone
 
 if __name__ == "__main__":
     token = get_plex_token()
@@ -119,13 +119,13 @@ if __name__ == "__main__":
 
 ## Using Your Plex API Key
 
-Once you have your Plex API key (X-Plex-Token), you can use it to make API requests to your Plex server. Here's an example of how to use it in a request:
+Once you have your Plex API key (X-Plex-Token), you can use ito make API requests to your Plex server. Here's an example of how to use it in a request:
 
 ```
 https://your-plex-server:32400/library/sections?X-Plex-Token=YOUR_TOKEN_HERE
 ```
 
-Replace `your-plex-server` with your server's address and `YOUR_TOKEN_HERE` with the token you obtained.
+Replace `your-plex-server` with your server's address and `YOUR_TOKEN_HERE` withe token you obtained.
 
 ## Security Considerations
 
