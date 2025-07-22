@@ -9,30 +9,67 @@ import { logger } from '../utils/logger.js';
 // DOM elements
 let routeToggleContainer = null;
 let activeRoutes = new Set();
-const routeTypeOrder = [ROUTE_TYPES.METRO, ROUTE_TYPES.TRAM, ROUTE_TYPES.BUS, ROUTE_TYPES.NIGHTBUS];
+
+// Define route types in the order they should appear
+const routeTypeOrder = [
+    ROUTE_TYPES.SUBWAY, 
+    ROUTE_TYPES.TRAM, 
+    ROUTE_TYPES.BUS, 
+    ROUTE_TYPES.TRAIN,
+    ROUTE_TYPES.FERRY,
+    ROUTE_TYPES.CABLECAR,
+    ROUTE_TYPES.GONDOLA,
+    ROUTE_TYPES.FUNICULAR
+];
+
+// Human-readable names for route types
 const routeTypeNames = {
-    [ROUTE_TYPES.METRO]: 'U-Bahn',
+    [ROUTE_TYPES.SUBWAY]: 'U-Bahn',
     [ROUTE_TYPES.TRAM]: 'Tram',
     [ROUTE_TYPES.BUS]: 'Bus',
-    [ROUTE_TYPES.NIGHTBUS]: 'Night Bus'
+    [ROUTE_TYPES.TRAIN]: 'S-Bahn',
+    [ROUTE_TYPES.FERRY]: 'Fähre',
+    [ROUTE_TYPES.CABLECAR]: 'Seilbahn',
+    [ROUTE_TYPES.GONDOLA]: 'Gondel',
+    [ROUTE_TYPES.FUNICULAR]: 'Standseilbahn',
+    [ROUTE_TYPES.NIGHTBUS]: 'Nightline'
 };
 
-// Icons for different route types
+// Icons for different route types (using Font Awesome classes)
 const ROUTE_ICONS = {
-    [ROUTE_TYPES.METRO]: 'subway',
-    [ROUTE_TYPES.TRAM]: 'train-tram',
-    [ROUTE_TYPES.BUS]: 'bus',
-    [ROUTE_TYPES.NIGHTBUS]: 'moon',
-    default: 'route'
+    [ROUTE_TYPES.SUBWAY]: 'fa-subway',
+    [ROUTE_TYPES.TRAM]: 'fa-train-tram',
+    [ROUTE_TYPES.BUS]: 'fa-bus',
+    [ROUTE_TYPES.TRAIN]: 'fa-train',
+    [ROUTE_TYPES.FERRY]: 'fa-ferry',
+    [ROUTE_TYPES.CABLECAR]: 'fa-mountain',
+    [ROUTE_TYPES.GONDOLA]: 'fa-mountain-sun',
+    [ROUTE_TYPES.FUNICULAR]: 'fa-mountain',
+    [ROUTE_TYPES.NIGHTBUS]: 'fa-moon',
+    default: 'fa-route'
 };
 
-// Colors for different route types
+// Colors for different route types (Vienna public transport colors)
 const ROUTE_COLORS = {
-    [ROUTE_TYPES.METRO]: '#c70f3e',
-    [ROUTE_TYPES.TRAM]: '#f39200',
-    [ROUTE_TYPES.BUS]: '#0067b1',
-    [ROUTE_TYPES.NIGHTBUS]: '#1a1a1a',
+    [ROUTE_TYPES.SUBWAY]: '#c70f3e', // U-Bahn red
+    [ROUTE_TYPES.TRAM]: '#f39200',    // Tram yellow
+    [ROUTE_TYPES.BUS]: '#0067b1',     // Bus blue
+    [ROUTE_TYPES.TRAIN]: '#8c4799',   // S-Bahn purple
+    [ROUTE_TYPES.FERRY]: '#0098a1',   // Ferry teal
+    [ROUTE_TYPES.CABLECAR]: '#e30074', // Cable car pink
+    [ROUTE_TYPES.GONDOLA]: '#e30074',  // Gondola pink
+    [ROUTE_TYPES.FUNICULAR]: '#e30074',// Funicular pink
+    [ROUTE_TYPES.NIGHTBUS]: '#1a1a1a', // Night bus black
     default: '#666666'
+};
+
+// Grid layout configuration
+const GRID_CONFIG = {
+    maxColumns: 8,       // Maximum number of buttons per row
+    buttonSize: '40px',  // Fixed size for each button
+    gap: '4px',          // Gap between buttons
+    fontSize: '14px',    // Font size for button text
+    iconSize: '14px'     // Font size for icons
 };
 
 /**
@@ -122,33 +159,78 @@ function groupRoutesByType(routes) {
  * @private
  */
 function createRouteTypeSection(type, routes, onToggle) {
-    try {
-        // Create section container
-        const section = document.createElement('div');
-        section.className = `route-type-section`;
-        
-        // Create section header
-        const header = document.createElement('h4');
-        header.className = 'route-type-header';
-        header.textContent = routeTypeNames[type] || type;
-        section.appendChild(header);
-        
-        // Create route list container
-        const routeList = document.createElement('div');
-        routeList.className = 'route-list';
-        
-        // Add route toggles
-        routes.forEach(route => {
-            const routeToggle = createRouteToggle(route, onToggle);
-            routeList.appendChild(routeToggle);
-        });
-        
-        section.appendChild(routeList);
-        routeToggleContainer.appendChild(section);
-        
-    } catch (error) {
-        logger.error(`Failed to create route type section for ${type}:`, error);
-    }
+    const section = document.createElement('div');
+    section.className = 'route-type-section';
+    section.style.marginBottom = '16px';
+    
+    // Create header with icon and title
+    const header = document.createElement('div');
+    header.className = 'route-type-header';
+    header.style.display = 'flex';
+    header.style.alignItems = 'center';
+    header.style.marginBottom = '8px';
+    header.style.paddingBottom = '4px';
+    header.style.borderBottom = `2px solid ${ROUTE_COLORS[type] || ROUTE_COLORS.default}`;
+    
+    // Add icon
+    const icon = document.createElement('i');
+    icon.className = `fas ${ROUTE_ICONS[type] || ROUTE_ICONS.default} me-2`;
+    icon.style.color = ROUTE_COLORS[type] || ROUTE_COLORS.default;
+    icon.style.width = '20px';
+    icon.style.textAlign = 'center';
+    header.appendChild(icon);
+    
+    // Add type name
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = routeTypeNames[type] || type;
+    nameSpan.style.flexGrow = '1';
+    nameSpan.style.fontWeight = 'bold';
+    nameSpan.style.fontSize = '0.9em';
+    nameSpan.style.textTransform = 'uppercase';
+    nameSpan.style.letterSpacing = '0.5px';
+    header.appendChild(nameSpan);
+    
+    // Add toggle all button
+    const toggleAllBtn = document.createElement('button');
+    toggleAllBtn.className = 'btn btn-sm btn-outline-secondary';
+    toggleAllBtn.innerHTML = '<i class="fas fa-exchange-alt"></i>';
+    toggleAllBtn.title = `Toggle all ${routeTypeNames[type] || type} routes`;
+    toggleAllBtn.style.padding = '2px 6px';
+    toggleAllBtn.style.fontSize = '0.8em';
+    toggleAllBtn.style.marginLeft = '8px';
+    
+    toggleAllBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const allActive = routes.every(route => activeRoutes.has(route.id));
+        routes.forEach(route => onToggle(route.id, !allActive));
+    });
+    
+    header.appendChild(toggleAllBtn);
+    section.appendChild(header);
+    
+    // Create container for route toggles with grid layout
+    const togglesContainer = document.createElement('div');
+    togglesContainer.className = 'route-toggles-grid';
+    
+    // Apply grid styles
+    Object.assign(togglesContainer.style, {
+        display: 'grid',
+        gridTemplateColumns: `repeat(auto-fill, minmax(${GRID_CONFIG.buttonSize}, 1fr))`,
+        gap: GRID_CONFIG.gap,
+        marginBottom: '12px',
+        width: '100%'
+    });
+    
+    // Add route toggles
+    routes.forEach(route => {
+        const toggle = createRouteToggle(route, onToggle);
+        togglesContainer.appendChild(toggle);
+    });
+    
+    section.appendChild(togglesContainer);
+    routeToggleContainer.appendChild(section);
+}
 }
 
 /**
@@ -156,47 +238,85 @@ function createRouteTypeSection(type, routes, onToggle) {
  * @private
  */
 function createRouteToggle(route, onToggle) {
-    const toggle = document.createElement('button');
-    toggle.className = `route-toggle ${route.type}`;
-    toggle.dataset.routeId = route.id;
+    const button = document.createElement('button');
+    button.className = 'route-toggle';
+    button.dataset.routeId = route.id;
+    button.title = route.description || route.longName || route.name;
     
-    // Create route icon with the route ID
-    const icon = document.createElement('span');
-    icon.className = 'route-icon';
-    icon.textContent = route.id;
+    // Set button style based on route color
+    const bgColor = route.color || ROUTE_COLORS[route.type] || ROUTE_COLORS.default;
+    const textColor = route.textColor || getContrastColor(bgColor);
     
-    // Set the background color based on route type
-    const routeColor = ROUTE_COLORS[route.type] || ROUTE_COLORS.default;
-    icon.style.backgroundColor = routeColor;
-    
-    // Create route name (optional, can be removed if not needed)
-    const name = document.createElement('span');
-    name.className = 'route-name';
-    name.textContent = route.name || '';
-    
-    // Add elements to toggle
-    toggle.appendChild(icon);
-    if (name.textContent) {
-        toggle.appendChild(name);
-    }
-    
-    // Add click handler
-    toggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isActive = toggle.classList.toggle('active');
-        
-        // Update active routes set
-        if (isActive) {
-            activeRoutes.add(route.id);
-        } else {
-            activeRoutes.delete(route.id);
-        }
-        
-        // Call the provided callback
-        onToggle(route.id, isActive);
+    // Apply button styles
+    Object.assign(button.style, {
+        backgroundColor: bgColor,
+        color: textColor,
+        border: `1px solid ${darkenColor(bgColor, 20)}`,
+        width: GRID_CONFIG.buttonSize,
+        height: GRID_CONFIG.buttonSize,
+        borderRadius: '4px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        padding: 0,
+        margin: 0,
+        fontSize: GRID_CONFIG.fontSize,
+        fontWeight: 'bold',
+        transition: 'all 0.2s ease',
+        position: 'relative',
+        overflow: 'hidden'
     });
     
-    return toggle;
+    // Add hover effect
+    button.addEventListener('mouseenter', () => {
+        button.style.transform = 'scale(1.05)';
+        button.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+    });
+    
+    button.addEventListener('mouseleave', () => {
+        button.style.transform = '';
+        button.style.boxShadow = '';
+    });
+    
+    // Add active state
+    button.addEventListener('mousedown', () => {
+        button.style.transform = 'scale(0.95)';
+    });
+    
+    button.addEventListener('mouseup', () => {
+        button.style.transform = 'scale(1.05)';
+    });
+    
+    // Add focus styles
+    button.addEventListener('focus', () => {
+        button.style.outline = 'none';
+        button.style.boxShadow = `0 0 0 3px ${lightenColor(bgColor, 40)}`;
+    });
+    
+    button.addEventListener('blur', () => {
+        button.style.boxShadow = '';
+    });
+    
+    // Add route name
+    button.textContent = route.name;
+    
+    // Add click handler
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onToggle(route.id, !activeRoutes.has(route.id));
+    });
+    
+    // Add keyboard support
+    button.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onToggle(route.id, !activeRoutes.has(route.id));
+        }
+    });
+    
+    return button;
 }
 
 /**
@@ -244,27 +364,89 @@ function toggleAllRoutes(routes, onToggle) {
  * @param {boolean} isActive - Whether the route is active
  */
 export function updateRouteToggleState(routeId, isActive) {
-    const toggle = document.querySelector(`.route-toggle[data-route-id="${routeId}"]`);
-    if (toggle) {
-        if (isActive) {
-            toggle.classList.add('active');
-            activeRoutes.add(routeId);
-        } else {
-            toggle.classList.remove('active');
-            activeRoutes.delete(routeId);
+    try {
+        const toggle = document.querySelector(`.route-toggle[data-route-id="${routeId}"]`);
+        if (toggle) {
+            if (isActive) {
+                activeRoutes.add(routeId);
+                toggle.classList.add('active');
+                toggle.style.opacity = '1';
+                toggle.style.transform = 'scale(1.05)';
+                toggle.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+                toggle.style.zIndex = '10';
+            } else {
+                activeRoutes.delete(routeId);
+                toggle.classList.remove('active');
+                toggle.style.opacity = '0.7';
+                toggle.style.transform = 'scale(1)';
+                toggle.style.boxShadow = 'none';
+                toggle.style.zIndex = '1';
+            }
         }
+    } catch (error) {
+        logger.error(`Failed to update route toggle state for ${routeId}:`, error);
     }
+}
+
+/**
+ * Lighten or darken a color
+ * @private
+ */
+function adjustColor(color, amount) {
+    return '#' + color.replace(/^#/, '').replace(/../g, color => 
+        ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2)
+    );
+}
+
+/**
+ * Lighten a color
+ * @private
+ */
+function lightenColor(color, amount) {
+    return adjustColor(color, amount);
+}
+
+/**
+ * Darken a color
+ * @private
+ */
+function darkenColor(color, amount) {
+    return adjustColor(color, -amount);
+}
+
+/**
+ * Get contrast color (black or white) for a given background color
+ * @private
+ */
+function getContrastColor(hexColor) {
+    // Convert hex to RGB
+    const r = parseInt(hexColor.substr(1, 2), 16);
+    const g = parseInt(hexColor.substr(3, 2), 16);
+    const b = parseInt(hexColor.substr(5, 2), 16);
     
-    // Update the "Show All" button text based on active routes
+    // Calculate luminance (perceived brightness)
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    
+    // Return black for light colors, white for dark colors
+    return luminance > 0.5 ? '#000000' : '#ffffff';
+}
+
+/**
+ * Update the "Show All" button text based on active routes
+ * @private
+ */
+function updateToggleAllBtnText() {
     const toggleAllBtn = document.querySelector('.toggle-all-routes');
     if (toggleAllBtn) {
         const allToggles = document.querySelectorAll('.route-toggle');
-        if (activeRoutes.size === allToggles.length) {
-            toggleAllBtn.textContent = '[Hide All]';
-        } else if (activeRoutes.size === 0) {
-            toggleAllBtn.textContent = '[Show All]';
+        const activeCount = document.querySelectorAll('.route-toggle.active').length;
+        
+        if (activeCount === 0) {
+            toggleAllBtn.textContent = 'Show All';
+        } else if (activeCount === allToggles.length) {
+            toggleAllBtn.textContent = 'Hide All';
         } else {
-            toggleAllBtn.textContent = `[${activeRoutes.size} active]`;
+            toggleAllBtn.textContent = 'Toggle All';
         }
     }
 }

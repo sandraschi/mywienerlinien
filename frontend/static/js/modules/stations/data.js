@@ -21,6 +21,8 @@ export async function loadStationsData() {
             return stationsCache;
         }
         
+        logger.info('Fetching fresh stations data from API...');
+        
         logger.info('Loading stations data...');
         
         // Fetch stations from the API
@@ -31,6 +33,13 @@ export async function loadStationsData() {
         }
         
         let stations = await response.json();
+        
+        // Log raw API response for debugging
+        logger.debug('Raw stations API response:', { 
+            stationCount: stations.length,
+            firstStation: stations.length > 0 ? stations[0] : 'No stations',
+            responseTimestamp: new Date().toISOString()
+        });
         
         // Process and normalize station data
         stations = stations.map(station => ({
@@ -62,7 +71,11 @@ export async function loadStationsData() {
         return stations;
         
     } catch (error) {
-        logger.error('Failed to load stations data:', error);
+        logger.error('Failed to load stations data:', {
+            error: error.toString(),
+            stack: error.stack,
+            timestamp: new Date().toISOString()
+        });
         throw error;
     }
 }

@@ -10,10 +10,26 @@ import json
 import logging
 import time
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Union
 from functools import wraps
 
-from flask import Flask, render_template, jsonify, request, Response
+# Configure root logger
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(os.path.join(os.path.dirname(__file__), 'logs', 'app.log'))
+    ]
+)
+
+# Create logger instance
+logger = logging.getLogger(__name__)
+
+# Import database module
+from database import db, init_db
+
+from flask import Flask, render_template, jsonify, request, Response, send_from_directory
 from flask_caching import Cache
 from flask_socketio import SocketIO, emit
 import requests
@@ -23,22 +39,53 @@ from data_loader import data_loader
 from websocket_manager import init_websocket_manager, get_websocket_manager
 from disruption_alerts import disruption_monitor
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/app.log'),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger('wiener_linien')
-
 # Initialize Flask app
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'wiener-linien-secret-key-2024'
+app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'wiener-linien-secret-key-2024')
 app.config['CACHE_TYPE'] = 'SimpleCache'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 15
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Initialize database
+db.init_app(app)
+
+# Configure logging
+try:
+    # Ensure logs directory exists
+    logs_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
+    try:
+        os.makedirs(logs_dir, exist_ok=True)
+        
+        # In production mode, log to a file
+        log_file = os.path.join(logs_dir, 'app.log')
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(logging.INFO)
+        file_handler.setFormatter(logging.Formatter(
+            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+        ))
+        app.logger.addHandler(file_handler)
+        app.logger.setLevel(logging.INFO)
+        app.logger.info('Wiener Linien Live Map startup')
+    except Exception as e:
+        print(f"Warning: Could not set up file logging: {e}")
+        print(f"Logs will be written to console only.")
+        # Fall back to basic console logging if file logging fails
+        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger('wiener_linien')
+        logger.warning("File logging not available - using console logging only")
+        
+except Exception as e:
+    print(f"Error setting up logging: {e}")
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger('wiener_linien')
+    logger.error("Failed to set up logging configuration")
+
+# Debug: Log Flask app initialization
+logger.info("Flask app initialized")
+logger.info(f"App root path: {app.root_path}")
+logger.info(f"App static folder: {app.static_folder}")
+logger.info(f"App template folder: {app.template_folder}")
 
 # Initialize cache
 cache = Cache(app)
@@ -157,120 +204,6 @@ def _calculate_delay(departure_time):
     except Exception:
         return 0
 
-def get_dummy_vehicles(vehicle_type: Optional[str] = None, line: Optional[str] = None) -> List[Dict[str, Any]]:
-    """Generate dummy vehicle data for demonstration."""
-    dummy_vehicles = [
-        {
-            'id': 'tram_d_001',
-            'type': 'tram',
-            'line': 'D',
-            'lat': 48.2027,
-            'lng': 16.3680,
-            'direction': 'Nußdorf',
-            'next_station': 'Karlsplatz',
-            'delay': 0,
-            'timestamp': datetime.now().isoformat()
-        },
-        {
-            'id': 'tram_5_001',
-            'type': 'tram',
-            'line': '5',
-            'lat': 48.2140,
-            'lng': 16.3720,
-            'direction': 'Westbahnhof',
-            'next_station': 'Schottentor',
-            'delay': 2,
-            'timestamp': datetime.now().isoformat()
-        },
-        {
-            'id': 'bus_1a_001',
-            'type': 'bus',
-            'line': '1A',
-            'lat': 48.2089,
-            'lng': 16.3717,
-            'direction': 'Kaisermühlen',
-            'next_station': 'Stephansplatz',
-            'delay': 0,
-            'timestamp': datetime.now().isoformat()
-        },
-        {
-            'id': 'metro_u1_001',
-            'type': 'metro',
-            'line': 'U1',
-            'lat': 48.2459,
-            'lng': 16.4269,
-            'direction': 'Reumannplatz',
-            'next_station': 'Stephansplatz',
-            'delay': 1,
-            'timestamp': datetime.now().isoformat()
-        },
-        {
-            'id': 'metro_u2_001',
-            'type': 'metro',
-            'line': 'U2',
-            'lat': 48.2090,
-            'lng': 16.4620,
-            'direction': 'Karlsplatz',
-            'next_station': 'Schottentor',
-            'delay': 0,
-            'timestamp': datetime.now().isoformat()
-        },
-        {
-            'id': 'metro_u3_001',
-            'type': 'metro',
-            'line': 'U3',
-            'lat': 48.2100,
-            'lng': 16.2660,
-            'direction': 'Simmering',
-            'next_station': 'Stephansplatz',
-            'delay': 3,
-            'timestamp': datetime.now().isoformat()
-        },
-        {
-            'id': 'metro_u4_001',
-            'type': 'metro',
-            'line': 'U4',
-            'lat': 48.1890,
-            'lng': 16.2220,
-            'direction': 'Heiligenstadt',
-            'next_station': 'Karlsplatz',
-            'delay': 0,
-            'timestamp': datetime.now().isoformat()
-        },
-        {
-            'id': 'metro_u6_001',
-            'type': 'metro',
-            'line': 'U6',
-            'lat': 48.1500,
-            'lng': 16.2660,
-            'direction': 'Floridsdorf',
-            'next_station': 'Westbahnhof',
-            'delay': 2,
-            'timestamp': datetime.now().isoformat()
-        },
-        {
-            'id': 'night_bus_n25_001',
-            'type': 'night_bus',
-            'line': 'N25',
-            'lat': 48.2089,
-            'lng': 16.3717,
-            'direction': 'Floridsdorf',
-            'next_station': 'Ring',
-            'delay': 0,
-            'timestamp': datetime.now().isoformat()
-        }
-    ]
-    
-    # Filter by vehicle type if specified
-    if vehicle_type and vehicle_type != 'all':
-        dummy_vehicles = [v for v in dummy_vehicles if v['type'] == vehicle_type]
-    
-    # Filter by line if specified
-    if line:
-        dummy_vehicles = [v for v in dummy_vehicles if v['line'] == line]
-    
-    return dummy_vehicles
-
 @app.route('/')
 def index():
     """Main page route."""
@@ -346,11 +279,6 @@ def get_vehicles():
                 logger.error(f"Error fetching data for RBL {rbl}: {e}")
                 failed_requests += 1
         
-        # If no real vehicles found, add dummy vehicles
-        if not vehicles:
-            logger.info("No real vehicles found, adding dummy vehicles")
-            vehicles = get_dummy_vehicles(vehicle_type, line)
-        
         # Filter vehicles based on parameters
         if vehicle_type and vehicle_type != 'all':
             vehicles = [v for v in vehicles if v['type'] == vehicle_type]
@@ -359,6 +287,10 @@ def get_vehicles():
             vehicles = [v for v in vehicles if v['line'] == line]
         
         logger.info(f"Returning {len(vehicles)} vehicles (successful requests: {successful_requests}, failed: {failed_requests})")
+        
+        # If no vehicles found, return empty array instead of error
+        if not vehicles:
+            logger.warning("No vehicles found matching the criteria")
         
         return jsonify({
             'vehicles': vehicles,
@@ -399,7 +331,7 @@ def get_lines():
 def get_stations():
     """API endpoint for stations."""
     try:
-        stations = data_loader.load_stations()
+        stations = db.get_stations()
         station_data = []
         
         for station in stations:
@@ -419,35 +351,35 @@ def get_stations():
         logger.error(f"Error in get_stations: {e}", exc_info=True)
         return jsonify({'error': 'Internal server error'}), 500
 
-@app.route('/api/routes')
+@app.route('/api/routes', methods=['GET'])
+@cache.cached(timeout=300)  # Cache for 5 minutes
 def get_routes():
-    """API endpoint for routes."""
+    """
+    API endpoint for routes.
+    Returns a list of all available routes with their details.
+    """
     try:
-        line_filter = request.args.get('line')
-        routes = data_loader.load_routes()
+        # Get routes from database
+        routes = db.get_routes()
         
-        if line_filter:
-            routes = [r for r in routes if r.line == line_filter]
-            logger.info(f"Returning route for line {line_filter}")
-        else:
-            logger.info(f"Returning {len(routes)} routes")
+        # Format response
+        response = {
+            'status': 'success',
+            'data': routes,
+            'count': len(routes),
+            'timestamp': datetime.utcnow().isoformat() + 'Z'
+        }
         
-        route_data = []
-        for route in routes:
-            route_data.append({
-                'name': route.line,
-                'type': route.type,
-                'color': route.color,
-                'description': route.description,
-                'coordinates': route.coordinates,
-                'stops': route.stops
-            })
-        
-        return jsonify({'routes': route_data})
+        return jsonify(response)
         
     except Exception as e:
-        logger.error(f"Error in get_routes: {e}", exc_info=True)
-        return jsonify({'error': 'Internal server error'}), 500
+        logger.error(f"Error in get_routes: {str(e)}", exc_info=True)
+        return jsonify({
+            'status': 'error',
+            'message': 'Failed to fetch routes',
+            'error': str(e),
+            'timestamp': datetime.utcnow().isoformat() + 'Z'
+        }), 500
 
 @app.route('/api/disruptions')
 def get_disruptions():
@@ -511,7 +443,7 @@ def get_system_status():
             'websocket_clients': ws_manager.get_connected_clients_count() if ws_manager else 0,
             'active_disruptions': len(active_disruptions),
             'vehicle_count': ws_manager.get_vehicle_count() if ws_manager else 0,
-            'data_cache_status': data_loader.get_cache_status(),
+            'data_cache_status': db.get_cache_status(),
             'last_api_check': disruption_monitor.last_check.isoformat() if disruption_monitor.last_check else None,
             'timestamp': datetime.now().isoformat()
         }
@@ -676,6 +608,81 @@ def on_disruption_alert(disruption, event_type):
 # Register disruption alert callback
 disruption_monitor.subscribe(on_disruption_alert)
 
+# Add a route to serve markdown files from the data directory
+@app.route('/data/<path:filename>')
+def serve_markdown(filename):
+    """Serve markdown files from the data directory."""
+    data_dir = '/app/data'  # This is where the data is mounted in the container
+    logger.info(f"Attempting to serve file: {filename} from directory: {data_dir}")
+    
+    # Debug: Log the current working directory and list of files in the data directory
+    cwd = os.getcwd()
+    logger.info(f"Current working directory: {cwd}")
+    
+    try:
+        files = os.listdir('.')
+        logger.info(f"Files in current directory: {files}")
+    except Exception as e:
+        logger.error(f"Error listing current directory: {e}")
+    
+    try:
+        files = os.listdir('/app')
+        logger.info(f"Files in /app directory: {files}")
+    except Exception as e:
+        logger.error(f"Error listing /app directory: {e}")
+        
+    # Try to find the data directory
+    possible_data_dirs = [
+        '/app/data',
+        '/data',
+        os.path.join(app.root_path, 'data'),
+        os.path.join(os.path.dirname(__file__), 'data')
+    ]
+    
+    for dir_path in possible_data_dirs:
+        if os.path.exists(dir_path):
+            data_dir = dir_path
+            logger.info(f"Found data directory at: {data_dir}")
+            try:
+                files = os.listdir(data_dir)
+                logger.info(f"Files in data directory: {files}")
+            except Exception as e:
+                logger.error(f"Error listing data directory: {e}")
+            break
+    else:
+        logger.error("Could not find data directory in any of the expected locations")
+    
+    # List all files in the data directory for debugging
+    try:
+        files = os.listdir(data_dir)
+        logger.info(f"Files in data directory: {files}")
+    except Exception as e:
+        logger.error(f"Error listing data directory: {e}")
+    
+    # Check if file exists
+    filepath = os.path.join(data_dir, filename)
+    if not os.path.exists(filepath):
+        logger.error(f"File not found: {filepath}")
+        return f"File not found: {filename}", 404
+    
+    # Check if file is a markdown file
+    if not filename.lower().endswith('.md'):
+        logger.error(f"Invalid file type: {filename}")
+        return "Only markdown files are allowed", 400
+    
+    logger.info(f"Serving file: {filepath}")
+    return send_from_directory(data_dir, filename, mimetype='text/markdown')
+
+# Add a route to list all registered routes for debugging
+@app.route('/routes')
+def list_routes():
+    """List all registered routes for debugging."""
+    output = []
+    for rule in app.url_map.iter_rules():
+        methods = ','.join(rule.methods)
+        output.append(f"{rule.endpoint}: {rule.rule} [{methods}]")
+    return '<br>'.join(sorted(output))
+
 def initialize_app():
     """Initialize the application."""
     logger.info("Starting Wiener Linien Live Map application")
@@ -688,19 +695,111 @@ def initialize_app():
     data_loader.load_stations()
     data_loader.load_routes()
 
-# Initialize the app immediately
-initialize_app()
+# Test route to verify route registration
+@app.route('/test')
+def test_route():
+    """Test route to verify route registration."""
+    return "Test route is working!"
+
+# Application factory function to create and configure the Flask app
+def create_app():
+    """Application factory function to create and configure the Flask app."""
+    # Create the Flask app
+    app = Flask(__name__)
+    
+    # Configure the app
+    app.config['SECRET_KEY'] = 'wiener-linien-secret-key-2024'
+    app.config['CACHE_TYPE'] = 'SimpleCache'
+    app.config['CACHE_DEFAULT_TIMEOUT'] = 15
+    
+    # Initialize extensions
+    cache = Cache(app)
+    
+    # Register routes
+    @app.route('/')
+    def index_route():
+        return render_template('index.html')
+    
+    @app.route('/api/vehicles')
+    def get_vehicles_route():
+        return get_vehicles()
+    
+    @app.route('/api/lines')
+    def get_lines_route():
+        return get_lines()
+    
+    @app.route('/api/stations')
+    def get_stations_route():
+        return get_stations()
+    
+    @app.route('/api/routes')
+    def get_routes_route():
+        return get_routes()
+    
+    @app.route('/api/disruptions')
+    def get_disruptions_route():
+        return get_disruptions()
+    
+    @app.route('/api/disruptions/summary')
+    def get_disruption_summary_route():
+        return get_disruption_summary()
+    
+    @app.route('/api/status')
+    def get_system_status_route():
+        return get_system_status()
+    
+    @app.route('/data/<path:filename>')
+    def serve_markdown_route(filename):
+        return serve_markdown(filename)
+    
+    @app.route('/routes')
+    def list_routes_route():
+        return list_routes()
+    
+    @app.route('/test')
+    def test_route_route():
+        return test_route()
+    
+    # Debug endpoint to list all registered routes
+    @app.route('/debug/routes')
+    def debug_routes():
+        """Debug endpoint to list all registered routes."""
+        routes = []
+        for rule in app.url_map.iter_rules():
+            routes.append({
+                'endpoint': rule.endpoint,
+                'methods': sorted(rule.methods),
+                'rule': str(rule)
+            })
+        return jsonify({
+            'status': 'success',
+            'routes': routes
+        })
+    
+    # Initialize the app
+    initialize_app()
+    
+    # Initialize SocketIO with the app
+    logger.info("Initializing SocketIO with the app")
+    socketio.init_app(app)
+    
+    # Log all registered routes
+    logger.info("=== Registered Routes ===")
+    for rule in app.url_map.iter_rules():
+        logger.info(f"{rule.endpoint}: {rule.rule} -> {rule.methods}")
+    logger.info("======================================")
+    
+    return app
+
+# Create the app
+app = create_app()
 
 if __name__ == '__main__':
-    logger.info("Starting Wiener Linien Live Map application")
-    
-    # Check if running in production mode
-    debug_mode = os.environ.get('FLASK_ENV') != 'production'
-    
+    # Start the SocketIO server
     socketio.run(
-        app, 
-        host='0.0.0.0', 
-        port=3080, 
-        debug=debug_mode,
+        app,
+        host='0.0.0.0',
+        port=5000,
+        debug=True,
         allow_unsafe_werkzeug=True
     )

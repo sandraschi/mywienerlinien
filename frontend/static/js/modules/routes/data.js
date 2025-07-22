@@ -5,13 +5,13 @@
 import { CONFIG } from '../../config.js';
 import { ROUTE_TYPES } from '../../constants.js';
 import { logger } from '../utils/logger.js';
-import loadRoutesFromMarkdown from './markdownLoader.js';
+import { fetchJson } from '../utils/http.js';
 
 // Cache for route data
 let routesCache = null;
 
 /**
- * Load routes data from markdown files or cache
+ * Load routes data from the API
  * @returns {Promise<Array>} Array of route objects
  */
 export async function loadRoutesData() {
@@ -22,38 +22,75 @@ export async function loadRoutesData() {
             return routesCache;
         }
         
-        logger.info('Loading routes data from markdown...');
+        logger.info('Loading routes data from API...');
         
-        // Load routes from markdown files
-        let routes = await loadRoutesFromMarkdown();
+        // Fetch routes from the API
+        const response = await fetchJson('/api/routes');
+        
+        if (!response || !response.data) {
+            throw new Error('Invalid response from server');
+        }
         
         // Process and normalize route data
-        routes = routes.map(route => {
-            const normalizedRoute = {
-                ...route,
-                // Ensure type is lowercase and valid
-                type: normalizeRouteType(route.type || ''),
-                // Ensure color has a default based on type
-                color: route.color || getDefaultColor(route.type || ''),
-                // Ensure coordinates is an array
-                coordinates: route.coordinates || [],
-                // Ensure stops is an array
-                stops: route.stops || []
-            };
-            
-            logger.debug(`Processed route: ${route.id} (${route.name}), type: ${normalizedRoute.type}, stops: ${normalizedRoute.stops.length}`);
-            return normalizedRoute;
+        const routes = response.data.map(route => ({
+            id: route.route_id,
+            name: route.route_short_name || route.route_long_name || `Route ${route.route_id}`,
+            longName: route.route_long_name || '',
+            type: getRouteTypeFromGtfsType(route.route_type),
+            color: route.route_color ? `#${route.route_color}` : getDefaultColor(route.route_type),
+            textColor: route.route_text_color ? `#${route.route_text_color}` : '#ffffff',
+            description: route.route_desc || '',
+            // These will be populated when the route is selected
+            coordinates: [],
+            stops: []
+        }));
+        
+        logger.debug(`Loaded ${routes.length} routes from API`, { 
+            routeCount: routes.length,
+            firstRoute: routes.length > 0 ? routes[0] : 'No routes',
+            loadTimestamp: new Date().toISOString()
         });
         
         // Cache the processed routes
         routesCache = routes;
         
-        logger.info(`Loaded ${routes.length} routes from markdown`);
         return routes;
         
     } catch (error) {
-        logger.error('Failed to load routes data from markdown:', error);
+        logger.error('Failed to load routes data from API:', {
+            error: error.toString(),
+            stack: error.stack,
+            timestamp: new Date().toISOString()
+        });
         throw error;
+    }
+}
+
+/**
+ * Convert GTFS route type to our internal type
+ * @private
+ */
+function getRouteTypeFromGtfsType(gtfsType) {
+    // GTFS route types: https://developers.google.com/transit/gtfs/reference#routestxt
+    switch (parseInt(gtfsType)) {
+        case 0: // Tram, Streetcar, Light rail
+            return 'tram';
+        case 1: // Subway, Metro
+            return 'subway';
+        case 2: // Rail
+            return 'train';
+        case 3: // Bus
+            return 'bus';
+        case 4: // Ferry
+            return 'ferry';
+        case 5: // Cable car
+            return 'cablecar';
+        case 6: // Gondola, Suspended cable car
+            return 'gondola';
+        case 7: // Funicular
+            return 'funicular';
+        default:
+            return 'bus'; // Default to bus
     }
 }
 

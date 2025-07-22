@@ -221,6 +221,67 @@
             font-size: 14px;
         }
         
+        /* Route Toggles */
+        .route-toggles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .route-toggle {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            margin: 2px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .route-toggle:hover {
+            background-color: #e9ecef;
+        }
+
+        .route-toggle.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .route-toggle i {
+            margin-right: 6px;
+        }
+
+        .loading-message {
+            color: #6c757d;
+            font-style: italic;
+            padding: 8px 0;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .toggle-all-routes {
+            padding: 4px 8px;
+            font-size: 12px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .toggle-all-routes:hover {
+            background-color: #e9ecef;
+        }
+
         .route-info p {
             color: #424242;
             font-size: 12px;
@@ -403,6 +464,22 @@
                             <!-- Populated by JavaScript -->
                         </select>
                     </div>
+                </section>
+
+                <!-- Line Toggles Section -->
+                <section class="filters-section">
+                    <div class="filter-group">
+                        <div class="filter-header">
+                            <h3>Show/Hide Lines</h3>
+                            <button type="button" class="toggle-all-routes">Toggle All</button>
+                        </div>
+                        <div id="route-toggles" class="route-toggles">
+                            <!-- Route toggle buttons will be added here by JavaScript -->
+                            <div class="loading-message">Loading lines...</div>
+                        </div>
+                    </div>
+
+
                 </section>
 
                 <!-- Controls Section -->

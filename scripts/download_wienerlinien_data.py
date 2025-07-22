@@ -18,8 +18,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 
 # Timeout for network operations (seconds)
-DOWNLOAD_TIMEOUT = 30
-PROCESSING_TIMEOUT = 60
+DOWNLOAD_TIMEOUT = 120  # Increased from 30
+PROCESSING_TIMEOUT = 600  # Increased from 60 (10 minutes) to handle large GTFS datasets
 
 # Configuration
 GTFS_URL = "https://www.wienerlinien.at/ogd_realtime/doku/ogd/gtfs/gtfs.zip"
@@ -213,31 +213,73 @@ def load_gtfs_data(gtfs_dir: Path) -> dict:
     return gtfs_data
 
 def process_routes(gtfs_data: dict) -> dict:
-    """Process routes from GTFS data."""
+    """Process routes from GTFS data.
+    
+    Args:
+        gtfs_data: Dictionary containing GTFS data with 'routes.txt' key
+        
+    Returns:
+        Dictionary mapping route IDs to route data with empty stops list
+    """
     routes = {}
+    seen_route_keys = set()  # Track unique route identifiers to avoid duplicates
+    
     for route in gtfs_data.get('routes.txt', []):
-        route_id = route['route_id']
-        routes[route_id] = {
-            'route_id': route_id,
-            'route_short_name': route['route_short_name'],
-            'route_long_name': route['route_long_name'],
-            'route_type': int(route['route_type']),
-            'route_color': f"#{route.get('route_color', '000000').lstrip('#')}",
-            'route_text_color': f"#{route.get('route_text_color', 'FFFFFF').lstrip('#')}",
-            'stops': []
-        }
+        try:
+            route_id = route['route_id']
+            route_short_name = route.get('route_short_name', '').strip()
+            route_long_name = route.get('route_long_name', '').strip()
+            route_type = int(route.get('route_type', -1))
+            
+            # Create a unique key for this route to detect duplicates
+            route_key = (route_short_name, route_long_name, route_type)
+            if route_key in seen_route_keys:
+                print(f"  • Skipping duplicate route: {route_short_name} - {route_long_name} (Type: {route_type})")
+                continue
+                
+            seen_route_keys.add(route_key)
+            
+            routes[route_id] = {
+                'route_id': route_id,
+                'route_short_name': route_short_name,
+                'route_long_name': route_long_name,
+                'route_type': route_type,
+                'route_color': f"#{route.get('route_color', '000000').lstrip('#')}",
+                'route_text_color': f"#{route.get('route_text_color', 'FFFFFF').lstrip('#')}",
+                'stops': []
+            }
+            
+        except (KeyError, ValueError) as e:
+            print(f"  • Error processing route {route.get('route_id', 'unknown')}: {e}")
+            continue
+    
+    print(f"  • Processed {len(routes)} unique routes")
     return routes
 
-def process_stops(gtfs_data: dict) -> dict:
-    """Process stops data from GTFS."""
+def process_stops(gtfs_data: dict, max_stops: int = None) -> dict:
+    """Process stops data from GTFS.
+    
+    Args:
+        gtfs_data: Dictionary containing GTFS data
+        max_stops: Maximum number of stops to process (for testing)
+    """
     stops = {}
     stops_data = gtfs_data.get('stops.txt', [])
     
     if not stops_data:
         print("  • Warning: No stops data found in GTFS")
         return {}
-        
-    print(f"  • Processing {len(stops_data)} stops...")
+    
+    # Limit the number of stops if max_stops is specified
+    if max_stops and max_stops > 0:
+        stops_data = stops_data[:max_stops]
+        print(f"  • Processing first {max_stops:,} stops (limited for testing)...")
+    else:
+        print(f"  • Processing {len(stops_data):,} stops...")
+    
+    start_time = time.time()
+    last_log_time = start_time
+    processed_count = 0
     
     for i, stop in enumerate(stops_data, 1):
         try:
@@ -256,84 +298,343 @@ def process_stops(gtfs_data: dict) -> dict:
                 'parent_station': stop.get('parent_station', '')
             }
             
-            # Print progress for large datasets
-            if i % 1000 == 0 or i == len(stops_data):
-                print(f"  • Processed {i}/{len(stops_data)} stops")
+            # Log progress every 10,000 records or every 5 seconds
+            current_time = time.time()
+            if i % 10000 == 0 or (current_time - last_log_time) >= 5 or i == len(stops_data):
+                elapsed = current_time - start_time
+                rate = i / elapsed if elapsed > 0 else 0
+                remaining = (len(stops_data) - i) / rate if rate > 0 else 0
+                
+                print((f"  • Processed {i:,}/{len(stops_data):,} stops "
+                      f"({i/len(stops_data)*100:.1f}%, {rate:,.0f} stops/sec, "
+                      f"ETA: {remaining/60:.1f} min remaining)"))
+                last_log_time = current_time
                 
         except Exception as e:
             print(f"  • Error processing stop {i}: {e}")
             continue
-            
-    print(f"  • Successfully processed {len(stops)} stops")
+    
+    elapsed = time.time() - start_time
+    print((f"  • Successfully processed {len(stops):,} stops in "
+           f"{elapsed:.1f} seconds ({len(stops)/elapsed:,.0f} stops/sec)"))
+    
+    return stops
     return stops
 
-def process_stop_times(gtfs_data: dict, routes: dict, trips: dict, stops: dict, max_entries: int = 100000):
+def remove_consecutive_duplicates(sequence):
+    """Remove consecutive duplicate stops from a sequence while preserving order.
+    
+    Args:
+        sequence: List of stop dictionaries
+        
+    Returns:
+        List with consecutive duplicates removed
+    """
+    if not sequence:
+        return []
+        
+    result = [sequence[0]]
+    for item in sequence[1:]:
+        if item['stop_id'] != result[-1]['stop_id']:
+            result.append(item)
+    return result
+
+
+def process_stop_times(gtfs_data: dict, routes: dict, trips: dict, stops: dict, max_entries: int = None):
     """Process stop times to build route sequences.
     
     Args:
-        gtfs_data: Dictionary containing GTFS data
+        gtfs_data: Dictionary containing GTFS data with 'stop_times.txt' and 'trips.txt'
         routes: Dictionary of routes to populate with stops
-        trips: Dictionary of trips (unused in this implementation)
+        trips: Dictionary mapping trip IDs to trip data
         stops: Dictionary of all stops
-        max_entries: Maximum number of entries to process (for testing)
+        max_entries: Maximum number of entries to process (None for all)
     """
-    print("  • Indexing trips by route...")
-    # First, index trips by route
-    route_trips = {}
-    for trip in gtfs_data.get('trips.txt', []):
-        route_id = trip['route_id']
-        if route_id not in route_trips:
-            route_trips[route_id] = set()
-        route_trips[route_id].add(trip['trip_id'])
+    print("  • Indexing trips by route and direction...")
     
-    print(f"  • Processing stop times (first {max_entries:,} entries)...")
-    processed = 0
-    stop_times = gtfs_data.get('stop_times.txt', [])
-    total_entries = min(len(stop_times), max_entries)
+    # First, index trips by route and direction, and map trip_id to route_id/direction_id
+    route_direction_trips = {}
+    trip_to_route_direction = {}
+    trips_data = gtfs_data.get('trips.txt', [])
     
-    for i, stop_time in enumerate(stop_times):
-        # Progress reporting
-        if i % 10000 == 0 and i > 0:
-            print(f"    - Processed {i:,}/{total_entries:,} entries...")
-            
-        if i >= max_entries:
-            print(f"    - Reached maximum of {max_entries:,} entries")
-            break
-            
-        trip_id = stop_time['trip_id']
-        stop_id = stop_time['stop_id']
+    # Build a proper trip_id to route_id and direction_id mapping
+    for trip in trips_data:
+        route_id = trip.get('route_id')
+        direction_id = str(trip.get('direction_id', '0'))  # Ensure string for consistency
+        trip_id = trip.get('trip_id')
         
-        # Skip if stop doesn't exist
-        if stop_id not in stops:
+        if not route_id or not trip_id or route_id not in routes:
             continue
             
-        # Find which route this stop belongs to
-        for route_id, trip_set in route_trips.items():
-            if trip_id in trip_set and route_id in routes:
-                # Check if this stop is already in the route's stops
-                stop_exists = False
-                for existing_stop in routes[route_id]['stops']:
-                    if existing_stop['stop_id'] == stop_id:
-                        stop_exists = True
-                        break
-                        
-                if not stop_exists:
-                    routes[route_id]['stops'].append({
-                        'stop_id': stop_id,
-                        'stop_name': stops[stop_id]['stop_name'],
-                        'stop_sequence': int(stop_time['stop_sequence']),
-                        'lat': stops[stop_id]['stop_lat'],
-                        'lon': stops[stop_id]['stop_lon']
-                    })
-                    processed += 1
+        # Map trip to route and direction
+        if route_id not in route_direction_trips:
+            route_direction_trips[route_id] = {}
+            
+        if direction_id not in route_direction_trips[route_id]:
+            route_direction_trips[route_id][direction_id] = []
+            
+        route_direction_trips[route_id][direction_id].append(trip_id)
+        trip_to_route_direction[trip_id] = (route_id, direction_id)
     
-    # Sort stops by sequence for each route
-    print("  • Sorting stops by sequence...")
+    # Process stop times with progress reporting
+    stop_times = gtfs_data.get('stop_times.txt', [])
+    
+    # Limit the number of entries if specified
+    if max_entries and max_entries > 0:
+        stop_times = stop_times[:max_entries]
+        print(f"  • Processing first {max_entries:,} stop time entries...")
+    else:
+        print(f"  • Processing {len(stop_times):,} stop time entries...")
+    
+    # Sort stop times by trip_id and stop_sequence to ensure correct order
+    print("  • Sorting stop times by trip and sequence...")
+    stop_times.sort(key=lambda x: (x.get('trip_id', ''), int(x.get('stop_sequence', 0))))
+    
+    total_entries = len(stop_times)
+    processed = 0
+    start_time = time.time()
+    last_log_time = start_time
+    
+    # Structure to hold stops for each route and direction
+    route_direction_stops = {}
+    
+    # Initialize processed_stops to track which stops we've already added to routes
+    processed_stops = {route_id: {} for route_id in routes.keys()}
+    
+    # First pass: Build complete stop sequences for each trip
+    print("  • Building stop sequences for each trip...")
+    current_trip = None
+    current_stops = []
+    
+    for i, stop_time in enumerate(stop_times, 1):
+        # Progress reporting
+        current_time = time.time()
+        if i % 100000 == 0 or (current_time - last_log_time) >= 5 or i == total_entries:
+            elapsed = current_time - start_time
+            rate = i / elapsed if elapsed > 0 else 0
+            remaining = (total_entries - i) / rate if rate > 0 else 0
+            
+            print((f"    - Processed {i:,}/{total_entries:,} entries "
+                  f"({i/total_entries*100:.1f}%, {rate:,.0f} entries/sec, "
+                  f"ETA: {remaining/60:.1f} min remaining)"))
+            last_log_time = current_time
+        
+        trip_id = stop_time.get('trip_id')
+        stop_id = stop_time.get('stop_id')
+        
+        # Skip if trip_id or stop_id is missing or stop doesn't exist
+        if not trip_id or not stop_id or stop_id not in stops:
+            continue
+            
+        # If this is a new trip, process the previous one
+        if trip_id != current_trip and current_trip is not None:
+            # Add the completed trip's stops to our route/direction structure
+            if current_trip in trip_to_route_direction:
+                route_id, direction_id = trip_to_route_direction[current_trip]
+                if route_id not in route_direction_stops:
+                    route_direction_stops[route_id] = {}
+                if direction_id not in route_direction_stops[route_id]:
+                    route_direction_stops[route_id][direction_id] = []
+                
+                # Add the complete stop sequence for this trip
+                route_direction_stops[route_id][direction_id].extend(current_stops)
+            
+            # Reset for the new trip
+            current_stops = []
+        
+        # Set the current trip
+        current_trip = trip_id
+        
+        # Add this stop to the current trip's stops
+        try:
+            stop_sequence = int(stop_time.get('stop_sequence', 0))
+            current_stops.append({
+                'stop_id': stop_id,
+                'stop_name': stops[stop_id].get('stop_name', 'Unknown Stop'),
+                'stop_sequence': stop_sequence,
+                'lat': float(stops[stop_id].get('stop_lat', 0)),
+                'lon': float(stops[stop_id].get('stop_lon', 0))
+            })
+            processed += 1
+        except (ValueError, KeyError) as e:
+            print(f"    • Error processing stop time: {e}")
+            continue
+    
+    # Process the last trip
+    if current_trip and current_trip in trip_to_route_direction and current_stops:
+        route_id, direction_id = trip_to_route_direction[current_trip]
+        if route_id not in route_direction_stops:
+            route_direction_stops[route_id] = {}
+        if direction_id not in route_direction_stops[route_id]:
+            route_direction_stops[route_id][direction_id] = []
+        route_direction_stops[route_id][direction_id].extend(current_stops)
+    
+    # Now build the final route stops by finding the most common sequence for each route/direction
+    print("  • Building final route stop sequences...")
+    route_stop_sequences = {}
+    
+    for route_id, directions in route_direction_stops.items():
+        if route_id not in routes:
+            continue
+            
+        route_stop_sequences[route_id] = {}
+        
+        for direction_id, trip_stops_list in directions.items():
+            # If we have multiple trips, find the most common sequence of stops
+            if trip_stops_list:
+                # For now, just take the first trip's stops as the canonical sequence
+                # A more sophisticated approach would analyze all trips to find the most common sequence
+                route_stop_sequences[route_id][direction_id] = remove_consecutive_duplicates(trip_stops_list)
+    
+    # Now assign the stops to the routes
+    print("  • Assigning stops to routes...")
+    routes_with_stops = 0
+    total_stops_assigned = 0
+    
     for route_id, route in routes.items():
-        route['stops'].sort(key=lambda x: x['stop_sequence'])
-        print(f"    - Route {route_id}: {len(route['stops'])} stops")
+        route['stops'] = []
+        if route_id in route_stop_sequences:
+            directions = route_stop_sequences[route_id]
+            print(f"    - Processing route {route_id} with {len(directions)} directions")
+            
+            for direction_id, stops_list in directions.items():
+                # Sort stops by sequence number before adding to route
+                sorted_stops = sorted(stops_list, key=lambda x: x.get('stop_sequence', 0))
+                print(f"      - Direction {direction_id}: {len(sorted_stops)} stops")
+                
+                for stop in sorted_stops:
+                    route['stops'].append({
+                        'stop_id': stop['stop_id'],
+                        'stop_name': stop['stop_name'],
+                        'stop_sequence': stop.get('stop_sequence', len(route['stops']) + 1),
+                        'direction_id': direction_id,
+                        'lat': stop['lat'],
+                        'lon': stop['lon']
+                    })
+                    total_stops_assigned += 1
+            
+            if route['stops']:
+                routes_with_stops += 1
     
-    print(f"  • Processed {processed} stop assignments")
+    print(f"  • Assigned {total_stops_assigned} stops to {routes_with_stops} out of {len(routes)} routes")
+    
+    # Sort stops by sequence for each route and direction
+    print("  • Sorting stops by sequence and direction...")
+    route_count = len(routes)
+    
+    for i, (route_id, route) in enumerate(routes.items(), 1):
+        # Group stops by direction
+        stops_by_direction = {}
+        for stop in route['stops']:
+            direction = stop.get('direction_id', '0')
+            if direction not in stops_by_direction:
+                stops_by_direction[direction] = []
+            stops_by_direction[direction].append(stop)
+        
+        # Sort stops within each direction by sequence
+        route_stops = []
+        for direction, dir_stops in stops_by_direction.items():
+            dir_stops_sorted = sorted(dir_stops, key=lambda x: x['stop_sequence'])
+            route_stops.extend(dir_stops_sorted)
+        
+        route['stops'] = route_stops
+        
+        if i % 100 == 0 or i == route_count:
+            directions = len(stops_by_direction)
+            print(f"    - Sorted {i:,}/{route_count:,} routes: {route_id} has {len(route_stops)} stops ({directions} directions)")
+    
+    # Print summary of routes with stops
+    routes_with_stops = sum(1 for route in routes.values() if route['stops'])
+    total_stops = sum(len(route['stops']) for route in routes.values())
+    
+    elapsed = time.time() - start_time
+    print((f"  • Processed {processed:,} stop time entries "
+           f"in {elapsed/60:.1f} minutes ({processed/elapsed:,.0f} entries/sec)"))
+    print(f"  • {routes_with_stops:,} out of {route_count:,} routes have stops assigned")
+    
+    for i, stop_time in enumerate(stop_times, 1):
+        # Progress reporting
+        current_time = time.time()
+        if i % 100000 == 0 or (current_time - last_log_time) >= 5 or i == total_entries:
+            elapsed = current_time - start_time
+            rate = i / elapsed if elapsed > 0 else 0
+            remaining = (total_entries - i) / rate if rate > 0 else 0
+            
+            print((f"    - Processed {i:,}/{total_entries:,} entries "
+                  f"({i/total_entries*100:.1f}%, {rate:,.0f} entries/sec, "
+                  f"ETA: {remaining/60:.1f} min remaining)"))
+            last_log_time = current_time
+            
+        trip_id = stop_time.get('trip_id')
+        stop_id = stop_time.get('stop_id')
+        
+        # Skip if stop doesn't exist or is missing required fields
+        if not stop_id or stop_id not in stops:
+            continue
+            
+        # Find which route and direction this trip belongs to
+        for route_id, direction_trips in route_direction_trips.items():
+            if route_id not in routes:
+                continue
+                
+            for direction_id, trip_set in direction_trips.items():
+                if trip_id in trip_set:
+                    # Initialize direction tracking if not exists
+                    if direction_id not in processed_stops[route_id]:
+                        processed_stops[route_id][direction_id] = set()
+                    
+                    # Only add if we haven't seen this stop for this route and direction
+                    if stop_id not in processed_stops[route_id][direction_id]:
+                        try:
+                            stop_sequence = int(stop_time.get('stop_sequence', 0))
+                            routes[route_id]['stops'].append({
+                                'stop_id': stop_id,
+                                'stop_name': stops[stop_id].get('stop_name', 'Unknown Stop'),
+                                'stop_sequence': stop_sequence,
+                                'direction_id': direction_id,
+                                'lat': stops[stop_id].get('stop_lat', 0),
+                                'lon': stops[stop_id].get('stop_lon', 0)
+                            })
+                            processed_stops[route_id][direction_id].add(stop_id)
+                            processed += 1
+                        except (ValueError, KeyError) as e:
+                            print(f"    • Error processing stop time: {e}")
+                            continue
+    
+    # Sort stops by sequence for each route and direction
+    print("  • Sorting stops by sequence and direction...")
+    route_count = len(routes)
+    
+    for i, (route_id, route) in enumerate(routes.items(), 1):
+        # Group stops by direction
+        stops_by_direction = {}
+        for stop in route['stops']:
+            direction = stop.get('direction_id', '0')
+            if direction not in stops_by_direction:
+                stops_by_direction[direction] = []
+            stops_by_direction[direction].append(stop)
+        
+        # Sort stops within each direction by sequence
+        route_stops = []
+        for direction, dir_stops in stops_by_direction.items():
+            dir_stops_sorted = sorted(dir_stops, key=lambda x: x['stop_sequence'])
+            route_stops.extend(dir_stops_sorted)
+        
+        route['stops'] = route_stops
+        
+        if i % 100 == 0 or i == route_count:
+            directions = len(stops_by_direction)
+            print(f"    - Sorted {i:,}/{route_count:,} routes: {route_id} has {len(route_stops)} stops ({directions} directions)")
+    
+    # Print summary of routes with stops
+    routes_with_stops = sum(1 for route in routes.values() if route['stops'])
+    total_stops = sum(len(route['stops']) for route in routes.values())
+    
+    elapsed = time.time() - start_time
+    print((f"  • Processed {processed:,} stop time entries "
+           f"in {elapsed/60:.1f} minutes ({processed/elapsed:,.0f} entries/sec)"))
+    print(f"  • {routes_with_stops:,} out of {route_count:,} routes have stops assigned")
+    print(f"  • Total stops assigned: {total_stops:,}")
 
 def get_route_type_name(route_type: str) -> str:
     """Get the display name for a route type."""
@@ -347,42 +648,89 @@ def get_route_type_name(route_type: str) -> str:
     return route_type_names.get(route_type, 'Unknown')
 
 def generate_markdown_files(routes: dict, stops: dict, output_dir: Path):
-    """Generate markdown files for routes and stations."""
+    """Generate markdown files for routes and stations.
+    
+    Args:
+        routes: Dictionary of routes with their stops
+        stops: Dictionary of all stops with their details
+        output_dir: Directory where markdown files will be saved
+    """
     # Define route types and their metadata
     route_types = {
-        0: {'name': 'tram', 'title': 'Tram (Straßenbahn)', 'filename': 'tramroutes.md', 'station_file': 'tramstations.md'},
-        1: {'name': 'metro', 'title': 'U-Bahn (Metro)', 'filename': 'tuberoutes.md', 'station_file': 'tramstations.md'},  # Using tramstations for metro
-        3: {'name': 'bus', 'title': 'Bus', 'filename': 'busroutes.md', 'station_file': 'busstations.md'},
-        7: {'name': 'funicular', 'title': 'Funicular', 'filename': 'funicularroutes.md', 'station_file': 'funicularstations.md'}
+        0: {
+            'name': 'tram', 
+            'title': 'Tram (Straßenbahn)', 
+            'filename': 'tramroutes.md', 
+            'station_file': 'tramstations.md',
+            'description': 'Vienna tram routes operated by Wiener Linien.'
+        },
+        1: {
+            'name': 'metro', 
+            'title': 'U-Bahn (Metro)', 
+            'filename': 'tuberoutes.md', 
+            'station_file': 'ubahnstations.md',
+            'description': 'Vienna U-Bahn (metro) lines operated by Wiener Linien.'
+        },
+        3: {
+            'name': 'bus', 
+            'title': 'Bus', 
+            'filename': 'busroutes.md', 
+            'station_file': 'busstations.md',
+            'description': 'Vienna bus routes operated by Wiener Linien.'
+        },
+        7: {
+            'name': 'funicular', 
+            'title': 'Funicular', 
+            'filename': 'funicularroutes.md', 
+            'station_file': 'funicularstations.md',
+            'description': 'Funicular railway in Vienna.'
+        },
+        999: {
+            'name': 'nightbus', 
+            'title': 'Night Bus', 
+            'filename': 'nightbusroutes.md', 
+            'station_file': 'nightbusstations.md',
+            'description': 'Vienna night bus routes operated by Wiener Linien.'
+        }
     }
     
     # Initialize data structures
     routes_by_type = {}
     station_data = {}
+    route_directions = {}  # Track directions for each route
     
     # Process routes and collect station data
-    for route in routes.values():
+    for route_id, route in routes.items():
         route_type_info = route_types.get(route['route_type'])
+        
+        # Special handling for night buses (N-prefixed routes)
+        if (route_type_info and route_type_info['name'] == 'bus' and 
+            route['route_short_name'].startswith(('N', 'n'))):
+            route_type_info = route_types[999]  # Use nightbus type
+        
         if not route_type_info:
             continue
             
         route_type = route_type_info['name']
         
-        # Special handling for night buses (N-prefixed routes)
-        if route_type == 'bus' and route['route_short_name'].startswith(('N', 'n')):
-            route_type = 'nightbus'
-            route_types[999] = {'name': 'nightbus', 'title': 'Night Bus', 'filename': 'nightbusroutes.md', 'station_file': 'nightbusstations.md'}
-        
         # Initialize route type if not exists
         if route_type not in routes_by_type:
             routes_by_type[route_type] = []
             station_data[route_type] = set()
+            route_directions[route_type] = {}
         
+        # Add route to the appropriate type
         routes_by_type[route_type].append(route)
         
-        # Collect unique stations for this route type
+        # Track directions for this route
+        if route_id not in route_directions[route_type]:
+            route_directions[route_type][route_id] = set()
+        
+        # Collect unique stations for this route type and track directions
         for stop in route['stops']:
             station_data[route_type].add((stop['stop_name'], stop['lat'], stop['lon']))
+            if 'direction_id' in stop:
+                route_directions[route_type][route_id].add(stop['direction_id'])
     
     # Generate files for each route type
     for route_type_id, type_info in route_types.items():
@@ -390,63 +738,272 @@ def generate_markdown_files(routes: dict, stops: dict, output_dir: Path):
         
         # Skip if no routes of this type
         if route_type not in routes_by_type or not routes_by_type[route_type]:
+            print(f"  • No routes found for type: {type_info['title']}")
             continue
         
-        # Sort routes by short name
-        type_routes = sorted(routes_by_type[route_type], key=lambda x: x['route_short_name'])
+        # Sort routes by short name (handle numeric and alphanumeric sorting)
+        def route_sort_key(route):
+            try:
+                # Try to convert to int for proper numeric sorting
+                return (0, int(route['route_short_name']))
+            except (ValueError, TypeError):
+                # Fall back to string comparison
+                return (1, str(route['route_short_name']))
+        
+        type_routes = sorted(routes_by_type[route_type], key=route_sort_key)
         
         # Generate route file
-        with open(output_dir / type_info['filename'], 'w', encoding='utf-8') as f:
+        output_file = output_dir / type_info['filename']
+        print(f"  • Generating {type_info['filename']} with {len(type_routes)} {type_info['title']} routes...")
+        
+        with open(output_file, 'w', encoding='utf-8') as f:
+            # Write header
             f.write(f"# Vienna {type_info['title']} Routes\n\n")
             f.write("*Generated from official Wiener Linien GTFS data*  "
                   f"*Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*\n\n")
+            f.write(f"{type_info['description']}\n\n")
             
+            # Write route index
+            if len(type_routes) > 5:  # Only add TOC for larger files
+                f.write("## Route Index\n\n")
+                for route in type_routes:
+                    route_name = f"{route['route_short_name']} - {route['route_long_name']}"
+                    f.write(f"- [{route_name}](#{route['route_short_name'].lower().replace(' ', '-')}---{route['route_long_name'].lower().replace(' ', '-').replace('/', '')})\n")
+                f.write("\n")
+            
+            # Write each route
             for route in type_routes:
-                f.write(f"## {route['route_short_name']} - {route['route_long_name']}\n")
-                f.write(f"- **Line**: {route['route_short_name']}\n")
-                f.write(f"- **Type**: {type_info['title']}\n")
-                f.write(f"- **Color**: {route['route_color']}\n")
-                f.write(f"- **Stops**: {len(route['stops'])}\n\n")
+                route_id = route['route_id']
+                route_name = f"{route['route_short_name']} - {route['route_long_name']}"
                 
-                f.write("### Stops\n")
-                for i, stop in enumerate(route['stops'], 1):
-                    f.write(f"{i}. **{stop['stop_name']}**  \n")
-                    f.write(f"   - Coordinates: {stop['lat']:.6f}, {stop['lon']:.6f}\n")
-                    f.write(f"   - Stop ID: {stop['stop_id']}\n\n")
+                # Create URL-friendly anchor
+                route_anchor = f"{route['route_short_name'].lower().replace(' ', '-')}---{route['route_long_name'].lower().replace(' ', '-').replace('/', '')}"
+                f.write(f"## <a id=\"{route_anchor}\"></a>{route_name}\n")
+                
+                f.write(f"- **Line**: {route['route_short_name']}  \n")
+                f.write(f"- **Type**: {type_info['title']}  \n")
+                f.write(f"- **Color**: {route['route_color']}  \n")
+                
+                # Group stops by direction if available
+                stops_by_direction = {}
+                for stop in route['stops']:
+                    direction = stop.get('direction_id', '0')
+                    if direction not in stops_by_direction:
+                        stops_by_direction[direction] = []
+                    stops_by_direction[direction].append(stop)
+                
+                # Write direction information
+                if len(stops_by_direction) > 1:
+                    f.write("- **Directions**: ")
+                    directions = []
+                    for direction_id in sorted(stops_by_direction.keys()):
+                        dir_stops = stops_by_direction[direction_id]
+                        if dir_stops:
+                            # Get first and last stop names for direction
+                            first_stop = dir_stops[0].get('stop_name', 'Unknown')
+                            last_stop = dir_stops[-1].get('stop_name', 'Unknown')
+                            directions.append(f"Direction {direction_id}: {first_stop} → {last_stop}")
+                    f.write("; ".join(directions) + "  \n")
+                
+                f.write(f"- **Total Stops**: {len(route['stops'])}\n\n")
+                
+                # Write stops section
+                f.write("### Stops\n\n")
+                
+                # If we have multiple directions, group by direction
+                if len(stops_by_direction) > 1:
+                    for direction_id in sorted(stops_by_direction.keys()):
+                        dir_stops = stops_by_direction[direction_id]
+                        if not dir_stops:
+                            continue
+                            
+                        # Get direction description
+                        first_stop = dir_stops[0].get('stop_name', 'Start')
+                        last_stop = dir_stops[-1].get('stop_name', 'End')
+                        f.write(f"#### Direction {direction_id}: {first_stop} → {last_stop}\n\n")
+                        
+                        # List stops for this direction
+                        for i, stop in enumerate(dir_stops, 1):
+                            f.write(f"{i}. **{stop['stop_name']}**  \n")
+                            f.write(f"   - Coordinates: {stop.get('lat', 0):.6f}, {stop.get('lon', 0):.6f}  \n")
+                            f.write(f"   - Stop ID: {stop.get('stop_id', 'N/A')}  \n")
+                            f.write(f"   - Sequence: {stop.get('stop_sequence', i)}\n\n")
+                else:
+                    # Single direction, simple list
+                    for i, stop in enumerate(route['stops'], 1):
+                        f.write(f"{i}. **{stop['stop_name']}**  \n")
+                        f.write(f"   - Coordinates: {stop.get('lat', 0):.6f}, {stop.get('lon', 0):.6f}  \n")
+                        f.write(f"   - Stop ID: {stop.get('stop_id', 'N/A')}  \n")
+                        f.write(f"   - Sequence: {stop.get('stop_sequence', i)}\n\n")
+                
                 f.write("\n")
         
     # Generate unified stations.md file with all stations
     all_stations = {}
     
-    # First, collect all stations with their types
-    for route_type, stations in station_data.items():
-        route_type_name = get_route_type_name(route_type)
-        for station in stations:
-            name, lat, lon = station
-            if name not in all_stations:
-                all_stations[name] = {
-                    'lat': lat,
-                    'lon': lon,
-                    'types': set()
-                }
-            all_stations[name]['types'].add(route_type_name)
+    # First, collect all stations with their types from the stops dictionary
+    # This ensures we get all stops, not just those attached to routes
+    for stop_id, stop in stops.items():
+        name = stop.get('stop_name')
+        if not name or not stop.get('lat') or not stop.get('lon'):
+            continue
+            
+        # Get the route types that serve this stop by checking all routes
+        stop_route_types = set()
+        
+        # Get location type (0=stop, 1=station, 2=entrance/exit, etc.)
+        location_type = int(stop.get('location_type', '0'))
+        
+        # Check if this is a U-Bahn station (location_type = 1 and name ends with 'U' or contains 'U-Bahn')
+        if (location_type == 1 and 
+            (name.endswith('U') or 'U-Bahn' in name or ' U ' in f" {name} " or 
+             any(word.startswith('U') and len(word) <= 3 for word in name.split()))):
+            stop_route_types.add('metro')
+        
+        # Check all routes that serve this stop
+        for route in routes.values():
+            # Check if this stop is in the route's stops or if the route has this stop_id in its stops
+            route_stops = route.get('stops', [])
+            if any(s.get('stop_id') == stop_id for s in route_stops):
+                route_type = route.get('route_type')
+                route_short_name = route.get('route_short_name', '')
+                
+                if route_type == 0:  # Tram
+                    stop_route_types.add('tram')
+                elif route_type == 1:  # Metro
+                    stop_route_types.add('metro')
+                elif route_type == 3:  # Bus
+                    if route_short_name.startswith(('N', 'n')):  # Night bus
+                        stop_route_types.add('nightbus')
+                    else:
+                        stop_route_types.add('bus')
+                elif route_type == 7:  # Funicular
+                    stop_route_types.add('funicular')
+        
+        # Additional heuristics for tram/U-Bahn identification
+        if not stop_route_types or (len(stop_route_types) == 1 and 'bus' in stop_route_types):
+            # Check if this looks like a U-Bahn station (name ends with 'U' or contains 'U-Bahn' or has U followed by a number)
+            if (name.endswith('U') or 'U-Bahn' in name or ' U ' in f" {name} " or 
+                any(word.startswith('U') and len(word) <= 3 for word in name.split())):
+                stop_route_types.add('metro')
+            # Check if this looks like a tram stop (name contains common tram stop indicators)
+            elif any(marker in name for marker in ['Gasse', 'Platz', 'Straße', 'gasse', 'platz', 'straße', 'Ring', 'Kai']):
+                stop_route_types.add('tram')
+        
+        # If we still don't have any types, use location_type as fallback
+        if not stop_route_types:
+            if location_type == 1:  # Station
+                # Check if it's likely a U-Bahn station based on name pattern
+                if (name.endswith('U') or 'U-Bahn' in name or ' U ' in f" {name} " or 
+                    any(word.startswith('U') and len(word) <= 3 for word in name.split())):
+                    stop_route_types.add('metro')
+                else:
+                    stop_route_types.add('station')
+            else:  # Default to bus if we can't determine the type
+                stop_route_types.add('bus')
+        
+        # Special case for stops that are part of multiple route types
+        # If we have both bus and another type, keep the more specific type
+        if len(stop_route_types) > 1 and 'bus' in stop_route_types:
+            # If we have a more specific type, remove the generic 'bus' type
+            if any(t in stop_route_types for t in ['tram', 'metro', 'funicular']):
+                stop_route_types.discard('bus')
+        
+        if name not in all_stations:
+            all_stations[name] = {
+                'lat': float(stop['lat']),
+                'lon': float(stop['lon']),
+                'types': stop_route_types,
+                'stop_id': stop_id
+            }
+        else:
+            # Update types if this stop serves additional route types
+            all_stations[name]['types'].update(stop_route_types)
     
     if all_stations:
-        with open(output_dir / 'stations.md', 'w', encoding='utf-8') as f:
+        output_file = output_dir / 'stations.md'
+        print(f"  • Generating stations.md with {len(all_stations)} stations...")
+        
+        with open(output_file, 'w', encoding='utf-8') as f:
             f.write("# Vienna Public Transport Stations\n\n")
             f.write("*Generated from official Wiener Linien GTFS data*  "
                   f"*Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*\n\n")
             
+            # Add statistics
+            type_counts = {}
+            for station in all_stations.values():
+                for t in station['types']:
+                    type_counts[t] = type_counts.get(t, 0) + 1
+            
+            f.write("## Overview\n\n")
+            f.write("This file contains all public transport stations and stops in Vienna.\n\n")
+            f.write("### Transport Types\n\n")
+            for t, count in sorted(type_counts.items()):
+                f.write(f"- **{t.capitalize()}**: {count} stations\n")
+            f.write("\n")
+            
             f.write("## Station List\n\n")
             
-            # Sort stations by name for consistency
-            sorted_station_names = sorted(all_stations.keys())
+            # Sort stations by name for consistency (case-insensitive)
+            sorted_stations = sorted(
+                all_stations.items(),
+                key=lambda x: (x[0].lower(), x[0])
+            )
             
-            for i, name in enumerate(sorted_station_names, 1):
-                station = all_stations[name]
-                f.write(f"{i}. **{name}**  \n")
-                f.write(f"   - Coordinates: {station['lat']:.6f}, {station['lon']:.6f}\n")
-                f.write(f"   - Serves: {', '.join(sorted(station['types']))}\n\n")
+            # Group stations by first letter for easier navigation
+            from itertools import groupby
+            
+            # First, create a list of (letter, stations) tuples
+            letter_groups = []
+            for letter, group in groupby(sorted_stations, key=lambda x: x[0][0].upper() if x[0] else '#'):
+                stations = list(group)
+                if stations:
+                    letter_groups.append((letter, stations))
+            
+            # Add table of contents
+            f.write("### Table of Contents\n\n")
+            for letter, _ in letter_groups:
+                f.write(f"[{letter}](#letter-{letter.lower()}) | ")
+            f.write("\n\n")
+            
+            # Write stations by letter
+            for letter, stations in letter_groups:
+                f.write(f"### <a id=\"letter-{letter.lower()}\"></a>{letter}\n\n")
+                
+                for i, (name, station) in enumerate(stations, 1):
+                    # Skip stations without coordinates
+                    if 'lat' not in station or 'lon' not in station:
+                        continue
+                        
+                    f.write(f"{i}. **{name}**  \n")
+                    f.write(f"   - Coordinates: {station['lat']:.6f}, {station['lon']:.6f}  \n")
+                    
+                    # Format types with proper names
+                    type_names = []
+                    for t in sorted(station['types']):
+                        if t == 'tram':
+                            type_names.append("Tram")
+                        elif t == 'metro':
+                            type_names.append("U-Bahn")
+                        elif t == 'bus':
+                            type_names.append("Bus")
+                        elif t == 'nightbus':
+                            type_names.append("Night Bus")
+                        elif t == 'funicular':
+                            type_names.append("Funicular")
+                        elif t == 'station':
+                            type_names.append("Station")
+                        else:
+                            type_names.append(t.capitalize())
+                    
+                    if type_names:
+                        f.write(f"   - Serves: {', '.join(sorted(type_names))}  \n")
+                    
+                    # Add stop ID if available
+                    if 'stop_id' in station:
+                        f.write(f"   - Stop ID: {station['stop_id']}  \n")
+                    
+                    f.write("\n")
     
     # Also generate individual station files for each route type
     for route_type, type_info in route_types.items():
@@ -485,12 +1042,14 @@ class ScriptError(Exception):
 def parse_arguments():
     """Parse command line arguments."""
     import argparse
-    
-    parser = argparse.ArgumentParser(description='Process Wiener Linien GTFS data.')
-    parser.add_argument('--force-download', action='store_true',
-                       help='Force download of GTFS data even if it exists')
-    parser.add_argument('--force-extract', action='store_true',
-                       help='Force extraction of GTFS data even if files exist')
+    parser = argparse.ArgumentParser(description='Download and process Wiener Linien GTFS data')
+    parser.add_argument('--force-download', action='store_true', help='Force download of GTFS data even if it exists')
+    parser.add_argument('--force-extract', action='store_true', help='Force extraction of GTFS data even if it exists')
+    parser.add_argument('--full', action='store_true', help='Process the full dataset (may take a long time)')
+    parser.add_argument('--max-entries', type=int, default=100000, 
+                       help='Maximum number of stop time entries to process (for testing)')
+    parser.add_argument('--max-stops', type=int, default=10000,
+                       help='Maximum number of stops to process (for testing)')
     parser.add_argument('--debug', action='store_true',
                        help='Enable debug output')
     return parser.parse_args()
@@ -554,17 +1113,34 @@ def main():
             raise ScriptError("No GTFS data loaded - check the GTFS files for errors")
         
         # Process the data with timeouts
-        print("  • Processing routes...")
-        routes = process_with_timeout(process_routes, gtfs_data, timeout=PROCESSING_TIMEOUT)
-        
-        print("  • Processing stops...")
-        stops = process_with_timeout(process_stops, gtfs_data, timeout=PROCESSING_TIMEOUT)
-        
-        print("  • Processing stop times...")
-        # Process a limited number of entries initially for testing (set to 100,000 for now)
-        # Once verified, we can increase this or set to None to process all
-        max_entries = 100000  # Start with a reasonable number for testing
-        process_with_timeout(process_stop_times, gtfs_data, routes, {}, stops, max_entries, timeout=PROCESSING_TIMEOUT)
+        try:
+            print("  • Processing routes...")
+            routes = process_with_timeout(process_routes, gtfs_data, timeout=PROCESSING_TIMEOUT)
+            
+            # Process stops with a limit for testing
+            print("  • Processing stops...")
+            max_stops = 10000  # Start with a smaller subset for testing
+            stops = process_with_timeout(process_stops, gtfs_data, max_stops, timeout=PROCESSING_TIMEOUT)
+            
+            print("  • Processing stop times...")
+            # Process a limited number of entries for testing
+            max_entries = 100000  # Start with a reasonable number for testing
+            process_with_timeout(
+                process_stop_times, 
+                gtfs_data, routes, {}, stops, max_entries, 
+                timeout=PROCESSING_TIMEOUT
+            )
+            
+            print("\nInitial test processing completed successfully!")
+            print("To process the full dataset, run with --full")
+            
+        except Exception as e:
+            print(f"\nError during processing: {str(e)}")
+            print("Trying to continue with partial data...")
+            if 'routes' not in locals():
+                routes = {}
+            if 'stops' not in locals():
+                stops = {}
         
         # Generate markdown files
         print(f"\n[5/5] Generating markdown files in {DATA_DIR}...")

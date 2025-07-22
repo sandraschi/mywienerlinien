@@ -25,9 +25,11 @@ export async function loadVehiclesData() {
         const cacheAge = lastUpdateTime ? now - lastUpdateTime : Infinity;
         
         if (vehiclesCache && cacheAge < 30000) {
-            logger.debug('Returning cached vehicles data');
+            logger.debug(`Returning cached vehicles data (age: ${Math.round(cacheAge/1000)}s)`);
             return vehiclesCache;
         }
+        
+        logger.info('Fetching fresh vehicles data from API...');
         
         // Fetch vehicles from the API
         const response = await fetchWithTimeout(
@@ -47,6 +49,13 @@ export async function loadVehiclesData() {
         
         let vehicles = await response.json();
         
+        // Log raw API response for debugging
+        logger.debug('Raw API response:', { 
+            vehicleCount: vehicles.length,
+            firstVehicle: vehicles.length > 0 ? vehicles[0] : 'No vehicles',
+            responseTimestamp: new Date().toISOString()
+        });
+
         // Process and normalize vehicle data
         vehicles = vehicles.map(vehicle => ({
             ...vehicle,
@@ -80,7 +89,11 @@ export async function loadVehiclesData() {
         return vehicles;
         
     } catch (error) {
-        logger.error('Failed to load vehicles data:', error);
+        logger.error('Failed to load vehicles data:', {
+            error: error.toString(),
+            stack: error.stack,
+            timestamp: new Date().toISOString()
+        });
         throw error;
     }
 }

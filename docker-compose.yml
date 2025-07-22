@@ -1,0 +1,156 @@
+version: '3.8'
+
+networks:
+  wienerlinien-network:
+    driver: bridge
+
+volumes:
+  loki_data: {}
+  grafana-storage: {}
+  postgres_data: {}
+
+services:
+  # Database
+  db:
+    image: postgres:15-alpine
+    container_name: wienerlinien-db
+    environment:
+      POSTGRES_USER: wienerlinien
+      POSTGRES_PASSWORD: wienerlinien
+      POSTGRES_DB: wienerlinien
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - wienerlinien-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wienerlinien -d wienerlinien"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # GTFS Data Loader
+  gtfs-loader:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: wienerlinien-gtfs-loader
+    environment:
+      - DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
+    volumes:
+      - .:/app
+    networks:
+      - wienerlinien-network
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      bash -c "
+      echo 'Waiting for PostgreSQL to be ready...' &&
+      until pg_isready -h db -U wienerlinien -d wienerlinien -q; do
+        echo 'PostgreSQL is not ready yet. Retrying in 5 seconds...' &&
+        sleep 5
+      done &&
+      echo 'Creating database schema...' &&
+      psql -h db -U wienerlinien -d wienerlinien -f /app/db/init-scripts/01_init_db.sql &&
+      echo 'Installing Python dependencies...' &&
+      pip install -r /app/requirements-db.txt &&
+      echo 'Loading GTFS data...' &&
+      python /app/scripts/load_gtfs_to_db.py /app/scripts/gtfs_data/gtfs.zip &&
+      echo 'GTFS data loading completed successfully!'
+      "
+
+  # Frontend Application
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: wiener-linien-app
+    ports:
+      - "3080:3080"
+    environment:
+      - FLASK_ENV=development
+      - PYTHONUNBUFFERED=1
+      - FLASK_DEBUG=1
+      - DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
+    volumes:
+      - ./frontend:/app
+      - ./frontend/logs:/app/logs
+      - ./frontend/data:/app/data
+    networks:
+      - wienerlinien-network
+    depends_on:
+      db:
+        condition: service_healthy
+      loki:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  # Loki - Log Aggregation
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - loki_data:/loki
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+    networks:
+      - wienerlinien-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Promtail - Log Collector
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - ./frontend/logs:/logs
+      - ./promtail-config.yaml:/etc/promtail/config.yaml
+    command: -config.file=/etc/promtail/config.yaml
+    networks:
+      - wienerlinien-network
+    depends_on:
+      - loki
+    restart: unless-stopped
+
+  # Grafana - Visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3140:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-windsurf123}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_AUTH_BASIC_ENABLED=true
+      - GF_AUTH_DISABLE_LOGIN_FORM=false
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - wienerlinien-network
+    depends_on:
+      - loki
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

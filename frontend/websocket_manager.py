@@ -174,7 +174,7 @@ class WebSocketManager:
         try:
             # This would integrate with the actual Wiener Linien API
             # For now, we'll simulate updates
-            from app import fetch_vehicle_data, get_dummy_vehicles
+            from app import fetch_vehicle_data
             
             # Get vehicle data for major stations
             major_stations = ['3052', '3058', '3062', '3071', '3080']  # Sample RBL numbers
@@ -206,15 +206,11 @@ class WebSocketManager:
                     logger.error(f"Error fetching vehicle data for RBL {rbl}: {e}")
                     continue
                     
-            # If no real vehicles found, add some dummy vehicles for demonstration
-            if len(self.vehicle_updates) == 0:
-                dummy_vehicles = get_dummy_vehicles()
-                for vehicle in dummy_vehicles:
-                    if isinstance(vehicle, dict):
-                        self._process_vehicle_update(vehicle)
-                        
+            if not self.vehicle_updates:
+                logger.warning("No vehicle data available from API")
+                
         except Exception as e:
-            logger.error(f"Error updating vehicle positions: {e}")
+            logger.error(f"Error updating vehicle positions: {e}", exc_info=True)
     
     def _process_vehicle_update(self, vehicle_data):
         """Process a vehicle update."""

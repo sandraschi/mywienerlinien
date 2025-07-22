@@ -1,7 +1,7 @@
 server:
   http_listen_port: 9080
   grpc_listen_port: 0
-  log_level: debug
+  log_level: info
 
 positions:
   filename: /tmp/positions.yaml
@@ -18,22 +18,22 @@ clients:
       max_retries: 3
 
 scrape_configs:
-  - job_name: windsurf_logs
+  - job_name: wiener_linien
     pipeline_stages:
       - match:
-          selector: '{job="windsurf"}'
+          selector: '{job="wiener-linien-app"}'
           stages:
             - regex:
-                expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<level>\w+) (?P<message>.*)'
+                expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) \[(?P<thread>\S+)\] (?P<level>\w+)\s+\S+ - (?P<message>.*)'
             - labels:
                 level:
+                thread:
             - output:
                 source: message
     static_configs:
-      - targets:
-          - localhost
+      - targets: [localhost]
         labels:
-          job: windsurf
+          job: wiener-linien-app
           host: ${HOSTNAME}
           __path__: /logs/*.log
     relabel_configs:

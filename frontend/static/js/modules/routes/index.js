@@ -78,15 +78,12 @@ export async function initRoutes(leafletMap) {
 }
 
 /**
- * Show all routes by default
+ * Show default routes (none by default)
  */
 function showDefaultRoutes() {
-    // Show all routes by default
-    routes.forEach(route => {
-        if (!activeRoutes.has(route.id)) {
-            handleRouteToggle(route.id, true);
-        }
-    });
+    // Don't show any routes by default
+    // Routes can be toggled on via the UI
+    logger.info('No routes shown by default. Use the UI to enable routes.');
 }
 
 /**

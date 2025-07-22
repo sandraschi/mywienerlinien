@@ -67,3 +67,7 @@ htmlcov/
 # Debug
 *.prof
 *.profraw
+# Large files to exclude
+scripts/gtfs_data_backup_20250720_224110/gtfs.zip
+scripts/gtfs_data_backup_20250720_224110/wienerlinien-gtfs.zip
+scripts/gtfs_data_backup_20250720_224110/extracted/stop_times.txt

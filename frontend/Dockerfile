@@ -10,18 +10,22 @@ ENV PYTHONUNBUFFERED=1
 ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 ENV FLASK_DEBUG=0
+ENV DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     curl \
+    libpq-dev \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
+# Copy requirements files
 COPY requirements.txt .
+COPY requirements-db.txt .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-db.txt
 
 # Copy application code
 COPY . .

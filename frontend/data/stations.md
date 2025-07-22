@@ -1,6 +1,6 @@
 # Vienna Public Transport Stations
 
-*Generated from official Wiener Linien GTFS data*  *Last updated: 2025-07-20 23:50:21*
+*Generated from official Wiener Linien GTFS data*  *Last updated: 2025-07-22 02:31:12*
 
 ## Station List
 
@@ -9,11 +9,11 @@
    - Serves: Bus
 
 2. **1. Haidequerstraße Süd**  
-   - Coordinates: 48.181085, 16.428363
+   - Coordinates: 48.181403, 16.428363
    - Serves: Bus
 
 3. **11. Haidequerstraße**  
-   - Coordinates: 48.175580, 16.462661
+   - Coordinates: 48.175395, 16.462706
    - Serves: Bus
 
 4. **7. Haidequerstraße**  
@@ -21,7 +21,7 @@
    - Serves: Bus
 
 5. **Absbergbrücke**  
-   - Coordinates: 48.167876, 16.386133
+   - Coordinates: 48.167115, 16.387553
    - Serves: Bus
 
 6. **Achengasse**  
@@ -49,7 +49,7 @@
    - Serves: Bus
 
 12. **Adolf-Loos-Gasse**  
-   - Coordinates: 48.277436, 16.454315
+   - Coordinates: 48.277352, 16.454100
    - Serves: Bus
 
 13. **Adolf-Unger-Gasse**  
@@ -73,7 +73,7 @@
    - Serves: Bus
 
 18. **Aignerstraße**  
-   - Coordinates: 48.246434, 16.375030
+   - Coordinates: 48.246230, 16.374868
    - Serves: Bus
 
 19. **Ailecgasse**  
@@ -89,7 +89,7 @@
    - Serves: Bus
 
 22. **Albern**  
-   - Coordinates: 48.160422, 16.485145
+   - Coordinates: 48.159673, 16.484723
    - Serves: Bus
 
 23. **Alberner Hafen**  
@@ -97,7 +97,7 @@
    - Serves: Bus
 
 24. **Alberner Hafenzufahrtsstr.**  
-   - Coordinates: 48.171896, 16.472848
+   - Coordinates: 48.171968, 16.472291
    - Serves: Bus
 
 25. **Alberner Hafenzufahrtsstr. West**  
@@ -105,7 +105,7 @@
    - Serves: Bus
 
 26. **Alberner Straße**  
-   - Coordinates: 48.156371, 16.484589
+   - Coordinates: 48.156365, 16.484463
    - Serves: Bus
 
 27. **Albert-Schweitzer-Gasse**  
@@ -121,7 +121,7 @@
    - Serves: Bus
 
 30. **Allerheiligengasse**  
-   - Coordinates: 48.238890, 16.386385
+   - Coordinates: 48.238674, 16.386403
    - Serves: Bus
 
 31. **Allerheiligenplatz**  
@@ -129,7 +129,7 @@
    - Serves: Bus
 
 32. **Allissen**  
-   - Coordinates: 48.286271, 16.430977
+   - Coordinates: 48.286421, 16.430303
    - Serves: Bus
 
 33. **Alois-Behr-Straße**  
@@ -137,7 +137,7 @@
    - Serves: Bus
 
 34. **Alsegger Straße/Czartoryskigasse**  
-   - Coordinates: 48.228921, 16.323673
+   - Coordinates: 48.229035, 16.323727
    - Serves: Bus
 
 35. **Altdorferstraße**  
@@ -149,7 +149,7 @@
    - Serves: Bus
 
 37. **Alterlaa U**  
-   - Coordinates: 48.150816, 16.317107
+   - Coordinates: 48.150546, 16.317098
    - Serves: Bus
 
 38. **Altes Landgut**  
@@ -157,7 +157,7 @@
    - Serves: Bus
 
 39. **Altmannsdorfer Straße**  
-   - Coordinates: 48.165258, 16.315912
+   - Coordinates: 48.165276, 16.316226
    - Serves: Bus
 
 40. **Am Bahnhof**  
@@ -165,7 +165,7 @@
    - Serves: Bus
 
 41. **Am Europlatz**  
-   - Coordinates: 48.171447, 16.333995
+   - Coordinates: 48.171327, 16.333276
    - Serves: Bus
 
 42. **Am Fasangarten**  
@@ -181,7 +181,7 @@
    - Serves: Bus
 
 45. **Am Himmelreich**  
-   - Coordinates: 48.163946, 16.438155
+   - Coordinates: 48.163850, 16.438029
    - Serves: Bus
 
 46. **Am Hundsturm**  
@@ -189,11 +189,11 @@
    - Serves: Bus
 
 47. **Am Kanal**  
-   - Coordinates: 48.170344, 16.410684
+   - Coordinates: 48.170434, 16.410549
    - Serves: Bus
 
 48. **Am Kanal/Hasenleitengasse**  
-   - Coordinates: 48.163520, 16.418419
+   - Coordinates: 48.163550, 16.418221
    - Serves: Bus
 
 49. **Am Krautgarten**  
@@ -201,7 +201,7 @@
    - Serves: Bus
 
 50. **Am Modenapark**  
-   - Coordinates: 48.199069, 16.382764
+   - Coordinates: 48.199165, 16.382747
    - Serves: Bus
 
 51. **Am Platz**  
@@ -213,11 +213,11 @@
    - Serves: Bus
 
 53. **Am Rosenhügel**  
-   - Coordinates: 48.162220, 16.291046
+   - Coordinates: 48.162196, 16.291936
    - Serves: Bus
 
 54. **Am Schöpfwerk U**  
-   - Coordinates: 48.160320, 16.323062
+   - Coordinates: 48.161543, 16.325030
    - Serves: Bus
 
 55. **Am Schöpfwerk/Eibesbrunnerg.**  
@@ -225,7 +225,7 @@
    - Serves: Bus
 
 56. **Am Spiegeln**  
-   - Coordinates: 48.152356, 16.281938
+   - Coordinates: 48.152440, 16.282009
    - Serves: Bus
 
 57. **Am Spitz**  
@@ -233,11 +233,11 @@
    - Serves: Bus
 
 58. **Ameisbachzeile**  
-   - Coordinates: 48.201446, 16.292151
+   - Coordinates: 48.201404, 16.291999
    - Serves: Bus
 
 59. **Ameisgasse**  
-   - Coordinates: 48.194734, 16.299491
+   - Coordinates: 48.194393, 16.299670
    - Serves: Bus
 
 60. **Ammerweg**  
@@ -253,15 +253,15 @@
    - Serves: Bus
 
 63. **An den Steinfeldern**  
-   - Coordinates: 48.137143, 16.298520
+   - Coordinates: 48.137293, 16.299086
    - Serves: Bus
 
 64. **An den alten Schanzen**  
-   - Coordinates: 48.226671, 16.489978
+   - Coordinates: 48.226677, 16.488110
    - Serves: Bus
 
 65. **An der Bien**  
-   - Coordinates: 48.206954, 16.480420
+   - Coordinates: 48.206936, 16.480169
    - Serves: Bus
 
 66. **An der Kuhtrift**  
@@ -277,7 +277,7 @@
    - Serves: Bus
 
 69. **Angermayergasse**  
-   - Coordinates: 48.184278, 16.264923
+   - Coordinates: 48.184326, 16.264798
    - Serves: Bus
 
 70. **Anschützgasse**  
@@ -297,7 +297,7 @@
    - Serves: Bus
 
 74. **Anton-Stilling-Platz**  
-   - Coordinates: 48.166971, 16.419524
+   - Coordinates: 48.166282, 16.419613
    - Serves: Bus
 
 75. **Antonsplatz**  
@@ -317,7 +317,7 @@
    - Serves: Bus
 
 79. **Arbeitergasse/Gürtel**  
-   - Coordinates: 48.184074, 16.345619
+   - Coordinates: 48.183936, 16.345826
    - Serves: Bus
 
 80. **Argentinierstraße**  
@@ -361,7 +361,7 @@
    - Serves: Bus
 
 90. **Aspern, Oberdorfstraße**  
-   - Coordinates: 48.217783, 16.480097
+   - Coordinates: 48.217837, 16.480124
    - Serves: Bus
 
 91. **Aspernallee**  
@@ -373,7 +373,7 @@
    - Serves: Bus
 
 93. **Asperner Heldenplatz**  
-   - Coordinates: 48.217023, 16.483088
+   - Coordinates: 48.216574, 16.483142
    - Serves: Bus
 
 94. **Aspernstraße U**  
@@ -381,7 +381,7 @@
    - Serves: Bus
 
 95. **Aspernstraße/Oberdorfstr.**  
-   - Coordinates: 48.220345, 16.480771
+   - Coordinates: 48.219723, 16.481588
    - Serves: Bus
 
 96. **Attemsgasse**  
@@ -393,15 +393,15 @@
    - Serves: Bus
 
 98. **Atzgersdorf Kirchenplatz**  
-   - Coordinates: 48.147388, 16.295035
+   - Coordinates: 48.147507, 16.293346
    - Serves: Bus
 
 99. **Atzgersdorf S**  
-   - Coordinates: 48.146542, 16.287498
+   - Coordinates: 48.147112, 16.288370
    - Serves: Bus
 
 100. **Atzgersdorf, Bildungscampus**  
-   - Coordinates: 48.151733, 16.300506
+   - Coordinates: 48.152764, 16.301422
    - Serves: Bus
 
 101. **Atzgersdorf, Ziedlergasse**  
@@ -409,11 +409,11 @@
    - Serves: Bus
 
 102. **Atzgersdorfer Straße**  
-   - Coordinates: 48.170398, 16.297146
+   - Coordinates: 48.170500, 16.297676
    - Serves: Bus
 
 103. **Auer-Welsbach-Straße**  
-   - Coordinates: 48.152338, 16.306174
+   - Coordinates: 48.152254, 16.306057
    - Serves: Bus
 
 104. **Auernheimergasse**  
@@ -441,7 +441,7 @@
    - Serves: Bus
 
 110. **Bacherplatz**  
-   - Coordinates: 48.188470, 16.356659
+   - Coordinates: 48.188278, 16.356695
    - Serves: Bus
 
 111. **Badeteich Hirschstetten**  
@@ -453,7 +453,7 @@
    - Serves: Bus
 
 113. **Badgasse**  
-   - Coordinates: 48.208828, 16.224823
+   - Coordinates: 48.209205, 16.223044
    - Serves: Bus
 
 114. **Bambergergasse**  
@@ -465,7 +465,7 @@
    - Serves: Bus
 
 116. **Barichgasse**  
-   - Coordinates: 48.198363, 16.394901
+   - Coordinates: 48.198111, 16.394865
    - Serves: Bus
 
 117. **Baudißgasse**  
@@ -481,11 +481,11 @@
    - Serves: Bus
 
 120. **Baumgartner Friedhof, 5. Tor**  
-   - Coordinates: 48.203632, 16.278973
+   - Coordinates: 48.203650, 16.278811
    - Serves: Bus
 
 121. **Belgradplatz**  
-   - Coordinates: 48.174035, 16.358519
+   - Coordinates: 48.174328, 16.360423
    - Serves: Bus
 
 122. **Bellevuestraße**  
@@ -497,11 +497,11 @@
    - Serves: Bus
 
 124. **Benatzkygasse**  
-   - Coordinates: 48.230028, 16.439529
+   - Coordinates: 48.229879, 16.439709
    - Serves: Bus
 
 125. **Berggasse**  
-   - Coordinates: 48.217915, 16.361915
+   - Coordinates: 48.218220, 16.361555
    - Serves: Bus
 
 126. **Bergmillergasse**  
@@ -509,7 +509,7 @@
    - Serves: Bus
 
 127. **Bergtaidingweg**  
-   - Coordinates: 48.146746, 16.397200
+   - Coordinates: 48.146447, 16.397461
    - Serves: Bus
 
 128. **Bernoullistraße**  
@@ -517,7 +517,7 @@
    - Serves: Bus
 
 129. **Bernreiterplatz**  
-   - Coordinates: 48.281627, 16.406040
+   - Coordinates: 48.281531, 16.406588
    - Serves: Bus
 
 130. **Bertl-Hayde-Gasse**  
@@ -529,7 +529,7 @@
    - Serves: Bus
 
 132. **Bettelheimstraße**  
-   - Coordinates: 48.278793, 16.492754
+   - Coordinates: 48.278972, 16.492727
    - Serves: Bus
 
 133. **Bezirksamt Margareten**  
@@ -545,7 +545,7 @@
    - Serves: Bus
 
 136. **Billgasse**  
-   - Coordinates: 48.224157, 16.483322
+   - Coordinates: 48.224654, 16.483358
    - Serves: Bus
 
 137. **Binsenweg**  
@@ -561,7 +561,7 @@
    - Serves: Bus
 
 140. **Bischofgasse**  
-   - Coordinates: 48.138120, 16.397694
+   - Coordinates: 48.138079, 16.397263
    - Serves: Bus
 
 141. **Blaasstraße**  
@@ -577,7 +577,7 @@
    - Serves: Bus
 
 144. **Blumental**  
-   - Coordinates: 48.138426, 16.370799
+   - Coordinates: 48.138516, 16.370763
    - Serves: Bus
 
 145. **Blériotgasse**  
@@ -593,7 +593,7 @@
    - Serves: Bus
 
 148. **Braillegasse**  
-   - Coordinates: 48.202793, 16.294963
+   - Coordinates: 48.202650, 16.294900
    - Serves: Bus
 
 149. **Brandstätte**  
@@ -601,7 +601,7 @@
    - Serves: Bus
 
 150. **Braungasse**  
-   - Coordinates: 48.227060, 16.296158
+   - Coordinates: 48.226845, 16.296023
    - Serves: Bus
 
 151. **Breitenfurter Str./Hetzendorfer Str.**  
@@ -609,7 +609,7 @@
    - Serves: Bus
 
 152. **Breitenlee Friedhof**  
-   - Coordinates: 48.251112, 16.492988
+   - Coordinates: 48.251225, 16.492898
    - Serves: Bus
 
 153. **Breitenlee Ort**  
@@ -617,7 +617,7 @@
    - Serves: Bus
 
 154. **Breitenlee Schule**  
-   - Coordinates: 48.251303, 16.500480
+   - Coordinates: 48.252595, 16.501603
    - Serves: Bus
 
 155. **Breitenlee, Arnikaweg**  
@@ -625,7 +625,7 @@
    - Serves: Bus
 
 156. **Breitenlee, Rautenweg**  
-   - Coordinates: 48.255885, 16.490571
+   - Coordinates: 48.256285, 16.490329
    - Serves: Bus
 
 157. **Breitenlee, Spargelfeldstraße**  
@@ -637,7 +637,7 @@
    - Serves: Bus
 
 159. **Brigittagasse**  
-   - Coordinates: 48.233140, 16.374680
+   - Coordinates: 48.233493, 16.374805
    - Serves: Bus
 
 160. **Brigittaplatz**  
@@ -657,7 +657,7 @@
    - Serves: Bus
 
 164. **Brückengasse**  
-   - Coordinates: 48.191243, 16.347245
+   - Coordinates: 48.191470, 16.348009
    - Serves: Bus
 
 165. **Brünner Straße/Hanreitergasse**  
@@ -669,7 +669,7 @@
    - Serves: Bus
 
 167. **Buchbindergasse**  
-   - Coordinates: 48.163670, 16.269586
+   - Coordinates: 48.163760, 16.269999
    - Serves: Bus
 
 168. **Bundessportbad**  
@@ -693,7 +693,7 @@
    - Serves: Bus
 
 173. **Burggasse/Neubaugasse**  
-   - Coordinates: 48.204458, 16.348889
+   - Coordinates: 48.203895, 16.349006
    - Serves: Bus
 
 174. **Burggasse/Zieglergasse**  
@@ -721,7 +721,7 @@
    - Serves: Bus
 
 180. **Campingplatzweg**  
-   - Coordinates: 48.275762, 16.479845
+   - Coordinates: 48.275750, 16.481328
    - Serves: Bus
 
 181. **Carlbergergasse**  
@@ -761,7 +761,7 @@
    - Serves: Bus
 
 190. **Corvinusgasse**  
-   - Coordinates: 48.144558, 16.280806
+   - Coordinates: 48.144385, 16.280635
    - Serves: Bus
 
 191. **Cossmanngasse**  
@@ -769,7 +769,7 @@
    - Serves: Bus
 
 192. **Cottagegasse**  
-   - Coordinates: 48.233930, 16.341810
+   - Coordinates: 48.233792, 16.341891
    - Serves: Bus
 
 193. **Cottagestraße**  
@@ -781,15 +781,15 @@
    - Serves: Bus
 
 195. **Czartoryskigasse**  
-   - Coordinates: 48.227916, 16.327734
+   - Coordinates: 48.227712, 16.327159
    - Serves: Bus
 
 196. **Dahliengasse**  
-   - Coordinates: 48.286785, 16.444694
+   - Coordinates: 48.287090, 16.445179
    - Serves: Bus
 
 197. **Dammhaufengasse**  
-   - Coordinates: 48.195710, 16.447012
+   - Coordinates: 48.195794, 16.447120
    - Serves: Bus
 
 198. **Dammstraße**  
@@ -797,7 +797,7 @@
    - Serves: Bus
 
 199. **Dampfkraftwerk Donaustadt**  
-   - Coordinates: 48.197542, 16.460945
+   - Coordinates: 48.197429, 16.460900
    - Serves: Bus
 
 200. **Dampfschiffhaufen**  
@@ -813,11 +813,11 @@
    - Serves: Bus
 
 203. **Daringergasse**  
-   - Coordinates: 48.246673, 16.334992
+   - Coordinates: 48.246577, 16.334498
    - Serves: Bus
 
 204. **Dattlergasse**  
-   - Coordinates: 48.296127, 16.414313
+   - Coordinates: 48.296079, 16.414439
    - Serves: Bus
 
 205. **Daumegasse**  
@@ -825,7 +825,7 @@
    - Serves: Bus
 
 206. **Davidgasse**  
-   - Coordinates: 48.175389, 16.356641
+   - Coordinates: 48.175143, 16.356929
    - Serves: Bus
 
 207. **Deindorfstraße**  
@@ -833,11 +833,11 @@
    - Serves: Bus
 
 208. **Deinleingasse**  
-   - Coordinates: 48.221728, 16.444092
+   - Coordinates: 48.221698, 16.443733
    - Serves: Bus
 
 209. **Deißenhofergasse**  
-   - Coordinates: 48.158481, 16.280545
+   - Coordinates: 48.157965, 16.279880
    - Serves: Bus
 
 210. **Deutschordenstraße**  
@@ -845,7 +845,7 @@
    - Serves: Bus
 
 211. **Dietmayrgasse**  
-   - Coordinates: 48.239165, 16.368760
+   - Coordinates: 48.239261, 16.368347
    - Serves: Bus
 
 212. **Dirmhirngasse**  
@@ -857,15 +857,15 @@
    - Serves: Bus
 
 214. **Doderergasse**  
-   - Coordinates: 48.272037, 16.453498
+   - Coordinates: 48.271864, 16.453282
    - Serves: Bus
 
 215. **Donau-City Nord**  
-   - Coordinates: 48.235467, 16.408097
+   - Coordinates: 48.235420, 16.408043
    - Serves: Bus
 
 216. **Donaumarina U**  
-   - Coordinates: 48.206050, 16.430717
+   - Coordinates: 48.206128, 16.430357
    - Serves: Bus
 
 217. **Donaumarina U, Chrastekgasse**  
@@ -873,19 +873,19 @@
    - Serves: Bus
 
 218. **Donauspital**  
-   - Coordinates: 48.219298, 16.465293
+   - Coordinates: 48.219411, 16.465329
    - Serves: Bus
 
 219. **Donaustadtbrücke U**  
-   - Coordinates: 48.212312, 16.439781
+   - Coordinates: 48.212564, 16.439745
    - Serves: Bus
 
 220. **Donaustadtstraße**  
-   - Coordinates: 48.233421, 16.444048
+   - Coordinates: 48.233361, 16.444991
    - Serves: Bus
 
 221. **Donauturm**  
-   - Coordinates: 48.241953, 16.408420
+   - Coordinates: 48.241887, 16.408663
    - Serves: Bus
 
 222. **Dopschstraße**  
@@ -897,11 +897,11 @@
    - Serves: Bus
 
 224. **Dornbach**  
-   - Coordinates: 48.226114, 16.308285
+   - Coordinates: 48.226246, 16.308213
    - Serves: Bus
 
 225. **Dornbacher Straße**  
-   - Coordinates: 48.228047, 16.302419
+   - Coordinates: 48.228179, 16.301072
    - Serves: Bus
 
 226. **Dostalgasse**  
@@ -921,7 +921,7 @@
    - Serves: Bus
 
 230. **Dr.-Schober-Straße**  
-   - Coordinates: 48.166798, 16.272595
+   - Coordinates: 48.166672, 16.272901
    - Serves: Bus
 
 231. **Draugasse**  
@@ -941,7 +941,7 @@
    - Serves: Bus
 
 235. **Dresdner Straße U**  
-   - Coordinates: 48.236514, 16.378480
+   - Coordinates: 48.237179, 16.379225
    - Serves: Bus
 
 236. **Duchekgasse**  
@@ -949,7 +949,7 @@
    - Serves: Bus
 
 237. **Dumreichergasse**  
-   - Coordinates: 48.207302, 16.510478
+   - Coordinates: 48.207308, 16.510604
    - Serves: Bus
 
 238. **Dunantgasse**  
@@ -957,7 +957,7 @@
    - Serves: Bus
 
 239. **Dänenstraße**  
-   - Coordinates: 48.237155, 16.334139
+   - Coordinates: 48.237017, 16.335028
    - Serves: Bus
 
 240. **Döblerhofstraße**  
@@ -973,7 +973,7 @@
    - Serves: Bus
 
 243. **Döblinger Gürtel/Glatzg.**  
-   - Coordinates: 48.233349, 16.354423
+   - Coordinates: 48.232416, 16.353479
    - Serves: Bus
 
 244. **Döblinger Steg**  
@@ -985,7 +985,7 @@
    - Serves: Bus
 
 246. **Dörmanngasse**  
-   - Coordinates: 48.222679, 16.534220
+   - Coordinates: 48.222661, 16.534068
    - Serves: Bus
 
 247. **Dückegasse**  
@@ -1001,7 +1001,7 @@
    - Serves: Bus
 
 250. **Edelsinnstraße**  
-   - Coordinates: 48.170338, 16.310809
+   - Coordinates: 48.171902, 16.311959
    - Serves: Bus
 
 251. **Edelsteingasse**  
@@ -1021,15 +1021,15 @@
    - Serves: Bus
 
 255. **Egon-Friedell-Gasse**  
-   - Coordinates: 48.273861, 16.436044
+   - Coordinates: 48.274034, 16.436250
    - Serves: Bus
 
 256. **Ehrenpreisgasse**  
-   - Coordinates: 48.217939, 16.461277
+   - Coordinates: 48.218101, 16.461277
    - Serves: Bus
 
 257. **Eibesbrunnergasse**  
-   - Coordinates: 48.170890, 16.337741
+   - Coordinates: 48.171261, 16.337651
    - Serves: Bus
 
 258. **Eichbachgasse**  
@@ -1037,23 +1037,23 @@
    - Serves: Bus
 
 259. **Eichenstraße**  
-   - Coordinates: 48.180995, 16.349024
+   - Coordinates: 48.181439, 16.350147
    - Serves: Bus
 
 260. **Einsiedeleigasse**  
-   - Coordinates: 48.183289, 16.264223
+   - Coordinates: 48.183409, 16.264420
    - Serves: Bus
 
 261. **Einsiedlerplatz**  
-   - Coordinates: 48.185164, 16.349302
+   - Coordinates: 48.185380, 16.349662
    - Serves: Bus
 
 262. **Eipeldauer Straße**  
-   - Coordinates: 48.263020, 16.436448
+   - Coordinates: 48.263157, 16.436744
    - Serves: Bus
 
 263. **Eisenstadtplatz**  
-   - Coordinates: 48.169512, 16.384678
+   - Coordinates: 48.169386, 16.384381
    - Serves: Bus
 
 264. **Eisstoßgasse**  
@@ -1061,7 +1061,7 @@
    - Serves: Bus
 
 265. **Elderschplatz**  
-   - Coordinates: 48.217700, 16.412777
+   - Coordinates: 48.218107, 16.411942
    - Serves: Bus
 
 266. **Elsbeergasse**  
@@ -1093,7 +1093,7 @@
    - Serves: Bus
 
 273. **Enkplatz U/Grillgasse**  
-   - Coordinates: 48.173603, 16.414179
+   - Coordinates: 48.175922, 16.414825
    - Serves: Bus
 
 274. **Erdbergstr./Schlachthausgasse**  
@@ -1129,7 +1129,7 @@
    - Serves: Bus
 
 282. **Eselstiege**  
-   - Coordinates: 48.224319, 16.286600
+   - Coordinates: 48.224457, 16.286887
    - Serves: Bus
 
 283. **Eslarngasse**  
@@ -1141,7 +1141,7 @@
    - Serves: Bus
 
 285. **Etrichstraße**  
-   - Coordinates: 48.148119, 16.462670
+   - Coordinates: 48.148077, 16.461933
    - Serves: Bus
 
 286. **Ettenreichgasse/Schulzentrum**  
@@ -1153,11 +1153,11 @@
    - Serves: Bus
 
 288. **Eßling Friedhof**  
-   - Coordinates: 48.216287, 16.531238
+   - Coordinates: 48.216203, 16.531975
    - Serves: Bus
 
 289. **Eßling Schule**  
-   - Coordinates: 48.214443, 16.524465
+   - Coordinates: 48.215024, 16.526567
    - Serves: Bus
 
 290. **Eßling, Schippanisiedlung**  
@@ -1181,7 +1181,7 @@
    - Serves: Bus
 
 295. **Familienplatz**  
-   - Coordinates: 48.214354, 16.319128
+   - Coordinates: 48.213917, 16.318840
    - Serves: Bus
 
 296. **Fasangasse**  
@@ -1189,7 +1189,7 @@
    - Serves: Bus
 
 297. **Felmayergasse**  
-   - Coordinates: 48.271935, 16.432127
+   - Coordinates: 48.272001, 16.431920
    - Serves: Bus
 
 298. **Fendigasse**  
@@ -1217,19 +1217,19 @@
    - Serves: Bus
 
 304. **Finsterbuschstr./Öllager**  
-   - Coordinates: 48.168313, 16.506040
+   - Coordinates: 48.168379, 16.506157
    - Serves: Bus
 
 305. **Finsterbuschstraße Mitte**  
-   - Coordinates: 48.170788, 16.502007
+   - Coordinates: 48.170812, 16.502213
    - Serves: Bus
 
 306. **Finsterbuschstraße Nord**  
-   - Coordinates: 48.173496, 16.497911
+   - Coordinates: 48.173418, 16.497812
    - Serves: Bus
 
 307. **Fischergrund**  
-   - Coordinates: 48.216059, 16.440823
+   - Coordinates: 48.216107, 16.441002
    - Serves: Bus
 
 308. **Florian-Geyer-Gasse**  
@@ -1241,15 +1241,15 @@
    - Serves: Bus
 
 310. **Floridsdorf S+U**  
-   - Coordinates: 48.256614, 16.402312
+   - Coordinates: 48.256220, 16.400659
    - Serves: Bus
 
 311. **Flotowgasse**  
-   - Coordinates: 48.240679, 16.338028
+   - Coordinates: 48.240571, 16.337480
    - Serves: Bus
 
 312. **Flugfeldstraße**  
-   - Coordinates: 48.215694, 16.504738
+   - Coordinates: 48.215407, 16.504989
    - Serves: Bus
 
 313. **Flurschützstraße/Längenfeldgasse**  
@@ -1269,11 +1269,11 @@
    - Serves: Bus
 
 317. **Franz-Asenbauer-Gasse**  
-   - Coordinates: 48.154406, 16.270933
+   - Coordinates: 48.155005, 16.272191
    - Serves: Bus
 
 318. **Franz-Eder-Weg**  
-   - Coordinates: 48.177126, 16.434687
+   - Coordinates: 48.177407, 16.434229
    - Serves: Bus
 
 319. **Franz-Eduard-Matras-Gasse**  
@@ -1281,7 +1281,7 @@
    - Serves: Bus
 
 320. **Franz-Pletersky-Weg**  
-   - Coordinates: 48.213282, 16.450318
+   - Coordinates: 48.213294, 16.451126
    - Serves: Bus
 
 321. **Franz-Sebek-Straße**  
@@ -1305,7 +1305,7 @@
    - Serves: Bus
 
 326. **Freihofsiedlung**  
-   - Coordinates: 48.242138, 16.450210
+   - Coordinates: 48.242599, 16.449851
    - Serves: Bus
 
 327. **Freudenauer Hafenbrücke**  
@@ -1317,7 +1317,7 @@
    - Serves: Bus
 
 329. **Freyenthurmgasse**  
-   - Coordinates: 48.205470, 16.256704
+   - Coordinates: 48.205512, 16.256821
    - Serves: Bus
 
 330. **Friedensgasse**  
@@ -1325,7 +1325,7 @@
    - Serves: Bus
 
 331. **Friedjunggasse**  
-   - Coordinates: 48.165030, 16.418967
+   - Coordinates: 48.165018, 16.419119
    - Serves: Bus
 
 332. **Friedrich-Engels-Platz**  
@@ -1333,7 +1333,7 @@
    - Serves: Bus
 
 333. **Friedstraße**  
-   - Coordinates: 48.244855, 16.404935
+   - Coordinates: 48.245895, 16.404908
    - Serves: Bus
 
 334. **Fritz-Feigl-Weg**  
@@ -1353,11 +1353,11 @@
    - Serves: Bus
 
 338. **Fuchsienweg**  
-   - Coordinates: 48.258337, 16.492790
+   - Coordinates: 48.258409, 16.492889
    - Serves: Bus
 
 339. **Funkengerngasse**  
-   - Coordinates: 48.215437, 16.293741
+   - Coordinates: 48.215323, 16.293526
    - Serves: Bus
 
 340. **Fünfhausgasse**  
@@ -1389,15 +1389,15 @@
    - Serves: Bus
 
 347. **Gaudenzdorfer Gürtel**  
-   - Coordinates: 48.186853, 16.342789
+   - Coordinates: 48.185721, 16.344254
    - Serves: Bus
 
 348. **Gaußplatz**  
-   - Coordinates: 48.226671, 16.370206
+   - Coordinates: 48.225917, 16.370098
    - Serves: Bus
 
 349. **Gaßmannstraße**  
-   - Coordinates: 48.174376, 16.312723
+   - Coordinates: 48.174178, 16.313388
    - Serves: Bus
 
 350. **Gebirgsgasse**  
@@ -1429,7 +1429,7 @@
    - Serves: Bus
 
 357. **Geringergasse**  
-   - Coordinates: 48.167834, 16.426126
+   - Coordinates: 48.168158, 16.425776
    - Serves: Bus
 
 358. **Gernotgasse**  
@@ -1445,7 +1445,7 @@
    - Serves: Bus
 
 361. **Gersthofer Friedhof**  
-   - Coordinates: 48.229950, 16.316711
+   - Coordinates: 48.230004, 16.316136
    - Serves: Bus
 
 362. **Gesundheitszentrum Süd**  
@@ -1453,7 +1453,7 @@
    - Serves: Bus
 
 363. **Getreidemarkt**  
-   - Coordinates: 48.201650, 16.362588
+   - Coordinates: 48.201081, 16.362238
    - Serves: Bus
 
 364. **Geusaugasse**  
@@ -1481,7 +1481,7 @@
    - Serves: Bus
 
 370. **Gladiolenweg**  
-   - Coordinates: 48.237717, 16.479046
+   - Coordinates: 48.237472, 16.478498
    - Serves: Bus
 
 371. **Glanzing**  
@@ -1501,7 +1501,7 @@
    - Serves: Bus
 
 375. **Gobergasse**  
-   - Coordinates: 48.179234, 16.268678
+   - Coordinates: 48.179204, 16.268903
    - Serves: Bus
 
 376. **Goethehof**  
@@ -1513,7 +1513,7 @@
    - Serves: Bus
 
 378. **Goldhammergasse**  
-   - Coordinates: 48.144007, 16.323018
+   - Coordinates: 48.144630, 16.322514
    - Serves: Bus
 
 379. **Goldregengasse**  
@@ -1537,7 +1537,7 @@
    - Serves: Bus
 
 384. **Graffgasse**  
-   - Coordinates: 48.168930, 16.357639
+   - Coordinates: 48.169218, 16.357684
    - Serves: Bus
 
 385. **Grasbergergasse**  
@@ -1549,11 +1549,11 @@
    - Serves: Bus
 
 387. **Gregor-Mendel-Straße**  
-   - Coordinates: 48.234175, 16.337678
+   - Coordinates: 48.234181, 16.337858
    - Serves: Bus
 
 388. **Gregorygasse**  
-   - Coordinates: 48.156719, 16.305545
+   - Coordinates: 48.157360, 16.305770
    - Serves: Bus
 
 389. **Grellgasse**  
@@ -1589,15 +1589,15 @@
    - Serves: Bus
 
 397. **Groß-Enzersdorf Stadtmauer**  
-   - Coordinates: 48.205398, 16.549052
+   - Coordinates: 48.204919, 16.549393
    - Serves: Bus
 
 398. **Großer Biberhaufen**  
-   - Coordinates: 48.201985, 16.473225
+   - Coordinates: 48.202464, 16.473818
    - Serves: Bus
 
 399. **Großfeldsiedlung U**  
-   - Coordinates: 48.269974, 16.448162
+   - Coordinates: 48.270201, 16.447524
    - Serves: Bus
 
 400. **Großjedlersdorf**  
@@ -1605,15 +1605,15 @@
    - Serves: Bus
 
 401. **Großjedlersdorf, Jochbergengasse**  
-   - Coordinates: 48.279941, 16.401225
+   - Coordinates: 48.280210, 16.400749
    - Serves: Bus
 
 402. **Großmarktstraße**  
-   - Coordinates: 48.146566, 16.366703
+   - Coordinates: 48.146507, 16.367295
    - Serves: Bus
 
 403. **Grundäckergasse**  
-   - Coordinates: 48.139553, 16.392197
+   - Coordinates: 48.139619, 16.392278
    - Serves: Bus
 
 404. **Gruschaplatz**  
@@ -1629,15 +1629,15 @@
    - Serves: Bus
 
 407. **Guglgasse**  
-   - Coordinates: 48.185428, 16.427024
+   - Coordinates: 48.185260, 16.427105
    - Serves: Bus
 
 408. **Guido-Lammer-Gasse**  
-   - Coordinates: 48.232763, 16.471581
+   - Coordinates: 48.232769, 16.471761
    - Serves: Bus
 
 409. **Gumpendorfer Straße U**  
-   - Coordinates: 48.190500, 16.337489
+   - Coordinates: 48.190009, 16.337256
    - Serves: Bus
 
 410. **Gunoldstraße**  
@@ -1653,7 +1653,7 @@
    - Serves: Bus
 
 413. **Gutheil-Schoder-Gasse**  
-   - Coordinates: 48.159511, 16.335765
+   - Coordinates: 48.159302, 16.335908
    - Serves: Bus
 
 414. **Gutraterplatz**  
@@ -1661,11 +1661,11 @@
    - Serves: Bus
 
 415. **Gußriegelstraße**  
-   - Coordinates: 48.166594, 16.358258
+   - Coordinates: 48.166354, 16.358357
    - Serves: Bus
 
 416. **Gymnasiumstraße**  
-   - Coordinates: 48.230244, 16.345107
+   - Coordinates: 48.229801, 16.345466
    - Serves: Bus
 
 417. **Günselgasse**  
@@ -1713,7 +1713,7 @@
    - Serves: Bus
 
 428. **Haidestraße S**  
-   - Coordinates: 48.179180, 16.426908
+   - Coordinates: 48.179240, 16.427914
    - Serves: Bus
 
 429. **Hainburger Straße**  
@@ -1729,15 +1729,15 @@
    - Serves: Bus
 
 432. **Halterlacken**  
-   - Coordinates: 48.160177, 16.461331
+   - Coordinates: 48.160075, 16.461376
    - Serves: Bus
 
 433. **Handelskai S+U**  
-   - Coordinates: 48.240798, 16.384355
+   - Coordinates: 48.241032, 16.383833
    - Serves: Bus
 
 434. **Hannah-Arendt-Platz**  
-   - Coordinates: 48.224744, 16.501701
+   - Coordinates: 48.224666, 16.501315
    - Serves: Bus
 
 435. **Hans-Czermak-Gasse**  
@@ -1745,7 +1745,7 @@
    - Serves: Bus
 
 436. **Hans-Mandl-Berufsschule**  
-   - Coordinates: 48.181457, 16.338190
+   - Coordinates: 48.181367, 16.338352
    - Serves: Bus
 
 437. **Hansl-Schmid-Weg**  
@@ -1753,7 +1753,7 @@
    - Serves: Bus
 
 438. **Hanslteich**  
-   - Coordinates: 48.237675, 16.269173
+   - Coordinates: 48.237711, 16.269074
    - Serves: Bus
 
 439. **Hanusch-Krankenhaus**  
@@ -1765,7 +1765,7 @@
    - Serves: Bus
 
 441. **Hardtgasse**  
-   - Coordinates: 48.237023, 16.348018
+   - Coordinates: 48.237328, 16.348961
    - Serves: Bus
 
 442. **Harkortstraße**  
@@ -1773,19 +1773,19 @@
    - Serves: Bus
 
 443. **Harrachgasse**  
-   - Coordinates: 48.222206, 16.425399
+   - Coordinates: 48.222153, 16.425291
    - Serves: Bus
 
 444. **Hartlebengasse**  
-   - Coordinates: 48.225438, 16.464915
+   - Coordinates: 48.225911, 16.464323
    - Serves: Bus
 
 445. **Haschafeld**  
-   - Coordinates: 48.225330, 16.474878
+   - Coordinates: 48.225707, 16.474842
    - Serves: Bus
 
 446. **Haschkagasse**  
-   - Coordinates: 48.181157, 16.326898
+   - Coordinates: 48.180354, 16.327078
    - Serves: Bus
 
 447. **Hasenleiten**  
@@ -1817,15 +1817,15 @@
    - Serves: Bus
 
 454. **Haus des Meeres**  
-   - Coordinates: 48.197620, 16.353704
+   - Coordinates: 48.197339, 16.354000
    - Serves: Bus
 
 455. **Hausfeldstraße U**  
-   - Coordinates: 48.233834, 16.487337
+   - Coordinates: 48.233636, 16.487113
    - Serves: Bus
 
 456. **Hawlicekgasse**  
-   - Coordinates: 48.260418, 16.415993
+   - Coordinates: 48.260167, 16.415472
    - Serves: Bus
 
 457. **Haßlwanderweg**  
@@ -1837,11 +1837,11 @@
    - Serves: Bus
 
 459. **Heiligenstadt S+U**  
-   - Coordinates: 48.249365, 16.364762
+   - Coordinates: 48.248940, 16.364601
    - Serves: Bus
 
 460. **Heiligenstädter Brücke**  
-   - Coordinates: 48.243712, 16.367897
+   - Coordinates: 48.243981, 16.367879
    - Serves: Bus
 
 461. **Heiligenstädter Friedhof**  
@@ -1877,7 +1877,7 @@
    - Serves: Bus
 
 469. **Henriettenplatz**  
-   - Coordinates: 48.190243, 16.332001
+   - Coordinates: 48.189979, 16.331246
    - Serves: Bus
 
 470. **Heringgasse**  
@@ -1885,7 +1885,7 @@
    - Serves: Bus
 
 471. **Hermann-Gebauer-Straße**  
-   - Coordinates: 48.267158, 16.474536
+   - Coordinates: 48.266978, 16.474249
    - Serves: Bus
 
 472. **Hernals S**  
@@ -1893,7 +1893,7 @@
    - Serves: Bus
 
 473. **Hernals, Wattgasse**  
-   - Coordinates: 48.221889, 16.321724
+   - Coordinates: 48.221817, 16.321005
    - Serves: Bus
 
 474. **Hernalser Friedhof**  
@@ -1921,11 +1921,11 @@
    - Serves: Bus
 
 480. **Herzgasse**  
-   - Coordinates: 48.172423, 16.366128
+   - Coordinates: 48.172441, 16.365355
    - Serves: Bus
 
 481. **Herzmanskystraße**  
-   - Coordinates: 48.209451, 16.214860
+   - Coordinates: 48.209559, 16.214654
    - Serves: Bus
 
 482. **Hetmanekgasse**  
@@ -1937,11 +1937,11 @@
    - Serves: Bus
 
 484. **Heuberg**  
-   - Coordinates: 48.225977, 16.283438
+   - Coordinates: 48.226055, 16.283195
    - Serves: Bus
 
 485. **Heuberggasse**  
-   - Coordinates: 48.228724, 16.297514
+   - Coordinates: 48.228610, 16.297559
    - Serves: Bus
 
 486. **Heudörfelgasse**  
@@ -1953,7 +1953,7 @@
    - Serves: Bus
 
 488. **Heustadelgasse/Schule**  
-   - Coordinates: 48.214994, 16.483951
+   - Coordinates: 48.214970, 16.483564
    - Serves: Bus
 
 489. **Hietzing U**  
@@ -1965,7 +1965,7 @@
    - Serves: Bus
 
 491. **Hillerstraße**  
-   - Coordinates: 48.220824, 16.407369
+   - Coordinates: 48.220884, 16.408025
    - Serves: Bus
 
 492. **Himberger Straße**  
@@ -1981,19 +1981,19 @@
    - Serves: Bus
 
 495. **Hirschengasse**  
-   - Coordinates: 48.193171, 16.349302
+   - Coordinates: 48.193015, 16.349015
    - Serves: Bus
 
 496. **Hirschstetten Ort**  
-   - Coordinates: 48.234325, 16.466586
+   - Coordinates: 48.234540, 16.467044
    - Serves: Bus
 
 497. **Hirschstetten S**  
-   - Coordinates: 48.233056, 16.468320
+   - Coordinates: 48.233367, 16.467583
    - Serves: Bus
 
 498. **Hirschstetten, Süßenbrunner Str.**  
-   - Coordinates: 48.236772, 16.461699
+   - Coordinates: 48.236275, 16.462724
    - Serves: Bus
 
 499. **Hochmuthgasse**  
@@ -2017,15 +2017,15 @@
    - Serves: Bus
 
 504. **Hohenbergstraße**  
-   - Coordinates: 48.175604, 16.326090
+   - Coordinates: 48.174125, 16.326278
    - Serves: Bus
 
 505. **Hohenfelsplatz**  
-   - Coordinates: 48.174232, 16.316442
+   - Coordinates: 48.173999, 16.316756
    - Serves: Bus
 
 506. **Hoher Markt**  
-   - Coordinates: 48.211181, 16.371769
+   - Coordinates: 48.211169, 16.372317
    - Serves: Bus
 
 507. **Holbeingasse**  
@@ -2033,11 +2033,11 @@
    - Serves: Bus
 
 508. **Hollergasse**  
-   - Coordinates: 48.186248, 16.324347
+   - Coordinates: 48.186398, 16.324733
    - Serves: Bus
 
 509. **Holubstraße**  
-   - Coordinates: 48.231614, 16.394685
+   - Coordinates: 48.232081, 16.394380
    - Serves: Bus
 
 510. **Horeischygasse**  
@@ -2069,7 +2069,7 @@
    - Serves: Bus
 
 517. **Huglgasse**  
-   - Coordinates: 48.197890, 16.325138
+   - Coordinates: 48.197896, 16.325263
    - Serves: Bus
 
 518. **Hugo-Wolf-Park**  
@@ -2089,11 +2089,11 @@
    - Serves: Bus
 
 522. **Häußlergasse**  
-   - Coordinates: 48.237927, 16.439619
+   - Coordinates: 48.238525, 16.439610
    - Serves: Bus
 
 523. **Höchstädtplatz**  
-   - Coordinates: 48.239871, 16.376422
+   - Coordinates: 48.238842, 16.377249
    - Serves: Bus
 
 524. **Hödlgasse**  
@@ -2109,7 +2109,7 @@
    - Serves: Bus
 
 527. **Hörtengasse**  
-   - Coordinates: 48.162358, 16.444479
+   - Coordinates: 48.162442, 16.444533
    - Serves: Bus
 
 528. **Hüttelberg**  
@@ -2121,11 +2121,11 @@
    - Serves: Bus
 
 530. **Hütteldorf S+U**  
-   - Coordinates: 48.197890, 16.260486
+   - Coordinates: 48.197956, 16.261070
    - Serves: Bus
 
 531. **Hütteldorf, Bujattigasse**  
-   - Coordinates: 48.202362, 16.255976
+   - Coordinates: 48.202440, 16.255320
    - Serves: Bus
 
 532. **Hütteldorfer Friedhof**  
@@ -2137,11 +2137,11 @@
    - Serves: Bus
 
 534. **Hüttergasse**  
-   - Coordinates: 48.213144, 16.227464
+   - Coordinates: 48.213276, 16.226664
    - Serves: Bus
 
 535. **Illgasse**  
-   - Coordinates: 48.287957, 16.447803
+   - Coordinates: 48.287867, 16.447901
    - Serves: Bus
 
 536. **Ilse-Buck-Straße**  
@@ -2153,7 +2153,7 @@
    - Serves: Bus
 
 538. **In der Au**  
-   - Coordinates: 48.209265, 16.486134
+   - Coordinates: 48.209337, 16.486259
    - Serves: Bus
 
 539. **Indigoweg**  
@@ -2169,7 +2169,7 @@
    - Serves: Bus
 
 542. **Inzersdorf Friedhof**  
-   - Coordinates: 48.147747, 16.349958
+   - Coordinates: 48.146794, 16.352931
    - Serves: Bus
 
 543. **Inzersdorf, Birostraße**  
@@ -2189,7 +2189,7 @@
    - Serves: Bus
 
 547. **Inzersdorf, Slamastraße**  
-   - Coordinates: 48.138924, 16.341451
+   - Coordinates: 48.139068, 16.341738
    - Serves: Bus
 
 548. **Inzersdorf, Zetschegasse**  
@@ -2225,7 +2225,7 @@
    - Serves: Bus
 
 556. **Jedletzbergerstraße**  
-   - Coordinates: 48.166947, 16.469596
+   - Coordinates: 48.167037, 16.469784
    - Serves: Bus
 
 557. **Jenbachgasse**  
@@ -2241,7 +2241,7 @@
    - Serves: Bus
 
 560. **Jochen-Rindt-Straße**  
-   - Coordinates: 48.145925, 16.354611
+   - Coordinates: 48.146063, 16.354791
    - Serves: Bus
 
 561. **Johann-Friedl-Gasse**  
@@ -2253,7 +2253,7 @@
    - Serves: Bus
 
 563. **Johann-Strauß-Gasse**  
-   - Coordinates: 48.190500, 16.366101
+   - Coordinates: 48.189800, 16.365571
    - Serves: Bus
 
 564. **Johannes-von-Gott-Platz**  
@@ -2265,7 +2265,7 @@
    - Serves: Bus
 
 566. **Johnstraße U**  
-   - Coordinates: 48.199057, 16.319595
+   - Coordinates: 48.198890, 16.320215
    - Serves: Bus
 
 567. **Johnstraße/Märzstraße**  
@@ -2273,7 +2273,7 @@
    - Serves: Bus
 
 568. **Josef-Baumann-Gasse**  
-   - Coordinates: 48.251273, 16.430959
+   - Coordinates: 48.251626, 16.430321
    - Serves: Bus
 
 569. **Josef-Enslein-Platz**  
@@ -2285,11 +2285,11 @@
    - Serves: Bus
 
 571. **Josef-Gall-Gasse**  
-   - Coordinates: 48.209822, 16.397811
+   - Coordinates: 48.209283, 16.397173
    - Serves: Bus
 
 572. **Josef-Melichar-Gasse**  
-   - Coordinates: 48.246440, 16.401476
+   - Coordinates: 48.245525, 16.401126
    - Serves: Bus
 
 573. **Josef-Prangl-Straße**  
@@ -2297,11 +2297,11 @@
    - Serves: Bus
 
 574. **Josef-Ressel-Straße**  
-   - Coordinates: 48.211307, 16.233132
+   - Coordinates: 48.211402, 16.233689
    - Serves: Bus
 
 575. **Josef-Österreicher-Gasse**  
-   - Coordinates: 48.147250, 16.301539
+   - Coordinates: 48.147406, 16.302033
    - Serves: Bus
 
 576. **Joseph-Lister-Gasse**  
@@ -2313,7 +2313,7 @@
    - Serves: Bus
 
 578. **Julius-Ficker-Straße**  
-   - Coordinates: 48.266225, 16.448566
+   - Coordinates: 48.266440, 16.448584
    - Serves: Bus
 
 579. **Julius-Payer-Gasse**  
@@ -2325,7 +2325,7 @@
    - Serves: Bus
 
 581. **Jungstraße**  
-   - Coordinates: 48.221129, 16.405815
+   - Coordinates: 48.221045, 16.405681
    - Serves: Bus
 
 582. **Jura-Soyfer-Gasse**  
@@ -2337,11 +2337,11 @@
    - Serves: Bus
 
 584. **Jägermaiszufahrt**  
-   - Coordinates: 48.212372, 16.494820
+   - Coordinates: 48.212211, 16.495835
    - Serves: Bus
 
 585. **Jägerstraße U**  
-   - Coordinates: 48.235294, 16.370305
+   - Coordinates: 48.235874, 16.370224
    - Serves: Bus
 
 586. **Jägerwaldsiedlung**  
@@ -2353,7 +2353,7 @@
    - Serves: Bus
 
 588. **Kagran U**  
-   - Coordinates: 48.243532, 16.433376
+   - Coordinates: 48.243359, 16.433690
    - Serves: Bus
 
 589. **Kagraner Anger**  
@@ -2361,15 +2361,15 @@
    - Serves: Bus
 
 590. **Kagraner Brücke**  
-   - Coordinates: 48.239045, 16.430510
+   - Coordinates: 48.239494, 16.430851
    - Serves: Bus
 
 591. **Kagraner Friedhof**  
-   - Coordinates: 48.253397, 16.445979
+   - Coordinates: 48.253720, 16.445862
    - Serves: Bus
 
 592. **Kagraner Platz U**  
-   - Coordinates: 48.250490, 16.443562
+   - Coordinates: 48.249084, 16.442862
    - Serves: Bus
 
 593. **Kahlergasse**  
@@ -2381,11 +2381,11 @@
    - Serves: Bus
 
 595. **Kaiser-Franz-Josef-Straße**  
-   - Coordinates: 48.135944, 16.266433
+   - Coordinates: 48.135860, 16.267115
    - Serves: Bus
 
 596. **Kaiserebersdorf**  
-   - Coordinates: 48.146944, 16.464808
+   - Coordinates: 48.147340, 16.463280
    - Serves: Bus
 
 597. **Kaiserebersdorf, Münnichplatz**  
@@ -2393,7 +2393,7 @@
    - Serves: Bus
 
 598. **Kaiserebersdorf, Zinnergasse**  
-   - Coordinates: 48.160039, 16.469659
+   - Coordinates: 48.160177, 16.469793
    - Serves: Bus
 
 599. **Kaiserebersdorfer Friedhof**  
@@ -2405,11 +2405,11 @@
    - Serves: Bus
 
 601. **Kaisermühlen-VIC U**  
-   - Coordinates: 48.232709, 16.415760
+   - Coordinates: 48.232841, 16.415535
    - Serves: Bus
 
 602. **Kaisermühlenstraße**  
-   - Coordinates: 48.213432, 16.441613
+   - Coordinates: 48.213521, 16.441613
    - Serves: Bus
 
 603. **Kammerergasse**  
@@ -2421,11 +2421,11 @@
    - Serves: Bus
 
 605. **Kapellenweg**  
-   - Coordinates: 48.218819, 16.469712
+   - Coordinates: 48.218681, 16.469703
    - Serves: Bus
 
 606. **Kapellergasse**  
-   - Coordinates: 48.249891, 16.481606
+   - Coordinates: 48.247822, 16.485550
    - Serves: Bus
 
 607. **Kaposigasse**  
@@ -2441,7 +2441,7 @@
    - Serves: Bus
 
 610. **Karl-Bednarik-Gasse**  
-   - Coordinates: 48.245752, 16.483331
+   - Coordinates: 48.245339, 16.483178
    - Serves: Bus
 
 611. **Karl-Bekehrty-Straße**  
@@ -2449,7 +2449,7 @@
    - Serves: Bus
 
 612. **Karl-Meißl-Straße**  
-   - Coordinates: 48.228460, 16.373602
+   - Coordinates: 48.228377, 16.373718
    - Serves: Bus
 
 613. **Karl-Popper-Straße**  
@@ -2457,15 +2457,15 @@
    - Serves: Bus
 
 614. **Karl-Schwed-Gasse**  
-   - Coordinates: 48.149467, 16.277006
+   - Coordinates: 48.149647, 16.277293
    - Serves: Bus
 
 615. **Karlsplatz U**  
-   - Coordinates: 48.200626, 16.369604
+   - Coordinates: 48.201554, 16.369101
    - Serves: Bus
 
 616. **Karmeliterplatz**  
-   - Coordinates: 48.215694, 16.379863
+   - Coordinates: 48.216323, 16.380339
    - Serves: Bus
 
 617. **Karthäuserstraße**  
@@ -2485,7 +2485,7 @@
    - Serves: Bus
 
 621. **Kellermanngasse**  
-   - Coordinates: 48.205344, 16.351835
+   - Coordinates: 48.205434, 16.351584
    - Serves: Bus
 
 622. **Kempfengerngasse**  
@@ -2493,15 +2493,15 @@
    - Serves: Bus
 
 623. **Keplerplatz U**  
-   - Coordinates: 48.178168, 16.376045
+   - Coordinates: 48.178054, 16.376018
    - Serves: Bus
 
 624. **Keylwerthgasse**  
-   - Coordinates: 48.250842, 16.287866
+   - Coordinates: 48.250723, 16.288450
    - Serves: Bus
 
 625. **Khevenhüllerstraße**  
-   - Coordinates: 48.243658, 16.306911
+   - Coordinates: 48.243449, 16.307261
    - Serves: Bus
 
 626. **Khleslplatz**  
@@ -2517,7 +2517,7 @@
    - Serves: Bus
 
 629. **Kirchfeldgasse**  
-   - Coordinates: 48.159661, 16.308941
+   - Coordinates: 48.159272, 16.308070
    - Serves: Bus
 
 630. **Kirchstetterngasse**  
@@ -2529,11 +2529,11 @@
    - Serves: Bus
 
 632. **Kirsteweg**  
-   - Coordinates: 48.132263, 16.418553
+   - Coordinates: 48.132491, 16.417889
    - Serves: Bus
 
 633. **Klaschkaweg**  
-   - Coordinates: 48.199207, 16.414107
+   - Coordinates: 48.198860, 16.413936
    - Serves: Bus
 
 634. **Klebindergraben**  
@@ -2569,11 +2569,11 @@
    - Serves: Bus
 
 642. **Kleingartenverein Hackenberg**  
-   - Coordinates: 48.247875, 16.311654
+   - Coordinates: 48.247881, 16.311914
    - Serves: Bus
 
 643. **Kleistgasse**  
-   - Coordinates: 48.193560, 16.391011
+   - Coordinates: 48.193063, 16.390301
    - Serves: Bus
 
 644. **Klimschgasse**  
@@ -2585,11 +2585,11 @@
    - Serves: Bus
 
 646. **Klingerstraße**  
-   - Coordinates: 48.148808, 16.340014
+   - Coordinates: 48.149096, 16.339699
    - Serves: Bus
 
 647. **Klinik Favoriten**  
-   - Coordinates: 48.174939, 16.349239
+   - Coordinates: 48.174975, 16.348512
    - Serves: Bus
 
 648. **Klinik Landstraße**  
@@ -2617,7 +2617,7 @@
    - Serves: Bus
 
 654. **Kolbegasse**  
-   - Coordinates: 48.144606, 16.360720
+   - Coordinates: 48.144523, 16.360064
    - Serves: Bus
 
 655. **Kollarzgasse**  
@@ -2633,7 +2633,7 @@
    - Serves: Bus
 
 658. **Kolschitzkygasse**  
-   - Coordinates: 48.187949, 16.373054
+   - Coordinates: 48.188093, 16.372757
    - Serves: Bus
 
 659. **Konstanziagasse**  
@@ -2669,7 +2669,7 @@
    - Serves: Bus
 
 667. **Kraftwerk Freudenau**  
-   - Coordinates: 48.174574, 16.478830
+   - Coordinates: 48.174526, 16.479163
    - Serves: Bus
 
 668. **Kraftwerk Simmering**  
@@ -2677,7 +2677,7 @@
    - Serves: Bus
 
 669. **Kratzlgasse**  
-   - Coordinates: 48.241415, 16.329773
+   - Coordinates: 48.241522, 16.329818
    - Serves: Bus
 
 670. **Krausegasse**  
@@ -2701,7 +2701,7 @@
    - Serves: Bus
 
 675. **Kretschekgasse**  
-   - Coordinates: 48.224666, 16.283564
+   - Coordinates: 48.224612, 16.283608
    - Serves: Bus
 
 676. **Krieau U**  
@@ -2709,7 +2709,7 @@
    - Serves: Bus
 
 677. **Kronawettergasse**  
-   - Coordinates: 48.154765, 16.396042
+   - Coordinates: 48.155251, 16.396131
    - Serves: Bus
 
 678. **Kronfußgasse**  
@@ -2717,7 +2717,7 @@
    - Serves: Bus
 
 679. **Krottenbachstraße S**  
-   - Coordinates: 48.240397, 16.340813
+   - Coordinates: 48.240535, 16.341559
    - Serves: Bus
 
 680. **Kugelfanggasse**  
@@ -2725,11 +2725,11 @@
    - Serves: Bus
 
 681. **Kummergasse**  
-   - Coordinates: 48.294089, 16.413316
+   - Coordinates: 48.294442, 16.413397
    - Serves: Bus
 
 682. **Kunerolgasse**  
-   - Coordinates: 48.154202, 16.301790
+   - Coordinates: 48.154214, 16.302114
    - Serves: Bus
 
 683. **Kurpark Nordeingang**  
@@ -2741,11 +2741,11 @@
    - Serves: Bus
 
 685. **Kurt-Tichy-Gasse**  
-   - Coordinates: 48.140428, 16.390265
+   - Coordinates: 48.140590, 16.389565
    - Serves: Bus
 
 686. **Kurzbauergasse**  
-   - Coordinates: 48.212205, 16.396437
+   - Coordinates: 48.211510, 16.395655
    - Serves: Bus
 
 687. **Kärntner Straße**  
@@ -2765,7 +2765,7 @@
    - Serves: Bus
 
 691. **Lackenjöchelgasse**  
-   - Coordinates: 48.243215, 16.492826
+   - Coordinates: 48.243161, 16.492979
    - Serves: Bus
 
 692. **Lafitegasse**  
@@ -2777,11 +2777,11 @@
    - Serves: Bus
 
 694. **Laimgrubengasse**  
-   - Coordinates: 48.199279, 16.359202
+   - Coordinates: 48.199189, 16.359274
    - Serves: Bus
 
 695. **Lainz, Wolkersbergenstraße**  
-   - Coordinates: 48.177731, 16.271894
+   - Coordinates: 48.177521, 16.273305
    - Serves: Bus
 
 696. **Lainzer Tor**  
@@ -2805,23 +2805,23 @@
    - Serves: Bus
 
 701. **Langobardenstraße**  
-   - Coordinates: 48.224241, 16.454576
+   - Coordinates: 48.224654, 16.454971
    - Serves: Bus
 
 702. **Langsulzgasse**  
-   - Coordinates: 48.157905, 16.399913
+   - Coordinates: 48.157947, 16.399599
    - Serves: Bus
 
 703. **Lannesstraße**  
-   - Coordinates: 48.215132, 16.510388
+   - Coordinates: 48.215210, 16.510586
    - Serves: Bus
 
 704. **Lassallestraße**  
-   - Coordinates: 48.222649, 16.403848
+   - Coordinates: 48.221877, 16.405447
    - Serves: Bus
 
 705. **Laudongasse**  
-   - Coordinates: 48.213402, 16.348341
+   - Coordinates: 48.213090, 16.349572
    - Serves: Bus
 
 706. **Lavantgasse/Schule**  
@@ -2837,7 +2837,7 @@
    - Serves: Bus
 
 709. **Laxenburger Str./Raxstr.**  
-   - Coordinates: 48.165210, 16.367763
+   - Coordinates: 48.165497, 16.368859
    - Serves: Bus
 
 710. **Laxenburger Str./Sahulkastr.**  
@@ -2845,7 +2845,7 @@
    - Serves: Bus
 
 711. **Laxenburger Str./Troststr.**  
-   - Coordinates: 48.169392, 16.368939
+   - Coordinates: 48.168541, 16.370467
    - Serves: Bus
 
 712. **Leberweg**  
@@ -2861,15 +2861,15 @@
    - Serves: Bus
 
 715. **Lederergasse**  
-   - Coordinates: 48.209864, 16.348781
+   - Coordinates: 48.209630, 16.349132
    - Serves: Bus
 
 716. **Lehenstraße**  
-   - Coordinates: 48.230974, 16.522479
+   - Coordinates: 48.230710, 16.522578
    - Serves: Bus
 
 717. **Leibenfrostgasse**  
-   - Coordinates: 48.189955, 16.363657
+   - Coordinates: 48.189955, 16.362328
    - Serves: Bus
 
 718. **Leibnizgasse**  
@@ -2885,7 +2885,7 @@
    - Serves: Bus
 
 721. **Leopoldau S+U**  
-   - Coordinates: 48.276850, 16.450650
+   - Coordinates: 48.276958, 16.450614
    - Serves: Bus
 
 722. **Leopoldauer Platz**  
@@ -2901,15 +2901,15 @@
    - Serves: Bus
 
 725. **Leopoldine-Padaurek-Straße**  
-   - Coordinates: 48.263390, 16.423638
+   - Coordinates: 48.263498, 16.423629
    - Serves: Bus
 
 726. **Leopoldsdorfer Straße**  
-   - Coordinates: 48.137935, 16.399374
+   - Coordinates: 48.138025, 16.399868
    - Serves: Bus
 
 727. **Leopoldsgasse**  
-   - Coordinates: 48.220124, 16.376279
+   - Coordinates: 48.220459, 16.376045
    - Serves: Bus
 
 728. **Leyserstraße**  
@@ -2921,11 +2921,11 @@
    - Serves: Bus
 
 730. **Lichtblaustraße**  
-   - Coordinates: 48.267887, 16.465634
+   - Coordinates: 48.267714, 16.465149
    - Serves: Bus
 
 731. **Lichtensterngasse**  
-   - Coordinates: 48.158960, 16.329953
+   - Coordinates: 48.159110, 16.329890
    - Serves: Bus
 
 732. **Liebhartstal**  
@@ -2945,11 +2945,11 @@
    - Serves: Bus
 
 736. **Liesing**  
-   - Coordinates: 48.134787, 16.283007
+   - Coordinates: 48.134781, 16.283330
    - Serves: Bus
 
 737. **Liesing Schulzentrum**  
-   - Coordinates: 48.140231, 16.280330
+   - Coordinates: 48.140602, 16.280689
    - Serves: Bus
 
 738. **Liesinger-Flur-Gasse**  
@@ -2957,7 +2957,7 @@
    - Serves: Bus
 
 739. **Lindauergasse**  
-   - Coordinates: 48.145020, 16.258968
+   - Coordinates: 48.144984, 16.258087
    - Serves: Bus
 
 740. **Linnéplatz**  
@@ -2977,7 +2977,7 @@
    - Serves: Bus
 
 744. **Linzer Straße/Johnstraße**  
-   - Coordinates: 48.192920, 16.316729
+   - Coordinates: 48.191806, 16.315885
    - Serves: Bus
 
 745. **Linzer Straße/Zehetnergasse**  
@@ -2989,7 +2989,7 @@
    - Serves: Bus
 
 747. **Lobaugasse**  
-   - Coordinates: 48.205482, 16.486727
+   - Coordinates: 48.205434, 16.486520
    - Serves: Bus
 
 748. **Lobgrundstraße**  
@@ -3013,7 +3013,7 @@
    - Serves: Bus
 
 753. **Lorystraße**  
-   - Coordinates: 48.171656, 16.414502
+   - Coordinates: 48.171980, 16.413128
    - Serves: Bus
 
 754. **Ludwig-Koeßler-Platz**  
@@ -3021,7 +3021,7 @@
    - Serves: Bus
 
 755. **Ludwig-Reindl-Gasse**  
-   - Coordinates: 48.251698, 16.460011
+   - Coordinates: 48.251554, 16.460271
    - Serves: Bus
 
 756. **Lukschgasse**  
@@ -3037,11 +3037,11 @@
    - Serves: Bus
 
 759. **Luzegasse**  
-   - Coordinates: 48.159140, 16.450758
+   - Coordinates: 48.160782, 16.450012
    - Serves: Bus
 
 760. **Längenfeldgasse U**  
-   - Coordinates: 48.184883, 16.335477
+   - Coordinates: 48.185278, 16.335432
    - Serves: Bus
 
 761. **Löschniggasse**  
@@ -3057,7 +3057,7 @@
    - Serves: Bus
 
 764. **Maculangasse**  
-   - Coordinates: 48.261471, 16.455869
+   - Coordinates: 48.261429, 16.456040
    - Serves: Bus
 
 765. **Maculangasse/Wagramer Straße**  
@@ -3093,7 +3093,7 @@
    - Serves: Bus
 
 773. **Margaretenplatz/Schönbrunner Straße**  
-   - Coordinates: 48.191884, 16.356713
+   - Coordinates: 48.192219, 16.356713
    - Serves: Bus
 
 774. **Margeritenweg**  
@@ -3105,7 +3105,7 @@
    - Serves: Bus
 
 776. **Maria-Trapp-Platz**  
-   - Coordinates: 48.223816, 16.504792
+   - Coordinates: 48.223924, 16.505367
    - Serves: Bus
 
 777. **Mariabrunn Kirche**  
@@ -3117,7 +3117,7 @@
    - Serves: Bus
 
 779. **Mariahilfer Straße/Geibelgasse**  
-   - Coordinates: 48.191500, 16.330869
+   - Coordinates: 48.191650, 16.330716
    - Serves: Bus
 
 780. **Marietta-Blau-Gasse**  
@@ -3129,7 +3129,7 @@
    - Serves: Bus
 
 782. **Maroltingergasse**  
-   - Coordinates: 48.213474, 16.306066
+   - Coordinates: 48.213773, 16.306605
    - Serves: Bus
 
 783. **Marschallplatz**  
@@ -3137,15 +3137,15 @@
    - Serves: Bus
 
 784. **Marswiese**  
-   - Coordinates: 48.240451, 16.279961
+   - Coordinates: 48.240266, 16.280096
    - Serves: Bus
 
 785. **Martin-Gaunersdorfer-Gasse**  
-   - Coordinates: 48.261082, 16.450767
+   - Coordinates: 48.260412, 16.451432
    - Serves: Bus
 
 786. **Martin-Luther-King-Park**  
-   - Coordinates: 48.175670, 16.351835
+   - Coordinates: 48.175652, 16.352455
    - Serves: Bus
 
 787. **Marx-Meidlinger-Straße**  
@@ -3153,7 +3153,7 @@
    - Serves: Bus
 
 788. **Matschgasse**  
-   - Coordinates: 48.208744, 16.290705
+   - Coordinates: 48.208726, 16.290894
    - Serves: Bus
 
 789. **Matthäus-Jiszda-Straße**  
@@ -3173,7 +3173,7 @@
    - Serves: Bus
 
 793. **Maurer Hauptplatz**  
-   - Coordinates: 48.150786, 16.268490
+   - Coordinates: 48.150600, 16.268454
    - Serves: Bus
 
 794. **Mauthausgasse**  
@@ -3185,7 +3185,7 @@
    - Serves: Bus
 
 796. **Max-Mauermann-Gasse**  
-   - Coordinates: 48.163077, 16.409426
+   - Coordinates: 48.163137, 16.409292
    - Serves: Bus
 
 797. **Mayredergasse**  
@@ -3197,19 +3197,19 @@
    - Serves: Bus
 
 799. **Meidling Hauptstraße U**  
-   - Coordinates: 48.183571, 16.328524
+   - Coordinates: 48.183918, 16.328596
    - Serves: Bus
 
 800. **Meidling S+U, Eichenstr.**  
-   - Coordinates: 48.174855, 16.332288
+   - Coordinates: 48.174706, 16.333151
    - Serves: Bus
 
 801. **Meidling S+U, Schedifkaplatz**  
-   - Coordinates: 48.172555, 16.332028
+   - Coordinates: 48.173603, 16.329701
    - Serves: Bus
 
 802. **Meischlgasse**  
-   - Coordinates: 48.141382, 16.323539
+   - Coordinates: 48.141495, 16.323781
    - Serves: Bus
 
 803. **Melangasse**  
@@ -3217,11 +3217,11 @@
    - Serves: Bus
 
 804. **Melchartgasse**  
-   - Coordinates: 48.172555, 16.295143
+   - Coordinates: 48.172363, 16.295394
    - Serves: Bus
 
 805. **Memlinggasse**  
-   - Coordinates: 48.228400, 16.521662
+   - Coordinates: 48.228395, 16.521815
    - Serves: Bus
 
 806. **Mendelssohngasse**  
@@ -3245,7 +3245,7 @@
    - Serves: Bus
 
 811. **Michael-Neumann-Gasse**  
-   - Coordinates: 48.247062, 16.367421
+   - Coordinates: 48.246565, 16.366936
    - Serves: Bus
 
 812. **Michaelerplatz**  
@@ -3257,11 +3257,11 @@
    - Serves: Bus
 
 814. **Miriam-Makeba-Gasse**  
-   - Coordinates: 48.230944, 16.457271
+   - Coordinates: 48.231123, 16.457738
    - Serves: Bus
 
 815. **Mitte-Landstraße S+U**  
-   - Coordinates: 48.206122, 16.384265
+   - Coordinates: 48.206212, 16.384337
    - Serves: Bus
 
 816. **Mitterberg**  
@@ -3269,7 +3269,7 @@
    - Serves: Bus
 
 817. **Mitterhofergasse**  
-   - Coordinates: 48.277687, 16.402995
+   - Coordinates: 48.277974, 16.402240
    - Serves: Bus
 
 818. **Mittleres Hausfeld**  
@@ -3277,7 +3277,7 @@
    - Serves: Bus
 
 819. **Modecenterstraße**  
-   - Coordinates: 48.188260, 16.418688
+   - Coordinates: 48.188494, 16.418679
    - Serves: Bus
 
 820. **Moeringgasse**  
@@ -3289,7 +3289,7 @@
    - Serves: Bus
 
 822. **Mona-Lisa-Steiner-Weg**  
-   - Coordinates: 48.159440, 16.295457
+   - Coordinates: 48.159464, 16.295736
    - Serves: Bus
 
 823. **Mondweg**  
@@ -3297,7 +3297,7 @@
    - Serves: Bus
 
 824. **Montecuccoliplatz**  
-   - Coordinates: 48.175383, 16.297469
+   - Coordinates: 48.175466, 16.297946
    - Serves: Bus
 
 825. **Montleartstraße**  
@@ -3317,7 +3317,7 @@
    - Serves: Bus
 
 829. **Moritz-Dreger-Gasse**  
-   - Coordinates: 48.275218, 16.441604
+   - Coordinates: 48.275176, 16.441928
    - Serves: Bus
 
 830. **Moschingergasse**  
@@ -3341,11 +3341,11 @@
    - Serves: Bus
 
 835. **Mühlau**  
-   - Coordinates: 48.209804, 16.503606
+   - Coordinates: 48.208750, 16.503453
    - Serves: Bus
 
 836. **Mühlbreiten**  
-   - Coordinates: 48.149857, 16.311402
+   - Coordinates: 48.149174, 16.310477
    - Serves: Bus
 
 837. **Mühlhäufel**  
@@ -3365,7 +3365,7 @@
    - Serves: Bus
 
 841. **Mühlwasser**  
-   - Coordinates: 48.204087, 16.475830
+   - Coordinates: 48.204021, 16.475569
    - Serves: Bus
 
 842. **Mühlwasserstraße**  
@@ -3381,7 +3381,7 @@
    - Serves: Bus
 
 845. **Nauheimergasse**  
-   - Coordinates: 48.157474, 16.331408
+   - Coordinates: 48.157342, 16.331489
    - Serves: Bus
 
 846. **Nestroyplatz U**  
@@ -3397,7 +3397,7 @@
    - Serves: Bus
 
 849. **Neu-Albern**  
-   - Coordinates: 48.169068, 16.480196
+   - Coordinates: 48.168847, 16.480393
    - Serves: Bus
 
 850. **Neu-Kagran**  
@@ -3409,7 +3409,7 @@
    - Serves: Bus
 
 852. **Neubreitenlee**  
-   - Coordinates: 48.239745, 16.490499
+   - Coordinates: 48.239835, 16.490472
    - Serves: Bus
 
 853. **Neue Donau**  
@@ -3429,7 +3429,7 @@
    - Serves: Bus
 
 857. **Neulandschule**  
-   - Coordinates: 48.158906, 16.387346
+   - Coordinates: 48.158684, 16.387346
    - Serves: Bus
 
 858. **Neusteinhof**  
@@ -3437,19 +3437,19 @@
    - Serves: Bus
 
 859. **Neustift am Walde**  
-   - Coordinates: 48.250932, 16.301629
+   - Coordinates: 48.251070, 16.301826
    - Serves: Bus
 
 860. **Neustift, Agnesgasse**  
-   - Coordinates: 48.250214, 16.308043
+   - Coordinates: 48.250890, 16.307486
    - Serves: Bus
 
 861. **Neustifter Friedhof 1.Tor**  
-   - Coordinates: 48.247122, 16.304512
+   - Coordinates: 48.247235, 16.304701
    - Serves: Bus
 
 862. **Neustifter Friedhof 2.Tor**  
-   - Coordinates: 48.247241, 16.301692
+   - Coordinates: 48.247367, 16.301242
    - Serves: Bus
 
 863. **Neustifter Friedhof 3.Tor**  
@@ -3477,15 +3477,15 @@
    - Serves: Bus
 
 869. **Niederhofstraße U**  
-   - Coordinates: 48.181361, 16.331453
+   - Coordinates: 48.181415, 16.330680
    - Serves: Bus
 
 870. **Niedermeierweg**  
-   - Coordinates: 48.206350, 16.483052
+   - Coordinates: 48.206242, 16.483052
    - Serves: Bus
 
 871. **Niedermoserstraße**  
-   - Coordinates: 48.264718, 16.459508
+   - Coordinates: 48.265071, 16.459391
    - Serves: Bus
 
 872. **Niederpointenstraße**  
@@ -3517,11 +3517,11 @@
    - Serves: Bus
 
 879. **Nästlbergergasse**  
-   - Coordinates: 48.160380, 16.260432
+   - Coordinates: 48.160087, 16.260962
    - Serves: Bus
 
 880. **Obachgasse**  
-   - Coordinates: 48.261608, 16.464862
+   - Coordinates: 48.262063, 16.464044
    - Serves: Bus
 
 881. **Ober St. Veit**  
@@ -3537,7 +3537,7 @@
    - Serves: Bus
 
 884. **Obere Augartenstraße**  
-   - Coordinates: 48.222583, 16.375991
+   - Coordinates: 48.222494, 16.375803
    - Serves: Bus
 
 885. **Obere Waldandacht**  
@@ -3545,7 +3545,7 @@
    - Serves: Bus
 
 886. **Oberlaa U**  
-   - Coordinates: 48.141777, 16.399797
+   - Coordinates: 48.143438, 16.398647
    - Serves: Bus
 
 887. **Oberlaa, Friedhof**  
@@ -3557,7 +3557,7 @@
    - Serves: Bus
 
 889. **Oberlaaer Straße**  
-   - Coordinates: 48.148203, 16.361510
+   - Coordinates: 48.147789, 16.361034
    - Serves: Bus
 
 890. **Obersteinergasse**  
@@ -3589,7 +3589,7 @@
    - Serves: Bus
 
 897. **Oriongasse**  
-   - Coordinates: 48.176293, 16.439772
+   - Coordinates: 48.176299, 16.439969
    - Serves: Bus
 
 898. **Oskar-Simony-Straße**  
@@ -3601,15 +3601,15 @@
    - Serves: Bus
 
 900. **Oswald-Redlich-Straße**  
-   - Coordinates: 48.274781, 16.453704
+   - Coordinates: 48.274811, 16.453884
    - Serves: Bus
 
 901. **Ottakring S+U**  
-   - Coordinates: 48.210546, 16.310432
+   - Coordinates: 48.211941, 16.310899
    - Serves: Bus
 
 902. **Ottakringer Bad**  
-   - Coordinates: 48.212528, 16.290912
+   - Coordinates: 48.211504, 16.288855
    - Serves: Bus
 
 903. **Ottakringer Friedhof**  
@@ -3617,15 +3617,15 @@
    - Serves: Bus
 
 904. **Otto-Hötzl-Weg**  
-   - Coordinates: 48.222015, 16.291172
+   - Coordinates: 48.221740, 16.291577
    - Serves: Bus
 
 905. **Otto-Probst-Platz**  
-   - Coordinates: 48.153932, 16.348880
+   - Coordinates: 48.153932, 16.348718
    - Serves: Bus
 
 906. **Otto-Wagner-Areal**  
-   - Coordinates: 48.206877, 16.279898
+   - Coordinates: 48.206619, 16.280339
    - Serves: Bus
 
 907. **Otto-Weber-Gasse**  
@@ -3645,7 +3645,7 @@
    - Serves: Bus
 
 911. **Pantucekgasse**  
-   - Coordinates: 48.159727, 16.457361
+   - Coordinates: 48.159973, 16.457567
    - Serves: Bus
 
 912. **Pasettistraße**  
@@ -3657,7 +3657,7 @@
    - Serves: Bus
 
 914. **Paukerwerkstraße**  
-   - Coordinates: 48.269693, 16.426521
+   - Coordinates: 48.269681, 16.426665
    - Serves: Bus
 
 915. **Paul-Wagner-Gasse**  
@@ -3665,7 +3665,7 @@
    - Serves: Bus
 
 916. **Paulinensteig**  
-   - Coordinates: 48.218442, 16.299311
+   - Coordinates: 48.218717, 16.299077
    - Serves: Bus
 
 917. **Pelargonienweg**  
@@ -3685,15 +3685,15 @@
    - Serves: Bus
 
 921. **Pensionistenwohnhaus Atzgersdorf**  
-   - Coordinates: 48.150714, 16.289933
+   - Coordinates: 48.150504, 16.289681
    - Serves: Bus
 
 922. **Pensionistenwohnhaus Föhrenhof**  
-   - Coordinates: 48.165989, 16.272406
+   - Coordinates: 48.165947, 16.272263
    - Serves: Bus
 
 923. **Pensionistenwohnhaus Hetzendorf**  
-   - Coordinates: 48.166941, 16.300164
+   - Coordinates: 48.166839, 16.300236
    - Serves: Bus
 
 924. **Pensionistenwohnhaus Rosenberg**  
@@ -3701,15 +3701,15 @@
    - Serves: Bus
 
 925. **Pensionsversicherungsanstalt**  
-   - Coordinates: 48.229256, 16.397479
+   - Coordinates: 48.229328, 16.397614
    - Serves: Bus
 
 926. **Percostraße**  
-   - Coordinates: 48.268760, 16.464951
+   - Coordinates: 48.268814, 16.465140
    - Serves: Bus
 
 927. **Perfektastraße U**  
-   - Coordinates: 48.136394, 16.312867
+   - Coordinates: 48.136724, 16.314025
    - Serves: Bus
 
 928. **Peter-Jordan-Straße**  
@@ -3721,11 +3721,11 @@
    - Serves: Bus
 
 930. **Pfaffenaugasse**  
-   - Coordinates: 48.171477, 16.460262
+   - Coordinates: 48.171423, 16.460424
    - Serves: Bus
 
 931. **Pfalzgasse**  
-   - Coordinates: 48.240266, 16.491515
+   - Coordinates: 48.240475, 16.491910
    - Serves: Bus
 
 932. **Pfarrgasse**  
@@ -3745,7 +3745,7 @@
    - Serves: Bus
 
 936. **Pfenninggeldgasse**  
-   - Coordinates: 48.206877, 16.314582
+   - Coordinates: 48.207673, 16.313424
    - Serves: Bus
 
 937. **Pflaumengasse**  
@@ -3761,11 +3761,11 @@
    - Serves: Bus
 
 940. **Pierre-de-Coubertin-Platz**  
-   - Coordinates: 48.206535, 16.418239
+   - Coordinates: 48.206499, 16.418499
    - Serves: Bus
 
 941. **Pilgramgasse U**  
-   - Coordinates: 48.192872, 16.354477
+   - Coordinates: 48.192770, 16.353911
    - Serves: Bus
 
 942. **Pilotengasse**  
@@ -3785,7 +3785,7 @@
    - Serves: Bus
 
 946. **Plattensteinergasse**  
-   - Coordinates: 48.211402, 16.478669
+   - Coordinates: 48.211289, 16.478884
    - Serves: Bus
 
 947. **Podhagskygasse**  
@@ -3793,7 +3793,7 @@
    - Serves: Bus
 
 948. **Podlahagasse**  
-   - Coordinates: 48.211007, 16.533008
+   - Coordinates: 48.210983, 16.533385
    - Serves: Bus
 
 949. **Pogrelzstraße**  
@@ -3805,11 +3805,11 @@
    - Serves: Bus
 
 951. **Polgarstraße**  
-   - Coordinates: 48.231584, 16.448503
+   - Coordinates: 48.231746, 16.448871
    - Serves: Bus
 
 952. **Polkorabplatz**  
-   - Coordinates: 48.174508, 16.410990
+   - Coordinates: 48.174232, 16.411600
    - Serves: Bus
 
 953. **Portnergasse**  
@@ -3817,7 +3817,7 @@
    - Serves: Bus
 
 954. **Possingergasse**  
-   - Coordinates: 48.210648, 16.318751
+   - Coordinates: 48.208954, 16.318733
    - Serves: Bus
 
 955. **Praterbrücke**  
@@ -3825,15 +3825,15 @@
    - Serves: Bus
 
 956. **Praterkai S**  
-   - Coordinates: 48.199878, 16.441074
+   - Coordinates: 48.199764, 16.440859
    - Serves: Bus
 
 957. **Praterstern S+U**  
-   - Coordinates: 48.218310, 16.391541
+   - Coordinates: 48.220345, 16.393194
    - Serves: Bus
 
 958. **Predigtstuhl**  
-   - Coordinates: 48.222362, 16.289304
+   - Coordinates: 48.222386, 16.289537
    - Serves: Bus
 
 959. **Preindlgasse**  
@@ -3841,7 +3841,7 @@
    - Serves: Bus
 
 960. **Preyergasse**  
-   - Coordinates: 48.173777, 16.286609
+   - Coordinates: 48.173825, 16.286429
    - Serves: Bus
 
 961. **Preßgasse**  
@@ -3853,11 +3853,11 @@
    - Serves: Bus
 
 963. **Promenadeweg**  
-   - Coordinates: 48.250591, 16.280958
+   - Coordinates: 48.250681, 16.280797
    - Serves: Bus
 
 964. **Puchgasse**  
-   - Coordinates: 48.260263, 16.455007
+   - Coordinates: 48.260197, 16.455178
    - Serves: Bus
 
 965. **Pulkaugasse**  
@@ -3865,7 +3865,7 @@
    - Serves: Bus
 
 966. **Pumgasse**  
-   - Coordinates: 48.135968, 16.271975
+   - Coordinates: 48.136058, 16.271993
    - Serves: Bus
 
 967. **Purkytgasse**  
@@ -3881,7 +3881,7 @@
    - Serves: Bus
 
 970. **Pötzleinsdorfer Friedhof**  
-   - Coordinates: 48.245680, 16.307531
+   - Coordinates: 48.245680, 16.307414
    - Serves: Bus
 
 971. **Quadenstraße**  
@@ -3889,7 +3889,7 @@
    - Serves: Bus
 
 972. **Rabengasse**  
-   - Coordinates: 48.194321, 16.397542
+   - Coordinates: 48.194363, 16.397272
    - Serves: Bus
 
 973. **Raffineriestr./Biberhaufenweg**  
@@ -3897,7 +3897,7 @@
    - Serves: Bus
 
 974. **Raffineriestr./Ostbahnbrücke**  
-   - Coordinates: 48.205075, 16.449554
+   - Coordinates: 48.205793, 16.448755
    - Serves: Bus
 
 975. **Raimannstraße**  
@@ -3905,7 +3905,7 @@
    - Serves: Bus
 
 976. **Rainergasse**  
-   - Coordinates: 48.187985, 16.368868
+   - Coordinates: 48.188572, 16.367942
    - Serves: Bus
 
 977. **Rallenweg**  
@@ -3913,11 +3913,11 @@
    - Serves: Bus
 
 978. **Rankgasse**  
-   - Coordinates: 48.210894, 16.306021
+   - Coordinates: 48.210534, 16.305608
    - Serves: Bus
 
 979. **Raphael-Donner-Allee**  
-   - Coordinates: 48.205907, 16.523396
+   - Coordinates: 48.206015, 16.522947
    - Serves: Bus
 
 980. **Rappachgasse**  
@@ -3933,11 +3933,11 @@
    - Serves: Bus
 
 983. **Ratzenhofergasse**  
-   - Coordinates: 48.284358, 16.420143
+   - Coordinates: 48.284036, 16.419524
    - Serves: Bus
 
 984. **Rauscherstraße**  
-   - Coordinates: 48.230680, 16.375380
+   - Coordinates: 48.230734, 16.375443
    - Serves: Bus
 
 985. **Ravelinstraße**  
@@ -3961,11 +3961,11 @@
    - Serves: Bus
 
 990. **Reinprechtsdorfer Brücke**  
-   - Coordinates: 48.188470, 16.351701
+   - Coordinates: 48.189320, 16.351782
    - Serves: Bus
 
 991. **Reinprechtsdorfer Straße/Arbeitergasse**  
-   - Coordinates: 48.186410, 16.352976
+   - Coordinates: 48.186673, 16.352967
    - Serves: Bus
 
 992. **Reischergasse**  
@@ -3973,15 +3973,15 @@
    - Serves: Bus
 
 993. **Rennbahnweg U**  
-   - Coordinates: 48.257278, 16.450129
+   - Coordinates: 48.257093, 16.449428
    - Serves: Bus
 
 994. **Renngasse**  
-   - Coordinates: 48.213001, 16.367331
+   - Coordinates: 48.213126, 16.367861
    - Serves: Bus
 
 995. **Rennweg S**  
-   - Coordinates: 48.195117, 16.386663
+   - Coordinates: 48.194471, 16.386816
    - Serves: Bus
 
 996. **Resedaweg**  
@@ -3993,15 +3993,15 @@
    - Serves: Bus
 
 998. **Reumannplatz U**  
-   - Coordinates: 48.174550, 16.379333
+   - Coordinates: 48.173154, 16.377482
    - Serves: Bus
 
 999. **Richard-Strauss-Straße**  
-   - Coordinates: 48.137797, 16.338136
+   - Coordinates: 48.137677, 16.338271
    - Serves: Bus
 
 1000. **Richthausenstraße**  
-   - Coordinates: 48.223679, 16.322730
+   - Coordinates: 48.224151, 16.322389
    - Serves: Bus
 
 1001. **Riedstraße**  
@@ -4029,11 +4029,11 @@
    - Serves: Bus
 
 1007. **Rodlergasse**  
-   - Coordinates: 48.240810, 16.334552
+   - Coordinates: 48.240721, 16.333681
    - Serves: Bus
 
 1008. **Rohrbacherstraße**  
-   - Coordinates: 48.187602, 16.273062
+   - Coordinates: 48.187739, 16.273449
    - Serves: Bus
 
 1009. **Rosalia-Chladek-Gasse**  
@@ -4041,7 +4041,7 @@
    - Serves: Bus
 
 1010. **Rosasgasse**  
-   - Coordinates: 48.181870, 16.324500
+   - Coordinates: 48.181528, 16.324626
    - Serves: Bus
 
 1011. **Roschégasse**  
@@ -4053,7 +4053,7 @@
    - Serves: Bus
 
 1013. **Rosenhügelstraße**  
-   - Coordinates: 48.168649, 16.302275
+   - Coordinates: 48.168930, 16.302150
    - Serves: Bus
 
 1014. **Rosentalgasse**  
@@ -4061,7 +4061,7 @@
    - Serves: Bus
 
 1015. **Rosiwalgasse**  
-   - Coordinates: 48.137923, 16.382809
+   - Coordinates: 48.138126, 16.382917
    - Serves: Bus
 
 1016. **Rossakgasse**  
@@ -4093,11 +4093,11 @@
    - Serves: Bus
 
 1023. **Rudolf-Waisenhorn-Gasse**  
-   - Coordinates: 48.143012, 16.261483
+   - Coordinates: 48.143054, 16.261672
    - Serves: Bus
 
 1024. **Rudolf-Zeller-Gasse**  
-   - Coordinates: 48.147519, 16.283788
+   - Coordinates: 48.147400, 16.283725
    - Serves: Bus
 
 1025. **Rudolfsplatz**  
@@ -4105,7 +4105,7 @@
    - Serves: Bus
 
 1026. **Rueppgasse**  
-   - Coordinates: 48.220555, 16.386403
+   - Coordinates: 48.220555, 16.385576
    - Serves: Bus
 
 1027. **Rustenschacherallee**  
@@ -4121,7 +4121,7 @@
    - Serves: Bus
 
 1030. **Rußbergstraße**  
-   - Coordinates: 48.287933, 16.383537
+   - Coordinates: 48.287622, 16.383492
    - Serves: Bus
 
 1031. **Röbbelinggasse**  
@@ -4129,11 +4129,11 @@
    - Serves: Bus
 
 1032. **Röntgengasse**  
-   - Coordinates: 48.225384, 16.286079
+   - Coordinates: 48.225366, 16.285953
    - Serves: Bus
 
 1033. **Saarplatz**  
-   - Coordinates: 48.245154, 16.350039
+   - Coordinates: 48.245213, 16.350407
    - Serves: Bus
 
 1034. **Sagedergasse**  
@@ -4157,11 +4157,11 @@
    - Serves: Bus
 
 1039. **Salztorbrücke**  
-   - Coordinates: 48.213773, 16.374213
+   - Coordinates: 48.213743, 16.373458
    - Serves: Bus
 
 1040. **Samptwandnergasse**  
-   - Coordinates: 48.203278, 16.244684
+   - Coordinates: 48.203434, 16.244532
    - Serves: Bus
 
 1041. **Sanddorngasse**  
@@ -4169,7 +4169,7 @@
    - Serves: Bus
 
 1042. **Sandleitengasse**  
-   - Coordinates: 48.217795, 16.307135
+   - Coordinates: 48.217903, 16.307153
    - Serves: Bus
 
 1043. **Sandrockgasse**  
@@ -4181,11 +4181,11 @@
    - Serves: Bus
 
 1045. **Sauerburggasse**  
-   - Coordinates: 48.246159, 16.338972
+   - Coordinates: 48.246254, 16.339043
    - Serves: Bus
 
 1046. **Savoyenstraße**  
-   - Coordinates: 48.218095, 16.278686
+   - Coordinates: 48.218053, 16.278820
    - Serves: Bus
 
 1047. **Scalagasse**  
@@ -4205,7 +4205,7 @@
    - Serves: Bus
 
 1051. **Schanzstraße/Akkonplatz**  
-   - Coordinates: 48.201327, 16.314645
+   - Coordinates: 48.201339, 16.314403
    - Serves: Bus
 
 1052. **Schartlgasse**  
@@ -4241,7 +4241,7 @@
    - Serves: Bus
 
 1060. **Schillingstraße**  
-   - Coordinates: 48.260352, 16.470242
+   - Coordinates: 48.260364, 16.471302
    - Serves: Bus
 
 1061. **Schillwasserweg**  
@@ -4261,7 +4261,7 @@
    - Serves: Bus
 
 1065. **Schlachthausgasse U**  
-   - Coordinates: 48.194057, 16.407432
+   - Coordinates: 48.194135, 16.408079
    - Serves: Bus
 
 1066. **Schleifmühlgasse**  
@@ -4269,11 +4269,11 @@
    - Serves: Bus
 
 1067. **Schloss Alterlaa**  
-   - Coordinates: 48.149234, 16.306569
+   - Coordinates: 48.148077, 16.307414
    - Serves: Bus
 
 1068. **Schloss Hetzendorf**  
-   - Coordinates: 48.167576, 16.309112
+   - Coordinates: 48.167654, 16.309336
    - Serves: Bus
 
 1069. **Schloss Neugebäude**  
@@ -4281,7 +4281,7 @@
    - Serves: Bus
 
 1070. **Schloss Schönbrunn**  
-   - Coordinates: 48.187805, 16.314924
+   - Coordinates: 48.187081, 16.313873
    - Serves: Bus
 
 1071. **Schluckergasse**  
@@ -4289,11 +4289,11 @@
    - Serves: Bus
 
 1072. **Schmelz, Gablenzgasse**  
-   - Coordinates: 48.206781, 16.315256
+   - Coordinates: 48.206098, 16.317304
    - Serves: Bus
 
 1073. **Schmelzbrücke**  
-   - Coordinates: 48.196147, 16.329692
+   - Coordinates: 48.196081, 16.329458
    - Serves: Bus
 
 1074. **Schoeppelgasse**  
@@ -4309,7 +4309,7 @@
    - Serves: Bus
 
 1077. **Schottenwald**  
-   - Coordinates: 48.230501, 16.257997
+   - Coordinates: 48.230561, 16.257935
    - Serves: Bus
 
 1078. **Schrammelgasse**  
@@ -4317,7 +4317,7 @@
    - Serves: Bus
 
 1079. **Schreinerweg**  
-   - Coordinates: 48.227437, 16.446958
+   - Coordinates: 48.227563, 16.447560
    - Serves: Bus
 
 1080. **Schrekergasse**  
@@ -4337,15 +4337,15 @@
    - Serves: Bus
 
 1084. **Schwarzenbergallee**  
-   - Coordinates: 48.240176, 16.277644
+   - Coordinates: 48.240092, 16.277707
    - Serves: Bus
 
 1085. **Schwarzenbergplatz**  
-   - Coordinates: 48.200093, 16.374401
+   - Coordinates: 48.199626, 16.373880
    - Serves: Bus
 
 1086. **Schwarzenhaidestraße**  
-   - Coordinates: 48.152242, 16.329027
+   - Coordinates: 48.152470, 16.328066
    - Serves: Bus
 
 1087. **Schwarzlackenau**  
@@ -4365,7 +4365,7 @@
    - Serves: Bus
 
 1091. **Schwechat Brauerei**  
-   - Coordinates: 48.145458, 16.469209
+   - Coordinates: 48.145230, 16.469146
    - Serves: Bus
 
 1092. **Schwechat Möhringgasse**  
@@ -4385,7 +4385,7 @@
    - Serves: Bus
 
 1096. **Schweglerstraße U**  
-   - Coordinates: 48.198063, 16.327653
+   - Coordinates: 48.196800, 16.327770
    - Serves: Bus
 
 1097. **Schweizer-Garten-Straße**  
@@ -4393,7 +4393,7 @@
    - Serves: Bus
 
 1098. **Schweizertalstraße**  
-   - Coordinates: 48.187943, 16.265705
+   - Coordinates: 48.187793, 16.265813
    - Serves: Bus
 
 1099. **Schwertgasse**  
@@ -4401,7 +4401,7 @@
    - Serves: Bus
 
 1100. **Schöberweg**  
-   - Coordinates: 48.230704, 16.312328
+   - Coordinates: 48.230830, 16.312013
    - Serves: Bus
 
 1101. **Schödlbergergasse**  
@@ -4417,7 +4417,7 @@
    - Serves: Bus
 
 1104. **Schüttauplatz**  
-   - Coordinates: 48.226150, 16.423359
+   - Coordinates: 48.226659, 16.422883
    - Serves: Bus
 
 1105. **Schüttaustraße**  
@@ -4433,7 +4433,7 @@
    - Serves: Bus
 
 1108. **Sebaldgasse**  
-   - Coordinates: 48.262577, 16.446545
+   - Coordinates: 48.262045, 16.448252
    - Serves: Bus
 
 1109. **Sebastian-Kohl-Gasse**  
@@ -4441,7 +4441,7 @@
    - Serves: Bus
 
 1110. **Sebastianbrücke**  
-   - Coordinates: 48.134721, 16.414304
+   - Coordinates: 48.134506, 16.414583
    - Serves: Bus
 
 1111. **Seckendorfstraße**  
@@ -4453,15 +4453,15 @@
    - Serves: Bus
 
 1113. **Seestadt U**  
-   - Coordinates: 48.225474, 16.508978
+   - Coordinates: 48.225408, 16.508277
    - Serves: Bus
 
 1114. **Seidelbastgasse**  
-   - Coordinates: 48.214276, 16.471419
+   - Coordinates: 48.214162, 16.471401
    - Serves: Bus
 
 1115. **Seifertstraße**  
-   - Coordinates: 48.182337, 16.261169
+   - Coordinates: 48.182313, 16.261330
    - Serves: Bus
 
 1116. **Seitenhafenbrücke**  
@@ -4497,7 +4497,7 @@
    - Serves: Bus
 
 1124. **Siebeckstraße**  
-   - Coordinates: 48.242234, 16.435002
+   - Coordinates: 48.241349, 16.434849
    - Serves: Bus
 
 1125. **Siebenbrunnenfeldgasse**  
@@ -4509,7 +4509,7 @@
    - Serves: Bus
 
 1127. **Siebenbürgerstraße**  
-   - Coordinates: 48.233265, 16.446581
+   - Coordinates: 48.233062, 16.446725
    - Serves: Bus
 
 1128. **Siebeneichengasse**  
@@ -4517,7 +4517,7 @@
    - Serves: Bus
 
 1129. **Siedlung Blumental**  
-   - Coordinates: 48.145943, 16.361232
+   - Coordinates: 48.145823, 16.361591
    - Serves: Bus
 
 1130. **Siedlung Einigkeit**  
@@ -4541,35 +4541,35 @@
    - Serves: Bus
 
 1135. **Siedlung Südost**  
-   - Coordinates: 48.156341, 16.394272
+   - Coordinates: 48.156479, 16.394892
    - Serves: Bus
 
 1136. **Siegesplatz**  
-   - Coordinates: 48.217706, 16.485424
+   - Coordinates: 48.217436, 16.485909
    - Serves: Bus
 
 1137. **Siemensstraße S**  
-   - Coordinates: 48.271547, 16.420871
+   - Coordinates: 48.271343, 16.419667
    - Serves: Bus
 
 1138. **Sievering**  
-   - Coordinates: 48.254180, 16.317089
+   - Coordinates: 48.254144, 16.317475
    - Serves: Bus
 
 1139. **Silbergasse**  
-   - Coordinates: 48.243084, 16.348736
+   - Coordinates: 48.242982, 16.348422
    - Serves: Bus
 
 1140. **Simmering S+U**  
-   - Coordinates: 48.169901, 16.420350
+   - Coordinates: 48.169601, 16.419973
    - Serves: Bus
 
 1141. **Simmering S+U/Kaiserebersdorfer Str.**  
-   - Coordinates: 48.169296, 16.421922
+   - Coordinates: 48.169140, 16.422066
    - Serves: Bus
 
 1142. **Simmeringer Haide**  
-   - Coordinates: 48.177389, 16.440490
+   - Coordinates: 48.177539, 16.440751
    - Serves: Bus
 
 1143. **Simoningplatz**  
@@ -4577,7 +4577,7 @@
    - Serves: Bus
 
 1144. **Simonsgasse**  
-   - Coordinates: 48.215664, 16.527968
+   - Coordinates: 48.215736, 16.527833
    - Serves: Bus
 
 1145. **Simonygasse**  
@@ -4597,7 +4597,7 @@
    - Serves: Bus
 
 1149. **Skraupstraße**  
-   - Coordinates: 48.274165, 16.413702
+   - Coordinates: 48.274285, 16.413837
    - Serves: Bus
 
 1150. **Skraupstraße/Justgasse**  
@@ -4621,7 +4621,7 @@
    - Serves: Bus
 
 1155. **Sonnergasse**  
-   - Coordinates: 48.167481, 16.318957
+   - Coordinates: 48.168188, 16.319415
    - Serves: Bus
 
 1156. **Sonnleithnergasse**  
@@ -4661,15 +4661,15 @@
    - Serves: Bus
 
 1165. **Spittelau S+U**  
-   - Coordinates: 48.233002, 16.356354
+   - Coordinates: 48.236132, 16.356291
    - Serves: Bus
 
 1166. **St. Marx S**  
-   - Coordinates: 48.188554, 16.399922
+   - Coordinates: 48.189195, 16.399985
    - Serves: Bus
 
 1167. **St. Marx S/Leberstr.**  
-   - Coordinates: 48.187422, 16.400084
+   - Coordinates: 48.187817, 16.399698
    - Serves: Bus
 
 1168. **St. Veiter Tor**  
@@ -4693,11 +4693,11 @@
    - Serves: Bus
 
 1173. **Stachegasse**  
-   - Coordinates: 48.161968, 16.311959
+   - Coordinates: 48.162220, 16.311995
    - Serves: Bus
 
 1174. **Stadion U**  
-   - Coordinates: 48.210929, 16.421545
+   - Coordinates: 48.211025, 16.421311
    - Serves: Bus
 
 1175. **Stadionbad**  
@@ -4705,15 +4705,15 @@
    - Serves: Bus
 
 1176. **Stadionbrücke**  
-   - Coordinates: 48.197219, 16.411915
+   - Coordinates: 48.197291, 16.411690
    - Serves: Bus
 
 1177. **Stadlau S+U**  
-   - Coordinates: 48.218418, 16.448324
+   - Coordinates: 48.218490, 16.448494
    - Serves: Bus
 
 1178. **Stadlauer Brücke**  
-   - Coordinates: 48.200309, 16.438505
+   - Coordinates: 48.200225, 16.438918
    - Serves: Bus
 
 1179. **Stadlauer Friedhof**  
@@ -4729,11 +4729,11 @@
    - Serves: Bus
 
 1182. **Stavangergasse**  
-   - Coordinates: 48.213162, 16.476019
+   - Coordinates: 48.213055, 16.476001
    - Serves: Bus
 
 1183. **Stefan-Fadinger-Platz**  
-   - Coordinates: 48.167642, 16.354503
+   - Coordinates: 48.167990, 16.354261
    - Serves: Bus
 
 1184. **Steigenteschgasse**  
@@ -4741,11 +4741,11 @@
    - Serves: Bus
 
 1185. **Steinamangergasse**  
-   - Coordinates: 48.283653, 16.402599
+   - Coordinates: 48.283533, 16.402806
    - Serves: Bus
 
 1186. **Steinbrechergasse**  
-   - Coordinates: 48.233726, 16.438577
+   - Coordinates: 48.233768, 16.438774
    - Serves: Bus
 
 1187. **Steinergasse**  
@@ -4757,11 +4757,11 @@
    - Serves: Bus
 
 1189. **Steinlegasse**  
-   - Coordinates: 48.211612, 16.296347
+   - Coordinates: 48.211696, 16.296338
    - Serves: Bus
 
 1190. **Steinsee**  
-   - Coordinates: 48.151949, 16.319873
+   - Coordinates: 48.151541, 16.320457
    - Serves: Bus
 
 1191. **Stephansplatz U**  
@@ -4777,11 +4777,11 @@
    - Serves: Bus
 
 1194. **Stiegengasse**  
-   - Coordinates: 48.198441, 16.357118
+   - Coordinates: 48.198650, 16.357441
    - Serves: Bus
 
 1195. **Stiegergasse**  
-   - Coordinates: 48.187925, 16.332764
+   - Coordinates: 48.188224, 16.332944
    - Serves: Bus
 
 1196. **Stillfriedplatz**  
@@ -4789,7 +4789,7 @@
    - Serves: Bus
 
 1197. **Stock im Weg**  
-   - Coordinates: 48.180528, 16.260800
+   - Coordinates: 48.180360, 16.262768
    - Serves: Bus
 
 1198. **Stockholmer Platz**  
@@ -4805,7 +4805,7 @@
    - Serves: Bus
 
 1201. **Strandbad Stadlau**  
-   - Coordinates: 48.214348, 16.456211
+   - Coordinates: 48.214485, 16.456462
    - Serves: Bus
 
 1202. **Stranitzkygasse**  
@@ -4829,11 +4829,11 @@
    - Serves: Bus
 
 1207. **Strehlgasse**  
-   - Coordinates: 48.246428, 16.314654
+   - Coordinates: 48.246583, 16.314627
    - Serves: Bus
 
 1208. **Strigelgasse**  
-   - Coordinates: 48.231099, 16.518257
+   - Coordinates: 48.231033, 16.518141
    - Serves: Bus
 
 1209. **Strozzigasse**  
@@ -4841,7 +4841,7 @@
    - Serves: Bus
 
 1210. **Stubentor U**  
-   - Coordinates: 48.207344, 16.380267
+   - Coordinates: 48.206996, 16.380932
    - Serves: Bus
 
 1211. **Sturgasse**  
@@ -4849,11 +4849,11 @@
    - Serves: Bus
 
 1212. **Sulzengasse**  
-   - Coordinates: 48.144654, 16.375174
+   - Coordinates: 48.144900, 16.374509
    - Serves: Bus
 
 1213. **Svetelskystraße**  
-   - Coordinates: 48.154256, 16.466595
+   - Coordinates: 48.154298, 16.466236
    - Serves: Bus
 
 1214. **Swatoschgasse**  
@@ -4873,7 +4873,7 @@
    - Serves: Bus
 
 1218. **Südwestfriedhof 2. & 8. Tor**  
-   - Coordinates: 48.161135, 16.303003
+   - Coordinates: 48.160620, 16.302850
    - Serves: Bus
 
 1219. **Süßenbrunn, Sportpark**  
@@ -4889,7 +4889,7 @@
    - Serves: Bus
 
 1222. **Süßenbrunner Straße/Oberfeldgasse**  
-   - Coordinates: 48.243197, 16.469030
+   - Coordinates: 48.243257, 16.468895
    - Serves: Bus
 
 1223. **Taborstraße U**  
@@ -4897,11 +4897,11 @@
    - Serves: Bus
 
 1224. **Taglieberstraße**  
-   - Coordinates: 48.150037, 16.284354
+   - Coordinates: 48.149953, 16.284282
    - Serves: Bus
 
 1225. **Tamariskengasse**  
-   - Coordinates: 48.216431, 16.465122
+   - Coordinates: 48.216532, 16.465158
    - Serves: Bus
 
 1226. **Tanbruckgasse**  
@@ -4917,7 +4917,7 @@
    - Serves: Bus
 
 1229. **Tenschertstraße**  
-   - Coordinates: 48.140896, 16.352509
+   - Coordinates: 48.140854, 16.352348
    - Serves: Bus
 
 1230. **Thaliastraße U/Koppstr.**  
@@ -4929,7 +4929,7 @@
    - Serves: Bus
 
 1232. **Theergasse**  
-   - Coordinates: 48.174993, 16.322793
+   - Coordinates: 48.174873, 16.322739
    - Serves: Bus
 
 1233. **Theodor-Kramer-Str.**  
@@ -4937,7 +4937,7 @@
    - Serves: Bus
 
 1234. **Theodor-Sickel-Gasse**  
-   - Coordinates: 48.160320, 16.392412
+   - Coordinates: 48.160338, 16.392269
    - Serves: Bus
 
 1235. **Thujagasse**  
@@ -4957,11 +4957,11 @@
    - Serves: Bus
 
 1239. **Tinterstraße**  
-   - Coordinates: 48.200237, 16.279620
+   - Coordinates: 48.200183, 16.279449
    - Serves: Bus
 
 1240. **Tiroler Gasse**  
-   - Coordinates: 48.180744, 16.299257
+   - Coordinates: 48.180935, 16.299167
    - Serves: Bus
 
 1241. **Tivoligasse**  
@@ -4973,11 +4973,11 @@
    - Serves: Bus
 
 1243. **Toni-Fritsch-Weg**  
-   - Coordinates: 48.284944, 16.409543
+   - Coordinates: 48.284920, 16.409247
    - Serves: Bus
 
 1244. **Traisengasse S**  
-   - Coordinates: 48.234636, 16.385190
+   - Coordinates: 48.234546, 16.385019
    - Serves: Bus
 
 1245. **Traviatagasse**  
@@ -4985,7 +4985,7 @@
    - Serves: Bus
 
 1246. **Triester Str./Computerstr.**  
-   - Coordinates: 48.157882, 16.341658
+   - Coordinates: 48.157420, 16.342475
    - Serves: Bus
 
 1247. **Triester Str./Rossakgasse**  
@@ -4997,15 +4997,15 @@
    - Serves: Bus
 
 1249. **Troststraße/Neilreichgasse**  
-   - Coordinates: 48.169985, 16.364825
+   - Coordinates: 48.170045, 16.363792
    - Serves: Bus
 
 1250. **Tullnertalgasse**  
-   - Coordinates: 48.153974, 16.291738
+   - Coordinates: 48.153914, 16.291585
    - Serves: Bus
 
 1251. **Twarochgasse**  
-   - Coordinates: 48.233289, 16.305087
+   - Coordinates: 48.233212, 16.305033
    - Serves: Bus
 
 1252. **Töllergasse**  
@@ -5013,7 +5013,7 @@
    - Serves: Bus
 
 1253. **Türkenschanzplatz**  
-   - Coordinates: 48.234552, 16.328228
+   - Coordinates: 48.234833, 16.327913
    - Serves: Bus
 
 1254. **Uhlirzgasse**  
@@ -5037,7 +5037,7 @@
    - Serves: Bus
 
 1259. **Unfallkrankenhaus Meidling**  
-   - Coordinates: 48.173514, 16.345053
+   - Coordinates: 48.173400, 16.344990
    - Serves: Bus
 
 1260. **Ungargasse/Neulinggasse**  
@@ -5053,7 +5053,7 @@
    - Serves: Bus
 
 1263. **Unteres Belvedere**  
-   - Coordinates: 48.196824, 16.380806
+   - Coordinates: 48.196566, 16.381534
    - Serves: Bus
 
 1264. **Unterlaa**  
@@ -5061,11 +5061,11 @@
    - Serves: Bus
 
 1265. **Unterlaa Stadtgrenze**  
-   - Coordinates: 48.131166, 16.427483
+   - Coordinates: 48.131052, 16.427069
    - Serves: Bus
 
 1266. **Unterlaaer Straße**  
-   - Coordinates: 48.135962, 16.412050
+   - Coordinates: 48.135902, 16.411987
    - Serves: Bus
 
 1267. **Uranusweg**  
@@ -5073,7 +5073,7 @@
    - Serves: Bus
 
 1268. **Urselbrunnengasse**  
-   - Coordinates: 48.164509, 16.391200
+   - Coordinates: 48.165126, 16.390041
    - Serves: Bus
 
 1269. **Ursulinenkloster**  
@@ -5085,7 +5085,7 @@
    - Serves: Bus
 
 1271. **Valiergasse**  
-   - Coordinates: 48.157108, 16.469137
+   - Coordinates: 48.157450, 16.469066
    - Serves: Bus
 
 1272. **Veitingergasse**  
@@ -5093,7 +5093,7 @@
    - Serves: Bus
 
 1273. **Veitschiweg**  
-   - Coordinates: 48.226150, 16.440445
+   - Coordinates: 48.226192, 16.440589
    - Serves: Bus
 
 1274. **Veletaweg**  
@@ -5101,7 +5101,7 @@
    - Serves: Bus
 
 1275. **Vera-Schwarz-Gasse**  
-   - Coordinates: 48.136382, 16.337885
+   - Coordinates: 48.136382, 16.338442
    - Serves: Bus
 
 1276. **Verbindungsbahn**  
@@ -5117,7 +5117,7 @@
    - Serves: Bus
 
 1279. **Veterinärmedizinische Universität**  
-   - Coordinates: 48.253839, 16.431489
+   - Coordinates: 48.253791, 16.431669
    - Serves: Bus
 
 1280. **Viehmarktgasse**  
@@ -5137,7 +5137,7 @@
    - Serves: Bus
 
 1284. **Voitgasse**  
-   - Coordinates: 48.262553, 16.460918
+   - Coordinates: 48.262362, 16.460990
    - Serves: Bus
 
 1285. **Volkertplatz**  
@@ -5145,7 +5145,7 @@
    - Serves: Bus
 
 1286. **Volkstheater U**  
-   - Coordinates: 48.205619, 16.356686
+   - Coordinates: 48.204949, 16.357612
    - Serves: Bus
 
 1287. **Voltelinistraße**  
@@ -5153,15 +5153,15 @@
    - Serves: Bus
 
 1288. **Vorarlberger Allee**  
-   - Coordinates: 48.132923, 16.349805
+   - Coordinates: 48.133025, 16.349886
    - Serves: Bus
 
 1289. **Vorgartenstraße U**  
-   - Coordinates: 48.225678, 16.400794
+   - Coordinates: 48.224361, 16.401378
    - Serves: Bus
 
 1290. **Vorwärtsplatz**  
-   - Coordinates: 48.258116, 16.434723
+   - Coordinates: 48.258157, 16.434606
    - Serves: Bus
 
 1291. **Wachthausgasse**  
@@ -5181,11 +5181,11 @@
    - Serves: Bus
 
 1295. **Waidhausenstraße**  
-   - Coordinates: 48.197530, 16.281533
+   - Coordinates: 48.197375, 16.280680
    - Serves: Bus
 
 1296. **Waidäckergasse**  
-   - Coordinates: 48.207409, 16.294038
+   - Coordinates: 48.207332, 16.294568
    - Serves: Bus
 
 1297. **Walcherstraße**  
@@ -5197,19 +5197,19 @@
    - Serves: Bus
 
 1299. **Wallensteinplatz**  
-   - Coordinates: 48.229520, 16.371086
+   - Coordinates: 48.229735, 16.371149
    - Serves: Bus
 
 1300. **Wallishaussergasse**  
-   - Coordinates: 48.225121, 16.290525
+   - Coordinates: 48.225193, 16.290247
    - Serves: Bus
 
 1301. **Warhanekgasse**  
-   - Coordinates: 48.244178, 16.407962
+   - Coordinates: 48.244932, 16.408564
    - Serves: Bus
 
 1302. **Warneckestraße**  
-   - Coordinates: 48.165665, 16.480187
+   - Coordinates: 48.165935, 16.480420
    - Serves: Bus
 
 1303. **Wasnergasse**  
@@ -5217,7 +5217,7 @@
    - Serves: Bus
 
 1304. **Wassermanngasse**  
-   - Coordinates: 48.268641, 16.452707
+   - Coordinates: 48.268635, 16.452905
    - Serves: Bus
 
 1305. **Wattmanng./Elisabethallee**  
@@ -5249,7 +5249,7 @@
    - Serves: Bus
 
 1312. **Weißenthurngasse**  
-   - Coordinates: 48.174712, 16.314681
+   - Coordinates: 48.174939, 16.314430
    - Serves: Bus
 
 1313. **Wendstattgasse**  
@@ -5269,11 +5269,11 @@
    - Serves: Bus
 
 1317. **Weyrgasse**  
-   - Coordinates: 48.204230, 16.388514
+   - Coordinates: 48.204111, 16.388936
    - Serves: Bus
 
 1318. **Widholzgasse**  
-   - Coordinates: 48.155922, 16.451602
+   - Coordinates: 48.155994, 16.451459
    - Serves: Bus
 
 1319. **Wiedgasse**  
@@ -5289,7 +5289,7 @@
    - Serves: Bus
 
 1322. **Wienerbergbrücke**  
-   - Coordinates: 48.172136, 16.328605
+   - Coordinates: 48.172591, 16.327994
    - Serves: Bus
 
 1323. **Wienerfeld**  
@@ -5297,11 +5297,11 @@
    - Serves: Bus
 
 1324. **Wienflussaufsicht**  
-   - Coordinates: 48.206499, 16.233105
+   - Coordinates: 48.206266, 16.233051
    - Serves: Bus
 
 1325. **Wiethestraße**  
-   - Coordinates: 48.208122, 16.523791
+   - Coordinates: 48.207924, 16.523656
    - Serves: Bus
 
 1326. **Wildbadgasse**  
@@ -5317,15 +5317,15 @@
    - Serves: Bus
 
 1329. **Wildpretstraße**  
-   - Coordinates: 48.177018, 16.454773
+   - Coordinates: 48.177102, 16.454809
    - Serves: Bus
 
 1330. **Wilhelminenberg**  
-   - Coordinates: 48.219902, 16.284147
+   - Coordinates: 48.219932, 16.283950
    - Serves: Bus
 
 1331. **Wilhelminenstraße**  
-   - Coordinates: 48.216472, 16.319667
+   - Coordinates: 48.215970, 16.319307
    - Serves: Bus
 
 1332. **Willendorfer Gasse**  
@@ -5333,15 +5333,15 @@
    - Serves: Bus
 
 1333. **Willerbrücke**  
-   - Coordinates: 48.136856, 16.257566
+   - Coordinates: 48.137467, 16.257845
    - Serves: Bus
 
 1334. **Willergasse/Schule**  
-   - Coordinates: 48.133960, 16.257270
+   - Coordinates: 48.133930, 16.257027
    - Serves: Bus
 
 1335. **Winterhafen**  
-   - Coordinates: 48.180229, 16.469587
+   - Coordinates: 48.181139, 16.468428
    - Serves: Bus
 
 1336. **Wittelsbachstraße**  
@@ -5349,11 +5349,11 @@
    - Serves: Bus
 
 1337. **Wittgensteinstraße**  
-   - Coordinates: 48.158876, 16.266019
+   - Coordinates: 48.158798, 16.265957
    - Serves: Bus
 
 1338. **Wlassakstraße**  
-   - Coordinates: 48.177383, 16.271104
+   - Coordinates: 48.177270, 16.271230
    - Serves: Bus
 
 1339. **Wohnpark Lobau**  
@@ -5385,7 +5385,7 @@
    - Serves: Bus
 
 1346. **Wolfganggasse**  
-   - Coordinates: 48.182984, 16.342619
+   - Coordinates: 48.182720, 16.342197
    - Serves: Bus
 
 1347. **Wolfrathplatz**  
@@ -5397,7 +5397,7 @@
    - Serves: Bus
 
 1349. **Wulzendorfstraße**  
-   - Coordinates: 48.215347, 16.468060
+   - Coordinates: 48.215569, 16.468634
    - Serves: Bus
 
 1350. **Währinger Park**  
@@ -5421,11 +5421,11 @@
    - Serves: Bus
 
 1355. **Zanggasse**  
-   - Coordinates: 48.239105, 16.484184
+   - Coordinates: 48.239129, 16.484274
    - Serves: Bus
 
 1356. **Zehdengasse**  
-   - Coordinates: 48.259330, 16.437113
+   - Coordinates: 48.259784, 16.438191
    - Serves: Bus
 
 1357. **Zeleborgasse**  
@@ -5437,7 +5437,7 @@
    - Serves: Bus
 
 1359. **Zentralfriedhof 3.Tor**  
-   - Coordinates: 48.152254, 16.448988
+   - Coordinates: 48.152254, 16.449069
    - Serves: Bus
 
 1360. **Zentralfriedhof 4.Tor**  
@@ -5457,7 +5457,7 @@
    - Serves: Bus
 
 1364. **Ziegelofengasse**  
-   - Coordinates: 48.192776, 16.360666
+   - Coordinates: 48.191902, 16.360154
    - Serves: Bus
 
 1365. **Ziehrerplatz**  
@@ -5477,11 +5477,11 @@
    - Serves: Bus
 
 1369. **Zouvalgasse**  
-   - Coordinates: 48.138013, 16.321526
+   - Coordinates: 48.137833, 16.321113
    - Serves: Bus
 
 1370. **Zschokkegasse**  
-   - Coordinates: 48.224056, 16.468814
+   - Coordinates: 48.224050, 16.469685
    - Serves: Bus
 
 1371. **Zwerchäckerweg**  
@@ -5493,7 +5493,7 @@
    - Serves: Bus
 
 1373. **Ödenburger Straße/Schulzentrum**  
-   - Coordinates: 48.282117, 16.401872
+   - Coordinates: 48.281937, 16.401494
    - Serves: Bus
 
 1374. **Ölhafen**  
