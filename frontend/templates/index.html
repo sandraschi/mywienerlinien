@@ -17,13 +17,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
     
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        .hidden {
+            display: none !important;
         }
         
         body, html {
@@ -151,6 +155,163 @@
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 10px;
+        }
+
+        .line-search {
+            width: 100%;
+            padding: 10px 12px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .line-search:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .line-type-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .line-type-tab {
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid #d0d5ff;
+            background: #f4f5ff;
+            color: #3f51b5;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .line-type-tab i {
+            margin-right: 6px;
+        }
+
+        .line-type-tab.active {
+            background: #3f51b5;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(63, 81, 181, 0.25);
+        }
+
+        .line-checkbox-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 6px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .line-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .line-checkbox input {
+            accent-color: #3f51b5;
+        }
+
+        .line-checkbox:hover {
+            border-color: #3f51b5;
+            box-shadow: 0 2px 6px rgba(63, 81, 181, 0.15);
+        }
+
+        .line-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: rgba(63, 81, 181, 0.1);
+            color: #3f51b5;
+            font-size: 12px;
+            margin: 4px 4px 0 0;
+            font-weight: 600;
+        }
+
+        .line-chip button {
+            border: none;
+            background: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .selected-lines-panel {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            background: #f7f8ff;
+            border: 1px solid #e0e7ff;
+        }
+
+        .control-button {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #3f51b5;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            background: #fff;
+            color: #3f51b5;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .control-button:hover:not(:disabled) {
+            background: #3f51b5;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(63, 81, 181, 0.2);
+        }
+
+        .control-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .selected-lines-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .selected-lines-list {
+            list-style: none;
+            max-height: 140px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .selected-lines-list .empty {
+            color: #767676;
+            font-size: 13px;
+        }
+
+        .badge {
+            background: #3f51b5;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
         }
         
         .filter-btn {
@@ -434,11 +595,11 @@
                 <!-- Filters Section -->
                 <section class="filters-section">
                     <h3>Filters</h3>
-                    
+
                     <!-- Vehicle Type Filter -->
                     <div class="filter-group">
                         <label for="vehicle-type-select">Vehicle Type:</label>
-                        <select id="vehicle-type-select" onchange="onVehicleTypeChange()">
+                        <select id="vehicle-type-select">
                             <option value="all">All Types</option>
                             <option value="metro">Metro (U-Bahn)</option>
                             <option value="tram">Tram</option>
@@ -447,39 +608,31 @@
                         </select>
                     </div>
 
-                    <!-- Line Filter -->
-                    <div class="filter-group">
-                        <label for="line-select">Line:</label>
-                        <select id="line-select" onchange="onLineChange()">
-                            <option value="">All Lines</option>
-                            <!-- Populated by JavaScript -->
-                        </select>
-                    </div>
-
-                    <!-- Station Filter -->
-                    <div class="filter-group">
-                        <label for="station-select">Station:</label>
-                        <select id="station-select" onchange="onStationChange()">
-                            <option value="">All Stations</option>
-                            <!-- Populated by JavaScript -->
-                        </select>
-                    </div>
-                </section>
-
-                <!-- Line Toggles Section -->
-                <section class="filters-section">
+                    <!-- Line Selection -->
                     <div class="filter-group">
                         <div class="filter-header">
-                            <h3>Show/Hide Lines</h3>
-                            <button type="button" class="toggle-all-routes">Toggle All</button>
+                            <label>Lines</label>
+                            <button type="button" id="clear-selected-lines" class="toggle-all-routes">Clear</button>
                         </div>
-                        <div id="route-toggles" class="route-toggles">
-                            <!-- Route toggle buttons will be added here by JavaScript -->
+                        <input type="search" id="line-search" class="line-search" placeholder="Search lines..." />
+                        <div id="line-type-tabs" class="line-type-tabs">
+                            <!-- Tabs populated by JavaScript -->
+                        </div>
+                        <div id="line-checkbox-matrix" class="line-checkbox-matrix">
                             <div class="loading-message">Loading lines...</div>
                         </div>
                     </div>
 
-
+                    <!-- Selected Lines Summary -->
+                    <div class="selected-lines-panel">
+                        <div class="selected-lines-header">
+                            <h4>Selected Lines</h4>
+                            <span id="selected-lines-count" class="badge">0</span>
+                        </div>
+                        <ul id="selected-lines-list" class="selected-lines-list">
+                            <li class="empty">No lines selected</li>
+                        </ul>
+                    </div>
                 </section>
 
                 <!-- Controls Section -->
@@ -502,15 +655,6 @@
                         <button onclick="refreshVehicleData()" class="control-button">
                             Refresh Data
                         </button>
-                    </div>
-                </section>
-
-                <!-- Route Toggles Section -->
-                <section class="routes-section">
-                    <h3>Routes <span class="toggle-all-routes">[Show All]</span></h3>
-                    <div id="route-toggles" class="route-toggles">
-                        <!-- Route toggles will be added here by JavaScript -->
-                        <div class="loading-routes">Loading routes...</div>
                     </div>
                 </section>
 
@@ -569,26 +713,6 @@
             crossorigin=""></script>
     
     <!-- Custom JavaScript -->
-    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
-
-            // Initialize the application when DOM is loaded
-            document.addEventListener('DOMContentLoaded', function() {
-                // Display build date and time
-                const now = new Date();
-                const buildTime = now.toLocaleString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false
-                });
-                document.getElementById('build-timestamp').textContent = buildTime;
-                
-                // Initialize the map and WebSocket connection
-                initializeMap();
-            });
-        </script>
+    <script src="{{ url_for('static', path='js/map.js') }}"></script>
     </body>
 </html>

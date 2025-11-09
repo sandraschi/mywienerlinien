@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Vienna Public Transport - Wiener Linien Live Map</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/about.css') }}">
 </head>
 <body>
     <div class="app-container">
         <!-- Navigation Bar -->
         <nav class="top-nav">
             <div class="nav-container">
-                <a href="{{ url_for('index') }}" class="nav-brand">Wiener Linien</a>
+                <a href="{{ url_for('read_index') }}" class="nav-brand">Wiener Linien</a>
                 <div class="nav-links">
-                    <a href="{{ url_for('index') }}" class="nav-link">Map</a>
-                    <a href="{{ url_for('line_info') }}" class="nav-link">Lines</a>
-                    <a href="{{ url_for('about') }}" class="nav-link active">About</a>
+                    <a href="{{ url_for('read_index') }}" class="nav-link">Map</a>
+                    <a href="{{ url_for('read_line_info') }}" class="nav-link">Lines</a>
+                    <a href="{{ url_for('read_about') }}" class="nav-link active">About</a>
                 </div>
             </div>
         </nav>
@@ -110,7 +110,7 @@
                             </ul>
                         </div>
                         <div class="sustainability-image">
-                            <img src="{{ url_for('static', filename='img/sustainability.jpg') }}" alt="Sustainable transport in Vienna">
+                            <img src="{{ url_for('static', path='img/sustainability.jpg') }}" alt="Sustainable transport in Vienna">
                         </div>
                     </div>
                 </section>
@@ -152,7 +152,7 @@
                     <h2>Accessibility</h2>
                     <div class="accessibility-content">
                         <div class="accessibility-image">
-                            <img src="{{ url_for('static', filename='img/accessibility.jpg') }}" alt="Accessible transport in Vienna">
+                            <img src="{{ url_for('static', path='img/accessibility.jpg') }}" alt="Accessible transport in Vienna">
                         </div>
                         <div class="accessibility-text">
                             <p>Vienna's public transport is designed to be accessible to everyone:</p>
@@ -205,8 +205,8 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="{{ url_for('index') }}">Live Map</a></li>
-                        <li><a href="{{ url_for('line_info') }}">Lines & Routes</a></li>
+                <li><a href="{{ url_for('read_index') }}">Live Map</a></li>
+                <li><a href="{{ url_for('read_line_info') }}">Lines & Routes</a></li>
                         <li><a href="https://www.wienerlinien.at" target="_blank">Official Website</a></li>
                     </ul>
                 </div>
@@ -225,6 +225,6 @@
         </footer>
     </div>
 
-    <script src="{{ url_for('static', filename='js/about.js') }}"></script>
+    <script src="{{ url_for('static', path='js/about.js') }}"></script>
 </body>
 </html>

@@ -10,10 +10,21 @@ import json
 import re
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+def _normalize_hex_color(value: Optional[str]) -> str:
+    if not value:
+        return "#3F51B5"
+    cleaned = str(value).strip().lstrip('#')
+    if not cleaned:
+        return "#3F51B5"
+    if len(cleaned) not in {3, 6}:
+        cleaned = cleaned[:6].ljust(6, '0')
+    return f"#{cleaned.upper()}"
 
 @dataclass
 class Station:
@@ -382,6 +393,116 @@ class DataLoader:
             self._lines_cache = []
         
         return self._lines_cache
+
+    def get_line_by_name(self, line_name: str) -> Optional[Line]:
+        """Return a line definition by its short name."""
+        if not line_name:
+            return None
+
+        normalized = line_name.strip().lower()
+        for line in self.load_lines():
+            if line.name.lower() == normalized:
+                return line
+        return None
+
+    def get_gtfs_line_catalog(self) -> List[Dict[str, Any]]:
+        """Return line catalog merged with GTFS metadata from the database."""
+        ROUTE_TYPE_NAMES_local = None
+        db_local = None
+
+        try:
+            from .database import ROUTE_TYPE_NAMES as route_type_names_rel, db as db_rel
+            ROUTE_TYPE_NAMES_local = route_type_names_rel
+            db_local = db_rel
+        except Exception:
+            try:
+                from database import ROUTE_TYPE_NAMES as route_type_names_abs, db as db_abs  # type: ignore
+                ROUTE_TYPE_NAMES_local = route_type_names_abs
+                db_local = db_abs
+            except Exception as exc:  # pragma: no cover - defensive
+                logger.warning("GTFS catalog unavailable: %s", exc)
+                return []
+
+        try:
+            routes = db_local.get_routes()
+        except Exception as exc:
+            logger.error("Failed to load routes from database: %s", exc)
+            return []
+
+        markdown_lines = {line.name.upper(): line for line in self.load_lines()}
+        catalog: List[Dict[str, Any]] = []
+        seen: set[str] = set()
+
+        for route in routes:
+            short_name = (route.get('route_short_name') or '').strip()
+            if not short_name:
+                continue
+            key = short_name.upper()
+            if key in seen:
+                continue
+            seen.add(key)
+
+            markdown_entry = markdown_lines.get(key)
+            route_type_code = route.get('route_type')
+            route_type_name = ROUTE_TYPE_NAMES_local.get(route_type_code, markdown_entry.type if markdown_entry else 'Unknown')
+
+            description = route.get('route_long_name') or (markdown_entry.description if markdown_entry else '')
+            color = route.get('route_color') or (markdown_entry.color if markdown_entry else '#3F51B5')
+
+            catalog.append({
+                'name': short_name,
+                'type': route_type_name,
+                'type_code': route_type_code,
+                'color': _normalize_hex_color(color),
+                'description': description,
+                'agency': route.get('agency_name'),
+                'trip_count': int(route.get('trip_count') or 0),
+                'stop_count': int(route.get('stop_count') or 0),
+            })
+
+        return sorted(catalog, key=lambda entry: entry['name'])
+
+    def get_gtfs_route(self, line_name: str) -> Optional[Dict[str, Any]]:
+        db_target = None
+        try:
+            from .database import db as db_rel
+            db_target = db_rel
+        except Exception:
+            try:
+                from database import db as db_abs  # type: ignore
+                db_target = db_abs
+            except Exception:
+                db_target = None
+        if db_target is None:
+            logger.warning("GTFS route unavailable: database module missing")
+            return None
+
+        try:
+            return db_target.get_line_route_data(line_name)
+        except Exception as exc:
+            logger.error("Failed to load route data for %s: %s", line_name, exc)
+            return None
+
+    def get_gtfs_line_stations(self, line_name: str) -> List[Dict[str, Any]]:
+        db_target = None
+        try:
+            from .database import db as db_rel
+            db_target = db_rel
+        except Exception:
+            try:
+                from database import db as db_abs  # type: ignore
+                db_target = db_abs
+            except Exception:
+                db_target = None
+        if db_target is None:
+            logger.warning("GTFS station lookup unavailable: database module missing")
+            return []
+
+        try:
+            return db_target.get_line_stations(line_name)
+        except Exception as exc:
+            logger.error("Failed to load stations for %s: %s", line_name, exc)
+            return []
     
     def load_stations(self, force_reload: bool = False) -> List[Station]:
         """Load station data from all station files."""
@@ -522,14 +643,6 @@ class DataLoader:
         
         return self._routes_cache
     
-    def get_line_by_name(self, line_name: str) -> Optional[Line]:
-        """Get a specific line by name."""
-        lines = self.load_lines()
-        for line in lines:
-            if line.name == line_name:
-                return line
-        return None
-    
     def get_station_by_rbl(self, rbl: str) -> Optional[Station]:
         """Get a specific station by RBL number."""
         stations = self.load_stations()
@@ -567,12 +680,16 @@ class DataLoader:
     
     def get_cache_status(self) -> Dict[str, Any]:
         """Get the status of cached data."""
+        serialized_last_loaded = {
+            key: value.isoformat() if isinstance(value, datetime) else value
+            for key, value in self._last_loaded.items()
+        }
         return {
             'lines_loaded': self._lines_cache is not None,
             'stations_loaded': self._stations_cache is not None,
             'routes_loaded': self._routes_cache is not None,
             'disruptions_loaded': self._disruptions_cache is not None,
-            'last_loaded': self._last_loaded
+            'last_loaded': serialized_last_loaded
         }
 
 # Global data loader instance
