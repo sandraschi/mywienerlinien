@@ -55,6 +55,17 @@ frontend/data/*.md
 
 # GTFS data
 gtfs_data/
+scripts/gtfs_data/
+scripts/gtfs_data_backup_*/
+scripts/gtfs_data_backup_*/**
+scripts/gtfs_data_backup_*/**/*.txt
+scripts/gtfs_data_backup_*/**/*.zip
+scripts/gtfs_data_backup_*/**/*.csv
+scripts/gtfs_data_backup_*/**/*.json
+backup/
+backup/**/*
+data/*.txt
+data/*.zip
 
 # Local development
 start_app.bat
@@ -68,7 +79,3 @@ htmlcov/
 # Debug
 *.prof
 *.profraw
-# Large files to exclude
-scripts/gtfs_data_backup_20250720_224110/gtfs.zip
-scripts/gtfs_data_backup_20250720_224110/wienerlinien-gtfs.zip
-scripts/gtfs_data_backup_20250720_224110/extracted/stop_times.txt
