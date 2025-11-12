@@ -20,6 +20,16 @@
     
 .PARAMETER IncludeBuild
     Include dist/ and build/ folders (default: false)
+.PARAMETER BackupTargets
+    Optional list of destination directories. Defaults to Desktop, N: drive, and OneDrive paths.
+.PARAMETER AdditionalExclusions
+    Optional additional wildcard patterns to exclude from the backup.
+.PARAMETER FullHistory
+    Include the `.git` directory so the backup can be restored as a full repository clone. Default: false.
+.PARAMETER ShowHelp
+    Display usage information and exit.
+.PARAMETER BackupData
+    Include large GTFS/data artifacts (archives, SQLite dumps, generated markdown). Default skips them.
     
 .EXAMPLE
     .\scripts\backup-repo.ps1
@@ -31,58 +41,158 @@
 #>
 
 param(
-    [switch]$IncludeBuild = $false
+    [string]$SourcePath,
+    [switch]$IncludeBuild = $false,
+    [string[]]$BackupTargets,
+    [string[]]$AdditionalExclusions,
+    [switch]$BackupData = $false,
+    [switch]$FullHistory = $false,
+    [switch]$ShowHelp = $false
 )
+
+if ($ShowHelp) {
+    Write-Host @"
+Repository Backup Script
+Usage:
+  pwsh -File scripts\backup\backup-repo.ps1 [options]
+
+Options:
+  -SourcePath <path>         Root directory to back up (default: current directory).
+  -IncludeBuild              Include dist/ and build/ artifacts.
+  -BackupTargets <paths[]>   Override default destinations (Desktop, N:, OneDrive).
+  -AdditionalExclusions <patterns[]>  Extra wildcard exclusions.
+  -BackupData                Include large GTFS/data artifacts (archives, SQLite, generated markdown).
+  -FullHistory               Include .git history for full repository restoration.
+  -ShowHelp                  Display this help text.
+"@
+    exit 0
+}
+
+function Convert-ToAbsolutePath {
+    param([string]$PathValue)
+    if ([string]::IsNullOrWhiteSpace($PathValue)) {
+        return $null
+    }
+    if ([System.IO.Path]::IsPathRooted($PathValue)) {
+        return [System.IO.Path]::GetFullPath($PathValue)
+    }
+    return [System.IO.Path]::GetFullPath((Join-Path (Get-Location) $PathValue))
+}
 
 Write-Host "`n╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Magenta
 Write-Host "║       📦 Repository Backup (Windows Native ZIP) 📦      ║" -ForegroundColor Magenta
 Write-Host "╚═══════════════════════════════════════════════════════════╝`n" -ForegroundColor Magenta
 
-# Check if we're in a repo
-if (-not (Test-Path "pyproject.toml") -and -not (Test-Path ".git") -and -not (Test-Path "package.json")) {
-    Write-Host "❌ Error: Must run from repository root (need pyproject.toml, .git, or package.json)" -ForegroundColor Red
+# Resolve source path
+if ($SourcePath) {
+    $sourceDirectory = Convert-ToAbsolutePath $SourcePath
+} else {
+    $sourceDirectory = (Get-Location).Path
+}
+
+if (-not (Test-Path $sourceDirectory)) {
+    Write-Host "❌ Error: Source path not found: $sourceDirectory" -ForegroundColor Red
     exit 1
 }
 
+# Sanity check: prevent running directly on root drives
+$rootPath = [System.IO.Path]::GetPathRoot($sourceDirectory)
+if ($rootPath -and [System.IO.Path]::GetFullPath($sourceDirectory).TrimEnd('\') -eq $rootPath.TrimEnd('\')) {
+    Write-Host "❌ Refusing to back up root drive: $sourceDirectory" -ForegroundColor Red
+    exit 1
+}
+
+# Check repo markers
+$gitFolder = Join-Path $sourceDirectory ".git"
+if (-not (Test-Path $gitFolder)) {
+    Write-Host "❌ Error: Source path must be a git repository (.git folder not found)." -ForegroundColor Red
+    exit 1
+}
+
+$repoInfo = Get-Item $sourceDirectory
+
 # Get repo name and timestamp
-$repoName = (Get-Item .).Name
+$repoName = $repoInfo.Name
 $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 $backupName = "${repoName}_backup_${timestamp}.zip"
 
-# Define backup destinations with subdirectories per repo
-$desktopBackup = Join-Path (Join-Path ([Environment]::GetFolderPath("Desktop")) "repo backup") $repoName
-$nDriveBackup = Join-Path "N:\backup\dev\repos2" $repoName
-$oneDriveRoot = Join-Path $env:OneDrive "repo-backups"
-$oneDriveBackup = Join-Path $oneDriveRoot $repoName
-
-# Ensure backup directories exist
-if (-not (Test-Path $desktopBackup)) {
-    New-Item -ItemType Directory -Path $desktopBackup -Force | Out-Null
-    Write-Host "✅ Created: $desktopBackup" -ForegroundColor Green
+# Determine backup targets
+$desktopRoot = Join-Path ([Environment]::GetFolderPath("Desktop")) "repo backup"
+$nDriveRoot = "N:\backup\dev\repos2"
+$oneDriveRoot = $null
+if ($env:OneDrive) {
+    $oneDriveRoot = Join-Path $env:OneDrive "repo-backups"
 }
 
-if (-not (Test-Path $nDriveBackup)) {
-    New-Item -ItemType Directory -Path $nDriveBackup -Force | Out-Null
-    Write-Host "✅ Created: $nDriveBackup" -ForegroundColor Green
+$defaultTargets = @(
+    [pscustomobject]@{ Label = "Desktop\repo backup"; Root = $desktopRoot },
+    [pscustomobject]@{ Label = "N:\backup\dev\repos2"; Root = $nDriveRoot }
+)
+if ($oneDriveRoot) {
+    $defaultTargets += [pscustomobject]@{ Label = "OneDrive\repo-backups"; Root = $oneDriveRoot }
 }
 
-if (-not (Test-Path $oneDriveBackup)) {
-    New-Item -ItemType Directory -Path $oneDriveBackup -Force | Out-Null
-    Write-Host "✅ Created: $oneDriveBackup" -ForegroundColor Green
+$targetList = @()
+if ($BackupTargets -and $BackupTargets.Count -gt 0) {
+    foreach ($targetPath in $BackupTargets) {
+        $absolute = Convert-ToAbsolutePath $targetPath
+        if ($absolute) {
+            $targetList += [pscustomobject]@{ Label = $targetPath; Root = $absolute }
+        } else {
+            Write-Host "⚠️  Skipping invalid target: $targetPath" -ForegroundColor Yellow
+        }
+    }
+} else {
+    foreach ($entry in $defaultTargets) {
+        $absolute = Convert-ToAbsolutePath $entry.Root
+        if ($absolute) {
+            $targetList += [pscustomobject]@{ Label = $entry.Label; Root = $absolute }
+        }
+    }
 }
 
-$backupPath1 = Join-Path $desktopBackup $backupName
-$backupPath2 = Join-Path $nDriveBackup $backupName
-$backupPath3 = Join-Path $oneDriveBackup $backupName
+if (-not $targetList -or $targetList.Count -eq 0) {
+    Write-Host "❌ No valid backup targets defined." -ForegroundColor Red
+    exit 1
+}
+
+$targetDetails = @()
+foreach ($target in $targetList) {
+    $rootPath = $target.Root
+    $repoTargetDir = Join-Path $rootPath $repoName
+
+    if (-not (Test-Path $rootPath)) {
+        New-Item -ItemType Directory -Path $rootPath -Force | Out-Null
+        Write-Host "✅ Created target root: $rootPath" -ForegroundColor Green
+    }
+
+    if (-not (Test-Path $repoTargetDir)) {
+        New-Item -ItemType Directory -Path $repoTargetDir -Force | Out-Null
+        Write-Host "✅ Created: $repoTargetDir" -ForegroundColor Green
+    }
+
+    $backupPath = Join-Path $repoTargetDir $backupName
+    $targetDetails += [pscustomobject]@{
+        Label = $target.Label
+        Root = $rootPath
+        RepoDir = $repoTargetDir
+        BackupFile = $backupPath
+    }
+}
+
+$repoRoot = $repoInfo.FullName
 
 Write-Host "📋 Backup Configuration:" -ForegroundColor Cyan
 Write-Host "  Repository:    $repoName" -ForegroundColor White
+Write-Host "  Source path:   $repoRoot" -ForegroundColor White
 Write-Host "  Timestamp:     $timestamp" -ForegroundColor White
-Write-Host "  Destination 1: $backupPath1" -ForegroundColor White
-Write-Host "  Destination 2: $backupPath2" -ForegroundColor White
-Write-Host "  Destination 3: $backupPath3" -ForegroundColor Cyan
 Write-Host "  Include build: $(if($IncludeBuild){'Yes'}else{'No'})" -ForegroundColor White
+Write-Host "  Full history:  $(if($FullHistory){'Yes'}else{'No'})" -ForegroundColor White
 Write-Host "  Method:        .NET ZIP API (folder structure preserved)" -ForegroundColor Green
+Write-Host "  Destinations:" -ForegroundColor Cyan
+foreach ($detail in $targetDetails) {
+    Write-Host "    - $($detail.Label): $($detail.BackupFile)" -ForegroundColor White
+}
 Write-Host ""
 
 # Define exclusions
@@ -127,15 +237,70 @@ $excludeLargeTestFiles = @(
     "test_data/*.db"
 )
 
+# Data-heavy artifacts (GTFS archives, SQLite, generated markdown)
+$dataExclusions = @(
+    "gtfs_data",
+    "gtfs_data\\*",
+    "scripts\\gtfs_data*",
+    "scripts\\gtfs_to_markdown.log",
+    "scripts\\gtfs_processor.log",
+    "scripts\\gtfs_data_backup_*",
+    "scripts\\gtfs_data\\*",
+    "scripts\\gtfs_data_backup_*\\*",
+    "backup",
+    "backup\\*",
+    "data\\*routes.md",
+    "gtfs_output.log",
+    "*.sqlite",
+    "*.zip"
+)
+
 # Combine exclusions
 $exclusions += $excludeLargeTestFiles
+if (-not $BackupData) {
+    $exclusions += $dataExclusions
+} else {
+    Write-Host "💾 Including GTFS/data artifacts (--BackupData enabled)" -ForegroundColor Cyan
+}
+
+if (-not $FullHistory) {
+    $exclusions += ".git"
+} else {
+    Write-Host "📚 Including .git history (--FullHistory enabled)" -ForegroundColor Cyan
+}
 
 if (-not $IncludeBuild) {
     $exclusions += @("dist", "build", "*.whl", "*.tar.gz")
 }
 
-Write-Host "🚫 Excluding:" -ForegroundColor Yellow
+# Normalize exclusions to work with wildcard matching
+$normalizedExclusions = New-Object System.Collections.Generic.List[string]
+function Add-NormalizedExclusion {
+    param([string]$Pattern)
+    if ([string]::IsNullOrWhiteSpace($Pattern)) { return }
+    if ($Pattern -notmatch '[\*\?]') {
+        $script:normalizedExclusions.Add("*$Pattern*")
+    } else {
+        $script:normalizedExclusions.Add($Pattern)
+    }
+}
+
 foreach ($excl in $exclusions) {
+    Add-NormalizedExclusion -Pattern $excl
+}
+
+if ($AdditionalExclusions) {
+    foreach ($extra in $AdditionalExclusions) {
+        Add-NormalizedExclusion -Pattern $extra
+    }
+}
+
+$wildcardPatterns = $normalizedExclusions | ForEach-Object {
+    [System.Management.Automation.WildcardPattern]::new($_, [System.Management.Automation.WildcardOptions]::IgnoreCase)
+}
+
+Write-Host "🚫 Excluding:" -ForegroundColor Yellow
+foreach ($excl in $normalizedExclusions) {
     Write-Host "  - $excl" -ForegroundColor Gray
 }
 Write-Host ""
@@ -143,7 +308,7 @@ Write-Host ""
 # Calculate sizes
 Write-Host "📊 Analyzing repository size..." -ForegroundColor Cyan
 
-$allFiles = Get-ChildItem -Recurse -File -ErrorAction SilentlyContinue
+$allFiles = Get-ChildItem -Path $sourceDirectory -Recurse -File -ErrorAction SilentlyContinue
 $totalSize = ($allFiles | Measure-Object -Property Length -Sum).Sum / 1MB
 
 # Filter files to backup
@@ -155,9 +320,8 @@ $backupFiles = $allFiles | Where-Object {
         return $false
     }
     
-    foreach ($excl in $exclusions) {
-        $pattern = $excl -replace '\\*', '.*' -replace '\\.', '\\.'
-        if ($file.FullName -match $pattern -or $file.FullName -match [regex]::Escape($excl)) {
+    foreach ($pattern in $wildcardPatterns) {
+        if ($pattern.IsMatch($file.FullName)) {
             $shouldExclude = $true
             break
         }
@@ -179,68 +343,37 @@ Write-Host "🔄 Creating backups..." -ForegroundColor Cyan
 
 try {
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    
-    $repoRoot = (Get-Item .).FullName
-    
-    Write-Host "  → Desktop\repo backup..." -ForegroundColor Gray
-    if (Test-Path $backupPath1) {
-        Remove-Item $backupPath1 -Force
+
+    foreach ($detail in $targetDetails) {
+        Write-Host "  → $($detail.Label)..." -ForegroundColor Gray
+        if (Test-Path $detail.BackupFile) {
+            Remove-Item $detail.BackupFile -Force
+        }
+
+        $zipArchive = [System.IO.Compression.ZipFile]::Open($detail.BackupFile, [System.IO.Compression.ZipArchiveMode]::Create)
+
+        foreach ($file in $backupFiles) {
+            $relativePath = $file.FullName.Substring($repoRoot.Length + 1)
+            $zipPath = $relativePath -replace '\\', '/'
+            [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zipArchive, $file.FullName, $zipPath, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
+        }
+
+        $zipArchive.Dispose()
+        Write-Host "  ✅ $($detail.Label) backup complete (folder structure preserved)" -ForegroundColor Green
     }
-    
-    $zip1 = [System.IO.Compression.ZipFile]::Open($backupPath1, [System.IO.Compression.ZipArchiveMode]::Create)
-    
-    foreach ($file in $backupFiles) {
-        $relativePath = $file.FullName.Substring($repoRoot.Length + 1)
-        $zipPath = $relativePath -replace '\\', '/'
-        [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip1, $file.FullName, $zipPath, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
-    }
-    
-    $zip1.Dispose()
-    Write-Host "  ✅ Desktop backup complete (folder structure preserved)" -ForegroundColor Green
-    
-    Write-Host "  → N:\backup\dev\repos2..." -ForegroundColor Gray
-    if (Test-Path $backupPath2) {
-        Remove-Item $backupPath2 -Force
-    }
-    
-    $zip2 = [System.IO.Compression.ZipFile]::Open($backupPath2, [System.IO.Compression.ZipArchiveMode]::Create)
-    
-    foreach ($file in $backupFiles) {
-        $relativePath = $file.FullName.Substring($repoRoot.Length + 1)
-        $zipPath = $relativePath -replace '\\', '/'
-        [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip2, $file.FullName, $zipPath, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
-    }
-    
-    $zip2.Dispose()
-    Write-Host "  ✅ N: drive backup complete (folder structure preserved)" -ForegroundColor Green
-    
-    Write-Host "  → OneDrive\repo-backups..." -ForegroundColor Gray
-    if (Test-Path $backupPath3) {
-        Remove-Item $backupPath3 -Force
-    }
-    
-    $zip3 = [System.IO.Compression.ZipFile]::Open($backupPath3, [System.IO.Compression.ZipArchiveMode]::Create)
-    
-    foreach ($file in $backupFiles) {
-        $relativePath = $file.FullName.Substring($repoRoot.Length + 1)
-        $zipPath = $relativePath -replace '\\', '/'
-        [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip3, $file.FullName, $zipPath, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
-    }
-    
-    $zip3.Dispose()
-    Write-Host "  ✅ OneDrive backup complete (folder structure preserved)" -ForegroundColor Green
-    
-    Write-Host "`n✅ All 3 backups created successfully with folder structure!`n" -ForegroundColor Green
-    
+
+    Write-Host "`n✅ Backups created successfully with folder structure!`n" -ForegroundColor Green
+
 } catch {
     Write-Host "❌ Error creating backup: $_" -ForegroundColor Red
     exit 1
 }
 
-if ((Test-Path $backupPath1) -and (Test-Path $backupPath2) -and (Test-Path $backupPath3)) {
-    $finalSize = (Get-Item $backupPath1).Length / 1MB
-    $compressionRatio = ($finalSize / $backupSize) * 100
-    
+$primaryBackup = $targetDetails[0].BackupFile
+if (Test-Path $primaryBackup) {
+    $finalSize = (Get-Item $primaryBackup).Length / 1MB
+    $compressionRatio = if ($backupSize -gt 0) { ($finalSize / $backupSize) * 100 } else { 0 }
+
     Write-Host ""
     Write-Host "╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Green
     Write-Host "║              📦 Backup Complete! 📦                     ║" -ForegroundColor Green
@@ -248,25 +381,25 @@ if ((Test-Path $backupPath1) -and (Test-Path $backupPath2) -and (Test-Path $back
     Write-Host ""
     Write-Host "📊 Backup Statistics:" -ForegroundColor Cyan
     Write-Host "  File:           $backupName" -ForegroundColor White
-    Write-Host "  Location 1:     $desktopBackup" -ForegroundColor White
-    Write-Host "  Location 2:     $nDriveBackup" -ForegroundColor White
-    Write-Host "  Location 3:     $oneDriveBackup" -ForegroundColor Cyan
+    foreach ($detail in $targetDetails) {
+        Write-Host "  Location:       $($detail.BackupFile)" -ForegroundColor White
+    }
     Write-Host "  Size:           $([math]::Round($finalSize, 2)) MB" -ForegroundColor Cyan
     Write-Host "  Original:       $([math]::Round($backupSize, 2)) MB" -ForegroundColor Gray
     Write-Host "  Compression:    $([math]::Round($compressionRatio, 1))%" -ForegroundColor Green
     Write-Host "  Space saved:    $([math]::Round($totalSize - $finalSize, 2)) MB" -ForegroundColor Green
     Write-Host "  Method:         .NET ZIP API (folder structure preserved)" -ForegroundColor Green
     Write-Host ""
-    
+
     Write-Host "💡 To restore:" -ForegroundColor Cyan
-    Write-Host "  Expand-Archive -Path `"$backupPath1`" -DestinationPath `"destination-folder`"" -ForegroundColor Gray
+    Write-Host "  Expand-Archive -Path `"$primaryBackup`" -DestinationPath `"destination-folder`"" -ForegroundColor Gray
     Write-Host ""
-    
+
 } else {
-    Write-Host "❌ Error: Some backup files not created" -ForegroundColor Red
-    Write-Host "  Path 1: $(Test-Path $backupPath1)" -ForegroundColor Gray
-    Write-Host "  Path 2: $(Test-Path $backupPath2)" -ForegroundColor Gray
-    Write-Host "  Path 3: $(Test-Path $backupPath3)" -ForegroundColor Gray
+    Write-Host "❌ Error: Primary backup file not created" -ForegroundColor Red
+    foreach ($detail in $targetDetails) {
+        Write-Host "  $($detail.Label): $(Test-Path $detail.BackupFile)" -ForegroundColor Gray
+    }
     exit 1
 }
 

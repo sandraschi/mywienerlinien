@@ -11,9 +11,28 @@ A real-time map display for Vienna's public transport system, showing moving veh
 - Responsive design for desktop and mobile
 - No API key required (as of 2024)
 
+## Current Status
+
+- **Realtime vehicle feed:** fully wired. `frontend/vehicle_service.py` enriches GTFS stops with RBL numbers (via `scripts/rbl_mapper.py`), selects up to 12 monitors per line, and throttles Wiener Linien API calls to avoid 403s. Requests such as `GET /api/vehicles?line=U3` now return live trains.
+- **GTFS loader (`scripts/load_gtfs_to_db.py`):** truncates tables, logs chunk-level progress, and stores comma-separated RBL/DIVA metadata in `stops.stop_code`/`stop_desc`. Run `python scripts\load_gtfs_to_db.py scripts\gtfs_data\wienerlinien-gtfs.zip --test-mode --metadata-dir scripts\gtfs_data` (or remove `--test-mode` for the full import).
+- **Generated markdown:** `scripts/process_gtfs.py` now emits RBL and zone details into `frontend/data/*.md`. The frontend falls back to these files when DB lookups are missing.
+- **Route polylines:** the map currently renders polylines from the pre-generated GeoJSON/markdown bundle in `frontend/data/gtfs/routes`. Running the loader without `--test-mode` will refresh them from the new feed; the light test import only covers the first ~200 shapes, so some lines may still rely on the bundled geometry.
+
+## How the Realtime Apparatus Works
+
+Vienna’s network is a carefully orchestrated “plan vs. reality” system:
+
+1. **GTFS schedules** describe every planned trip—thousands of vehicles, thousands of stop-times per day. This static feed is what we import into Postgres and also distil into markdown.
+2. **Vehicles broadcast their live position** (RBL monitors). Each tram, bus, or U-Bahn car reports into Wiener Linien’s control centre roughly every minute.
+3. **The central system compares plan with telemetry**. If a vehicle drifts from its planned countdown, the monitor endpoint starts reporting delays and eventually disruptions. That same feed powers station displays and our `/api/vehicles` endpoint.
+4. **No humans typing arrival estimates**—automated logic computes discrepancies, escalates major issues to supervisors, and pushes accurate countdowns to the public API.
+
+Our app simply visualises this sophisticated apparatus: we ingest the GTFS “plan”, listen to the realtime “actual”, and let users see where vehicles are and what’s arriving next. Future work (see [todo.md](todo.md)) layers user-centric features—geolocation, favourite stops, even AI-powered alerts—on top of this rock-solid, old-school engineering marvel.
+
 ## Table of Contents
 
 - [Features](#features)
+- [Current Status](#current-status)
 - [Setup](#setup)
 - [Wiener Linien API Documentation](#wiener-linien-api-documentation)
   - [API Endpoints](#api-endpoints)
@@ -296,3 +315,19 @@ This project is part of the Annoyinator Barnacle Projects collection.
 
 Data source: Wiener Linien - https://www.wienerlinien.at/open-data
 License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+## MCP Integrations
+
+### GitHub MCP Server Toolsets
+
+The helper script `scripts/start_github_mcp_server.ps1` launches the official GitHub MCP server (`ghcr.io/github/github-mcp-server:latest`) as a reusable Docker container. You can limit the number of exposed tools by defining the `GITHUB_TOOLSETS` environment variable before running the script. Set it to a comma-separated list of bundle names, for example:
+
+```
+# minimal context + read-only repo browsing
+setx GITHUB_TOOLSETS "context,repos"
+
+# repository management with pull-request and Actions workflows
+setx GITHUB_TOOLSETS "context,repos,pull_requests,actions"
+```
+
+When the variable is absent, the script falls back to GitHub’s default bundle: `context,repos,issues,pull_requests,users`. Refer to the GitHub MCP server README for the full list of bundles (`actions`, `code_security`, `dependabot`, `projects`, etc.) and pick only the ones you need to stay under client tool limits. The script forwards `GITHUB_TOOLSETS` into the container on every start so you can adjust the selection without rebuilding the image.
