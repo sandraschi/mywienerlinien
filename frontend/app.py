@@ -30,6 +30,18 @@ except ImportError:  # pragma: no cover - runtime fallback when package context 
     from vehicle_service import clear_vehicle_cache, collect_vehicle_data, get_vehicle_summary  # type: ignore
     from websocket_manager import get_websocket_manager, init_websocket_manager  # type: ignore
 
+try:
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from scripts.city_config import list_cities, get_city_config  # type: ignore
+except ImportError:
+    # Fallback if city_config is not available
+    def list_cities():
+        return {}
+    def get_city_config(city_name: str):
+        return None
+
 
 BASE_DIR = Path(__file__).parent
 TEMPLATES = Jinja2Templates(directory=BASE_DIR / "templates")
@@ -159,6 +171,7 @@ async def get_lines() -> JSONResponse:
     try:
         line_data = data_loader.get_gtfs_line_catalog()
         if not line_data:
+            # Fallback: convert Line objects to dict format
             fallback_lines = data_loader.load_lines()
             line_data = [
                 {
@@ -527,6 +540,63 @@ async def get_status_summary() -> JSONResponse:
     except Exception as exc:
         logger.error("Error building status summary: %s", exc, exc_info=True)
         raise HTTPException(status_code=500, detail="Failed to build status summary")
+
+
+@fastapi_app.get("/api/cities")
+async def get_cities() -> JSONResponse:
+    """Get list of available cities with their configurations."""
+    try:
+        cities_dict = list_cities()
+        cities_list = []
+        for city_key, city_config in cities_dict.items():
+            city_data = {
+                "key": city_key,
+                "name": city_config.name,
+                "description": city_config.description,
+                "timezone": city_config.timezone,
+                "language": city_config.language,
+            }
+            if city_config.map_center:
+                city_data["map_center"] = {
+                    "lat": city_config.map_center[0],
+                    "lng": city_config.map_center[1]
+                }
+                city_data["map_zoom"] = city_config.map_zoom
+            cities_list.append(city_data)
+        return JSONResponse({"cities": cities_list})
+    except Exception as exc:
+        logger.error("Error fetching cities: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch cities")
+
+
+@fastapi_app.get("/api/cities/{city_key}")
+async def get_city_info(city_key: str) -> JSONResponse:
+    """Get configuration for a specific city."""
+    try:
+        city_config = get_city_config(city_key)
+        if not city_config:
+            raise HTTPException(status_code=404, detail="City not found")
+        
+        city_data = {
+            "key": city_key,
+            "name": city_config.name,
+            "description": city_config.description,
+            "timezone": city_config.timezone,
+            "language": city_config.language,
+            "enable_rbl_mapping": city_config.enable_rbl_mapping,
+        }
+        if city_config.map_center:
+            city_data["map_center"] = {
+                "lat": city_config.map_center[0],
+                "lng": city_config.map_center[1]
+            }
+            city_data["map_zoom"] = city_config.map_zoom
+        return JSONResponse(city_data)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Error fetching city info: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch city info")
 
 
 @fastapi_app.get("/data/{path:path}")

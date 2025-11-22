@@ -95,6 +95,39 @@
             font-weight: 600;
         }
         
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .city-selector {
+            padding: 6px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .city-selector:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .city-selector:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .city-selector option {
+            background: #333;
+            color: white;
+        }
+        
         .header-info {
             display: flex;
             gap: 15px;
@@ -595,7 +628,12 @@
         <header class="header">
             <div class="header-top">
                 <h1>Wiener Linien Live Map</h1>
-                <div class="build-info" id="build-info">Build: <span id="build-timestamp"></span></div>
+                <div class="header-controls">
+                    <select id="city-selector" class="city-selector" title="Select City">
+                        <option value="vienna">Vienna</option>
+                    </select>
+                    <div class="build-info" id="build-info">Build: <span id="build-timestamp"></span></div>
+                </div>
             </div>
             <div class="header-info">
                 <div class="connection-status" id="connection-status">Connecting...</div>

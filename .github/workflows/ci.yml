@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    name: Lint and Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff mypy
+          pip install -r frontend/requirements.txt
+      
+      - name: Run Ruff linting
+        run: |
+          ruff check frontend/mcp_server/ frontend/data_loader.py frontend/database.py frontend/vehicle_service.py
+      
+      - name: Check formatting with Ruff
+        run: |
+          ruff format --check frontend/mcp_server/ frontend/data_loader.py frontend/database.py frontend/vehicle_service.py
+      
+      - name: Type check with mypy
+        run: |
+          mypy frontend/mcp_server/ --ignore-missing-imports || true
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r frontend/requirements.txt
+          pip install pytest pytest-asyncio pytest-cov
+      
+      - name: Run tests
+        run: |
+          pytest tests/ -v --cov=frontend --cov-report=xml --cov-report=term || true
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+
+  build-mcpb:
+    name: Build MCPB Package
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install MCPB CLI
+        run: |
+          npm install -g @anthropic-ai/mcpb
+      
+      - name: Copy source files to mcpb
+        run: |
+          mkdir -p mcpb/frontend
+          cp -r frontend/mcp_server mcpb/frontend/
+          cp frontend/data_loader.py mcpb/frontend/
+          cp frontend/database.py mcpb/frontend/
+          cp frontend/vehicle_service.py mcpb/frontend/
+      
+      - name: Build MCPB package
+        run: |
+          mkdir -p dist
+          mcpb pack mcpb dist/vienna-transit-mcp-v1.0.0.mcpb
+      
+      - name: Validate package
+        run: |
+          mcpb validate dist/vienna-transit-mcp-v1.0.0.mcpb || true
+      
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcpb-package
+          path: dist/vienna-transit-mcp-v1.0.0.mcpb
+          retention-days: 30
+
+  verify-server:
+    name: Verify MCP Server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r frontend/requirements.txt
+      
+      - name: Verify server imports
+        run: |
+          python -c "import sys; sys.path.insert(0, 'frontend'); from mcp_server.server import mcp; print('MCP server verified')"
+      
+      - name: Check tools registration
+        run: |
+          python -c "import sys; sys.path.insert(0, 'frontend'); from mcp_server.server import mcp, _prompt_refs, _resource_refs; print(f'Tools: {len(mcp._tools)}, Prompts: {len(_prompt_refs)}, Resources: {len(_resource_refs)}')"
+

@@ -1,15 +1,65 @@
-# Wiener Linien Live Map
+# Vienna Transit - Dual Standard Application
 
-A real-time map display for Vienna's public transport system, showing moving vehicle markers for U-Bahn, trams, and buses.
+A comprehensive Vienna public transport application with **two complementary interfaces**:
+- **🌐 Web Application**: Interactive real-time map with vehicle tracking
+- **🤖 MCP Server**: AI assistant integration for Claude Desktop
+
+Both interfaces share the same backend logic and data sources, providing a unified experience across web and AI platforms.
+
+## Architecture Overview
+
+This repository implements a **dual-standard architecture**:
+
+### 🌐 FastAPI Web Application
+- **Purpose**: Human-friendly web interface for real-time transit visualization
+- **Transport**: HTTP/WebSocket
+- **Location**: `frontend/app.py`
+- **Features**:
+  - Interactive map with real-time vehicle positions
+  - Color-coded markers for different transport types (U-Bahn, tram, bus)
+  - Filter vehicles by type or line number
+  - Auto-refresh every 15 seconds
+  - Responsive design for desktop and mobile
+  - Real-time WebSocket updates
+
+### 🤖 FastMCP MCP Server
+- **Purpose**: AI assistant integration for natural language transit queries
+- **Transport**: stdio (for Claude Desktop)
+- **Location**: `frontend/mcp_server/`
+- **Features**:
+  - 4 core tools: departures, station search, journey planning, service status
+  - 3 prompts for AI assistant guidance
+  - 5 resources for transit system reference
+  - FastMCP 2.13 compliant
+  - Google-style docstrings
+  - Shared backend with web app
+
+### 🔄 Shared Backend
+Both interfaces use the same core modules:
+- `data_loader.py` - GTFS data loading and station management
+- `database.py` - PostgreSQL database layer
+- `vehicle_service.py` - Real-time vehicle data collection
+- `disruption_alerts.py` - Service disruption monitoring
 
 ## Features
 
+### Web Application Features
 - Interactive map of Vienna with real-time vehicle positions
 - Color-coded markers for different transport types (U-Bahn, tram, bus)
 - Filter vehicles by type or line number
 - Auto-refresh every 15 seconds
 - Responsive design for desktop and mobile
 - No API key required (as of 2024)
+
+### MCP Server Features
+- **Tools** (4 tools, all implemented):
+  - `next_departures` - Get real-time departures from any station
+  - `station_search` - Find stations by name (fuzzy matching)
+  - `line_status` - Check service status and disruptions
+  - `journey_planner` - Plan optimal routes between stations
+- **Prompts** (3 prompts): AI assistant guidance for Vienna transit queries
+- **Resources** (5 resources): Reference data (network overview, major stations, metro lines, operating hours, fares)
+- **Status**: ✅ Production Ready - See `docs/STATUS-2025-01-15.md` for comprehensive status
 
 ## Current Status
 
@@ -63,6 +113,14 @@ Our app simply visualises this sophisticated apparatus: we ingest the GTFS “pl
 
 ## Installation
 
+### Prerequisites
+
+- Python 3.9 or higher
+- PostgreSQL (for database)
+- pip (Python package manager)
+
+### Quick Start
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/mywienerlinien.git
@@ -77,10 +135,74 @@ Our app simply visualises this sophisticated apparatus: we ingest the GTFS “pl
    source venv/bin/activate  # On Unix/macOS
    ```
 
-3. Install the required dependencies:
+3. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+   # Install all dependencies (web app + MCP server)
+   pip install -r frontend/requirements.txt
+   
+   # Or install as a package
+   pip install -e .
    ```
+
+## Usage
+
+### Running the Web Application
+
+```bash
+# From project root
+cd frontend
+python app.py
+
+# Or using uvicorn directly
+uvicorn app:app --host 0.0.0.0 --port 3079
+```
+
+The web application will be available at `http://localhost:3079`
+
+### Running the MCP Server
+
+#### For Development
+
+```bash
+# From project root
+python -m frontend.mcp_server.server
+
+# Or with FastMCP CLI (if installed)
+fastmcp dev frontend.mcp_server.server:mcp
+```
+
+#### For Claude Desktop Integration
+
+Add to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "vienna-transit": {
+      "command": "python",
+      "args": ["-m", "frontend.mcp_server.server"],
+      "cwd": "D:\\Dev\\repos\\mywienerlinien"
+    }
+  }
+}
+```
+
+#### Using MCPB Package (Recommended)
+
+See [MCPB Packaging](#mcpb-packaging) section below for packaged distribution.
+
+### Running Both Servers
+
+You can run both servers simultaneously - they don't conflict:
+
+```bash
+# Terminal 1: Web application
+cd frontend
+python app.py
+
+# Terminal 2: MCP server
+python -m frontend.mcp_server.server
+```
 
 ## Usage
 
@@ -296,22 +418,51 @@ This project follows strict development guidelines to ensure code quality, relia
 
 ### Code Quality Tools
 
-This project uses **Ruff** for fast Python linting and code quality checks. All code must pass ruff checks before committing.
+This project uses **Ruff** for fast Python linting and formatting, and **mypy** for static type checking. Ruff replaces multiple tools (flake8, black, isort, etc.) with a single, fast linter. All code must pass ruff checks and type checking before committing.
 
-#### Running Code Quality Checks
+#### Pre-commit Hooks (Recommended)
+
+We use [pre-commit](https://pre-commit.com/) to automatically run code quality checks before each commit:
 
 ```bash
-# Check for linting issues
-ruff check .
+# Install pre-commit
+pip install pre-commit
 
-# Auto-fix fixable issues
-ruff check . --fix
+# Install git hooks (one-time setup)
+pre-commit install
 
-# Check specific files or directories
-ruff check scripts/ frontend/
+# Run hooks manually on all files
+pre-commit run --all-files
 ```
 
-All code should pass ruff checks with zero warnings. The project maintains a clean codebase with no linting warnings.
+Pre-commit hooks automatically:
+- Run Ruff linting and formatting
+- Run mypy type checking
+- Check for trailing whitespace, large files, merge conflicts
+- Validate YAML/JSON/TOML files
+- Detect private keys and other security issues
+
+See [`.pre-commit-hooks-setup.md`](.pre-commit-hooks-setup.md) for detailed setup instructions.
+
+#### Manual Code Quality Checks
+
+```bash
+# Linting with Ruff
+ruff check .
+ruff check . --fix  # Auto-fix fixable issues
+
+# Formatting with Ruff
+ruff format --check .
+ruff format .  # Auto-format code
+
+# Type checking with mypy
+mypy frontend/mcp_server/ --ignore-missing-imports
+
+# Check specific files or directories
+ruff check frontend/mcp_server/ frontend/data_loader.py
+```
+
+All code should pass ruff checks with zero warnings and mypy type checking. The project maintains a clean codebase with no linting warnings.
 
 ### Before Contributing:
 1. Read the complete [Rulebook](docs/RULEBOOK.md)
@@ -344,6 +495,84 @@ This project is part of the Annoyinator Barnacle Projects collection.
 Data source: Wiener Linien - https://www.wienerlinien.at/open-data
 License: Creative Commons Attribution 4.0 International (CC BY 4.0)
 
+## MCPB Packaging
+
+This project includes MCPB (Model Context Protocol Bundle) packaging for easy distribution and installation in Claude Desktop.
+
+### Package Structure
+
+```
+mcpb/
+├── manifest.json          # MCPB manifest configuration
+├── assets/                # Package assets
+│   ├── icon.png          # Package icon (256x256px)
+│   └── screenshots/      # Screenshots for documentation
+└── README.md             # Package-specific documentation
+```
+
+### Building the MCPB Package
+
+```bash
+# Install MCPB CLI (if not already installed)
+npm install -g @anthropic-ai/mcpb
+
+# Build the package
+mcpb pack mcpb/ dist/vienna-transit-mcp-v1.0.0.mcpb
+
+# Validate the package
+mcpb validate dist/vienna-transit-mcp-v1.0.0.mcpb
+```
+
+### Installing via MCPB Package
+
+1. Download the `.mcpb` file from releases
+2. Drag and drop into Claude Desktop
+3. Configure any required settings
+4. Start using Vienna transit tools in Claude!
+
+### Package Contents
+
+- **4 Tools**: Departures, station search, journey planning, service status
+- **3 Prompts**: AI assistant guidance for Vienna transit
+- **5 Resources**: Network overview, major stations, metro lines, operating hours, fares
+- **FastMCP 2.13**: Latest MCP protocol support
+
+See `mcpb/README.md` for detailed package documentation.
+
+## Architecture Details
+
+### Dual Standard Benefits
+
+✅ **Separation of Concerns**
+- MCP tools optimized for AI assistants
+- Web UI optimized for human users
+- Different protocols for different use cases
+
+✅ **Code Reuse**
+- Same backend logic
+- Same data sources
+- Same business logic
+
+✅ **Independent Deployment**
+- Can update MCP server without affecting web UI
+- Can scale independently
+- Different release cycles
+
+✅ **Best of Both Worlds**
+- MCP: Natural language AI integration
+- FastAPI: Rich web interface with real-time updates
+
+### Shared Backend Modules
+
+Both interfaces share these core modules:
+
+- **`data_loader.py`**: GTFS data loading, station management, route processing
+- **`database.py`**: PostgreSQL database layer with SQLAlchemy ORM
+- **`vehicle_service.py`**: Real-time vehicle data collection from Wiener Linien API
+- **`disruption_alerts.py`**: Service disruption monitoring and alerting
+
+This architecture ensures consistency between web and AI interfaces while maintaining clean separation.
+
 ## MCP Integrations
 
 ### GitHub MCP Server Toolsets
@@ -358,4 +587,4 @@ setx GITHUB_TOOLSETS "context,repos"
 setx GITHUB_TOOLSETS "context,repos,pull_requests,actions"
 ```
 
-When the variable is absent, the script falls back to GitHub’s default bundle: `context,repos,issues,pull_requests,users`. Refer to the GitHub MCP server README for the full list of bundles (`actions`, `code_security`, `dependabot`, `projects`, etc.) and pick only the ones you need to stay under client tool limits. The script forwards `GITHUB_TOOLSETS` into the container on every start so you can adjust the selection without rebuilding the image.
+When the variable is absent, the script falls back to GitHub's default bundle: `context,repos,issues,pull_requests,users`. Refer to the GitHub MCP server README for the full list of bundles (`actions`, `code_security`, `dependabot`, `projects`, etc.) and pick only the ones you need to stay under client tool limits. The script forwards `GITHUB_TOOLSETS` into the container on every start so you can adjust the selection without rebuilding the image.

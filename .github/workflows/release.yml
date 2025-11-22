@@ -1,0 +1,100 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  build-and-release:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r frontend/requirements.txt
+          npm install -g @anthropic-ai/mcpb
+      
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION=${GITHUB_REF#refs/tags/v}
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+      
+      - name: Update manifest version
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          # Update manifest.json version
+          python -c "
+          import json
+          with open('mcpb/manifest.json', 'r') as f:
+              manifest = json.load(f)
+          manifest['version'] = '$VERSION'
+          with open('mcpb/manifest.json', 'w') as f:
+              json.dump(manifest, f, indent=2)
+          "
+      
+      - name: Copy source files to mcpb
+        run: |
+          mkdir -p mcpb/frontend
+          cp -r frontend/mcp_server mcpb/frontend/
+          cp frontend/data_loader.py mcpb/frontend/
+          cp frontend/database.py mcpb/frontend/
+          cp frontend/vehicle_service.py mcpb/frontend/
+      
+      - name: Build MCPB package
+        run: |
+          mkdir -p dist
+          VERSION="${{ steps.version.outputs.version }}"
+          mcpb pack mcpb dist/vienna-transit-mcp-v${VERSION}.mcpb
+      
+      - name: Validate package
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          mcpb validate dist/vienna-transit-mcp-v${VERSION}.mcpb
+      
+      - name: Create checksums
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          cd dist
+          sha256sum vienna-transit-mcp-v${VERSION}.mcpb > vienna-transit-mcp-v${VERSION}.mcpb.sha256
+          md5sum vienna-transit-mcp-v${VERSION}.mcpb > vienna-transit-mcp-v${VERSION}.mcpb.md5
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/vienna-transit-mcp-v${{ steps.version.outputs.version }}.mcpb
+            dist/vienna-transit-mcp-v${{ steps.version.outputs.version }}.mcpb.sha256
+            dist/vienna-transit-mcp-v${{ steps.version.outputs.version }}.mcpb.md5
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

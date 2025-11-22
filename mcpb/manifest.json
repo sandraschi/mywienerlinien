@@ -1,0 +1,79 @@
+{
+  "manifest_version": "0.2",
+  "name": "vienna-transit-mcp",
+  "version": "1.0.0",
+  "description": "Vienna Transit MCP Server - FastMCP 2.13 compliant MCP server for Vienna public transport information",
+  "author": {
+    "name": "Vienna Transit MCP Contributors"
+  },
+  "license": "MIT",
+  "server": {
+    "type": "python",
+    "entry_point": "frontend/mcp_server/server.py",
+    "mcp_config": {
+      "command": "python",
+      "args": ["-m", "frontend.mcp_server.server"],
+      "env": {
+        "PYTHONPATH": "${PWD}",
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  },
+  "user_config": {
+    "timeout": {
+      "type": "string",
+      "title": "Operation Timeout (seconds)",
+      "description": "Timeout for API requests in seconds",
+      "default": "30"
+    },
+    "cache_duration": {
+      "type": "string",
+      "title": "Cache Duration (seconds)",
+      "description": "Duration to cache API responses",
+      "default": "15"
+    }
+  },
+  "tools": [
+    {
+      "name": "next_departures",
+      "description": "Get next departures from a Vienna transit station"
+    },
+    {
+      "name": "station_search",
+      "description": "Find Vienna transit stations by name"
+    },
+    {
+      "name": "line_status",
+      "description": "Check Vienna transit service status and disruptions"
+    },
+    {
+      "name": "journey_planner",
+      "description": "Plan optimal journey between Vienna stations"
+    }
+  ],
+  "prompts": [
+    {
+      "name": "vienna_transit_guide",
+      "description": "Comprehensive guide to Vienna's transit system and tool usage",
+      "arguments": [],
+      "text": "file://assets/prompts/vienna-transit-guide.md"
+    },
+    {
+      "name": "departure_checking_prompt",
+      "description": "Best practices for checking departures effectively",
+      "arguments": [],
+      "text": "file://assets/prompts/departure-checking.md"
+    },
+    {
+      "name": "journey_planning_prompt",
+      "description": "Guidance for journey planning assistance",
+      "arguments": [],
+      "text": "file://assets/prompts/journey-planning.md"
+    }
+  ],
+  "compatibility": {
+    "platforms": ["win32", "darwin", "linux"],
+    "python": ">=3.9"
+  }
+}
+

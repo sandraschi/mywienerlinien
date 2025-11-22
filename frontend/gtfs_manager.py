@@ -23,12 +23,14 @@ except ImportError:  # pragma: no cover - runtime fallback when package context 
 try:
     download_module = importlib.import_module("scripts.download_wienerlinien_data")
     load_module = importlib.import_module("scripts.load_gtfs_to_db")
+    city_config_module = importlib.import_module("scripts.city_config")
 except ImportError:  # pragma: no cover - defensive fallback
     project_root = Path(__file__).parent.parent
     sys.path.insert(0, str(project_root))
     try:
         download_module = importlib.import_module("scripts.download_wienerlinien_data")
         load_module = importlib.import_module("scripts.load_gtfs_to_db")
+        city_config_module = importlib.import_module("scripts.city_config")
     except ImportError as inner_error:
         logger = logging.getLogger(__name__)
         logger.error("GTFS manager import error: %s", inner_error, exc_info=True)
@@ -36,21 +38,20 @@ except ImportError:  # pragma: no cover - defensive fallback
             "GTFS manager could not import supporting scripts"
         ) from inner_error
 
-MARKDOWN_DATA_DIR = download_module.DATA_DIR
+DATA_DIR = download_module.DATA_DIR  # Used for metadata storage
 GTFS_DIR = download_module.GTFS_DIR
 GTFS_EXTRACT_DIR = download_module.GTFS_EXTRACT_DIR
 GTFS_MAX_AGE_DAYS = download_module.GTFS_MAX_AGE_DAYS
-GTFS_URL = download_module.GTFS_URL
-GTFS_ZIP = download_module.GTFS_ZIP
+get_city_config = city_config_module.get_city_config
+get_gtfs_filename = city_config_module.get_gtfs_filename
 download_file = download_module.download_file
 extract_gtfs = download_module.extract_gtfs
-generate_markdown_files = download_module.generate_markdown_files
 is_gtfs_fresh = download_module.is_gtfs_fresh
-load_gtfs_data = download_module.load_gtfs_data
-process_routes = download_module.process_routes
-process_stop_times = download_module.process_stop_times
-process_stops = download_module.process_stops
 load_gtfs_to_db = load_module.load_gtfs_to_db
+
+# Default configuration (can be overridden via environment)
+DEFAULT_CITY = os.getenv("GTFS_CITY", "vienna")
+DEFAULT_GTFS_URL = os.getenv("GTFS_URL", "https://www.wienerlinien.at/ogd_realtime/doku/ogd/gtfs/gtfs.zip")
 
 
 def _now_utc() -> datetime:
@@ -70,9 +71,28 @@ class GTFSManager:
         self.refresh_interval = timedelta(
             days=int(os.getenv('GTFS_REFRESH_INTERVAL_DAYS', str(GTFS_MAX_AGE_DAYS)))
         )
-        self.metadata_path = Path(MARKDOWN_DATA_DIR) / 'gtfs_metadata.json'
+        self.metadata_path = Path(DATA_DIR) / 'gtfs_metadata.json'
         self._lock = threading.Lock()
         self._background_thread: threading.Thread | None = None
+        
+        # City configuration
+        city_name = os.getenv('GTFS_CITY', DEFAULT_CITY)
+        gtfs_url_env = os.getenv('GTFS_URL')
+        
+        if gtfs_url_env:
+            self.city_config = None
+            self.gtfs_url = gtfs_url_env
+            self.gtfs_zip = GTFS_DIR / get_gtfs_filename("custom")
+        else:
+            self.city_config = get_city_config(city_name)
+            if self.city_config:
+                self.gtfs_url = self.city_config.gtfs_url
+                self.gtfs_zip = GTFS_DIR / get_gtfs_filename(city_name)
+            else:
+                # Fallback to default
+                self.city_config = get_city_config(DEFAULT_CITY)
+                self.gtfs_url = DEFAULT_GTFS_URL
+                self.gtfs_zip = GTFS_DIR / get_gtfs_filename(DEFAULT_CITY)
 
     # ------------------------------------------------------------------
     # Public API
@@ -121,10 +141,10 @@ class GTFSManager:
         if check_database and not self._database_has_routes():
             return True
 
-        if not GTFS_ZIP.exists():
+        if not self.gtfs_zip.exists():
             return True
 
-        if not is_gtfs_fresh(GTFS_ZIP):
+        if not is_gtfs_fresh(self.gtfs_zip):
             return True
 
         metadata = self._load_metadata()
@@ -151,44 +171,39 @@ class GTFSManager:
             return False
 
     def _run_pipeline(self, *, force_download: bool) -> None:
-        MARKDOWN_DATA_DIR.mkdir(parents=True, exist_ok=True)
         GTFS_DIR.mkdir(parents=True, exist_ok=True)
 
         self._download_gtfs(force=force_download)
         self._extract_gtfs()
         self._load_database()
-        self._generate_markdown()
+        # Markdown generation removed - data now read directly from database
         self._write_metadata()
         data_loader.clear_cache()
 
     def _download_gtfs(self, *, force: bool) -> None:
-        success, message = download_file(GTFS_URL, GTFS_ZIP, force=force)
+        success, message = download_file(self.gtfs_url, self.gtfs_zip, force=force)
         if not success:
             raise GTFSPipelineError(f'Download failed: {message}')
 
     def _extract_gtfs(self) -> None:
-        success, message = extract_gtfs(GTFS_ZIP, GTFS_EXTRACT_DIR, force=True)
+        success, message = extract_gtfs(self.gtfs_zip, GTFS_EXTRACT_DIR, force=True)
         if not success:
             raise GTFSPipelineError(f'Extraction failed: {message}')
 
     def _load_database(self) -> None:
         try:
-            load_gtfs_to_db(str(GTFS_ZIP))
+            # Pass metadata_dir only if RBL mapping is enabled (Vienna-specific)
+            metadata_dir = None
+            if self.city_config and self.city_config.enable_rbl_mapping:
+                metadata_dir = GTFS_DIR
+            
+            load_gtfs_to_db(str(self.gtfs_zip), metadata_dir=metadata_dir)
         except Exception as exc:
             raise GTFSPipelineError(f'Failed to load GTFS into database: {exc}') from exc
 
-    def _generate_markdown(self) -> None:
-        gtfs_data = load_gtfs_data(GTFS_EXTRACT_DIR)
-        if not gtfs_data:
-            raise GTFSPipelineError('Loaded GTFS dataset is empty.')
-
-        routes = process_routes(gtfs_data)
-        if not routes:
-            raise GTFSPipelineError('No routes generated from GTFS dataset.')
-
-        stops = process_stops(gtfs_data)
-        process_stop_times(gtfs_data, routes, {}, stops, max_entries=None)
-        generate_markdown_files(routes, stops, Path(MARKDOWN_DATA_DIR))
+    # Markdown generation removed - data now read directly from database
+    # def _generate_markdown(self) -> None:
+    #     """Legacy method - no longer needed since we read directly from database."""
 
     def _load_metadata(self) -> Dict[str, Any] | None:
         if not self.metadata_path.exists():
@@ -201,7 +216,10 @@ class GTFSManager:
     def _write_metadata(self) -> None:
         metadata = {
             'last_updated': _now_utc().isoformat(),
-            'gtfs_zip': str(GTFS_ZIP),
+            'gtfs_zip': str(self.gtfs_zip),
+            'gtfs_url': self.gtfs_url,
+            'city': self.city_config.name if self.city_config else 'custom',
+            'timezone': self.city_config.timezone if self.city_config else 'UTC',
             'refresh_interval_days': self.refresh_interval.days,
         }
         self.metadata_path.write_text(json.dumps(metadata, indent=2), encoding='utf-8')

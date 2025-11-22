@@ -13,6 +13,8 @@ let lineStopMarkers = new Map(); // Map<lineName, L.Layer[]>
 let disruptionAlerts = new Map();
 let socket;
 let selectedStopHighlight = null; // Highlight circle for selected stop
+let currentCity = 'vienna'; // Default city
+let cityConfig = null; // Current city configuration
 
 // Line selection state
 let lineData = [];
@@ -93,10 +95,67 @@ function initializeWebSocket() {
     });
 }
 
+// Get city from URL parameter or localStorage
+function getCityFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const cityParam = params.get('city');
+    if (cityParam) {
+        localStorage.setItem('selectedCity', cityParam);
+        return cityParam;
+    }
+    // Fallback to localStorage
+    return localStorage.getItem('selectedCity') || 'vienna';
+}
+
+// Load city configuration
+async function loadCityConfig(cityKey) {
+    try {
+        const response = await fetch(`/api/cities/${encodeURIComponent(cityKey)}`);
+        if (!response.ok) {
+            console.warn(`City ${cityKey} not found, falling back to vienna`);
+            return await loadCityConfig('vienna');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error loading city config:', error);
+        // Return default Vienna config
+        return {
+            key: 'vienna',
+            name: 'Vienna',
+            map_center: { lat: 48.2082, lng: 16.3738 },
+            map_zoom: 13
+        };
+    }
+}
+
 // Initialize the map
-function initializeMap() {
-    // Create map centered on Vienna
-    map = L.map('map').setView([48.2082, 16.3738], 13);
+async function initializeMap() {
+    // Get city from URL or localStorage
+    currentCity = getCityFromURL();
+    
+    // Load city configuration
+    cityConfig = await loadCityConfig(currentCity);
+    
+    // Update page title
+    document.title = `${cityConfig.name} Live Map`;
+    const headerTitle = document.querySelector('.header h1');
+    if (headerTitle) {
+        headerTitle.textContent = `${cityConfig.name} Live Map`;
+    }
+    
+    // Update city selector if it exists
+    const citySelector = document.getElementById('city-selector');
+    if (citySelector) {
+        citySelector.value = currentCity;
+    }
+    
+    // Get map center from city config or use defaults
+    const mapCenter = cityConfig.map_center || { lat: 48.2082, lng: 16.3738 };
+    const mapZoom = cityConfig.map_zoom || 13;
+    
+    // Create map centered on selected city
+    map = L.map('map').setView([mapCenter.lat, mapCenter.lng], mapZoom);
     
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -115,6 +174,73 @@ function initializeMap() {
     initializeArrivalsPanel();
     initializeFavoritesPanel();
     initializeTrafficAlerts();
+}
+
+// Switch to a different city
+async function switchCity(cityKey) {
+    // Update URL without reload
+    const url = new URL(window.location.href);
+    url.searchParams.set('city', cityKey);
+    window.history.pushState({ city: cityKey }, '', url);
+    
+    // Update current city
+    currentCity = cityKey;
+    localStorage.setItem('selectedCity', cityKey);
+    
+    // Reload city config
+    cityConfig = await loadCityConfig(cityKey);
+    
+    // Update page title
+    document.title = `${cityConfig.name} Live Map`;
+    const headerTitle = document.querySelector('.header h1');
+    if (headerTitle) {
+        headerTitle.textContent = `${cityConfig.name} Live Map`;
+    }
+    
+    // Update city selector
+    const citySelector = document.getElementById('city-selector');
+    if (citySelector) {
+        citySelector.value = cityKey;
+    }
+    
+    // Update map center
+    if (cityConfig.map_center && map) {
+        const mapCenter = cityConfig.map_center;
+        const mapZoom = cityConfig.map_zoom || 13;
+        map.setView([mapCenter.lat, mapCenter.lng], mapZoom);
+    }
+    
+    // Clear existing data
+    vehicleMarkers.forEach((marker) => {
+        if (map.hasLayer(marker)) {
+            map.removeLayer(marker);
+        }
+    });
+    vehicleMarkers.clear();
+    
+    routePolylines.forEach((polylines) => {
+        polylines.forEach((polyline) => {
+            if (map.hasLayer(polyline)) {
+                map.removeLayer(polyline);
+            }
+        });
+    });
+    routePolylines.clear();
+    
+    lineStopMarkers.forEach((markers) => {
+        markers.forEach((marker) => {
+            if (map.hasLayer(marker)) {
+                map.removeLayer(marker);
+            }
+        });
+    });
+    lineStopMarkers.clear();
+    
+    selectedLines.clear();
+    lineRouteCache.clear();
+    
+    // Reload data for new city
+    await loadInitialData();
 }
 
 // Load initial data
@@ -1417,8 +1543,50 @@ function showSuccess(message) {
     }
 }
 
+// Initialize city selector dropdown
+async function initializeCitySelector() {
+    const citySelector = document.getElementById('city-selector');
+    if (!citySelector) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/cities');
+        if (!response.ok) {
+            console.error('Failed to load cities');
+            return;
+        }
+        const data = await response.json();
+        const cities = data.cities || [];
+        
+        // Clear existing options
+        citySelector.innerHTML = '';
+        
+        // Add cities to dropdown
+        cities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city.key;
+            option.textContent = city.name;
+            if (city.key === currentCity) {
+                option.selected = true;
+            }
+            citySelector.appendChild(option);
+        });
+        
+        // Add change event listener
+        citySelector.addEventListener('change', async (e) => {
+            const selectedCity = e.target.value;
+            if (selectedCity !== currentCity) {
+                await switchCity(selectedCity);
+            }
+        });
+    } catch (error) {
+        console.error('Error initializing city selector:', error);
+    }
+}
+
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Hide loading overlay by default
     hideLoading();
     
@@ -1436,7 +1604,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    initializeMap();
+    // Initialize city selector first
+    await initializeCitySelector();
+    
+    // Then initialize map (which will use the selected city)
+    await initializeMap();
     
     // Set up event listeners
     const vehicleTypeSelect = document.getElementById('vehicle-type-select');
@@ -1445,5 +1617,17 @@ document.addEventListener('DOMContentLoaded', function() {
         vehicleTypeSelect.addEventListener('change', onVehicleTypeChange);
     }
     
-    console.log('Wiener Linien Live Map initialized');
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', async (e) => {
+        if (e.state && e.state.city) {
+            await switchCity(e.state.city);
+        } else {
+            const cityFromURL = getCityFromURL();
+            if (cityFromURL !== currentCity) {
+                await switchCity(cityFromURL);
+            }
+        }
+    });
+    
+    console.log('Live Map initialized');
 });

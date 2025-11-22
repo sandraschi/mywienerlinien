@@ -289,7 +289,7 @@ def truncate_tables(session: Session) -> None:
     record_heartbeat("truncate_complete", duration_seconds=round(time.perf_counter() - start, 1))
 
 
-def load_agencies(session: Session, feed: Any) -> int:
+def load_agencies(session: Session, feed: Any, default_timezone: str = "Europe/Vienna") -> int:
     agencies_df = _get_table(feed, "agency", ("agencies", "agency"))
     if agencies_df is None or agencies_df.empty:
         logger.warning("No agencies found; skipping agency load.")
@@ -301,7 +301,7 @@ def load_agencies(session: Session, feed: Any) -> int:
             agency_id=_safe(row.get("agency_id")) or "",
             agency_name=_safe(row.get("agency_name")) or "",
             agency_url=_safe(row.get("agency_url")),
-            agency_timezone=_safe(row.get("agency_timezone")) or "Europe/Vienna",
+            agency_timezone=_safe(row.get("agency_timezone")) or default_timezone,
             agency_lang=_safe(row.get("agency_lang")) or "de",
             agency_phone=_safe(row.get("agency_phone")),
         )
@@ -331,7 +331,7 @@ def load_agencies(session: Session, feed: Any) -> int:
     return len(agencies)
 
 
-def load_stops(session: Session, feed: Any, metadata_dir: Optional[Path] = None) -> int:
+def load_stops(session: Session, feed: Any, metadata_dir: Optional[Path] = None, enable_rbl_mapping: bool = True) -> int:
     stops_df = getattr(feed, "stops", None)
     if stops_df is None or stops_df.empty:
         logger.warning("No stops found; skipping stop load.")
@@ -341,7 +341,7 @@ def load_stops(session: Session, feed: Any, metadata_dir: Optional[Path] = None)
     rows = stops_df.to_dict(orient="records")
 
     rbl_mapping: Dict[str, Dict[str, object]] = {}
-    if metadata_dir is not None:
+    if metadata_dir is not None and enable_rbl_mapping:
         try:
             rbl_mapping = build_stop_rbl_mapping(rows, metadata_dir, logger)
         except MetadataDownloadError as exc:
@@ -728,6 +728,8 @@ def load_gtfs_to_db(
     chunk_size: int = 5000,
     max_shapes: Optional[int] = None,
     max_trips: Optional[int] = None,
+    metadata_dir: Optional[Path] = None,
+    default_timezone: str = "Europe/Vienna",
 ) -> dict:
     record_heartbeat("start", gtfs_path=gtfs_path, chunk_size=chunk_size)
     try:
@@ -747,7 +749,11 @@ def load_gtfs_to_db(
     SessionLocal = sessionmaker(bind=engine)
     session = SessionLocal()
 
-    metadata_dir = Path(gtfs_path).resolve().parent / "metadata"
+    # Use provided metadata_dir or default location
+    if metadata_dir is None:
+        metadata_dir = Path(gtfs_path).resolve().parent / "metadata"
+    else:
+        metadata_dir = Path(metadata_dir)
 
     summary = {
         "agencies": 0,
@@ -767,9 +773,12 @@ def load_gtfs_to_db(
         disable_materialized_view_triggers(session)
         disable_indexes(session)
         
+        # Determine if RBL mapping should be enabled (Vienna-specific, only if metadata_dir exists)
+        enable_rbl = metadata_dir.exists() and metadata_dir.is_dir()
+        
         truncate_tables(session)
-        summary["agencies"] = load_agencies(session, feed)
-        summary["stops"] = load_stops(session, feed, metadata_dir=metadata_dir)
+        summary["agencies"] = load_agencies(session, feed, default_timezone=default_timezone)
+        summary["stops"] = load_stops(session, feed, metadata_dir=metadata_dir if enable_rbl else None, enable_rbl_mapping=enable_rbl)
         summary["shapes"] = load_shapes(session, feed, chunk_size, max_shapes)
         summary["routes"] = load_routes(session, feed)
         trips_loaded, stop_times_loaded = load_trips_and_stop_times(session, feed, chunk_size, max_trips)

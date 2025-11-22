@@ -1,8 +1,9 @@
 """
-Download and process Wiener Linien GTFS data.
+Download and process GTFS data for any city.
 
-This script downloads the latest GTFS data from Wiener Linien and processes it
-to generate accurate route and station information.
+This script downloads GTFS data from any transit agency and processes it
+to generate accurate route and station information. Supports multiple cities
+via city configuration or direct GTFS URL.
 """
 
 import os
@@ -10,24 +11,45 @@ import sys
 import zipfile
 import csv
 import time
+import argparse
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
+
+try:
+    from .city_config import get_city_config, get_gtfs_filename, list_cities, CityConfig
+except ImportError:
+    from city_config import get_city_config, get_gtfs_filename, list_cities, CityConfig  # type: ignore
 
 # Timeout for network operations (seconds)
 DOWNLOAD_TIMEOUT = 120  # Increased from 30
 PROCESSING_TIMEOUT = 600  # Increased from 60 (10 minutes) to handle large GTFS datasets
 
-# Configuration
-GTFS_URL = "https://www.wienerlinien.at/ogd_realtime/doku/ogd/gtfs/gtfs.zip"
+# Default configuration (Vienna for backward compatibility)
+DEFAULT_CITY = "vienna"
+DEFAULT_GTFS_URL = "https://www.wienerlinien.at/ogd_realtime/doku/ogd/gtfs/gtfs.zip"
+
 # In Docker, use /app/data; locally, use ../frontend/data
 if Path("/app/data").exists():
     DATA_DIR = Path("/app/data")
 else:
     DATA_DIR = Path(__file__).parent.parent / "frontend" / "data"
 GTFS_DIR = Path(__file__).parent / "gtfs_data"
-GTFS_ZIP = GTFS_DIR / "wienerlinien-gtfs.zip"
 GTFS_EXTRACT_DIR = GTFS_DIR  # Use the same directory for extracted files
+
+
+def get_gtfs_path(city_name: Optional[str] = None, gtfs_url: Optional[str] = None) -> Path:
+    """Get the GTFS zip file path based on city or URL."""
+    if city_name:
+        filename = get_gtfs_filename(city_name)
+    elif gtfs_url:
+        # Extract filename from URL or use generic name
+        filename = gtfs_url.split("/")[-1]
+        if not filename.endswith(".zip"):
+            filename = "gtfs.zip"
+    else:
+        filename = "wienerlinien-gtfs.zip"  # Default for backward compatibility
+    return GTFS_DIR / filename
 
 # Ensure directories exist (only if we have write permission)
 try:
@@ -1012,11 +1034,60 @@ def main():
     """Main function to download and process GTFS data with error handling and timeouts."""
     args = parse_arguments()
     
+    # Handle --list-cities
+    if args.list_cities:
+        cities = list_cities()
+        print("\nAvailable pre-configured cities:")
+        print("=" * 70)
+        for city_id, config in cities.items():
+            print(f"\n{city_id.upper()}")
+            print(f"  Name: {config.name}")
+            print(f"  URL: {config.gtfs_url}")
+            print(f"  Timezone: {config.timezone}")
+            print(f"  Description: {config.description}")
+        print("\nUsage: python download_wienerlinien_data.py --city <city_id>")
+        return 0
+    
+    # Determine GTFS URL and city config
+    city_config: Optional[CityConfig] = None
+    gtfs_url: str
+    city_name: str = "unknown"
+    
+    if args.gtfs_url:
+        # Direct URL provided
+        gtfs_url = args.gtfs_url
+        city_name = "custom"
+        print(f"Using custom GTFS URL: {gtfs_url}")
+    elif args.city:
+        # City name provided
+        city_config = get_city_config(args.city)
+        if not city_config:
+            print(f"Error: City '{args.city}' not found.")
+            print("Use --list-cities to see available cities.")
+            return 1
+        gtfs_url = city_config.gtfs_url
+        city_name = city_config.name.lower()
+        print(f"Using city configuration: {city_config.name}")
+        print(f"  Timezone: {city_config.timezone}")
+        print(f"  URL: {gtfs_url}")
+    else:
+        # Default to Vienna for backward compatibility
+        city_config = get_city_config(DEFAULT_CITY)
+        gtfs_url = DEFAULT_GTFS_URL
+        city_name = DEFAULT_CITY
+        print(f"Using default city: {city_config.name if city_config else 'Vienna'}")
+    
+    # Get GTFS file path
+    gtfs_zip = get_gtfs_path(city_name, args.gtfs_url)
+    
     print("=" * 50)
-    print("Wiener Linien GTFS Data Processor")
+    print("GTFS Data Processor")
     print("=" * 50)
+    print(f"City: {city_config.name if city_config else 'Custom'}")
+    print(f"GTFS URL: {gtfs_url}")
     print(f"Data directory: {DATA_DIR}")
     print(f"GTFS directory: {GTFS_DIR}")
+    print(f"GTFS file: {gtfs_zip}")
     print("-" * 50)
     start_time = time.time()
     
@@ -1031,8 +1102,8 @@ def main():
         # Download GTFS data if needed
         print("\n[2/5] Checking GTFS data...")
         
-        if not is_gtfs_fresh(GTFS_ZIP) or args.force_download:
-            if GTFS_ZIP.exists():
+        if not is_gtfs_fresh(gtfs_zip) or args.force_download:
+            if gtfs_zip.exists():
                 if args.force_download:
                     print("  • Forcing download of GTFS data...")
                 else:
@@ -1040,7 +1111,7 @@ def main():
             else:
                 print("  • GTFS data not found, downloading...")
                 
-            success, message = download_file(GTFS_URL, GTFS_ZIP, force=args.force_download)
+            success, message = download_file(gtfs_url, gtfs_zip, force=args.force_download)
             if not success:
                 raise ScriptError(f"Failed to download GTFS data: {message}")
         else:
@@ -1049,7 +1120,7 @@ def main():
         # Extract GTFS data
         print("\n[3/5] Extracting GTFS data...")
         
-        success, message = extract_gtfs(GTFS_ZIP, GTFS_EXTRACT_DIR, force=args.force_extract)
+        success, message = extract_gtfs(gtfs_zip, GTFS_EXTRACT_DIR, force=args.force_extract)
         if not success:
             raise ScriptError(f"Failed to extract GTFS data: {message}")
             

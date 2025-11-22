@@ -1,0 +1,85 @@
+# Pre-commit hooks for Vienna Transit MCP Server
+# Install: pip install pre-commit
+# Setup: pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  # Ruff for linting and formatting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.15
+    hooks:
+      # Run Ruff linter
+      - id: ruff
+        name: ruff (linting)
+        args: [--fix, --exit-non-zero-on-fix]
+        types_or: [python, pyi]
+        files: ^(frontend/|tests/)
+      # Run Ruff formatter
+      - id: ruff-format
+        name: ruff (formatting)
+        types_or: [python, pyi]
+        files: ^(frontend/|tests/)
+
+  # mypy for type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        name: mypy (type checking)
+        additional_dependencies: [types-all]
+        args: [--ignore-missing-imports, --show-error-codes]
+        types: [python]
+        files: ^frontend/mcp_server/
+        exclude: ^frontend/mcp_server/(__pycache__|.*\.pyc)
+
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        name: Trim trailing whitespace
+        exclude: ^(.*\.md|.*\.json|.*\.yaml|.*\.yml)$
+      - id: end-of-file-fixer
+        name: Fix end of files
+      - id: check-yaml
+        name: Check YAML syntax
+        args: [--unsafe]
+      - id: check-json
+        name: Check JSON syntax
+      - id: check-toml
+        name: Check TOML syntax
+      - id: check-added-large-files
+        name: Check for large files
+        args: [--maxkb=1000]
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+      - id: check-case-conflict
+        name: Check for case conflicts
+      - id: mixed-line-ending
+        name: Fix mixed line endings
+        args: [--fix=lf]
+      - id: detect-private-key
+        name: Detect private keys
+
+  # Python-specific checks
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-check-blanket-noqa
+        name: Check for blanket noqa
+      - id: python-check-mock-methods
+        name: Check mock methods
+      - id: python-no-eval
+        name: Check for eval usage
+      - id: python-no-log-warn
+        name: Check for deprecated log.warn
+
+  # Markdown linting (optional but useful)
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.38.0
+    hooks:
+      - id: markdownlint
+        name: Markdown linting
+        args: [--fix]
+        exclude: ^(CHANGELOG\.md|.*\.md\.example)$
+
