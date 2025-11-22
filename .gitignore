@@ -66,8 +66,22 @@ scripts/gtfs_data_backup_*/**/*.csv
 scripts/gtfs_data_backup_*/**/*.json
 backup/
 backup/**/*
+
+# Generated data files (loader outputs)
 data/*.txt
 data/*.zip
+data/*.md
+data/*.json
+data/gtfs_*
+
+# GTFS loader generated files
+gtfs_loader_heartbeat.json
+gtfs_metadata.json
+gtfs_processor.log
+gtfs_analysis.log
+gtfs_to_markdown.log
+gtfs_output.log
+gtfs_schema_check.log
 
 # Local development
 start_app.bat
@@ -81,4 +95,3 @@ htmlcov/
 # Debug
 *.prof
 *.profraw
-data/*.md

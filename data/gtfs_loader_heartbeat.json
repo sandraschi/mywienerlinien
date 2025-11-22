@@ -1,9 +1,0 @@
-{
-  "stage": "trips_progress",
-  "timestamp": "2025-11-22T07:55:01Z",
-  "details": {
-    "trips_inserted": 300000,
-    "stop_times_inserted": 5719942,
-    "total_trips": 339047
-  }
-}
