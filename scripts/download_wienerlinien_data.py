@@ -9,13 +9,10 @@ import os
 import sys
 import zipfile
 import csv
-import json
-import signal
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError as FutureTimeoutError
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, Tuple
 
 # Timeout for network operations (seconds)
 DOWNLOAD_TIMEOUT = 120  # Increased from 30
@@ -23,14 +20,22 @@ PROCESSING_TIMEOUT = 600  # Increased from 60 (10 minutes) to handle large GTFS 
 
 # Configuration
 GTFS_URL = "https://www.wienerlinien.at/ogd_realtime/doku/ogd/gtfs/gtfs.zip"
-DATA_DIR = Path(__file__).parent.parent / "frontend" / "data"
+# In Docker, use /app/data; locally, use ../frontend/data
+if Path("/app/data").exists():
+    DATA_DIR = Path("/app/data")
+else:
+    DATA_DIR = Path(__file__).parent.parent / "frontend" / "data"
 GTFS_DIR = Path(__file__).parent / "gtfs_data"
 GTFS_ZIP = GTFS_DIR / "wienerlinien-gtfs.zip"
 GTFS_EXTRACT_DIR = GTFS_DIR  # Use the same directory for extracted files
 
-# Ensure directories exist
-os.makedirs(DATA_DIR, exist_ok=True)
-os.makedirs(GTFS_DIR, exist_ok=True)
+# Ensure directories exist (only if we have write permission)
+try:
+    os.makedirs(DATA_DIR, exist_ok=True)
+    os.makedirs(GTFS_DIR, exist_ok=True)
+except (PermissionError, OSError):
+    # Directory creation will happen when actually needed
+    pass
 
 # How old (in days) the GTFS data can be before we consider it stale
 GTFS_MAX_AGE_DAYS = 7
@@ -279,7 +284,6 @@ def process_stops(gtfs_data: dict, max_stops: int = None) -> dict:
     
     start_time = time.time()
     last_log_time = start_time
-    processed_count = 0
     
     for i, stop in enumerate(stops_data, 1):
         try:
@@ -319,7 +323,6 @@ def process_stops(gtfs_data: dict, max_stops: int = None) -> dict:
            f"{elapsed:.1f} seconds ({len(stops)/elapsed:,.0f} stops/sec)"))
     
     return stops
-    return stops
 
 def remove_consecutive_duplicates(sequence):
     """Remove consecutive duplicate stops from a sequence while preserving order.
@@ -340,6 +343,20 @@ def remove_consecutive_duplicates(sequence):
     return result
 
 
+def deduplicate_stops(sequence):
+    """Remove duplicate stops (by stop_id) while preserving order."""
+    seen_ids = set()
+    deduped = []
+    for item in sequence:
+        stop_id = item.get('stop_id')
+        if not stop_id:
+            continue
+        if stop_id in seen_ids:
+            continue
+        seen_ids.add(stop_id)
+        deduped.append(item)
+    return deduped
+
 def process_stop_times(gtfs_data: dict, routes: dict, trips: dict, stops: dict, max_entries: int = None):
     """Process stop times to build route sequences.
     
@@ -353,7 +370,6 @@ def process_stop_times(gtfs_data: dict, routes: dict, trips: dict, stops: dict, 
     print("  • Indexing trips by route and direction...")
     
     # First, index trips by route and direction, and map trip_id to route_id/direction_id
-    route_direction_trips = {}
     trip_to_route_direction = {}
     trips_data = gtfs_data.get('trips.txt', [])
     
@@ -367,13 +383,6 @@ def process_stop_times(gtfs_data: dict, routes: dict, trips: dict, stops: dict, 
             continue
             
         # Map trip to route and direction
-        if route_id not in route_direction_trips:
-            route_direction_trips[route_id] = {}
-            
-        if direction_id not in route_direction_trips[route_id]:
-            route_direction_trips[route_id][direction_id] = []
-            
-        route_direction_trips[route_id][direction_id].append(trip_id)
         trip_to_route_direction[trip_id] = (route_id, direction_id)
     
     # Process stop times with progress reporting
@@ -395,11 +404,23 @@ def process_stop_times(gtfs_data: dict, routes: dict, trips: dict, stops: dict, 
     start_time = time.time()
     last_log_time = start_time
     
-    # Structure to hold stops for each route and direction
-    route_direction_stops = {}
-    
-    # Initialize processed_stops to track which stops we've already added to routes
-    processed_stops = {route_id: {} for route_id in routes.keys()}
+    # Structure to hold a canonical stop sequence for each route and direction
+    route_direction_stops: Dict[str, Dict[str, list]] = {}
+
+    def store_trip_sequence(trip_id: str, stops_sequence: list) -> None:
+        """Keep the best (longest) canonical stop sequence per route/direction."""
+        if not trip_id or not stops_sequence:
+            return
+        mapping = trip_to_route_direction.get(trip_id)
+        if not mapping:
+            return
+        route_id, direction_id = mapping
+        if route_id not in route_direction_stops:
+            route_direction_stops[route_id] = {}
+        canonical = deduplicate_stops(remove_consecutive_duplicates(stops_sequence))
+        existing = route_direction_stops[route_id].get(direction_id)
+        if not existing or len(canonical) > len(existing):
+            route_direction_stops[route_id][direction_id] = canonical
     
     # First pass: Build complete stop sequences for each trip
     print("  • Building stop sequences for each trip...")
@@ -428,17 +449,7 @@ def process_stop_times(gtfs_data: dict, routes: dict, trips: dict, stops: dict, 
             
         # If this is a new trip, process the previous one
         if trip_id != current_trip and current_trip is not None:
-            # Add the completed trip's stops to our route/direction structure
-            if current_trip in trip_to_route_direction:
-                route_id, direction_id = trip_to_route_direction[current_trip]
-                if route_id not in route_direction_stops:
-                    route_direction_stops[route_id] = {}
-                if direction_id not in route_direction_stops[route_id]:
-                    route_direction_stops[route_id][direction_id] = []
-                
-                # Add the complete stop sequence for this trip
-                route_direction_stops[route_id][direction_id].extend(current_stops)
-            
+            store_trip_sequence(current_trip, current_stops)
             # Reset for the new trip
             current_stops = []
         
@@ -461,13 +472,8 @@ def process_stop_times(gtfs_data: dict, routes: dict, trips: dict, stops: dict, 
             continue
     
     # Process the last trip
-    if current_trip and current_trip in trip_to_route_direction and current_stops:
-        route_id, direction_id = trip_to_route_direction[current_trip]
-        if route_id not in route_direction_stops:
-            route_direction_stops[route_id] = {}
-        if direction_id not in route_direction_stops[route_id]:
-            route_direction_stops[route_id][direction_id] = []
-        route_direction_stops[route_id][direction_id].extend(current_stops)
+    if current_trip and current_stops:
+        store_trip_sequence(current_trip, current_stops)
     
     # Now build the final route stops by finding the most common sequence for each route/direction
     print("  • Building final route stop sequences...")
@@ -479,12 +485,9 @@ def process_stop_times(gtfs_data: dict, routes: dict, trips: dict, stops: dict, 
             
         route_stop_sequences[route_id] = {}
         
-        for direction_id, trip_stops_list in directions.items():
-            # If we have multiple trips, find the most common sequence of stops
-            if trip_stops_list:
-                # For now, just take the first trip's stops as the canonical sequence
-                # A more sophisticated approach would analyze all trips to find the most common sequence
-                route_stop_sequences[route_id][direction_id] = remove_consecutive_duplicates(trip_stops_list)
+        for direction_id, canonical_stops in directions.items():
+            if canonical_stops:
+                route_stop_sequences[route_id][direction_id] = canonical_stops
     
     # Now assign the stops to the routes
     print("  • Assigning stops to routes...")
@@ -551,55 +554,6 @@ def process_stop_times(gtfs_data: dict, routes: dict, trips: dict, stops: dict, 
     print((f"  • Processed {processed:,} stop time entries "
            f"in {elapsed/60:.1f} minutes ({processed/elapsed:,.0f} entries/sec)"))
     print(f"  • {routes_with_stops:,} out of {route_count:,} routes have stops assigned")
-    
-    for i, stop_time in enumerate(stop_times, 1):
-        # Progress reporting
-        current_time = time.time()
-        if i % 100000 == 0 or (current_time - last_log_time) >= 5 or i == total_entries:
-            elapsed = current_time - start_time
-            rate = i / elapsed if elapsed > 0 else 0
-            remaining = (total_entries - i) / rate if rate > 0 else 0
-            
-            print((f"    - Processed {i:,}/{total_entries:,} entries "
-                  f"({i/total_entries*100:.1f}%, {rate:,.0f} entries/sec, "
-                  f"ETA: {remaining/60:.1f} min remaining)"))
-            last_log_time = current_time
-            
-        trip_id = stop_time.get('trip_id')
-        stop_id = stop_time.get('stop_id')
-        
-        # Skip if stop doesn't exist or is missing required fields
-        if not stop_id or stop_id not in stops:
-            continue
-            
-        # Find which route and direction this trip belongs to
-        for route_id, direction_trips in route_direction_trips.items():
-            if route_id not in routes:
-                continue
-                
-            for direction_id, trip_set in direction_trips.items():
-                if trip_id in trip_set:
-                    # Initialize direction tracking if not exists
-                    if direction_id not in processed_stops[route_id]:
-                        processed_stops[route_id][direction_id] = set()
-                    
-                    # Only add if we haven't seen this stop for this route and direction
-                    if stop_id not in processed_stops[route_id][direction_id]:
-                        try:
-                            stop_sequence = int(stop_time.get('stop_sequence', 0))
-                            routes[route_id]['stops'].append({
-                                'stop_id': stop_id,
-                                'stop_name': stops[stop_id].get('stop_name', 'Unknown Stop'),
-                                'stop_sequence': stop_sequence,
-                                'direction_id': direction_id,
-                                'lat': stops[stop_id].get('stop_lat', 0),
-                                'lon': stops[stop_id].get('stop_lon', 0)
-                            })
-                            processed_stops[route_id][direction_id].add(stop_id)
-                            processed += 1
-                        except (ValueError, KeyError) as e:
-                            print(f"    • Error processing stop time: {e}")
-                            continue
     
     # Sort stops by sequence for each route and direction
     print("  • Sorting stops by sequence and direction...")
@@ -1068,14 +1022,14 @@ def main():
     
     try:
         # Ensure directories exist
-        print(f"\n[1/5] Setting up directories...")
+        print("\n[1/5] Setting up directories...")
         os.makedirs(DATA_DIR, exist_ok=True)
         os.makedirs(GTFS_DIR, exist_ok=True)
         print(f"  • Data directory: {DATA_DIR}")
         print(f"  • GTFS directory: {GTFS_DIR}")
         
         # Download GTFS data if needed
-        print(f"\n[2/5] Checking GTFS data...")
+        print("\n[2/5] Checking GTFS data...")
         
         if not is_gtfs_fresh(GTFS_ZIP) or args.force_download:
             if GTFS_ZIP.exists():
@@ -1093,7 +1047,7 @@ def main():
             print(f"  • Using existing GTFS data (less than {GTFS_MAX_AGE_DAYS} days old)")
         
         # Extract GTFS data
-        print(f"\n[3/5] Extracting GTFS data...")
+        print("\n[3/5] Extracting GTFS data...")
         
         success, message = extract_gtfs(GTFS_ZIP, GTFS_EXTRACT_DIR, force=args.force_extract)
         if not success:
@@ -1106,7 +1060,7 @@ def main():
             raise ScriptError(f"Missing required GTFS files: {', '.join(missing_files)}")
         
         # Load and process GTFS data with timeout
-        print(f"\n[4/5] Processing GTFS data...")
+        print("\n[4/5] Processing GTFS data...")
         gtfs_data = process_with_timeout(load_gtfs_data, GTFS_EXTRACT_DIR, timeout=PROCESSING_TIMEOUT)
         
         if not gtfs_data:

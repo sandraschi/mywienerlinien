@@ -1,15 +1,18 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, Table, DateTime, Boolean
+import logging
+import os
+
+from dotenv import load_dotenv
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Table, PrimaryKeyConstraint, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
-from datetime import datetime
-import os
-from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
 # Database connection string
 DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost/wienerlinien')
+
+logger = logging.getLogger(__name__)
 
 # Create engine and session
 engine = create_engine(DATABASE_URL)
@@ -70,7 +73,7 @@ class Stop(Base):
     wheelchair_boarding = Column(Integer)
     
     # Relationships
-    child_stops = relationship('Stop', back_populates='parent', remote_side=[stop_id])
+    child_stops = relationship('Stop', back_populates='parent')
     parent = relationship('Stop', back_populates='child_stops', remote_side=[stop_id])
     routes = relationship('Route', secondary=route_stops, back_populates='stops')
     stop_times = relationship('StopTime', back_populates='stop')
@@ -112,6 +115,18 @@ class StopTime(Base):
     trip = relationship('Trip', back_populates='stop_times')
     stop = relationship('Stop', back_populates='stop_times')
 
+class Shape(Base):
+    __tablename__ = 'shapes'
+    __table_args__ = (
+        PrimaryKeyConstraint('shape_id', 'shape_pt_sequence'),
+    )
+
+    shape_id = Column(String, nullable=False)
+    shape_pt_lat = Column(Float, nullable=False)
+    shape_pt_lon = Column(Float, nullable=False)
+    shape_pt_sequence = Column(Integer, nullable=False)
+    shape_dist_traveled = Column(Float)
+
 def get_db():
     """Dependency to get DB session"""
     db = SessionLocal()
@@ -121,12 +136,13 @@ def get_db():
         db.close()
 
 def init_db():
-    ""
-    Initialize the database by creating all tables.
-    This should be called once when setting up the application.
-    ""
-    Base.metadata.create_all(bind=engine)
-    print("Database tables created successfully.")
+    """Create all GTFS tables in the configured database."""
+    try:
+        Base.metadata.create_all(bind=engine)
+        logger.info("Database tables created successfully.")
+    except Exception as exc:
+        logger.exception("Failed to create database tables: %s", exc)
+        raise
 
 if __name__ == "__main__":
     init_db()

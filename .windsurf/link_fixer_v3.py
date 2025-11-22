@@ -51,7 +51,6 @@ def fix_links_in_file(file_path):
         logger.error(f"Could not read file {relative_file_path}. Error: {e}")
         return
 
-    original_content = content
     file_dir = os.path.dirname(file_path)
     replacements = []
 

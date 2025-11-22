@@ -12,7 +12,7 @@ volumes:
 services:
   # Database
   db:
-    image: postgres:15-alpine
+    image: postgis/postgis:15-3.3-alpine
     container_name: wienerlinien-db
     environment:
       POSTGRES_USER: wienerlinien
@@ -23,7 +23,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./db/init-scripts:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - wienerlinien-network
     healthcheck:
@@ -35,13 +35,24 @@ services:
   # GTFS Data Loader
   gtfs-loader:
     build:
-      context: .
-      dockerfile: frontend/Dockerfile
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: wienerlinien-gtfs-loader
     environment:
       - DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
+      - PGPASSWORD=wienerlinien
+      - GTFS_LOG_DIR=/logs
+      - GTFS_REFRESH_DAYS=${GTFS_REFRESH_DAYS:-7}
+      - GTFS_ZIP_PATH=/app/scripts/gtfs_data/wienerlinien-gtfs.zip
+      - GTFS_METADATA_DIR=/app/scripts/gtfs_data
     volumes:
-      - .:/app
+      - ./frontend:/app
+      - ./scripts:/app/scripts
+      - ./db/init-scripts:/app/db/init-scripts
+      - ./requirements-db.txt:/app/requirements-db.txt
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./frontend/logs:/logs
     networks:
       - wienerlinien-network
     depends_on:
@@ -58,38 +69,37 @@ services:
       psql -h db -U wienerlinien -d wienerlinien -f /app/db/init-scripts/01_init_db.sql &&
       echo 'Installing Python dependencies...' &&
       pip install -r /app/requirements-db.txt &&
-      echo 'Loading GTFS data...' &&
-      python /app/scripts/load_gtfs_to_db.py /app/scripts/gtfs_data/gtfs.zip &&
-      echo 'GTFS data loading completed successfully!'
+      echo 'GTFS scheduled loader: running if stale...' &&
+      python /app/scripts/gtfs_scheduled_loader.py &&
+      echo 'GTFS scheduled loader finished.'
       "
 
   # Frontend Application
   frontend:
-    build: 
+    build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: wiener-linien-app
-    ports:
-      - "3080:3080"
+    container_name: wienerlinien-frontend
     environment:
-      - FLASK_ENV=development
-      - PYTHONUNBUFFERED=1
-      - FLASK_DEBUG=1
       - DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
+      - APP_ENV=development
     volumes:
       - ./frontend:/app
-      - ./frontend/logs:/app/logs
-      - ./frontend/data:/app/data
+      - ./data:/app/data
+      - ./scripts:/scripts
+      - ./models:/models
+    ports:
+      - "3079:3080"
     networks:
       - wienerlinien-network
     depends_on:
       db:
         condition: service_healthy
-      loki:
-        condition: service_started
+    command: >
+      sh -c "uvicorn app:app --host 0.0.0.0 --port 3080"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3080/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3080/api/status"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -100,7 +110,7 @@ services:
     image: grafana/loki:latest
     container_name: loki
     ports:
-      - "3100:3100"
+      - "3193:3100"
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - loki_data:/loki

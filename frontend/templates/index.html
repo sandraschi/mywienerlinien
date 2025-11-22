@@ -573,6 +573,20 @@
                 height: 60vh;
             }
         }
+
+        /* Help button */
+        .help-button {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 1002;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -656,6 +670,54 @@
                             Refresh Data
                         </button>
                     </div>
+
+                    <div class="control-group">
+                        <button id="near-me-button" class="control-button">
+                            Near Me (Stops)
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Favorites Panel -->
+                <section class="favorites-section">
+                    <h3>Favorites</h3>
+                    <div class="favorites-quick-actions">
+                        <button id="favorite-home" class="quick-action-btn" type="button" title="Set as Home">
+                            <span class="quick-action-icon">🏠</span>
+                            <span>Home</span>
+                        </button>
+                        <button id="favorite-work" class="quick-action-btn" type="button" title="Set as Work">
+                            <span class="quick-action-icon">💼</span>
+                            <span>Work</span>
+                        </button>
+                    </div>
+                    <ul id="favorites-list" class="favorites-list">
+                        <li class="empty">No favorites yet. Click a stop and use the star icon to add.</li>
+                    </ul>
+                </section>
+
+                <!-- Arrivals Panel -->
+                <section class="arrivals-section">
+                    <h3>Next Arrivals</h3>
+                    <div class="arrivals-header">
+                        <div>
+                            <div id="arrivals-stop-name" class="arrivals-stop-name">No stop selected</div>
+                            <div id="arrivals-stop-meta" class="arrivals-stop-meta"></div>
+                        </div>
+                        <button id="arrivals-clear" class="arrivals-clear-button" type="button">Clear</button>
+                    </div>
+                    <div class="arrivals-filters" id="arrivals-filters" style="display: none;">
+                        <button class="arrivals-filter-btn active" data-filter="all" type="button">All</button>
+                        <button class="arrivals-filter-btn" data-filter="day" type="button">Day</button>
+                        <button class="arrivals-filter-btn" data-filter="night" type="button">Night</button>
+                    </div>
+                    <div class="arrivals-loading" id="arrivals-loading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <span>Loading arrivals...</span>
+                    </div>
+                    <ul id="arrivals-list" class="arrivals-list">
+                        <li class="empty">Click a stop marker or use "Near Me" to see arrivals.</li>
+                    </ul>
                 </section>
 
                 <!-- System Status Section -->
@@ -681,6 +743,18 @@
                     </div>
                 </section>
 
+                <!-- Traffic Alerts Section -->
+                <section class="traffic-alerts-section">
+                    <h3>Service Alerts</h3>
+                    <div id="traffic-alerts-loading" class="traffic-alerts-loading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <span>Loading alerts...</span>
+                    </div>
+                    <ul id="traffic-alerts-list" class="traffic-alerts-list">
+                        <li class="empty">Loading service alerts...</li>
+                    </ul>
+                </section>
+
                 <!-- Disruptions Section -->
                 <section class="disruptions-section">
                     <h3>Service Disruptions</h3>
@@ -699,6 +773,8 @@
                     <div class="loading-spinner"></div>
                     <p>Loading data...</p>
                 </div>
+
+                <button id="help-button" class="help-button" aria-haspopup="dialog" aria-controls="help-modal">Help</button>
             </main>
         </div>
 
@@ -714,5 +790,6 @@
     
     <!-- Custom JavaScript -->
     <script src="{{ url_for('static', path='js/map.js') }}"></script>
+    <script src="{{ url_for('static', path='js/help.js') }}" type="module"></script>
     </body>
 </html>

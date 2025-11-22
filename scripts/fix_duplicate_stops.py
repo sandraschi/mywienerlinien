@@ -5,8 +5,6 @@ This script processes the GTFS data to combine duplicate stops (like Schottenrin
 that appear multiple times with different RBL numbers.
 """
 
-import os
-import sys
 import csv
 from collections import defaultdict
 from pathlib import Path
@@ -68,7 +66,6 @@ def process_stops() -> dict:
 def process_stop_times(stops: dict) -> dict:
     """Process stop times and update with combined stop information."""
     stop_times = load_gtfs_file('stop_times.txt')
-    trips = {t['trip_id']: t for t in load_gtfs_file('trips.txt')}
     
     # Group stop times by trip
     trip_stops = defaultdict(list)
@@ -156,7 +153,7 @@ def update_route_files(route_stops: dict, output_dir: Path):
             import re
             new_content = re.sub(
                 r'(### Stops\n)(?:\d+\.\s+\*\*.*?\*\* - .*?\n)+',
-                f'### Stops\n' + '\n'.join(stops_section) + '\n',
+                '### Stops\n' + '\n'.join(stops_section) + '\n',
                 content,
                 flags=re.DOTALL
             )

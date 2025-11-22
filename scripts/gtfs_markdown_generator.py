@@ -13,14 +13,12 @@ Features:
 - Support for all GTFS transport types
 """
 
-import os
 import sys
 import logging
 import argparse
-import sqlite3
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Optional, Tuple, Any, Set
+from typing import Dict, List, Any
 from sqlalchemy import inspect
 
 import pygtfs
@@ -348,7 +346,7 @@ class GTFSMarkdownGenerator:
             # Get all stops that are parent stations or have no parent (platforms)
             stops = self.session.query(pygtfs.gtfs_entities.Stop).filter(
                 (pygtfs.gtfs_entities.Stop.location_type == 1) |  # Parent stations
-                (pygtfs.gtfs_entities.Stop.parent_station == None)  # No parent
+                (pygtfs.gtfs_entities.Stop.parent_station.is_(None))  # No parent
             ).all()
             
             logger.info(f"Found {len(stops)} stops/stations to process")

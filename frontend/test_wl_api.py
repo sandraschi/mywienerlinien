@@ -1,78 +1,84 @@
-import requests
+"""Manual utility for inspecting the Wiener Linien realtime API.
+
+This module is intentionally excluded from the automated test suite; run it
+directly to debug the public API:
+
+    python -m frontend.test_wl_api
+"""
+
+from __future__ import annotations
+
 import json
+import requests
 
 API_URL = "https://www.wienerlinien.at/ogd_realtime/monitor"
 
-# Test with RBL 3043 which returned data
-rbl = '3043'
-params = {'rbl': rbl}
 
-print(f"Testing Wiener Linien API with RBL: {rbl}")
-print("=" * 60)
+def main() -> None:
+    rbl = "3043"
+    params = {"rbl": rbl}
 
-print(f"Requesting: {API_URL} with params {params}")
-try:
-    response = requests.get(API_URL, params=params, timeout=10)
-    print(f"Status code: {response.status_code}")
-    
-    if response.status_code == 200:
-        try:
-            data = response.json()
-            print(f"Response keys: {list(data.keys())}")
-            
-            if 'data' in data and 'monitors' in data['data']:
-                monitors = data['data']['monitors']
-                print(f"Found {len(monitors)} monitors")
-                
-                for i, monitor in enumerate(monitors):
-                    print(f"\n--- Monitor {i+1} ---")
-                    print(f"Stop: {monitor['locationStop']['properties']['title']}")
-                    print(f"Coordinates: {monitor['locationStop']['geometry']['coordinates']}")
-                    
-                    if 'lines' in monitor:
-                        print(f"Lines: {len(monitor['lines'])}")
-                        for j, line in enumerate(monitor['lines']):
-                            print(f"\n  Line {j+1}: {line['name']} towards {line['towards']}")
-                            print(f"  Type: {line.get('type', 'unknown')}")
-                            
-                            if 'departures' in line and 'departure' in line['departures']:
-                                departures = line['departures']['departure']
-                                print(f"  Departures: {len(departures)}")
-                                
-                                for k, departure in enumerate(departures):
-                                    print(f"\n    Departure {k+1}:")
-                                    print(f"      Planned: {departure['departureTime']['timePlanned']}")
-                                    print(f"      Real: {departure['departureTime']['timeReal']}")
-                                    print(f"      Countdown: {departure['departureTime']['countdown']}")
-                                    
-                                    if 'vehicle' in departure:
-                                        vehicle = departure['vehicle']
-                                        print(f"      Vehicle: {vehicle.get('name', 'N/A')}")
-                                        print(f"      Towards: {vehicle.get('towards', 'N/A')}")
-                                        print(f"      Direction: {vehicle.get('direction', 'N/A')}")
-                                        print(f"      Type: {vehicle.get('type', 'N/A')}")
-                                        print(f"      ID: {vehicle.get('id', 'N/A')}")
-                                        print(f"      Latitude: {vehicle.get('latitude', 'N/A')}")
-                                        print(f"      Longitude: {vehicle.get('longitude', 'N/A')}")
-                                        print(f"      Heading: {vehicle.get('direction', 'N/A')}")
-                            else:
-                                print("  No departures data")
-                    else:
-                        print("  No lines data")
-            else:
-                print("No 'monitors' key in data")
-                
-        except json.JSONDecodeError as e:
-            print(f"Error parsing JSON: {e}")
-            print("Response text (first 500 chars):")
-            print(response.text[:500])
-    else:
+    print(f"Testing Wiener Linien API with RBL: {rbl}")
+    print("=" * 60)
+    print(f"Requesting: {API_URL} with params {params}")
+
+    try:
+        response = requests.get(API_URL, params=params, timeout=10)
+        print(f"Status code: {response.status_code}")
+    except requests.RequestException as exc:  # pragma: no cover - manual tool
+        print(f"Request failed: {exc}")
+        return
+
+    if response.status_code != 200:
         print(f"HTTP Error: {response.status_code}")
         print("Response text (first 500 chars):")
         print(response.text[:500])
-        
-except requests.exceptions.RequestException as e:
-    print(f"Request failed: {e}")
+        return
 
-print("\n" + "=" * 60)
-print("Testing complete!")
+    try:
+        payload = response.json()
+    except json.JSONDecodeError as exc:  # pragma: no cover - manual tool
+        print(f"Error parsing JSON: {exc}")
+        print("Response text (first 500 chars):")
+        print(response.text[:500])
+        return
+
+    print(f"Response keys: {list(payload.keys())}")
+    monitors = payload.get("data", {}).get("monitors", [])
+    print(f"Found {len(monitors)} monitors")
+
+    for i, monitor in enumerate(monitors):
+        location = monitor.get("locationStop", {})
+        title = location.get("properties", {}).get("title", "Unknown")
+        coords = location.get("geometry", {}).get("coordinates", [])
+        print(f"\n--- Monitor {i + 1} ---")
+        print(f"Stop: {title}")
+        print(f"Coordinates: {coords}")
+
+        for j, line in enumerate(monitor.get("lines", [])):
+            print(f"\n  Line {j + 1}: {line.get('name', 'N/A')} towards {line.get('towards', 'N/A')}")
+            print(f"  Type: {line.get('type', 'unknown')}")
+
+            departures = line.get("departures", {}).get("departure", [])
+            print(f"  Departures: {len(departures)}")
+            for k, departure in enumerate(departures):
+                dep_time = departure.get("departureTime", {})
+                print(f"\n    Departure {k + 1}:")
+                print(f"      Planned: {dep_time.get('timePlanned', 'N/A')}")
+                print(f"      Real: {dep_time.get('timeReal', 'N/A')}")
+                print(f"      Countdown: {dep_time.get('countdown', 'N/A')}")
+
+                vehicle = departure.get("vehicle", {})
+                if vehicle:
+                    print(f"      Vehicle: {vehicle.get('name', 'N/A')}")
+                    print(f"      Towards: {vehicle.get('towards', 'N/A')}")
+                    print(f"      Direction: {vehicle.get('direction', 'N/A')}")
+                    print(f"      Type: {vehicle.get('type', 'N/A')}")
+
+    print("\n" + "=" * 60)
+    print("Testing complete!")
+
+
+if __name__ == "__main__":  # pragma: no cover - manual execution only
+    main()
+

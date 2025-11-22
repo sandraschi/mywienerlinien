@@ -3,10 +3,8 @@ GTFS Parser using pygtfs
 
 This script demonstrates how to parse and query GTFS data using the pygtfs library.
 """
-import os
 import sys
 import logging
-import sqlalchemy
 from pathlib import Path
 import pygtfs
 

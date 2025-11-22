@@ -2,9 +2,11 @@
 """
 Script to identify stations missing coordinates.
 """
-import os
-import sys
-from data_loader import data_loader
+
+try:
+    from .data_loader import data_loader
+except ImportError:  # pragma: no cover - script execution fallback
+    from data_loader import data_loader
 
 def find_stations_without_coords():
     """Find and print stations that are missing coordinates."""

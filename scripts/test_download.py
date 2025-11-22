@@ -1,7 +1,6 @@
 """Simple script to test GTFS data download."""
 
 import urllib.request
-import os
 from pathlib import Path
 
 def main():

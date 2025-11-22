@@ -1,805 +1,589 @@
-"""
-Wiener Linien Live Map - Main Application
+"""FastAPI application entrypoint for the Wiener Linien Live Map."""
 
-A Flask-based web application for real-time visualization of Vienna's public transport system.
-Features include live vehicle tracking, route display, and disruption alerts.
-"""
+from __future__ import annotations
 
-import os
-import json
 import logging
-import time
+import os
+from dataclasses import asdict
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
-from functools import wraps
+from pathlib import Path
+import socketio
+from cachetools import TTLCache
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
-# Configure root logger
+try:
+    from .data_loader import data_loader
+    from .database import db
+    from .disruption_alerts import disruption_monitor
+    from .gtfs_manager import manager as gtfs_manager
+    from .vehicle_service import clear_vehicle_cache, collect_vehicle_data, get_vehicle_summary
+    from .websocket_manager import get_websocket_manager, init_websocket_manager
+except ImportError:  # pragma: no cover - runtime fallback when package context missing
+    from data_loader import data_loader  # type: ignore
+    from database import db  # type: ignore
+    from disruption_alerts import disruption_monitor  # type: ignore
+    from gtfs_manager import manager as gtfs_manager  # type: ignore
+    from vehicle_service import clear_vehicle_cache, collect_vehicle_data, get_vehicle_summary  # type: ignore
+    from websocket_manager import get_websocket_manager, init_websocket_manager  # type: ignore
+
+
+BASE_DIR = Path(__file__).parent
+TEMPLATES = Jinja2Templates(directory=BASE_DIR / "templates")
+STATIC_DIR = BASE_DIR / "static"
+DATA_DIR = BASE_DIR / "data"
+
+LOGS_DIR = BASE_DIR / "logs"
+LOGS_DIR.mkdir(exist_ok=True)
+
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler(os.path.join(os.path.dirname(__file__), 'logs', 'app.log'))
-    ]
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler(), logging.FileHandler(LOGS_DIR / "app.log")],
 )
 
-# Create logger instance
 logger = logging.getLogger(__name__)
 
-# Import database module
-from database import db, init_db
 
-from flask import Flask, render_template, jsonify, request, Response, send_from_directory
-from flask_caching import Cache
-from flask_socketio import SocketIO, emit
-import requests
+TEST_MODE = os.getenv("WIENER_LINIEN_TEST_MODE", "").strip() == "1"
 
-# Import our custom modules
-from data_loader import data_loader
-from websocket_manager import init_websocket_manager, get_websocket_manager
-from disruption_alerts import disruption_monitor
+sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
+websocket_manager = init_websocket_manager(sio)
 
-# Initialize Flask app
-app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY', 'wiener-linien-secret-key-2024')
-app.config['CACHE_TYPE'] = 'SimpleCache'
-app.config['CACHE_DEFAULT_TIMEOUT'] = 15
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+fastapi_app = FastAPI(
+    title="Wiener Linien Live Map",
+    version="2.0.0",
+    default_response_class=JSONResponse,
+)
+fastapi_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-# Initialize database
-db.init_app(app)
+if STATIC_DIR.exists():
+    fastapi_app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
-# Configure logging
-try:
-    # Ensure logs directory exists
-    logs_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
+
+ROUTES_CACHE = TTLCache(maxsize=1, ttl=300)
+
+
+def _normalize_line_identifier(line_name: str) -> str:
+    return line_name.strip()
+
+
+@fastapi_app.on_event("startup")
+async def on_startup() -> None:
+    logger.info("Starting FastAPI application")
+    initialize_app()
+    if not TEST_MODE:
+        websocket_manager.start()
+
+
+@fastapi_app.on_event("shutdown")
+async def on_shutdown() -> None:
+    if not TEST_MODE:
+        websocket_manager.stop()
+
+
+@fastapi_app.get("/", response_class=HTMLResponse)
+async def read_index(request: Request) -> HTMLResponse:
+    return TEMPLATES.TemplateResponse("index.html", {"request": request})
+
+
+@fastapi_app.get("/about", response_class=HTMLResponse)
+async def read_about(request: Request) -> HTMLResponse:
+    return TEMPLATES.TemplateResponse("about.html", {"request": request})
+
+
+@fastapi_app.get("/status", response_class=HTMLResponse)
+async def commuter_status_page(request: Request) -> HTMLResponse:
+    return TEMPLATES.TemplateResponse("status.html", {"request": request})
+
+
+@fastapi_app.get("/line/{line_name}", response_class=HTMLResponse)
+async def read_line_info(request: Request, line_name: str) -> HTMLResponse:
+    return TEMPLATES.TemplateResponse("line_info.html", {"request": request, "line_name": line_name})
+
+
+@fastapi_app.get("/api/vehicles")
+async def get_vehicles(request: Request) -> JSONResponse:
+    vehicle_type = request.query_params.get("type", "all")
+    station = request.query_params.get("station")
+    line = request.query_params.get("line")
+    line_filters: set[str] = set()
+
+    for raw_value in request.query_params.getlist("lines"):
+        if not raw_value:
+            continue
+        for piece in raw_value.split(","):
+            cleaned = piece.strip()
+            if cleaned:
+                line_filters.add(cleaned)
+
+    if line:
+        line_filters.add(line)
+
+    lines = sorted(line_filters)
+
+    logger.info(
+        "Fetching vehicles: type=%s lines=%s station=%s",
+        vehicle_type,
+        lines,
+        station,
+    )
+
+    result = collect_vehicle_data(
+        vehicle_type=vehicle_type,
+        station=station,
+        lines=lines if lines else None,
+    )
+    if not result["vehicles"]:
+        logger.warning("No vehicles found matching the criteria")
+
+    payload = {
+        "vehicles": result["vehicles"],
+        "timestamp": datetime.utcnow().isoformat(),
+        "successful_requests": result["successful_requests"],
+        "failed_requests": result["failed_requests"],
+    }
+    return JSONResponse(payload)
+
+
+@fastapi_app.get("/api/lines")
+async def get_lines() -> JSONResponse:
     try:
-        os.makedirs(logs_dir, exist_ok=True)
-        
-        # In production mode, log to a file
-        log_file = os.path.join(logs_dir, 'app.log')
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setLevel(logging.INFO)
-        file_handler.setFormatter(logging.Formatter(
-            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
-        ))
-        app.logger.addHandler(file_handler)
-        app.logger.setLevel(logging.INFO)
-        app.logger.info('Wiener Linien Live Map startup')
-    except Exception as e:
-        print(f"Warning: Could not set up file logging: {e}")
-        print(f"Logs will be written to console only.")
-        # Fall back to basic console logging if file logging fails
-        logging.basicConfig(level=logging.INFO)
-        logger = logging.getLogger('wiener_linien')
-        logger.warning("File logging not available - using console logging only")
-        
-except Exception as e:
-    print(f"Error setting up logging: {e}")
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger('wiener_linien')
-    logger.error("Failed to set up logging configuration")
+        line_data = data_loader.get_gtfs_line_catalog()
+        if not line_data:
+            fallback_lines = data_loader.load_lines()
+            line_data = [
+                {
+                    "name": line.name,
+                    "type": line.type,
+                    "color": line.color,
+                    "description": line.description,
+                    "frequency": line.frequency,
+                    "operating_hours": line.operating_hours,
+                }
+                for line in fallback_lines
+            ]
+        return JSONResponse({"lines": line_data})
+    except Exception as exc:
+        logger.error("Error in get_lines: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
-# Debug: Log Flask app initialization
-logger.info("Flask app initialized")
-logger.info(f"App root path: {app.root_path}")
-logger.info(f"App static folder: {app.static_folder}")
-logger.info(f"App template folder: {app.template_folder}")
 
-# Initialize cache
-cache = Cache(app)
+@fastapi_app.get("/api/lines/{line_name}")
+async def get_line_overview(line_name: str) -> JSONResponse:
+    normalized_name = _normalize_line_identifier(line_name)
+    logger.info("Fetching overview for line %s", normalized_name, extra={"route_short_name": normalized_name})
 
-# Initialize SocketIO for WebSocket support
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
-
-# Initialize WebSocket manager
-websocket_manager = init_websocket_manager(socketio)
-
-# Start disruption monitoring
-disruption_monitor.start_monitoring()
-
-# API configuration
-API_BASE_URL = "https://www.wienerlinien.at/ogd_realtime"
-API_TIMEOUT = 10
-
-# Rate limiting - increased to avoid 403 errors
-last_api_call = {}
-RATE_LIMIT_SECONDS = 30  # Increased from 15 to 30 seconds
-
-# API headers to avoid 403 errors
-API_HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    'Accept': 'application/json, text/plain, */*',
-    'Accept-Language': 'en-US,en;q=0.9',
-    'Accept-Encoding': 'gzip, deflate, br',
-    'Connection': 'keep-alive',
-    'Upgrade-Insecure-Requests': '1'
-}
-
-def rate_limit(func):
-    """Decorator to enforce rate limiting."""
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        func_name = func.__name__
-        current_time = time.time()
-        
-        if func_name in last_api_call:
-            time_since_last = current_time - last_api_call[func_name]
-            if time_since_last < RATE_LIMIT_SECONDS:
-                sleep_time = RATE_LIMIT_SECONDS - time_since_last
-                logger.debug(f"Rate limiting: sleeping for {sleep_time:.2f} seconds")
-                time.sleep(sleep_time)
-        
-        last_api_call[func_name] = time.time()
-        return func(*args, **kwargs)
-    return wrapper
-
-@rate_limit
-def fetch_vehicle_data(rbl_number: str) -> Optional[Dict[str, Any]]:
-    """Fetch vehicle data from Wiener Linien API."""
     try:
-        url = f"{API_BASE_URL}/monitor"
-        params = {'rbl': rbl_number}
-        
-        response = requests.get(url, params=params, timeout=API_TIMEOUT, headers=API_HEADERS)
-        response.raise_for_status()
-        
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        logger.error(f"API request failed for RBL {rbl_number}: {e}")
-        return None
-    except Exception as e:
-        logger.error(f"Error processing API response for RBL {rbl_number}: {e}")
-        return None
+        line_info = data_loader.get_line_by_name(normalized_name)
+        overview = db.get_line_overview(normalized_name)
 
-@rate_limit
-def fetch_traffic_info() -> Optional[Dict[str, Any]]:
-    """Fetch traffic information from Wiener Linien API."""
-    try:
-        url = f"{API_BASE_URL}/trafficInfo"
-        response = requests.get(url, timeout=API_TIMEOUT, headers=API_HEADERS)
-        response.raise_for_status()
-        
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Error fetching traffic info: {e}")
-        return None
-    except Exception as e:
-        logger.error(f"Error processing traffic info: {e}")
-        return None
+        if line_info is None and overview is None:
+            raise HTTPException(status_code=404, detail="Line not found")
 
-@rate_limit
-def fetch_news() -> Optional[Dict[str, Any]]:
-    """Fetch news and announcements from Wiener Linien API."""
-    try:
-        url = f"{API_BASE_URL}/news"
-        response = requests.get(url, timeout=API_TIMEOUT, headers=API_HEADERS)
-        response.raise_for_status()
-        
-        return response.json()
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Error fetching news: {e}")
-        return None
-    except Exception as e:
-        logger.error(f"Error processing news: {e}")
-        return None
-
-def _calculate_delay(departure_time):
-    """Calculate delay in minutes from departure time information."""
-    try:
-        planned_time = departure_time.get('timePlanned')
-        real_time = departure_time.get('timeReal')
-        
-        if planned_time and real_time:
-            # Parse ISO format times
-            planned = datetime.fromisoformat(planned_time.replace('Z', '+00:00'))
-            real = datetime.fromisoformat(real_time.replace('Z', '+00:00'))
-            
-            # Calculate delay in minutes
-            delay_seconds = (real - planned).total_seconds()
-            return int(delay_seconds / 60)
-        else:
-            return 0
-    except Exception:
-        return 0
-
-@app.route('/')
-def index():
-    """Main page route."""
-    return render_template('index.html')
-
-@app.route('/api/vehicles')
-def get_vehicles():
-    """API endpoint for vehicle positions."""
-    try:
-        vehicle_type = request.args.get('type', 'all')
-        line = request.args.get('line')
-        station = request.args.get('station')
-        
-        logger.info(f"Fetching vehicles: type={vehicle_type}, line={line}, station={station}")
-        
-        vehicles = []
-        successful_requests = 0
-        failed_requests = 0
-        
-        # Get stations to query
-        stations_to_query = []
-        if station:
-            # Query specific station
-            stations_to_query = [station]
-        else:
-            # Query major stations
-            all_stations = data_loader.load_stations()
-            major_stations = [s.rbl for s in all_stations if s.rbl and len(s.rbl) == 4]
-            stations_to_query = major_stations[:5]  # Limit to 5 stations
-        
-        # Fetch real vehicle data
-        for rbl in stations_to_query:
-            try:
-                data = fetch_vehicle_data(rbl)
-                if data and 'data' in data and 'monitors' in data['data']:
-                    for monitor in data['data']['monitors']:
-                        if 'lines' in monitor:
-                            for line_data in monitor['lines']:
-                                # Get line information
-                                line_name = line_data.get('name', '')
-                                line_type = line_data.get('type', 'unknown')
-                                
-                                # Process departures to get vehicle positions
-                                departures = line_data.get('departures', {}).get('departure', [])
-                                if not isinstance(departures, list):
-                                    departures = [departures] if departures else []
-                                
-                                for departure in departures:
-                                    if 'vehicle' in departure:
-                                        vehicle_info = departure['vehicle']
-                                        departure_time = departure.get('departureTime', {})
-                                        
-                                        # Create vehicle entry
-                                        vehicle_entry = {
-                                            'id': f"{line_name}_{rbl}_{len(vehicles)}",
-                                            'type': line_type.replace('pt', '').lower(),  # Convert ptTram to tram
-                                            'line': line_name,
-                                            'lat': monitor.get('locationStop', {}).get('geometry', {}).get('coordinates', [0, 0])[1],
-                                            'lng': monitor.get('locationStop', {}).get('geometry', {}).get('coordinates', [0, 0])[0],
-                                            'direction': vehicle_info.get('towards', ''),
-                                            'next_station': monitor.get('locationStop', {}).get('properties', {}).get('title', ''),
-                                            'delay': _calculate_delay(departure_time),
-                                            'timestamp': datetime.now().isoformat(),
-                                            'countdown': departure_time.get('countdown', 0),
-                                            'platform': vehicle_info.get('platform', ''),
-                                            'barrier_free': vehicle_info.get('barrierFree', False)
-                                        }
-                                        vehicles.append(vehicle_entry)
-                    successful_requests += 1
-                else:
-                    failed_requests += 1
-            except Exception as e:
-                logger.error(f"Error fetching data for RBL {rbl}: {e}")
-                failed_requests += 1
-        
-        # Filter vehicles based on parameters
-        if vehicle_type and vehicle_type != 'all':
-            vehicles = [v for v in vehicles if v['type'] == vehicle_type]
-        
-        if line:
-            vehicles = [v for v in vehicles if v['line'] == line]
-        
-        logger.info(f"Returning {len(vehicles)} vehicles (successful requests: {successful_requests}, failed: {failed_requests})")
-        
-        # If no vehicles found, return empty array instead of error
-        if not vehicles:
-            logger.warning("No vehicles found matching the criteria")
-        
-        return jsonify({
-            'vehicles': vehicles,
-            'timestamp': datetime.now().isoformat(),
-            'successful_requests': successful_requests,
-            'failed_requests': failed_requests
-        })
-        
-    except Exception as e:
-        logger.error(f"Error in get_vehicles: {e}", exc_info=True)
-        return jsonify({'error': 'Internal server error'}), 500
-
-@app.route('/api/lines')
-def get_lines():
-    """API endpoint for transport lines."""
-    try:
-        lines = data_loader.load_lines()
-        line_data = []
-        
-        for line in lines:
-            line_data.append({
-                'name': line.name,
-                'type': line.type,
-                'color': line.color,
-                'description': line.description,
-                'frequency': line.frequency,
-                'operating_hours': line.operating_hours
-            })
-        
-        logger.info(f"Returning {len(line_data)} lines")
-        return jsonify({'lines': line_data})
-        
-    except Exception as e:
-        logger.error(f"Error in get_lines: {e}", exc_info=True)
-        return jsonify({'error': 'Internal server error'}), 500
-
-@app.route('/api/stations')
-def get_stations():
-    """API endpoint for stations."""
-    try:
-        stations = db.get_stations()
-        station_data = []
-        
-        for station in stations:
-            station_data.append({
-                'name': station.name,
-                'rbl': station.rbl,
-                'type': station.type,
-                'zone': station.zone,
-                'lat': station.lat,
-                'lng': station.lng
-            })
-        
-        logger.info(f"Returning {len(station_data)} stations")
-        return jsonify({'stations': station_data})
-        
-    except Exception as e:
-        logger.error(f"Error in get_stations: {e}", exc_info=True)
-        return jsonify({'error': 'Internal server error'}), 500
-
-@app.route('/api/routes', methods=['GET'])
-@cache.cached(timeout=300)  # Cache for 5 minutes
-def get_routes():
-    """
-    API endpoint for routes.
-    Returns a list of all available routes with their details.
-    """
-    try:
-        # Get routes from database
-        routes = db.get_routes()
-        
-        # Format response
         response = {
-            'status': 'success',
-            'data': routes,
-            'count': len(routes),
-            'timestamp': datetime.utcnow().isoformat() + 'Z'
+            "line": asdict(line_info) if line_info else {"name": normalized_name},
+            "overview": overview,
+        }
+        return JSONResponse(response)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Error fetching overview for line %s: %s", normalized_name, exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch line overview")
+
+
+@fastapi_app.get("/api/lines/{line_name}/route")
+async def get_line_route(line_name: str) -> JSONResponse:
+    normalized_name = _normalize_line_identifier(line_name)
+    logger.info(
+        "Fetching route geometry for line %s",
+        normalized_name,
+        extra={"route_short_name": normalized_name},
+    )
+
+    try:
+        route_data = data_loader.get_gtfs_route(normalized_name)
+        if not route_data:
+            raise HTTPException(status_code=404, detail="Route not found for line")
+        return JSONResponse({"route": route_data})
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Error fetching route for line %s: %s", normalized_name, exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch route data")
+
+
+@fastapi_app.get("/api/lines/{line_name}/stations")
+async def get_line_stations(line_name: str) -> JSONResponse:
+    normalized_name = _normalize_line_identifier(line_name)
+    logger.info("Fetching stations for line %s", normalized_name, extra={"route_short_name": normalized_name})
+
+    try:
+        stations = data_loader.get_gtfs_line_stations(normalized_name)
+        return JSONResponse({
+            "line": normalized_name,
+            "stations": stations,
+        })
+    except Exception as exc:
+        logger.error("Error fetching stations for line %s: %s", normalized_name, exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch stations")
+
+
+@fastapi_app.get("/api/arrivals")
+async def get_arrivals(request: Request) -> JSONResponse:
+    """Return next departures/vehicles for a stop by RBL or for a set of lines."""
+    try:
+        rbl = request.query_params.get("rbl")
+        lines_param = request.query_params.get("lines")
+        vehicle_type = request.query_params.get("type", "all")
+
+        lines = None
+        if lines_param:
+            lines = [piece.strip().upper() for piece in lines_param.split(",") if piece.strip()]
+
+        if not rbl and not lines:
+            raise HTTPException(status_code=400, detail="Provide rbl or lines")
+
+        result = collect_vehicle_data(
+            vehicle_type=vehicle_type,
+            station=rbl,
+            lines=lines,
+        )
+        return JSONResponse(result)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Error in get_arrivals: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@fastapi_app.get("/api/traffic-info")
+async def get_traffic_info() -> JSONResponse:
+    """Fetch traffic disruptions and alerts from Wiener Linien /trafficInfo endpoint."""
+    try:
+        import requests
+        
+        # Cache for 5 minutes
+        # Check cache
+        cached_data = getattr(get_traffic_info, '_cache', None)
+        cache_time = getattr(get_traffic_info, '_cache_time', None)
+        
+        if cached_data and cache_time:
+            if datetime.now() - cache_time < timedelta(minutes=5):
+                return JSONResponse(cached_data)
+        
+        # Fetch from Wiener Linien API
+        url = "https://www.wienerlinien.at/ogd_realtime/trafficInfoList"
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        
+        data = response.json()
+        
+        # Transform to our format
+        alerts = []
+        if isinstance(data, dict) and 'data' in data:
+            for item in data.get('data', []):
+                if 'attributes' in item:
+                    attrs = item['attributes']
+                    alert = {
+                        'id': item.get('id', ''),
+                        'title': attrs.get('title', ''),
+                        'description': attrs.get('description', ''),
+                        'severity': attrs.get('severity', 'info'),
+                        'lines': attrs.get('relatedLines', []),
+                        'start_time': attrs.get('startTime', ''),
+                        'end_time': attrs.get('endTime', ''),
+                        'type': attrs.get('type', ''),
+                    }
+                    alerts.append(alert)
+        
+        result = {
+            'alerts': alerts,
+            'timestamp': datetime.utcnow().isoformat(),
+            'count': len(alerts)
         }
         
-        return jsonify(response)
+        # Cache the result
+        get_traffic_info._cache = result
+        get_traffic_info._cache_time = datetime.now()
         
-    except Exception as e:
-        logger.error(f"Error in get_routes: {str(e)}", exc_info=True)
-        return jsonify({
-            'status': 'error',
-            'message': 'Failed to fetch routes',
-            'error': str(e),
-            'timestamp': datetime.utcnow().isoformat() + 'Z'
-        }), 500
+        return JSONResponse(result)
+    except Exception as exc:
+        logger.error("Error fetching traffic info: %s", exc, exc_info=True)
+        # Return empty result on error
+        return JSONResponse({
+            'alerts': [],
+            'timestamp': datetime.utcnow().isoformat(),
+            'count': 0,
+            'error': str(exc)
+        })
 
-@app.route('/api/disruptions')
-def get_disruptions():
-    """API endpoint for service disruptions."""
+
+@fastapi_app.get("/api/stops/nearby")
+async def get_stops_nearby(request: Request) -> JSONResponse:
+    """Return nearest stops to a lat/lon with distance and RBL when available."""
     try:
-        line_filter = request.args.get('line')
-        severity_filter = request.args.get('severity')
+        lat_raw = request.query_params.get("lat")
+        lon_raw = request.query_params.get("lon")
+        limit_raw = request.query_params.get("limit", "10")
+
+        if lat_raw is None or lon_raw is None:
+            raise HTTPException(status_code=400, detail="lat and lon are required")
+
+        try:
+            lat = float(lat_raw)
+            lon = float(lon_raw)
+            limit = max(1, min(50, int(limit_raw)))
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid lat/lon/limit")
+
+        # Fetch all stops and compute distances (fallback without PostGIS function)
+        stops = db.get_stations()  # expected to include name, rbl, type, lat, lng
+        def haversine(a_lat: float, a_lon: float, b_lat: float, b_lon: float) -> float:
+            from math import radians, sin, cos, asin, sqrt
+            R = 6371000.0
+            d_lat = radians(b_lat - a_lat)
+            d_lon = radians(b_lon - a_lon)
+            la1 = radians(a_lat)
+            la2 = radians(b_lat)
+            h = sin(d_lat/2)**2 + cos(la1) * cos(la2) * sin(d_lon/2)**2
+            return 2 * R * asin(sqrt(h))
+
+        enriched = []
+        for stop in stops:
+            s_lat = stop.get("lat")
+            s_lon = stop.get("lng")
+            if isinstance(s_lat, (int, float)) and isinstance(s_lon, (int, float)):
+                distance = haversine(lat, lon, float(s_lat), float(s_lon))
+                enriched.append({
+                    "name": stop.get("name"),
+                    "rbl": stop.get("rbl"),
+                    "type": stop.get("type"),
+                    "lat": s_lat,
+                    "lng": s_lon,
+                    "distance_m": round(distance, 1),
+                })
+
+        enriched.sort(key=lambda x: x["distance_m"])
+        return JSONResponse({"stops": enriched[:limit], "origin": {"lat": lat, "lon": lon}})
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Error in get_stops_nearby: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@fastapi_app.get("/api/stations")
+async def get_stations() -> JSONResponse:
+    try:
+        stations = db.get_stations()
+        station_data = [
+            {
+                "name": station["name"],
+                "rbl": station["rbl"],
+                "type": station["type"],
+                "zone": station["zone"],
+                "lat": station["lat"],
+                "lng": station["lng"],
+            }
+            for station in stations
+        ]
+        return JSONResponse({"stations": station_data})
+    except Exception as exc:
+        logger.error("Error in get_stations: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@fastapi_app.get("/api/routes")
+async def get_routes() -> JSONResponse:
+    cache_key = "routes"
+    cached = ROUTES_CACHE.get(cache_key)
+    if cached:
+        return JSONResponse(cached)
+
+    try:
+        routes = db.get_routes()
+        response = {
+            "status": "success",
+            "data": routes,
+            "count": len(routes),
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+        }
+        ROUTES_CACHE[cache_key] = response
+        return JSONResponse(response)
+    except Exception as exc:
+        logger.error("Error in get_routes: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to fetch routes")
+
+
+@fastapi_app.get("/api/disruptions")
+async def get_disruptions(request: Request) -> JSONResponse:
+    try:
+        line_filter = request.query_params.get("line")
+        severity_filter = request.query_params.get("severity")
         
         if line_filter:
             disruptions = disruption_monitor.get_disruptions_by_line(line_filter)
         elif severity_filter:
             from disruption_alerts import DisruptionSeverity
-            severity = DisruptionSeverity(severity_filter)
-            disruptions = disruption_monitor.get_disruptions_by_severity(severity)
+
+            disruptions = disruption_monitor.get_disruptions_by_severity(DisruptionSeverity(severity_filter))
         else:
             disruptions = disruption_monitor.get_active_disruptions()
         
-        disruption_data = []
-        for disruption in disruptions:
-            disruption_data.append({
-                'id': disruption.id,
-                'line': disruption.line,
-                'type': disruption.type.value,
-                'severity': disruption.severity.value,
-                'status': disruption.status.value,
-                'title': disruption.title,
-                'description': disruption.description,
-                'affected_stations': disruption.affected_stations,
-                'affected_lines': disruption.affected_lines,
-                'start_time': disruption.start_time.isoformat(),
-                'end_time': disruption.end_time.isoformat() if disruption.end_time else None,
-                'created_at': disruption.created_at.isoformat(),
-                'updated_at': disruption.updated_at.isoformat()
-            })
-        
-        logger.info(f"Returning {len(disruption_data)} disruptions")
-        return jsonify({'disruptions': disruption_data})
-        
-    except Exception as e:
-        logger.error(f"Error in get_disruptions: {e}", exc_info=True)
-        return jsonify({'error': 'Internal server error'}), 500
+        disruption_data = [
+            {
+                "id": disruption.id,
+                "line": disruption.line,
+                "type": disruption.type.value,
+                "severity": disruption.severity.value,
+                "status": disruption.status.value,
+                "title": disruption.title,
+                "description": disruption.description,
+                "affected_stations": disruption.affected_stations,
+                "affected_lines": disruption.affected_lines,
+                "start_time": disruption.start_time.isoformat(),
+                "end_time": disruption.end_time.isoformat() if disruption.end_time else None,
+                "created_at": disruption.created_at.isoformat(),
+                "updated_at": disruption.updated_at.isoformat(),
+            }
+            for disruption in disruptions
+        ]
+        return JSONResponse({"disruptions": disruption_data})
+    except Exception as exc:
+        logger.error("Error in get_disruptions: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
-@app.route('/api/disruptions/summary')
-def get_disruption_summary():
-    """API endpoint for disruption summary."""
+
+@fastapi_app.get("/api/disruptions/summary")
+async def get_disruption_summary() -> JSONResponse:
     try:
         summary = disruption_monitor.get_disruption_summary()
-        return jsonify(summary)
+        return JSONResponse(summary)
+    except Exception as exc:
+        logger.error("Error in get_disruption_summary: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
         
-    except Exception as e:
-        logger.error(f"Error in get_disruption_summary: {e}", exc_info=True)
-        return jsonify({'error': 'Internal server error'}), 500
 
-@app.route('/api/status')
-def get_system_status():
-    """API endpoint for system status."""
+@fastapi_app.get("/api/status")
+async def get_system_status() -> JSONResponse:
     try:
         ws_manager = get_websocket_manager()
         active_disruptions = disruption_monitor.get_active_disruptions()
+        filter_summary = ws_manager.get_filters_summary() if ws_manager else {
+            "clients": 0,
+            "line_filters": 0,
+            "type_filters": 0,
+        }
         status = {
-            'websocket_clients': ws_manager.get_connected_clients_count() if ws_manager else 0,
-            'active_disruptions': len(active_disruptions),
-            'vehicle_count': ws_manager.get_vehicle_count() if ws_manager else 0,
-            'data_cache_status': db.get_cache_status(),
-            'last_api_check': disruption_monitor.last_check.isoformat() if disruption_monitor.last_check else None,
-            'timestamp': datetime.now().isoformat()
+            "websocket_clients": ws_manager.get_connected_clients_count() if ws_manager else 0,
+            "active_disruptions": len(active_disruptions),
+            "vehicle_count": ws_manager.get_vehicle_count() if ws_manager else 0,
+            "vehicle_total": ws_manager.get_vehicle_total_count() if ws_manager else 0,
+            "filters": filter_summary,
+            "data_cache_status": data_loader.get_cache_status(),
+            "last_api_check": disruption_monitor.last_check.isoformat() if disruption_monitor.last_check else None,
+            "timestamp": datetime.utcnow().isoformat(),
         }
-        return jsonify(status)
-        
-    except Exception as e:
-        logger.error(f"Error in get_system_status: {e}", exc_info=True)
-        return jsonify({'error': 'Internal server error'}), 500
+        return JSONResponse(status)
+    except Exception as exc:
+        logger.error("Error in get_system_status: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
-# WebSocket event handlers
-@socketio.on('connect')
-def handle_connect(auth=None):
-    """Handle client connection."""
-    logger.info(f"Client connected: {request.sid}")
-    
-    # Get system status properly
+
+@fastapi_app.get("/api/status/summary")
+async def get_status_summary() -> JSONResponse:
     try:
-        status_response = get_system_status()
-        # Extract JSON from Flask response
-        if hasattr(status_response, 'get_json'):
-            system_status = status_response.get_json()
-        elif hasattr(status_response, 'json'):
-            system_status = status_response.json
-        elif isinstance(status_response, dict):
-            system_status = status_response
-        else:
-            # Fallback to basic status
-            system_status = {
-                'websocket_clients': 0,
-                'active_disruptions': 0,
-                'vehicle_count': 0,
-                'timestamp': datetime.now().isoformat()
+        vehicle_summary = get_vehicle_summary()
+        disruption_summary = disruption_monitor.get_disruption_summary()
+        heartbeat_path = Path(os.getenv("GTFS_HEARTBEAT_PATH", "/app/data/gtfs_loader_heartbeat.json"))
+        heartbeat_info = None
+        if heartbeat_path.exists():
+            heartbeat_info = {
+                "path": str(heartbeat_path),
+                "updated_at": datetime.utcfromtimestamp(heartbeat_path.stat().st_mtime).isoformat() + "Z",
             }
-    except Exception as e:
-        logger.error(f"Error getting system status: {e}")
-        system_status = {
-            'websocket_clients': 0,
-            'active_disruptions': 0,
-            'vehicle_count': 0,
-            'timestamp': datetime.now().isoformat()
-        }
-    
-    emit('connected', {
-        'client_id': request.sid,
-        'timestamp': datetime.now().isoformat(),
-        'system_status': system_status
-    })
-
-@socketio.on('disconnect')
-def handle_disconnect():
-    """Handle client disconnection."""
-    logger.info(f"Client disconnected: {request.sid}")
-
-@socketio.on('join_room')
-def handle_join_room(data):
-    """Handle room joining."""
-    if isinstance(data, dict):
-        room = data.get('room')
-        if room:
-            join_room(room)
-            logger.info(f"Client {request.sid} joined room: {room}")
-
-@socketio.on('leave_room')
-def handle_leave_room(data):
-    """Handle room leaving."""
-    if isinstance(data, dict):
-        room = data.get('room')
-        if room:
-            leave_room(room)
-            logger.info(f"Client {request.sid} left room: {room}")
-
-@socketio.on('request_updates')
-def handle_request_updates(data):
-    """Handle update requests."""
-    if not isinstance(data, dict):
-        logger.warning(f"Received non-dict data in request_updates: {type(data)}")
-        data = {}
-    
-    update_type = data.get('type', 'all')
-    client_id = request.sid
-    
-    if update_type in ['vehicles', 'all']:
-        # Send current vehicle data
-        vehicles = get_dummy_vehicles()
-        emit('vehicle_updates', {
-            'vehicles': vehicles,
-            'timestamp': datetime.now().isoformat()
-        })
-    
-    if update_type in ['disruptions', 'all']:
-        # Send current disruption data
-        disruptions = disruption_monitor.get_active_disruptions()
-        disruption_data = []
-        for disruption in disruptions:
-            disruption_data.append({
-                'id': disruption.id,
-                'line': disruption.line,
-                'type': disruption.type.value,
-                'severity': disruption.severity.value,
-                'title': disruption.title,
-                'description': disruption.description,
-                'start_time': disruption.start_time.isoformat(),
-                'created_at': disruption.created_at.isoformat()
-            })
-        emit('disruption_alerts', {
-            'alerts': disruption_data,
-            'timestamp': datetime.now().isoformat()
-        })
-    
-    if update_type in ['status', 'all']:
-        # Send system status
+        # Read last GTFS refresh marker
         try:
-            status_response = get_system_status()
-            # Extract JSON from Flask response
-            if hasattr(status_response, 'get_json'):
-                status = status_response.get_json()
-            elif hasattr(status_response, 'json'):
-                status = status_response.json
-            elif isinstance(status_response, dict):
-                status = status_response
-            else:
-                # Fallback to basic status
-                status = {
-                    'websocket_clients': 0,
-                    'active_disruptions': 0,
-                    'vehicle_count': 0,
-                    'timestamp': datetime.now().isoformat()
-                }
-            emit('system_status', status)
-        except Exception as e:
-            logger.error(f"Error getting system status: {e}")
-            emit('system_status', {
-                'websocket_clients': 0,
-                'active_disruptions': 0,
-                'vehicle_count': 0,
-                'timestamp': datetime.now().isoformat()
-            })
-
-# Disruption alert callback
-def on_disruption_alert(disruption, event_type):
-    """Handle disruption alerts."""
-    try:
-        alert_data = {
-            'id': disruption.id,
-            'line': disruption.line,
-            'type': disruption.type.value,
-            'severity': disruption.severity.value,
-            'title': disruption.title,
-            'description': disruption.description,
-            'start_time': disruption.start_time.isoformat(),
-            'created_at': disruption.created_at.isoformat(),
-            'event_type': event_type
+            marker_path = LOGS_DIR / "gtfs_last_success.txt"
+            last_gtfs_refresh = marker_path.read_text(encoding="utf-8").strip() if marker_path.exists() else None
+        except Exception:
+            last_gtfs_refresh = None
+        payload = {
+            "vehicles": vehicle_summary,
+            "disruptions": disruption_summary,
+            "heartbeat": heartbeat_info,
+            "last_gtfs_refresh": last_gtfs_refresh,
         }
-        
-        # Broadcast to all connected clients
-        socketio.emit('disruption_alert', alert_data)
-        logger.info(f"Broadcasted disruption alert: {disruption.id} ({event_type})")
-        
-    except Exception as e:
-        logger.error(f"Error handling disruption alert: {e}")
+        return JSONResponse(payload)
+    except Exception as exc:
+        logger.error("Error building status summary: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to build status summary")
 
-# Register disruption alert callback
-disruption_monitor.subscribe(on_disruption_alert)
 
-# Add a route to serve markdown files from the data directory
-@app.route('/data/<path:filename>')
-def serve_markdown(filename):
-    """Serve markdown files from the data directory."""
-    data_dir = '/app/data'  # This is where the data is mounted in the container
-    logger.info(f"Attempting to serve file: {filename} from directory: {data_dir}")
-    
-    # Debug: Log the current working directory and list of files in the data directory
-    cwd = os.getcwd()
-    logger.info(f"Current working directory: {cwd}")
-    
-    try:
-        files = os.listdir('.')
-        logger.info(f"Files in current directory: {files}")
-    except Exception as e:
-        logger.error(f"Error listing current directory: {e}")
-    
-    try:
-        files = os.listdir('/app')
-        logger.info(f"Files in /app directory: {files}")
-    except Exception as e:
-        logger.error(f"Error listing /app directory: {e}")
-        
-    # Try to find the data directory
-    possible_data_dirs = [
-        '/app/data',
-        '/data',
-        os.path.join(app.root_path, 'data'),
-        os.path.join(os.path.dirname(__file__), 'data')
+@fastapi_app.get("/data/{path:path}")
+async def serve_data_file(path: str) -> FileResponse:
+    candidate_dirs = [
+        DATA_DIR,
+        Path("/data"),
+        BASE_DIR / "data",
     ]
-    
-    for dir_path in possible_data_dirs:
-        if os.path.exists(dir_path):
-            data_dir = dir_path
-            logger.info(f"Found data directory at: {data_dir}")
-            try:
-                files = os.listdir(data_dir)
-                logger.info(f"Files in data directory: {files}")
-            except Exception as e:
-                logger.error(f"Error listing data directory: {e}")
-            break
-    else:
-        logger.error("Could not find data directory in any of the expected locations")
-    
-    # List all files in the data directory for debugging
-    try:
-        files = os.listdir(data_dir)
-        logger.info(f"Files in data directory: {files}")
-    except Exception as e:
-        logger.error(f"Error listing data directory: {e}")
-    
-    # Check if file exists
-    filepath = os.path.join(data_dir, filename)
-    if not os.path.exists(filepath):
-        logger.error(f"File not found: {filepath}")
-        return f"File not found: {filename}", 404
-    
-    # Check if file is a markdown file
-    if not filename.lower().endswith('.md'):
-        logger.error(f"Invalid file type: {filename}")
-        return "Only markdown files are allowed", 400
-    
-    logger.info(f"Serving file: {filepath}")
-    return send_from_directory(data_dir, filename, mimetype='text/markdown')
+    for directory in candidate_dirs:
+        file_path = directory / path
+        if file_path.exists() and file_path.suffix.lower() == ".md":
+            return FileResponse(file_path, media_type="text/markdown")
+    raise HTTPException(status_code=404, detail="File not found")
 
-# Add a route to list all registered routes for debugging
-@app.route('/routes')
-def list_routes():
-    """List all registered routes for debugging."""
-    output = []
-    for rule in app.url_map.iter_rules():
-        methods = ','.join(rule.methods)
-        output.append(f"{rule.endpoint}: {rule.rule} [{methods}]")
-    return '<br>'.join(sorted(output))
 
-def initialize_app():
-    """Initialize the application."""
-    logger.info("Starting Wiener Linien Live Map application")
-    
-    # Ensure logs directory exists
-    os.makedirs('logs', exist_ok=True)
-    
-    # Pre-load data
+@fastapi_app.get("/routes", response_class=HTMLResponse)
+async def list_routes() -> HTMLResponse:
+    entries = []
+    for route in fastapi_app.routes:
+        methods = ",".join(sorted(route.methods or []))
+        entries.append(f"{route.name}: {route.path} [{methods}]")
+    entries.sort()
+    body = "<br>".join(entries)
+    return HTMLResponse(body)
+
+
+def initialize_app() -> None:
+    logger.info("Initializing Wiener Linien Live Map application")
+    (BASE_DIR / "logs").mkdir(exist_ok=True)
+
+    if not TEST_MODE and db.engine is None:
+        try:
+            db.init_app(fastapi_app)
+        except Exception as exc:  # pragma: no cover - startup critical
+            logger.error("Database initialization failed: %s", exc, exc_info=True)
+            raise
+
+    if not TEST_MODE:
+        try:
+            gtfs_manager.ensure_data_ready()
+        except Exception as exc:  # pragma: no cover - startup critical
+            logger.error("GTFS bootstrap failed: %s", exc, exc_info=True)
+            raise
+
     data_loader.load_lines()
     data_loader.load_stations()
     data_loader.load_routes()
+    clear_vehicle_cache()
 
-# Test route to verify route registration
-@app.route('/test')
-def test_route():
-    """Test route to verify route registration."""
-    return "Test route is working!"
 
-# Application factory function to create and configure the Flask app
-def create_app():
-    """Application factory function to create and configure the Flask app."""
-    # Create the Flask app
-    app = Flask(__name__)
-    
-    # Configure the app
-    app.config['SECRET_KEY'] = 'wiener-linien-secret-key-2024'
-    app.config['CACHE_TYPE'] = 'SimpleCache'
-    app.config['CACHE_DEFAULT_TIMEOUT'] = 15
-    
-    # Initialize extensions
-    cache = Cache(app)
-    
-    # Register routes
-    @app.route('/')
-    def index_route():
-        return render_template('index.html')
-    
-    @app.route('/api/vehicles')
-    def get_vehicles_route():
-        return get_vehicles()
-    
-    @app.route('/api/lines')
-    def get_lines_route():
-        return get_lines()
-    
-    @app.route('/api/stations')
-    def get_stations_route():
-        return get_stations()
-    
-    @app.route('/api/routes')
-    def get_routes_route():
-        return get_routes()
-    
-    @app.route('/api/disruptions')
-    def get_disruptions_route():
-        return get_disruptions()
-    
-    @app.route('/api/disruptions/summary')
-    def get_disruption_summary_route():
-        return get_disruption_summary()
-    
-    @app.route('/api/status')
-    def get_system_status_route():
-        return get_system_status()
-    
-    @app.route('/data/<path:filename>')
-    def serve_markdown_route(filename):
-        return serve_markdown(filename)
-    
-    @app.route('/routes')
-    def list_routes_route():
-        return list_routes()
-    
-    @app.route('/test')
-    def test_route_route():
-        return test_route()
-    
-    # Debug endpoint to list all registered routes
-    @app.route('/debug/routes')
-    def debug_routes():
-        """Debug endpoint to list all registered routes."""
-        routes = []
-        for rule in app.url_map.iter_rules():
-            routes.append({
-                'endpoint': rule.endpoint,
-                'methods': sorted(rule.methods),
-                'rule': str(rule)
-            })
-        return jsonify({
-            'status': 'success',
-            'routes': routes
-        })
-    
-    # Initialize the app
-    initialize_app()
-    
-    # Initialize SocketIO with the app
-    logger.info("Initializing SocketIO with the app")
-    socketio.init_app(app)
-    
-    # Log all registered routes
-    logger.info("=== Registered Routes ===")
-    for rule in app.url_map.iter_rules():
-        logger.info(f"{rule.endpoint}: {rule.rule} -> {rule.methods}")
-    logger.info("======================================")
-    
-    return app
+socket_app = socketio.ASGIApp(sio, other_asgi_app=fastapi_app, socketio_path="/ws/socket.io")
+app = socket_app
 
-# Create the app
-app = create_app()
 
-if __name__ == '__main__':
-    # Start the SocketIO server
-    socketio.run(
-        app,
-        host='0.0.0.0',
-        port=5000,
-        debug=True,
-        allow_unsafe_werkzeug=True
-    )
+if __name__ == "__main__":  # pragma: no cover - manual execution helper
+    import uvicorn
+
+    uvicorn.run("app:app", host="0.0.0.0", port=3080, reload=True)
+

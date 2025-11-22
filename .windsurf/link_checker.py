@@ -1,6 +1,5 @@
 import os
 import re
-import sys
 
 def print_flush(*args, **kwargs):
     """A print function that flushes the output buffer to ensure immediate output."""

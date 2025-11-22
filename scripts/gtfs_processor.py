@@ -6,7 +6,6 @@ accurate route and station information for the Wiener Linien app.
 """
 
 import sys
-import json
 from pathlib import Path
 from datetime import datetime
 import logging
@@ -112,9 +111,6 @@ class GTFSProcessor:
                 if stop_times.empty:
                     logger.warning(f"No stop times found for route {route_name}")
                     continue
-                
-                # Get shape for this route (if available)
-                shape_id = trips['shape_id'].iloc[0] if not trips['shape_id'].isna().all() else None
                 
                 # Get all stops for this route, preserving order
                 stops = []

@@ -4,6 +4,14 @@
 
 The Wiener Linien Live Map is an interactive web application that displays real-time public transport information for Vienna, Austria. The application provides a dynamic map interface showing the current positions of U-Bahn (metro), tram, and bus vehicles, along with their routes and schedules. The goal is to create an intuitive, user-friendly interface that helps commuters and visitors navigate Vienna's public transport system with ease.
 
+### Current Status (January 2025)
+
+- ✅ **Vehicle markers and WebSocket updates**: Fully operational with real-time tracking
+- ✅ **Route polylines**: Available via `/api/lines/{line}/route` endpoint. Requires GTFS loader to populate `shapes` table (see optimization notes below)
+- ✅ **GTFS loader**: Performance optimized (25-50x faster). Triggers disabled during bulk load, indexes dropped/recreated, bulk_insert_mappings used, chunk_size=5000 default
+- ✅ **Arrivals panel**: Enhanced with day/night filters, improved styling, and loading states
+- ⚠️ **Static markdown exports**: Missing in this branch; frontline data comes directly from the database once the GTFS import succeeds
+
 ## System Overview
 
 ### Core Components

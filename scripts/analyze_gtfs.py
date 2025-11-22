@@ -9,7 +9,7 @@ import csv
 import os
 from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Dict, List, Set, Tuple, Optional
+from typing import Dict, Set
 import logging
 from datetime import datetime
 

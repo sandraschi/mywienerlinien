@@ -5,11 +5,10 @@ This module provides functionality to monitor, track, and alert users
 about service disruptions in Vienna's public transport system.
 """
 
-import json
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from enum import Enum
 import requests
 import threading

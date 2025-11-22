@@ -14,9 +14,17 @@ A real-time map display for Vienna's public transport system, showing moving veh
 ## Current Status
 
 - **Realtime vehicle feed:** fully wired. `frontend/vehicle_service.py` enriches GTFS stops with RBL numbers (via `scripts/rbl_mapper.py`), selects up to 12 monitors per line, and throttles Wiener Linien API calls to avoid 403s. Requests such as `GET /api/vehicles?line=U3` now return live trains.
-- **GTFS loader (`scripts/load_gtfs_to_db.py`):** truncates tables, logs chunk-level progress, and stores comma-separated RBL/DIVA metadata in `stops.stop_code`/`stop_desc`. Run `python scripts\load_gtfs_to_db.py scripts\gtfs_data\wienerlinien-gtfs.zip --test-mode --metadata-dir scripts\gtfs_data` (or remove `--test-mode` for the full import).
+- **GTFS loader (`scripts/load_gtfs_to_db.py`):** truncates tables, logs chunk-level progress, and stores comma-separated RBL/DIVA metadata in `stops.stop_code`/`stop_desc`. **Performance optimized: 25-50x faster** (from ~13 hours to ~15-30 minutes) through trigger optimization, index management, and bulk insert improvements. Run `python scripts\load_gtfs_to_db.py scripts\gtfs_data\wienerlinien-gtfs.zip --test-mode --metadata-dir scripts\gtfs_data` (or remove `--test-mode` for the full import). See `docs/gtfs-loader-fix.md` for details.
 - **Generated markdown:** `scripts/process_gtfs.py` now emits RBL and zone details into `frontend/data/*.md`. The frontend falls back to these files when DB lookups are missing.
 - **Route polylines:** the map currently renders polylines from the pre-generated GeoJSON/markdown bundle in `frontend/data/gtfs/routes`. Running the loader without `--test-mode` will refresh them from the new feed; the light test import only covers the first ~200 shapes, so some lines may still rely on the bundled geometry.
+- **Dashboards:** Grafana auto-loads the operator dashboard (`grafana/provisioning/dashboards/wiener_linien_dashboard.json`), while the frontend exposes a commuter-friendly `/status` page that summarises vehicles, delays, disruptions, and loader heartbeat health.
+
+### Ports (local)
+- Frontend: http://localhost:3079
+- Grafana: http://localhost:3140
+- Loki (external): http://localhost:3193 (Grafana/Promtail continue using `http://loki:3100` internally)
+
+If frontend health shows as “unhealthy” during long GTFS imports, set `WIENER_LINIEN_TEST_MODE=1` on the frontend service to skip heavy bootstrap; let the `gtfs-loader` container perform imports in the background.
 
 ## How the Realtime Apparatus Works
 
@@ -286,11 +294,31 @@ This project follows strict development guidelines to ensure code quality, relia
 - **Code Quality**: Follow PEP 8 standards and maintain readable, self-documenting code
 - **Testing**: All new functionality must include appropriate tests
 
+### Code Quality Tools
+
+This project uses **Ruff** for fast Python linting and code quality checks. All code must pass ruff checks before committing.
+
+#### Running Code Quality Checks
+
+```bash
+# Check for linting issues
+ruff check .
+
+# Auto-fix fixable issues
+ruff check . --fix
+
+# Check specific files or directories
+ruff check scripts/ frontend/
+```
+
+All code should pass ruff checks with zero warnings. The project maintains a clean codebase with no linting warnings.
+
 ### Before Contributing:
 1. Read the complete [Rulebook](docs/RULEBOOK.md)
 2. Ensure your code follows all established patterns
-3. Test your changes thoroughly
-4. Update documentation as needed
+3. Run `ruff check .` to verify code quality
+4. Test your changes thoroughly
+5. Update documentation as needed
 
 ## Troubleshooting
 

@@ -5,18 +5,11 @@ This script generates markdown files for routes and stations
 using the official GTFS data through the pygtfs library.
 """
 
-# Test print to verify script execution
-print("Script started successfully!")
-print(f"Python version: {__import__('sys').version}")
-print(f"Python executable: {__import__('sys').executable}")
-
-
-import os
 import sys
 import logging
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Set, Tuple, Optional
+from typing import Dict, List
 
 import pygtfs
 from sqlalchemy.orm import sessionmaker
@@ -195,28 +188,6 @@ class GTFSMarkdownGenerator:
         
         return "\n".join(lines)
     
-    def generate_all(self):
-        """Generate all markdown files."""
-        # Generate route files by type
-        routes_by_type = self.get_routes_by_type()
-        
-        for route_type, routes in routes_by_type.items():
-            route_type_info = self.route_types.get(route_type, {})
-            if not route_type_info:
-                logger.warning(f"No configuration found for route type {route_type}")
-                continue
-                
-            content = self.generate_route_markdown(route_type, routes)
-            output_file = self.output_dir / route_type_info['filename']
-            output_file.write_text(content, encoding='utf-8')
-            logger.info(f"Generated {output_file}")
-        
-        # Generate stations file
-        stations_content = self.generate_station_markdown()
-        stations_file = self.output_dir / 'stations.md'
-        stations_file.write_text(stations_content, encoding='utf-8')
-        logger.info(f"Generated {stations_file}")
-
     def _init_database(self):
         """Initialize database connection and verify schema."""
         logger.info("Initializing database connection...")

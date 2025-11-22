@@ -2,9 +2,7 @@
 Debug script for GTFS data processing.
 This is a simplified version to help identify where the main script is hanging.
 """
-import os
 import sys
-import time
 from pathlib import Path
 import logging
 

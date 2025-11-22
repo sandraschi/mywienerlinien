@@ -4,7 +4,7 @@ GTFS Service for handling GTFS data processing.
 import os
 import csv
 from datetime import datetime, date
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set
 from dataclasses import dataclass
 import logging
 

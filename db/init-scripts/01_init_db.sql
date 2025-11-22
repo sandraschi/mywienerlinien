@@ -2,10 +2,16 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "postgis";
 
--- Create enum types
-CREATE TYPE transport_type AS ENUM (
-    'tram', 'subway', 'rail', 'bus', 'ferry', 'cable_car', 'gondola', 'funicular'
-);
+DO $$
+BEGIN
+    CREATE TYPE transport_type AS ENUM (
+        'tram', 'subway', 'rail', 'bus', 'ferry', 'cable_car', 'gondola', 'funicular'
+    );
+EXCEPTION
+    WHEN duplicate_object THEN
+        NULL;
+END;
+$$;
 
 -- Create tables
 CREATE TABLE IF NOT EXISTS agencies (
@@ -83,12 +89,22 @@ CREATE TABLE IF NOT EXISTS stop_times (
     UNIQUE(trip_id, stop_sequence)
 );
 
+CREATE TABLE IF NOT EXISTS shapes (
+    shape_id TEXT NOT NULL,
+    shape_pt_lat DOUBLE PRECISION NOT NULL,
+    shape_pt_lon DOUBLE PRECISION NOT NULL,
+    shape_pt_sequence INTEGER NOT NULL,
+    shape_dist_traveled DOUBLE PRECISION,
+    PRIMARY KEY (shape_id, shape_pt_sequence)
+);
+
 -- Create indexes for better query performance
 CREATE INDEX IF NOT EXISTS idx_stop_times_trip_id ON stop_times(trip_id);
 CREATE INDEX IF NOT EXISTS idx_stop_times_stop_id ON stop_times(stop_id);
 CREATE INDEX IF NOT EXISTS idx_stops_location ON stops(stop_lat, stop_lon);
 CREATE INDEX IF NOT EXISTS idx_routes_agency_id ON routes(agency_id);
 CREATE INDEX IF NOT EXISTS idx_trips_route_id ON trips(route_id);
+CREATE INDEX IF NOT EXISTS idx_shapes_shape_id ON shapes(shape_id);
 
 -- Add spatial index for stops
 CREATE INDEX IF NOT EXISTS idx_stops_geom ON stops USING GIST (
@@ -102,8 +118,8 @@ SELECT
     r.route_short_name,
     r.route_long_name,
     r.route_type,
-    array_agg(DISTINCT st.stop_id ORDER BY st.stop_sequence) AS stop_sequence,
-    array_agg(DISTINCT s.stop_name ORDER BY st.stop_sequence) AS stop_names,
+    array_agg(st.stop_id ORDER BY st.stop_sequence) AS stop_sequence,
+    array_agg(s.stop_name ORDER BY st.stop_sequence) AS stop_names,
     COUNT(DISTINCT st.stop_id) AS stop_count
 FROM 
     routes r
@@ -116,6 +132,9 @@ JOIN
 GROUP BY 
     r.route_id, r.route_short_name, r.route_long_name, r.route_type;
 
+CREATE UNIQUE INDEX IF NOT EXISTS idx_route_stop_patterns_route_id
+    ON route_stop_patterns(route_id);
+
 -- Create a function to refresh the materialized view
 CREATE OR REPLACE FUNCTION refresh_route_stop_patterns()
 RETURNS TRIGGER AS $$
@@ -125,10 +144,31 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Create triggers to refresh the materialized view when data changes
-CREATE TRIGGER refresh_route_stop_patterns_trigger
+DROP TRIGGER IF EXISTS refresh_route_stop_patterns_routes ON routes;
+CREATE TRIGGER refresh_route_stop_patterns_routes
 AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
-ON routes, trips, stop_times, stops
+ON routes
+FOR EACH STATEMENT
+EXECUTE FUNCTION refresh_route_stop_patterns();
+
+DROP TRIGGER IF EXISTS refresh_route_stop_patterns_trips ON trips;
+CREATE TRIGGER refresh_route_stop_patterns_trips
+AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+ON trips
+FOR EACH STATEMENT
+EXECUTE FUNCTION refresh_route_stop_patterns();
+
+DROP TRIGGER IF EXISTS refresh_route_stop_patterns_stop_times ON stop_times;
+CREATE TRIGGER refresh_route_stop_patterns_stop_times
+AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+ON stop_times
+FOR EACH STATEMENT
+EXECUTE FUNCTION refresh_route_stop_patterns();
+
+DROP TRIGGER IF EXISTS refresh_route_stop_patterns_stops ON stops;
+CREATE TRIGGER refresh_route_stop_patterns_stops
+AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE
+ON stops
 FOR EACH STATEMENT
 EXECUTE FUNCTION refresh_route_stop_patterns();
 
@@ -149,22 +189,27 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Create triggers to update updated_at columns
+DROP TRIGGER IF EXISTS update_agencies_updated_at ON agencies;
 CREATE TRIGGER update_agencies_updated_at
 BEFORE UPDATE ON agencies
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_routes_updated_at ON routes;
 CREATE TRIGGER update_routes_updated_at
 BEFORE UPDATE ON routes
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_stops_updated_at ON stops;
 CREATE TRIGGER update_stops_updated_at
 BEFORE UPDATE ON stops
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_trips_updated_at ON trips;
 CREATE TRIGGER update_trips_updated_at
 BEFORE UPDATE ON trips
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_stop_times_updated_at ON stop_times;
 CREATE TRIGGER update_stop_times_updated_at
 BEFORE UPDATE ON stop_times
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

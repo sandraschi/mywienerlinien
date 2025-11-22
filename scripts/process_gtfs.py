@@ -11,8 +11,12 @@ import logging
 from collections import defaultdict
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Tuple, Set, Optional, Any
-from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError as FutureTimeoutError
+from typing import Dict, Any
+
+try:
+    from .rbl_mapper import MetadataDownloadError, build_stop_rbl_mapping
+except ImportError:  # pragma: no cover - support running as script
+    from rbl_mapper import MetadataDownloadError, build_stop_rbl_mapping  # type: ignore
 
 # Set up logging
 logging.basicConfig(
@@ -65,7 +69,6 @@ class GTFSProcessor:
         Returns:
             bool: True if download was successful, False otherwise
         """
-        import urllib.request
         import socket
         from tqdm import tqdm
         
@@ -352,8 +355,11 @@ class GTFSProcessor:
             stops[stop_id] = {
                 'stop_id': stop_id,
                 'stop_name': stop_name,
-                'lat': float(stop.get('stop_lat', 0)),
-                'lon': float(stop.get('stop_lon', 0)),
+                'lat': float(stop.get('stop_lat', 0) or 0),
+                'lon': float(stop.get('stop_lon', 0) or 0),
+                'stop_lat': float(stop.get('stop_lat', 0) or 0),
+                'stop_lon': float(stop.get('stop_lon', 0) or 0),
+                'zone_id': stop.get('zone_id') or '',
                 'routes': defaultdict(set)  # route_id -> set of direction_ids
             }
             
@@ -361,6 +367,36 @@ class GTFSProcessor:
             station_variants[stop_name].append(stop_id)
         
         logger.info(f"Processed {len(stops)} stops")
+
+        # Enrich stops with RBL metadata for realtime API usage
+        metadata_cache_dir = self.gtfs_dir / "metadata"
+        stop_records = [
+            {
+                'stop_id': stop_id,
+                'stop_name': stop_info['stop_name'],
+                'lat': stop_info['lat'],
+                'lon': stop_info['lon'],
+            }
+            for stop_id, stop_info in stops.items()
+        ]
+        try:
+            rbl_mapping = build_stop_rbl_mapping(stop_records, metadata_cache_dir, logger)
+            enriched_count = 0
+            for stop_id, info in rbl_mapping.items():
+                if stop_id not in stops:
+                    continue
+                rbl_numbers = info.get('rbl_numbers', [])
+                stops[stop_id]['rbl_numbers'] = rbl_numbers
+                if rbl_numbers:
+                    stops[stop_id]['stop_code'] = ",".join(rbl_numbers)
+                stops[stop_id]['diva'] = info.get('diva')
+                stops[stop_id]['haltestellen_id'] = info.get('haltestellen_id')
+                enriched_count += 1
+            logger.info("Enriched %d stops with RBL numbers", enriched_count)
+        except MetadataDownloadError as exc:
+            logger.warning("RBL enrichment skipped: %s", exc)
+        except Exception as exc:  # noqa: BLE001
+            logger.error("Failed to enrich stops with RBL metadata: %s", exc, exc_info=True)
         
         # Process trips
         logger.info("Processing trips...")
@@ -566,7 +602,7 @@ class GTFSProcessor:
         logger.info(f"[DEBUG] Route types: {self.route_types}")
         
         # Group routes by type
-        routes_by_type = {}
+        routes_by_type: Dict[str, Dict[str, Dict[str, Any]]] = {}
         
         for route_id, route in routes.items():
             route_type_id = route.get('route_type')
@@ -588,43 +624,32 @@ class GTFSProcessor:
                     'station_file': 'nightbusstations.md'
                 }
             
-            if route_type not in routes_by_type:
-                routes_by_type[route_type] = {}
+            routes_by_type.setdefault(route_type, {})
             routes_by_type[route_type][route_id] = route
         
         # Generate route files for each route type
-        for route_type, type_info in self.route_types.items():
+        for route_type_id, type_info in self.route_types.items():
+            type_name = type_info['name']
             filename = type_info['filename']
             output_file = output_dir / filename
             logger.info(f"Generating route file: {output_file}")
             
             # Skip if no routes of this type
-            type_routes = routes_by_type.get(type_info['name'], {})
+            type_routes = routes_by_type.get(type_name, {})
             route_count = len(type_routes)
-            logger.info(f"Found {route_count} routes of type {type_info['name']}")
+            logger.info(f"Found {route_count} routes of type {type_name}")
             
             if route_count == 0:
-                logger.warning(f"No routes found for type: {type_info['name']}")
+                logger.warning(f"No routes found for type: {type_name}")
                 continue
-                
-            # Use the routes for this specific type
-            routes = type_routes
-            
-            if route_count == 0:
-                logger.warning(f"No routes found for type: {type_info['name']}")
-                continue
-            
-            routes = [r for r in data['routes'].values() if r['route_type'] == route_type]
-            logger.info(f"Found {len(routes)} routes for type {type_info['name']}")
-            
-            if not routes:
-                logger.warning(f"No routes found for {type_info['name']}")
-                continue
-                
+
             logger.info(f"Will write to route file: {output_file}")
             
             # Sort routes by short name
-            sorted_routes = sorted(routes.values(), key=lambda x: x.get('route_short_name', ''))
+            sorted_routes = sorted(
+                type_routes.values(),
+                key=lambda x: x.get('route_short_name', '')
+            )
             
             # Generate route file
             try:
@@ -644,15 +669,21 @@ class GTFSProcessor:
                         f.write(f"- **Color**: {route_color}\n")
                         
                         # Count stops across all directions
-                        total_stops = sum(len(direction['stops']) for direction in route.get('directions', {}).values())
+                        total_stops = sum(
+                            len(direction.get('stops', []))
+                            for direction in route.get('directions', {}).values()
+                        )
                         f.write(f"- **Stops**: {total_stops}\n\n")
                         
                         # List directions
                         for direction_id, direction in sorted(route.get('directions', {}).items()):
-                            dir_name = "Inbound" if direction_id == '0' else "Outbound"
-                            trip_id = next(iter(direction.get('trip_ids', [])), 'N/A')
+                            dir_label = direction.get('name')
+                            if not dir_label:
+                                dir_label = "Inbound" if str(direction_id) in ('0', 'inbound') else "Outbound"
+                            trip_ids = direction.get('trip_ids') or []
+                            representative_trip_id = next(iter(trip_ids), 'N/A')
                             
-                            f.write(f"### Direction: {dir_name} (Trip ID: {trip_id})\n")
+                            f.write(f"### Direction: {dir_label} (Trip ID: {representative_trip_id})\n")
                             f.write(f"- **Stops**: {len(direction.get('stops', []))}\n\n")
                             
                             f.write("#### Stops\n")
@@ -664,9 +695,30 @@ class GTFSProcessor:
                                 stop_name = stop.get('stop_name', 'Unknown')
                                 variant_note = " (Variant)" if stop.get('is_variant') else ""
                                 
-                                f.write(f"{i}. **{stop_name}{variant_note}**  \n")
-                                f.write(f"   - Coordinates: {stop.get('stop_lat', 'N/A')}, {stop.get('stop_lon', 'N/A')}\n")
-                                f.write(f"   - Stop ID: {stop_id}\n\n")
+                    lat = stop.get('lat')
+                    lon = stop.get('lon')
+                    lat_str = f"{lat:.6f}" if isinstance(lat, (int, float)) else "N/A"
+                    lon_str = f"{lon:.6f}" if isinstance(lon, (int, float)) else "N/A"
+                    rbl_numbers = stop.get('rbl_numbers') or []
+                    rbl_str = ", ".join(rbl_numbers) if rbl_numbers else "N/A"
+                    zone = stop.get('zone_id') or '100'
+                    stop_routes = stop.get('routes', {})
+                    route_types = []
+                    for route_id in stop_routes.keys():
+                        route_info = routes.get(route_id)
+                        if not route_info:
+                            continue
+                        type_info = self.route_types.get(route_info['route_type'], {})
+                        if type_info:
+                            route_types.append(type_info.get('title', type_info.get('name', 'Unknown')))
+                    if not route_types:
+                        route_types = ['Unknown']
+                    station_type = route_types[0]
+                    f.write(f"{i}. **{stop_name}{variant_note}** - RBL: {rbl_str}, Type: {station_type}, Zone: {zone}  \n")
+                    f.write(f"   - Coordinates: {lat_str}, {lon_str}\n")
+                    if stop.get('diva'):
+                        f.write(f"   - DIVA: {stop['diva']}\n")
+                    f.write(f"   - Stop ID: {stop_id}\n\n")
                 
                 logger.info(f"Generated {output_file}")
                 
@@ -724,8 +776,6 @@ class GTFSProcessor:
                 logger.info(f"Found type info for {route_type}: {type_info}")
                     
                 station_file = output_dir / type_info['station_file']
-                # Get unique station names and their variants
-                station_names = set(stops[stop_id]['stop_name'] for stop_id in stop_ids)
                 
                 with open(station_file, 'w', encoding='utf-8') as f:
                     # Use the display name for the station type
@@ -743,7 +793,16 @@ class GTFSProcessor:
                         variant_note = " (Variant)" if stop.get('is_variant') else ""
                         
                         f.write(f"{i}. **{stop_name}{variant_note}**  \n")
-                        f.write(f"   - Coordinates: {stop.get('stop_lat', 'N/A')}, {stop.get('stop_lon', 'N/A')}\n")
+                        lat = stop.get('lat')
+                        lon = stop.get('lon')
+                        lat_str = f"{lat:.6f}" if isinstance(lat, (int, float)) else "N/A"
+                        lon_str = f"{lon:.6f}" if isinstance(lon, (int, float)) else "N/A"
+                        f.write(f"   - Coordinates: {lat_str}, {lon_str}\n")
+                        rbl_numbers = stop.get('rbl_numbers') or []
+                        if rbl_numbers:
+                            f.write(f"   - RBL: {', '.join(rbl_numbers)}\n")
+                        if stop.get('diva'):
+                            f.write(f"   - DIVA: {stop['diva']}\n")
                         f.write(f"   - Stop ID: {stop_id}\n\n")
                 
                 logger.info(f"Generated {station_file}")
@@ -812,7 +871,16 @@ class GTFSProcessor:
                         for stop in stop_group:
                             variant_note = " (Variant)" if stop.get('is_variant') else ""
                             f.write(f"- **Stop ID**: {stop.get('stop_id', 'N/A')}{variant_note}  \n")
-                            f.write(f"  - Coordinates: {stop.get('stop_lat', 'N/A')}, {stop.get('stop_lon', 'N/A')}  \n")
+                            lat = stop.get('stop_lat')
+                            lon = stop.get('stop_lon')
+                            lat_str = f"{lat:.6f}" if isinstance(lat, (int, float)) else stop.get('stop_lat', 'N/A')
+                            lon_str = f"{lon:.6f}" if isinstance(lon, (int, float)) else stop.get('stop_lon', 'N/A')
+                            f.write(f"  - Coordinates: {lat_str}, {lon_str}  \n")
+                            rbl_numbers = stop.get('rbl_numbers') or []
+                            rbl_str = ", ".join(map(str, rbl_numbers)) if rbl_numbers else "N/A"
+                            f.write(f"  - RBL: {rbl_str}  \n")
+                            zone = stop.get('zone_id') or "100"
+                            f.write(f"  - Zone: {zone}  \n")
                             
                             # List routes that serve this stop
                             route_list = []

@@ -4,7 +4,11 @@ Test script to verify that routes are loaded correctly from all route files.
 import os
 import sys
 import logging
-from data_loader import DataLoader
+
+try:
+    from .data_loader import DataLoader
+except ImportError:  # pragma: no cover - script execution fallback
+    from data_loader import DataLoader
 
 # Set up logging
 logging.basicConfig(

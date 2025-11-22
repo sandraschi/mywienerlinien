@@ -1,6 +1,5 @@
 import os
 import re
-import sys
 
 def print_flush(*args, **kwargs):
     """A print function that flushes the output buffer."""
@@ -22,7 +21,6 @@ def fix_markdown_links(file_path):
         print_flush(f"    ERROR: Could not read file. {e}")
         return
 
-    original_content = content
     file_dir = os.path.dirname(file_path)
     replacements = []
 
@@ -58,15 +56,15 @@ def fix_markdown_links(file_path):
         try:
             with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(content)
-            print_flush(f"    SUCCESS: File updated.")
+            print_flush("    SUCCESS: File updated.")
         except Exception as e:
             print_flush(f"    ERROR: Could not write to file. {e}")
     else:
-        print_flush(f"    No changes needed.")
+        print_flush("    No changes needed.")
 
 def main():
     """Main function to walk through the docs directory and fix links."""
-    print_flush(f'--- SCRIPT MAIN ---')
+    print_flush('--- SCRIPT MAIN ---')
     print_flush(f'Starting link fixing process in: {DOCS_ROOT}')
     
     found_files = False

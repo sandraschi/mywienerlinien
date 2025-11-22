@@ -6,7 +6,6 @@ Tests the Docker container and application functionality
 
 import requests
 import time
-import json
 import sys
 from datetime import datetime
 

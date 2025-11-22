@@ -8,20 +8,53 @@
 // Global variables
 let map;
 let vehicleMarkers = new Map();
-let routePolylines = new Map();
-let stopMarkers = new Map();
+let routePolylines = new Map(); // Map<lineName, L.Polyline[]>
+let lineStopMarkers = new Map(); // Map<lineName, L.Layer[]>
 let disruptionAlerts = new Map();
 let socket;
-let currentFilters = {
-    vehicleType: 'all',
-    line: null,
-    station: null
+let selectedStopHighlight = null; // Highlight circle for selected stop
+
+// Line selection state
+let lineData = [];
+let lineRouteCache = new Map(); // Map<lineName, RouteData>
+let selectedLines = new Set();
+let activeLineType = 'all';
+let routesVisible = true;
+let stopsVisible = false;
+let lineControlsInitialized = false;
+
+const LINE_TYPE_INFO = {
+    all: { label: 'All', icon: 'fa-solid fa-layer-group', color: '#3f51b5' },
+    metro: { label: 'Metro', icon: 'fa-solid fa-train-subway', color: '#EE1C24' },
+    tram: { label: 'Tram', icon: 'fa-solid fa-train-tram', color: '#FF6F00' },
+    bus: { label: 'Bus', icon: 'fa-solid fa-bus', color: '#0066CC' },
+    nightbus: { label: 'Night Bus', icon: 'fa-solid fa-moon', color: '#000066' },
+    unknown: { label: 'Other', icon: 'fa-solid fa-question', color: '#757575' }
 };
+
+let currentFilters = {
+    vehicleType: 'all'
+};
+
+function updateSocketFilters() {
+    if (!socket || !socket.connected) {
+        return;
+    }
+
+    const payload = {
+        vehicle_type: currentFilters.vehicleType,
+        lines: getSelectedLinesArray(),
+    };
+
+    socket.emit('update_filters', payload);
+}
 
 // WebSocket connection
 function initializeWebSocket() {
     // Connect to WebSocket server
-    socket = io();
+    socket = io({
+        path: '/ws/socket.io'
+    });
     
     // Connection events
     socket.on('connect', function() {
@@ -30,6 +63,7 @@ function initializeWebSocket() {
         
         // Request initial data
         socket.emit('request_updates', { type: 'all' });
+        updateSocketFilters();
     });
     
     socket.on('disconnect', function() {
@@ -77,29 +111,24 @@ function initializeMap() {
     
     // Set up periodic refresh
     setInterval(refreshVehicleData, 60000); // Refresh every 60 seconds
+
+    initializeArrivalsPanel();
+    initializeFavoritesPanel();
+    initializeTrafficAlerts();
 }
 
 // Load initial data
 async function loadInitialData() {
     try {
-        showLoading(); // Show loading when starting
-        
-        // Load lines, stations, and routes
-        await Promise.all([
-            loadLines(),
-            loadStations(),
-            loadRoutes()
-        ]);
-        
-        // Load initial vehicle data
+        showLoading();
+        await loadLines();
         await loadVehicleData();
-        
         console.log('Initial data loaded successfully');
-        hideLoading(); // Hide loading when done
+        hideLoading();
     } catch (error) {
         console.error('Error loading initial data:', error);
         showError('Failed to load initial data');
-        hideLoading(); // Hide loading on error
+        hideLoading();
     }
 }
 
@@ -107,41 +136,956 @@ async function loadInitialData() {
 async function loadLines() {
     try {
         const response = await fetch('/api/lines');
-        const data = await response.json();
-        
-        if (data.lines) {
-            populateLineDropdown(data.lines);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch lines: ${response.status}`);
         }
+
+        const data = await response.json();
+        lineData = (data.lines || []).map((line) => ({
+            ...line,
+            normalizedType: normalizeLineType(line.type),
+            color: line.color || getLineTypeColor(normalizeLineType(line.type))
+        }));
+
+        renderLineSelectionControls();
     } catch (error) {
         console.error('Error loading lines:', error);
+        showError('Unable to load lines');
     }
 }
 
-// Load stations
-async function loadStations() {
-    try {
-        const response = await fetch('/api/stations');
-        const data = await response.json();
-        
-        if (data.stations) {
-            populateStationDropdown(data.stations);
+function normalizeLineType(type) {
+    if (!type) {
+        return 'unknown';
+    }
+
+    const value = type.toString().trim().toLowerCase();
+    if (value.startsWith('u')) {
+        return 'metro';
+    }
+    if (value.includes('night')) {
+        return 'nightbus';
+    }
+    if (value.includes('tram')) {
+        return 'tram';
+    }
+    if (value.includes('bus')) {
+        return 'bus';
+    }
+    return value || 'unknown';
+}
+
+function getLineTypeColor(type) {
+    const info = LINE_TYPE_INFO[type] || LINE_TYPE_INFO.unknown;
+    return info.color;
+}
+
+function getLineTypeLabel(type) {
+    const info = LINE_TYPE_INFO[type];
+    return info ? info.label : type.charAt(0).toUpperCase() + type.slice(1);
+}
+
+function renderLineSelectionControls() {
+    renderLineTypeTabs();
+    renderLineMatrix();
+    updateSelectedLinesSummary();
+    updateRoutesToggleButton();
+    updateStopsToggleButton();
+
+    if (!lineControlsInitialized) {
+        const searchInput = document.getElementById('line-search');
+        if (searchInput) {
+            searchInput.addEventListener('input', onLineSearchInput);
         }
-    } catch (error) {
-        console.error('Error loading stations:', error);
+
+        const clearButton = document.getElementById('clear-selected-lines');
+        if (clearButton) {
+            clearButton.addEventListener('click', clearSelectedLines);
+        }
+
+        lineControlsInitialized = true;
     }
 }
 
-// Load routes
-async function loadRoutes() {
-    try {
-        const response = await fetch('/api/routes');
-        const data = await response.json();
-        
-        if (data.routes) {
-            displayRoutes(data.routes);
+function renderLineTypeTabs() {
+    const container = document.getElementById('line-type-tabs');
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = '';
+
+    const types = new Set(['all']);
+    lineData.forEach((line) => types.add(line.normalizedType));
+
+    types.forEach((type) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `line-type-tab${type === activeLineType ? ' active' : ''}`;
+        const info = LINE_TYPE_INFO[type] || LINE_TYPE_INFO.unknown;
+        const iconClass = info.icon || 'fa-solid fa-train';
+        button.innerHTML = `<i class="${iconClass}"></i> ${getLineTypeLabel(type)}`;
+        button.dataset.type = type;
+        button.addEventListener('click', () => setActiveLineType(type));
+        container.appendChild(button);
+    });
+}
+
+function renderLineMatrix() {
+    const container = document.getElementById('line-checkbox-matrix');
+    if (!container) {
+        return;
+    }
+
+    const searchTerm = (document.getElementById('line-search')?.value || '').trim().toLowerCase();
+
+    const filteredLines = lineData.filter((line) => {
+        const matchesType = activeLineType === 'all' || line.normalizedType === activeLineType;
+        const matchesSearch = !searchTerm || line.name.toLowerCase().includes(searchTerm) ||
+            (line.description || '').toLowerCase().includes(searchTerm);
+        return matchesType && matchesSearch;
+    });
+
+    container.innerHTML = '';
+
+    if (filteredLines.length === 0) {
+        const emptyState = document.createElement('div');
+        emptyState.className = 'loading-message';
+        emptyState.textContent = 'No lines match your filter';
+        container.appendChild(emptyState);
+        return;
+    }
+
+    filteredLines
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .forEach((line) => {
+            container.appendChild(createLineCheckbox(line));
+        });
+}
+
+function createLineCheckbox(line) {
+    const label = document.createElement('label');
+    label.className = 'line-checkbox';
+    label.style.borderColor = line.color;
+
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.value = line.name;
+    input.checked = selectedLines.has(line.name);
+    input.addEventListener('change', async (event) => {
+        await handleLineToggle(line, event.target.checked);
+    });
+
+    const colorDot = document.createElement('span');
+    colorDot.className = 'legend-color';
+    colorDot.style.backgroundColor = line.color;
+    colorDot.style.borderColor = line.color;
+
+    const text = document.createElement('span');
+    text.textContent = line.name;
+
+    label.appendChild(input);
+    label.appendChild(colorDot);
+    label.appendChild(text);
+
+    return label;
+}
+
+async function handleLineToggle(line, isChecked) {
+    if (isChecked) {
+        selectedLines.add(line.name);
+    } else {
+        selectedLines.delete(line.name);
+    }
+
+    updateSelectedLinesSummary();
+    updateSocketFilters();
+    await renderSelectedRoutes();
+    await loadVehicleData();
+}
+
+function onLineSearchInput() {
+    renderLineMatrix();
+}
+
+function setActiveLineType(type) {
+    if (type === activeLineType) {
+        return;
+    }
+    activeLineType = type;
+    renderLineTypeTabs();
+    renderLineMatrix();
+}
+
+function updateSelectedLinesSummary() {
+    const list = document.getElementById('selected-lines-list');
+    const countElement = document.getElementById('selected-lines-count');
+
+    if (countElement) {
+        countElement.textContent = selectedLines.size.toString();
+    }
+
+    if (!list) {
+        return;
+    }
+
+    list.innerHTML = '';
+
+    if (selectedLines.size === 0) {
+        const emptyItem = document.createElement('li');
+        emptyItem.className = 'empty';
+        emptyItem.textContent = 'No lines selected';
+        list.appendChild(emptyItem);
+        return;
+    }
+
+    Array.from(selectedLines)
+        .sort()
+        .forEach((lineName) => {
+            const lineItem = document.createElement('li');
+            lineItem.className = 'line-chip';
+            const lineInfo = lineData.find((line) => line.name === lineName);
+            lineItem.style.backgroundColor = `${(lineInfo?.color || '#3f51b5')}22`;
+            lineItem.style.color = lineInfo?.color || '#3f51b5';
+            lineItem.innerHTML = `
+                <span>${lineName}</span>
+                <button type="button" aria-label="Remove ${lineName}">×</button>
+            `;
+            lineItem.querySelector('button').addEventListener('click', async () => {
+                selectedLines.delete(lineName);
+                renderLineMatrix();
+                updateSelectedLinesSummary();
+                await renderSelectedRoutes();
+                await loadVehicleData();
+            });
+            list.appendChild(lineItem);
+        });
+}
+
+async function clearSelectedLines() {
+    if (selectedLines.size === 0) {
+        return;
+    }
+    selectedLines.clear();
+    renderLineMatrix();
+    updateSelectedLinesSummary();
+    updateSocketFilters();
+    await renderSelectedRoutes();
+    await loadVehicleData();
+}
+
+function getSelectedLinesArray() {
+    return Array.from(selectedLines);
+}
+
+async function renderSelectedRoutes() {
+    const selected = getSelectedLinesArray();
+
+    // Remove routes that are no longer selected
+    routePolylines.forEach((polylines, lineName) => {
+        if (!selectedLines.has(lineName)) {
+            polylines.forEach((polyline) => {
+                if (map.hasLayer(polyline)) {
+                    map.removeLayer(polyline);
+                }
+            });
+            routePolylines.delete(lineName);
         }
-    } catch (error) {
-        console.error('Error loading routes:', error);
+    });
+
+    lineStopMarkers.forEach((markers, lineName) => {
+        if (!selectedLines.has(lineName)) {
+            markers.forEach((marker) => {
+                if (map.hasLayer(marker)) {
+                    map.removeLayer(marker);
+                }
+            });
+            lineStopMarkers.delete(lineName);
+        }
+    });
+
+    if (selected.length === 0) {
+        updateRoutesToggleButton();
+        updateStopsToggleButton();
+        return;
+    }
+
+    const fetchPromises = selected.map(async (lineName) => {
+        if (!lineRouteCache.has(lineName)) {
+            try {
+                const routeData = await fetchLineRoute(lineName);
+                lineRouteCache.set(lineName, routeData);
+            } catch (error) {
+                console.error(`Failed to fetch route for ${lineName}:`, error);
+            }
+        }
+    });
+
+    await Promise.all(fetchPromises);
+
+    const aggregateBounds = L.latLngBounds([]);
+
+    selected.forEach((lineName) => {
+        const route = lineRouteCache.get(lineName);
+        if (!route) {
+            return;
+        }
+        drawRoute(route);
+
+        const routeBounds = getRouteBounds(route);
+        if (routeBounds) {
+            aggregateBounds.extend(routeBounds);
+        }
+    });
+
+    if (aggregateBounds.isValid()) {
+        map.fitBounds(aggregateBounds.pad(0.1));
+    }
+
+    updateRoutesToggleButton();
+    updateStopsToggleButton();
+}
+
+async function fetchLineRoute(lineName) {
+    const response = await fetch(`/api/lines/${encodeURIComponent(lineName)}/route`);
+    if (!response.ok) {
+        throw new Error(`Failed to load route for ${lineName}`);
+    }
+
+    const payload = await response.json();
+    return payload.route || payload;
+}
+
+function drawRoute(routeData) {
+    const lineName = routeData.line || routeData.name || routeData.route_short_name;
+    if (!lineName) {
+        return;
+    }
+
+    const color = routeData.color || getLineTypeColor(normalizeLineType(routeData.type));
+    const existingPolylines = routePolylines.get(lineName);
+    if (existingPolylines) {
+        existingPolylines.forEach((polyline) => {
+            if (map.hasLayer(polyline)) {
+                map.removeLayer(polyline);
+            }
+        });
+    }
+    const polylines = [];
+    const segments = Array.isArray(routeData.segments) && routeData.segments.length > 0
+        ? routeData.segments
+        : [{ coordinates: routeData.coordinates }];
+
+    segments.forEach((segment) => {
+        if (!Array.isArray(segment.coordinates) || segment.coordinates.length === 0) {
+            return;
+        }
+
+        const latLngs = segment.coordinates.map(([lat, lng]) => [lat, lng]);
+        const polyline = L.polyline(latLngs, {
+            color,
+            weight: 4,
+            opacity: 0.8
+        });
+
+        if (routesVisible && !map.hasLayer(polyline)) {
+            polyline.addTo(map);
+        }
+
+        polylines.push(polyline);
+    });
+
+    if (polylines.length > 0) {
+        routePolylines.set(lineName, polylines);
+    }
+
+    if (Array.isArray(routeData.stops) && routeData.stops.length > 0) {
+        const existingMarkers = lineStopMarkers.get(lineName);
+        if (existingMarkers) {
+            existingMarkers.forEach((marker) => {
+                if (map.hasLayer(marker)) {
+                    map.removeLayer(marker);
+                }
+            });
+        }
+
+        const markers = routeData.stops.map((stop) => {
+            const marker = L.circleMarker([stop.lat, stop.lng], {
+                radius: 6,
+                fillColor: color,
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.9
+            });
+
+            const popup = `
+                <div class="stop-popup">
+                    <h4>${stop.name || 'Unknown stop'}</h4>
+                    <p><strong>Line:</strong> ${lineName}</p>
+                    ${stop.rbl ? `<p><strong>RBL:</strong> ${stop.rbl}</p>` : ''}
+                    ${typeof stop.sequence === 'number' ? `<p><strong>Sequence:</strong> ${stop.sequence}</p>` : ''}
+                </div>
+            `;
+            marker.bindPopup(popup);
+
+            marker.on('click', () => {
+                if (stop.rbl) {
+                    highlightStopOnMap(stop, marker);
+                    fetchArrivalsForStop(stop);
+                }
+            });
+
+            if (stopsVisible && !map.hasLayer(marker)) {
+                marker.addTo(map);
+            }
+
+            return marker;
+        });
+
+        lineStopMarkers.set(lineName, markers);
+    } else {
+        lineStopMarkers.delete(lineName);
+    }
+}
+
+let currentArrivalsFilter = 'all';
+let currentArrivalsData = [];
+let currentSelectedStop = null; // Track currently selected stop for favorites
+
+function highlightStopOnMap(stop, marker) {
+    // Remove existing highlight if any
+    if (selectedStopHighlight) {
+        map.removeLayer(selectedStopHighlight);
+        selectedStopHighlight = null;
+    }
+    
+    // Create pulsing circle highlight
+    if (stop.lat && stop.lng) {
+        selectedStopHighlight = L.circle([stop.lat, stop.lng], {
+            radius: 100, // 100 meters
+            color: '#007bff',
+            fillColor: '#007bff',
+            fillOpacity: 0.2,
+            weight: 3,
+            opacity: 0.8,
+            className: 'stop-highlight'
+        }).addTo(map);
+        
+        // Zoom to stop if needed (but don't zoom too close)
+        const currentZoom = map.getZoom();
+        if (currentZoom < 15) {
+            map.setView([stop.lat, stop.lng], Math.max(currentZoom, 15));
+        } else {
+            map.setView([stop.lat, stop.lng], currentZoom);
+        }
+    }
+}
+
+async function fetchArrivalsForStop(stop) {
+    try {
+        currentSelectedStop = stop; // Store for favorites
+        
+        const listEl = document.getElementById('arrivals-list');
+        const nameEl = document.getElementById('arrivals-stop-name');
+        const metaEl = document.getElementById('arrivals-stop-meta');
+        const filtersEl = document.getElementById('arrivals-filters');
+        const loadingEl = document.getElementById('arrivals-loading');
+        
+        if (nameEl) {
+            if (stop.rbl) {
+                const isFavorite = checkIfStopIsFavorite(stop.rbl);
+                nameEl.innerHTML = `${stop.name || 'Selected stop'} <button class="favorite-btn" data-rbl="${stop.rbl}" title="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}">${isFavorite ? '★' : '☆'}</button>`;
+                const favBtn = nameEl.querySelector('.favorite-btn');
+                if (favBtn) {
+                    favBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        toggleStopFavorite(stop);
+                    });
+                }
+            } else {
+                nameEl.textContent = stop.name || 'Selected stop';
+            }
+        }
+        if (metaEl) {
+            metaEl.textContent = stop.rbl ? `RBL: ${stop.rbl}` : '';
+        }
+        
+        // Highlight the stop on map
+        if (stop.lat && stop.lng) {
+            highlightStopOnMap(stop, null);
+        }
+        if (filtersEl) {
+            filtersEl.style.display = 'flex';
+        }
+        if (loadingEl) {
+            loadingEl.style.display = 'flex';
+        }
+        if (listEl) {
+            listEl.innerHTML = '';
+        }
+        
+        const url = `/api/arrivals?rbl=${encodeURIComponent(stop.rbl)}`;
+        const resp = await fetch(url);
+        if (!resp.ok) {
+            throw new Error(`Arrivals failed: ${resp.status}`);
+        }
+        const data = await resp.json();
+        currentArrivalsData = data.vehicles || [];
+        
+        if (loadingEl) {
+            loadingEl.style.display = 'none';
+        }
+        renderArrivalsList(listEl, currentArrivalsData);
+    } catch (err) {
+        console.error('Error fetching arrivals', err);
+        const listEl = document.getElementById('arrivals-list');
+        const loadingEl = document.getElementById('arrivals-loading');
+        if (loadingEl) {
+            loadingEl.style.display = 'none';
+        }
+        if (listEl) {
+            listEl.innerHTML = '<li class="empty">Failed to load arrivals.</li>';
+        }
+    }
+}
+
+function isNightRoute(line) {
+    if (!line) return false;
+    const lineUpper = line.toUpperCase();
+    return lineUpper.includes('N') || lineUpper.startsWith('N') || 
+           (lineUpper.match(/^\d+$/) && parseInt(lineUpper) >= 20 && parseInt(lineUpper) <= 99);
+}
+
+function filterArrivals(vehicles, filter) {
+    if (filter === 'all') return vehicles;
+    if (filter === 'day') {
+        return vehicles.filter(v => !isNightRoute(v.line));
+    }
+    if (filter === 'night') {
+        return vehicles.filter(v => isNightRoute(v.line));
+    }
+    return vehicles;
+}
+
+function getLineTypeClass(line) {
+    if (!line) return '';
+    const lineUpper = line.toUpperCase();
+    if (lineUpper.startsWith('U')) return 'metro';
+    if (lineUpper.match(/^[A-Z]$/) || lineUpper.match(/^\d{1,2}$/)) {
+        const num = parseInt(lineUpper);
+        if (num >= 20 && num <= 99) return 'nightbus';
+        return 'tram';
+    }
+    if (isNightRoute(line)) return 'nightbus';
+    if (lineUpper.match(/^\d{3,}$/)) return 'bus';
+    return '';
+}
+
+function renderArrivalsList(listEl, vehicles) {
+    if (!listEl) return;
+    
+    // Apply current filter
+    const filtered = filterArrivals(vehicles, currentArrivalsFilter);
+    
+    listEl.innerHTML = '';
+    if (!filtered.length) {
+        const message = currentArrivalsFilter === 'all' 
+            ? 'No upcoming departures.' 
+            : `No ${currentArrivalsFilter} departures.`;
+        listEl.innerHTML = `<li class="empty">${message}</li>`;
+        return;
+    }
+    
+    const sorted = filtered.slice().sort((a, b) => (a.countdown ?? 0) - (b.countdown ?? 0));
+    sorted.slice(0, 20).forEach((v) => {
+        const li = document.createElement('li');
+        const countdown = Number.isFinite(v.countdown) ? v.countdown : null;
+        const countdownText = countdown !== null ? `${countdown} min` : 'soon';
+        const delay = v.delay ? `${v.delay} min` : '';
+        const lineTypeClass = getLineTypeClass(v.line);
+        const countdownClass = countdown !== null && countdown < 3 ? 'soon' : 
+                              (v.delay && v.delay > 2 ? 'delayed' : '');
+        
+        li.innerHTML = `
+            <div class="arrival-item">
+                <span class="arrival-line ${lineTypeClass}">${v.line || ''}</span>
+                <div class="arrival-info">
+                    <div>
+                        <span class="arrival-countdown ${countdownClass}">${countdownText}</span>
+                        ${delay ? `<span class="arrival-delay">+${delay}</span>` : ''}
+                    </div>
+                    <div class="arrival-destination">${v.next_station || 'Unknown destination'}</div>
+                </div>
+            </div>
+        `;
+        listEl.appendChild(li);
+    });
+}
+
+function setupArrivalsFilters() {
+    const filterButtons = document.querySelectorAll('.arrivals-filter-btn');
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Update active state
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Update filter
+            currentArrivalsFilter = btn.dataset.filter || 'all';
+            
+            // Re-render with new filter
+            const listEl = document.getElementById('arrivals-list');
+            if (listEl && currentArrivalsData.length > 0) {
+                renderArrivalsList(listEl, currentArrivalsData);
+            }
+        });
+    });
+}
+
+function updateRoutesToggleButton() {
+    const button = document.getElementById('toggle-routes');
+    if (!button) {
+        return;
+    }
+    const hasRoutes = routePolylines.size > 0;
+    button.disabled = !hasRoutes;
+    button.textContent = routesVisible ? 'Hide Routes' : 'Show Routes';
+}
+
+function updateStopsToggleButton() {
+    const button = document.getElementById('toggle-stops');
+    if (!button) {
+        return;
+    }
+    const hasStops = lineStopMarkers.size > 0;
+    button.disabled = !hasStops;
+    button.textContent = stopsVisible ? 'Hide Stops' : 'Show Stops';
+}
+
+function getRouteBounds(routeData) {
+    const bounds = L.latLngBounds([]);
+
+    const segments = Array.isArray(routeData.segments) && routeData.segments.length > 0
+        ? routeData.segments
+        : [];
+
+    segments.forEach((segment) => {
+        if (!Array.isArray(segment.coordinates)) {
+            return;
+        }
+        segment.coordinates.forEach(([lat, lng]) => {
+            if (typeof lat === 'number' && typeof lng === 'number') {
+                bounds.extend([lat, lng]);
+            }
+        });
+    });
+
+    if (Array.isArray(routeData.stops)) {
+        routeData.stops.forEach((stop) => {
+            if (typeof stop?.lat === 'number' && typeof stop?.lng === 'number') {
+                bounds.extend([stop.lat, stop.lng]);
+            }
+        });
+    }
+
+    return bounds.isValid() ? bounds : null;
+}
+
+// Favorites management functions
+function checkIfStopIsFavorite(rbl) {
+    try {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+        return !!(favorites.stops && favorites.stops[rbl]);
+    } catch (e) {
+        return false;
+    }
+}
+
+function toggleStopFavorite(stop) {
+    try {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+        if (!favorites.stops) favorites.stops = {};
+        
+        if (favorites.stops[stop.rbl]) {
+            delete favorites.stops[stop.rbl];
+        } else {
+            favorites.stops[stop.rbl] = {
+                id: stop.rbl,
+                name: stop.name,
+                lat: stop.lat,
+                lng: stop.lng,
+                timestamp: Date.now()
+            };
+        }
+        
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        renderFavoritesList();
+        
+        // Update favorite button in arrivals panel
+        if (currentSelectedStop && currentSelectedStop.rbl === stop.rbl) {
+            const nameEl = document.getElementById('arrivals-stop-name');
+            if (nameEl) {
+                const isFavorite = checkIfStopIsFavorite(stop.rbl);
+                nameEl.innerHTML = `${stop.name || 'Selected stop'} <button class="favorite-btn" data-rbl="${stop.rbl}" title="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}">${isFavorite ? '★' : '☆'}</button>`;
+                const favBtn = nameEl.querySelector('.favorite-btn');
+                if (favBtn) {
+                    favBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        toggleStopFavorite(stop);
+                    });
+                }
+            }
+        }
+    } catch (e) {
+        console.error('Failed to toggle favorite:', e);
+    }
+}
+
+function renderFavoritesList() {
+    const listEl = document.getElementById('favorites-list');
+    if (!listEl) return;
+    
+    try {
+        const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+        const stops = favorites.stops || {};
+        const home = favorites.home || null;
+        const work = favorites.work || null;
+        
+        listEl.innerHTML = '';
+        
+        if (Object.keys(stops).length === 0 && !home && !work) {
+            listEl.innerHTML = '<li class="empty">No favorites yet. Click a stop and use the star icon to add.</li>';
+            return;
+        }
+        
+        // Add home/work if set
+        if (home) {
+            const li = document.createElement('li');
+            li.className = 'favorite-item home';
+            li.innerHTML = `
+                <span class="favorite-icon">🏠</span>
+                <span class="favorite-name">${home.name || 'Home'}</span>
+                <button class="favorite-remove" data-rbl="${home.rbl}" title="Remove">×</button>
+            `;
+            li.querySelector('.favorite-remove').addEventListener('click', () => {
+                if (confirm('Remove Home favorite?')) {
+                    favorites.home = null;
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+                    renderFavoritesList();
+                }
+            });
+            li.addEventListener('click', () => {
+                fetchArrivalsForStop(home);
+            });
+            listEl.appendChild(li);
+        }
+        
+        if (work) {
+            const li = document.createElement('li');
+            li.className = 'favorite-item work';
+            li.innerHTML = `
+                <span class="favorite-icon">💼</span>
+                <span class="favorite-name">${work.name || 'Work'}</span>
+                <button class="favorite-remove" data-rbl="${work.rbl}" title="Remove">×</button>
+            `;
+            li.querySelector('.favorite-remove').addEventListener('click', () => {
+                if (confirm('Remove Work favorite?')) {
+                    favorites.work = null;
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+                    renderFavoritesList();
+                }
+            });
+            li.addEventListener('click', () => {
+                fetchArrivalsForStop(work);
+            });
+            listEl.appendChild(li);
+        }
+        
+        // Add regular favorites
+        Object.values(stops).forEach(stop => {
+            if (stop.rbl === (home?.rbl) || stop.rbl === (work?.rbl)) return; // Skip if already shown as home/work
+            
+            const li = document.createElement('li');
+            li.className = 'favorite-item';
+            li.innerHTML = `
+                <span class="favorite-icon">★</span>
+                <span class="favorite-name">${stop.name || `Stop ${stop.rbl}`}</span>
+                <button class="favorite-remove" data-rbl="${stop.rbl}" title="Remove">×</button>
+            `;
+            li.querySelector('.favorite-remove').addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleStopFavorite(stop);
+            });
+            li.addEventListener('click', () => {
+                fetchArrivalsForStop(stop);
+            });
+            listEl.appendChild(li);
+        });
+    } catch (e) {
+        console.error('Failed to render favorites:', e);
+        listEl.innerHTML = '<li class="empty">Error loading favorites.</li>';
+    }
+}
+
+function initializeTrafficAlerts() {
+    const alertsList = document.getElementById('traffic-alerts-list');
+    const loadingEl = document.getElementById('traffic-alerts-loading');
+    
+    async function loadTrafficAlerts() {
+        if (loadingEl) loadingEl.style.display = 'flex';
+        if (alertsList) alertsList.innerHTML = '';
+        
+        try {
+            const resp = await fetch('/api/traffic-info');
+            if (!resp.ok) throw new Error(resp.status);
+            const data = await resp.json();
+            
+            if (loadingEl) loadingEl.style.display = 'none';
+            
+            if (!alertsList) return;
+            
+            if (!data.alerts || data.alerts.length === 0) {
+                alertsList.innerHTML = '<li class="empty">No service alerts at this time.</li>';
+                return;
+            }
+            
+            alertsList.innerHTML = '';
+            data.alerts.forEach(alert => {
+                const li = document.createElement('li');
+                li.className = `traffic-alert-item severity-${alert.severity || 'low'}`;
+                
+                const linesHtml = alert.lines && alert.lines.length > 0
+                    ? `<div class="traffic-alert-lines">${alert.lines.map(line => `<span class="traffic-alert-line">${line}</span>`).join('')}</div>`
+                    : '';
+                
+                li.innerHTML = `
+                    <div class="traffic-alert-title">${alert.title || 'Service Alert'}</div>
+                    <div class="traffic-alert-description">${alert.description || ''}</div>
+                    ${linesHtml}
+                `;
+                alertsList.appendChild(li);
+            });
+        } catch (err) {
+            console.error('Failed to load traffic alerts:', err);
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (alertsList) {
+                alertsList.innerHTML = '<li class="empty">Unable to load service alerts.</li>';
+            }
+        }
+    }
+    
+    // Load alerts on init and refresh every 5 minutes
+    loadTrafficAlerts();
+    setInterval(loadTrafficAlerts, 5 * 60 * 1000);
+}
+
+function initializeFavoritesPanel() {
+    const homeBtn = document.getElementById('favorite-home');
+    const workBtn = document.getElementById('favorite-work');
+    
+    if (homeBtn) {
+        homeBtn.addEventListener('click', () => {
+            if (currentSelectedStop && currentSelectedStop.rbl) {
+                const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+                favorites.home = {
+                    id: currentSelectedStop.rbl,
+                    name: currentSelectedStop.name,
+                    lat: currentSelectedStop.lat,
+                    lng: currentSelectedStop.lng,
+                    rbl: currentSelectedStop.rbl,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                renderFavoritesList();
+                alert('Home location set!');
+            } else {
+                alert('Please select a stop first by clicking on the map.');
+            }
+        });
+    }
+    
+    if (workBtn) {
+        workBtn.addEventListener('click', () => {
+            if (currentSelectedStop && currentSelectedStop.rbl) {
+                const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+                favorites.work = {
+                    id: currentSelectedStop.rbl,
+                    name: currentSelectedStop.name,
+                    lat: currentSelectedStop.lat,
+                    lng: currentSelectedStop.lng,
+                    rbl: currentSelectedStop.rbl,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                renderFavoritesList();
+                alert('Work location set!');
+            } else {
+                alert('Please select a stop first by clicking on the map.');
+            }
+        });
+    }
+    
+    renderFavoritesList();
+}
+
+function initializeArrivalsPanel() {
+    const clearBtn = document.getElementById('arrivals-clear');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            const listEl = document.getElementById('arrivals-list');
+            const nameEl = document.getElementById('arrivals-stop-name');
+            const metaEl = document.getElementById('arrivals-stop-meta');
+            const filtersEl = document.getElementById('arrivals-filters');
+            if (listEl) {
+                listEl.innerHTML = '<li class="empty">Click a stop marker or use "Near Me" to see arrivals.</li>';
+            }
+            if (nameEl) nameEl.textContent = 'No stop selected';
+            if (metaEl) metaEl.textContent = '';
+            if (filtersEl) filtersEl.style.display = 'none';
+            currentArrivalsData = [];
+            currentArrivalsFilter = 'all';
+            currentSelectedStop = null;
+            
+            // Remove stop highlight
+            if (selectedStopHighlight) {
+                map.removeLayer(selectedStopHighlight);
+                selectedStopHighlight = null;
+            }
+            // Reset filter buttons
+            document.querySelectorAll('.arrivals-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filter === 'all') btn.classList.add('active');
+            });
+        });
+    }
+    
+    // Setup filter buttons
+    setupArrivalsFilters();
+    const nearMeBtn = document.getElementById('near-me-button');
+    if (nearMeBtn && navigator.geolocation) {
+        nearMeBtn.addEventListener('click', () => {
+            navigator.geolocation.getCurrentPosition(
+                async (pos) => {
+                    const { latitude, longitude } = pos.coords;
+                    try {
+                        const resp = await fetch(`/api/stops/nearby?lat=${latitude}&lon=${longitude}&limit=1`);
+                        if (!resp.ok) throw new Error(resp.status);
+                        const data = await resp.json();
+                        const first = (data.stops || [])[0];
+                        if (first && first.lat && first.lng) {
+                            map.setView([first.lat, first.lng], 16);
+                            await fetchArrivalsForStop(first);
+                        }
+                    } catch (err) {
+                        console.error('Near me failed', err);
+                    }
+                },
+                (err) => {
+                    console.warn('Geolocation denied', err);
+                }
+            );
+        });
     }
 }
 
@@ -154,11 +1098,11 @@ async function loadVehicleData() {
         if (currentFilters.vehicleType !== 'all') {
             params.append('type', currentFilters.vehicleType);
         }
-        if (currentFilters.line) {
-            params.append('line', currentFilters.line);
-        }
-        if (currentFilters.station) {
-            params.append('station', currentFilters.station);
+        const lines = getSelectedLinesArray();
+        if (lines.length === 1) {
+            params.append('line', lines[0]);
+        } else if (lines.length > 1) {
+            params.append('lines', lines.join(','));
         }
         
         const response = await fetch(`/api/vehicles?${params}`);
@@ -183,27 +1127,44 @@ function refreshVehicleData() {
 
 // Update vehicle markers on the map
 function updateVehicleMarkers(vehicles) {
-    // Clear existing markers
-    vehicleMarkers.forEach(marker => map.removeLayer(marker));
-    vehicleMarkers.clear();
-    
-    // Add new markers
-    vehicles.forEach(vehicle => {
-        const marker = createVehicleMarker(vehicle);
-        vehicleMarkers.set(vehicle.id, marker);
-        marker.addTo(map);
+    const seenIds = new Set();
+
+    vehicles.forEach((vehicle) => {
+        if (!vehicle.lat || !vehicle.lng) {
+            return;
+        }
+        seenIds.add(vehicle.id);
+        let marker = vehicleMarkers.get(vehicle.id);
+        if (!marker) {
+            marker = createVehicleMarker(vehicle);
+            vehicleMarkers.set(vehicle.id, marker);
+            marker.addTo(map);
+        } else {
+            marker.setLatLng([vehicle.lat, vehicle.lng]);
+        }
+        marker.setPopupContent(buildVehiclePopup(vehicle));
     });
-    
-    updateVehicleCount(vehicles.length);
+
+    vehicleMarkers.forEach((marker, id) => {
+        if (!seenIds.has(id)) {
+            map.removeLayer(marker);
+            vehicleMarkers.delete(id);
+        }
+    });
+
+    updateVehicleCount(vehicleMarkers.size);
 }
 
 // Create a vehicle marker
 function createVehicleMarker(vehicle) {
     const icon = getVehicleIcon(vehicle.type, vehicle.line);
-    const marker = L.marker([vehicle.lat, vehicle.lng], { icon: icon });
-    
-    // Create popup content
-    const popupContent = `
+    const marker = L.marker([vehicle.lat, vehicle.lng], { icon });
+    marker.bindPopup(buildVehiclePopup(vehicle));
+    return marker;
+}
+
+function buildVehiclePopup(vehicle) {
+    return `
         <div class="vehicle-popup">
             <h4>${vehicle.line}</h4>
             <p><strong>Type:</strong> ${vehicle.type}</p>
@@ -213,16 +1174,12 @@ function createVehicleMarker(vehicle) {
             <p><strong>Updated:</strong> ${new Date(vehicle.timestamp).toLocaleTimeString()}</p>
         </div>
     `;
-    
-    marker.bindPopup(popupContent);
-    
-    return marker;
 }
 
 // Get vehicle icon based on type and line
 function getVehicleIcon(type, line) {
-    const iconSize = [20, 20];
-    const iconAnchor = [10, 10];
+    const iconSize = [32, 32];
+    const iconAnchor = [16, 16];
     
     let iconUrl;
     let color;
@@ -248,54 +1205,12 @@ function getVehicleIcon(type, line) {
     // Create custom icon with line number
     return L.divIcon({
         className: 'vehicle-marker',
-        html: `<div style="background-color: ${color}; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">${line}</div>`,
+        html: `<div style="background-color: ${color}; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">${line}</div>`,
         iconSize: iconSize,
         iconAnchor: iconAnchor
     });
 }
 
-// Display routes on the map
-function displayRoutes(routes) {
-    // Clear existing routes
-    routePolylines.forEach(polyline => map.removeLayer(polyline));
-    routePolylines.clear();
-    
-    routes.forEach(route => {
-        if (route.coordinates && route.coordinates.length > 0) {
-            const polyline = L.polyline(route.coordinates, {
-                color: route.color,
-                weight: 4,
-                opacity: 0.7
-            }).addTo(map);
-            
-            routePolylines.set(route.name, polyline);
-            
-            // Add stops if available
-            if (route.stops) {
-                route.stops.forEach(stop => {
-                    const stopMarker = L.circleMarker([stop.lat, stop.lng], {
-                        radius: 6,
-                        fillColor: route.color,
-                        color: '#fff',
-                        weight: 2,
-                        opacity: 1,
-                        fillOpacity: 0.8
-                    }).addTo(map);
-                    
-                    stopMarker.bindPopup(`
-                        <div class="stop-popup">
-                            <h4>${stop.name}</h4>
-                            <p><strong>Line:</strong> ${route.name}</p>
-                            <p><strong>RBL:</strong> ${stop.rbl}</p>
-                        </div>
-                    `);
-                    
-                    stopMarkers.set(`${route.name}-${stop.rbl}`, stopMarker);
-                });
-            }
-        }
-    });
-}
 
 // Handle disruption alerts
 function handleDisruptionAlert(alert) {
@@ -374,22 +1289,23 @@ function updateDisruptionDisplay() {
 function updateSystemStatus(status) {
     const statusElement = document.getElementById('system-status');
     if (statusElement) {
+        const vehicleUpdatedAt = status.vehicle_updated_at || status.timestamp;
         statusElement.innerHTML = `
             <div class="status-item">
                 <span class="label">Connected Clients:</span>
-                <span class="value">${status.websocket_clients}</span>
+                <span class="value">${status.websocket_clients ?? 0}</span>
             </div>
             <div class="status-item">
                 <span class="label">Active Disruptions:</span>
-                <span class="value">${status.active_disruptions}</span>
+                <span class="value">${status.active_disruptions ?? 0}</span>
             </div>
             <div class="status-item">
                 <span class="label">Tracked Vehicles:</span>
-                <span class="value">${status.vehicle_count}</span>
+                <span class="value">${status.vehicle_count ?? 0}</span>
             </div>
             <div class="status-item">
                 <span class="label">Last Updated:</span>
-                <span class="value">${new Date(status.timestamp).toLocaleTimeString()}</span>
+                <span class="value">${vehicleUpdatedAt ? new Date(vehicleUpdatedAt).toLocaleTimeString() : '—'}</span>
             </div>
         `;
     }
@@ -412,100 +1328,65 @@ function updateVehicleCount(count) {
     }
 }
 
-// Populate line dropdown
-function populateLineDropdown(lines) {
-    const select = document.getElementById('line-select');
-    if (!select) return;
-    
-    select.innerHTML = '<option value="">All Lines</option>';
-    
-    lines.forEach(line => {
-        const option = document.createElement('option');
-        option.value = line.name;
-        option.textContent = `${line.name} - ${line.description}`;
-        select.appendChild(option);
-    });
-}
-
-// Populate station dropdown
-function populateStationDropdown(stations) {
-    const select = document.getElementById('station-select');
-    if (!select) return;
-    
-    select.innerHTML = '<option value="">All Stations</option>';
-    
-    stations.forEach(station => {
-        const option = document.createElement('option');
-        option.value = station.rbl;
-        option.textContent = `${station.name} (${station.type})`;
-        select.appendChild(option);
-    });
-}
-
 // Filter change handlers
 function onVehicleTypeChange() {
     const select = document.getElementById('vehicle-type-select');
     currentFilters.vehicleType = select.value;
-    loadVehicleData();
-}
-
-function onLineChange() {
-    const select = document.getElementById('line-select');
-    currentFilters.line = select.value || null;
-    loadVehicleData();
-}
-
-function onStationChange() {
-    const select = document.getElementById('station-select');
-    currentFilters.station = select.value || null;
+    updateSocketFilters();
     loadVehicleData();
 }
 
 // Toggle route display
 function toggleRoutes() {
-    const button = document.getElementById('toggle-routes');
-    const isVisible = button.textContent.includes('Hide');
-    
-    routePolylines.forEach(polyline => {
-        if (isVisible) {
-            map.removeLayer(polyline);
-        } else {
-            polyline.addTo(map);
-        }
+    routesVisible = !routesVisible;
+
+    routePolylines.forEach((polylines) => {
+        polylines.forEach((polyline) => {
+            if (routesVisible) {
+                polyline.addTo(map);
+            } else {
+                if (map.hasLayer(polyline)) {
+                    map.removeLayer(polyline);
+                }
+            }
+        });
     });
-    
-    button.textContent = isVisible ? 'Show Routes' : 'Hide Routes';
+
+    updateRoutesToggleButton();
 }
 
 // Toggle stop markers
 function toggleStops() {
-    const button = document.getElementById('toggle-stops');
-    const isVisible = button.textContent.includes('Hide');
-    
-    stopMarkers.forEach(marker => {
-        if (isVisible) {
-            map.removeLayer(marker);
-        } else {
-            marker.addTo(map);
-        }
+    stopsVisible = !stopsVisible;
+
+    lineStopMarkers.forEach((markers) => {
+        markers.forEach((marker) => {
+            if (stopsVisible) {
+                marker.addTo(map);
+            } else {
+                if (map.hasLayer(marker)) {
+                    map.removeLayer(marker);
+                }
+            }
+        });
     });
-    
-    button.textContent = isVisible ? 'Show Stops' : 'Hide Stops';
+
+    updateStopsToggleButton();
 }
 
 // Show loading overlay
 function showLoading() {
-    const overlay = document.getElementById('loading-overlay');
-    if (overlay) {
-        overlay.classList.remove('hidden');
+    const loader = document.getElementById('map-loader');
+    if (loader) {
+        loader.classList.add('visible');
     }
 }
 
 // Hide loading overlay
 function hideLoading() {
-    const overlay = document.getElementById('loading-overlay');
-    if (overlay) {
-        overlay.classList.add('hidden');
+    const loader = document.getElementById('map-loader');
+    if (loader) {
+        loader.classList.remove('visible');
     }
 }
 
@@ -541,21 +1422,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hide loading overlay by default
     hideLoading();
     
+    const buildTimestamp = document.getElementById('build-timestamp');
+    if (buildTimestamp) {
+        const now = new Date();
+        buildTimestamp.textContent = now.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
     initializeMap();
     
     // Set up event listeners
     const vehicleTypeSelect = document.getElementById('vehicle-type-select');
-    const lineSelect = document.getElementById('line-select');
-    const stationSelect = document.getElementById('station-select');
     
     if (vehicleTypeSelect) {
         vehicleTypeSelect.addEventListener('change', onVehicleTypeChange);
-    }
-    if (lineSelect) {
-        lineSelect.addEventListener('change', onLineChange);
-    }
-    if (stationSelect) {
-        stationSelect.addEventListener('change', onStationChange);
     }
     
     console.log('Wiener Linien Live Map initialized');

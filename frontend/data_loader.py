@@ -8,7 +8,7 @@ containing information about lines, stations, routes, and disruptions.
 import os
 import json
 import re
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Set
 from dataclasses import dataclass
 from datetime import datetime
 import logging
@@ -229,7 +229,7 @@ class DataLoader:
         sections = self._parse_markdown_sections(content)
         
         for section in sections:
-            if section['level'] == 3:  # Individual station sections
+            if section['level'] in (2, 3):  # Individual station sections
                 station_data = self._extract_station_info(section)
                 if station_data:
                     stations.extend(station_data)
@@ -241,12 +241,45 @@ class DataLoader:
         stations = []
         content = section['content']
         
-        # Parse numbered station list
-        for line in content.split('\n'):
-            if line.strip() and re.match(r'^\d+\.', line):
+        lines = [line.strip() for line in content.split('\n') if line.strip()]
+        numbered_lines = [line for line in lines if re.match(r'^\d+\.', line)]
+
+        if numbered_lines:
+            for line in numbered_lines:
                 station = self._parse_station_line(line)
                 if station:
                     stations.append(station)
+            return stations
+
+        # New bullet-style format
+        name = section['title'].strip()
+        rbl_tokens: Set[str] = set()
+        zone = '100'
+
+        for line in lines:
+            if line.startswith('- RBL:'):
+                rbl_value = line.split(':', 1)[1]
+                parts = [
+                    token.strip()
+                    for token in re.split(r'[,\s;]+', rbl_value)
+                    if token.strip()
+                ]
+                rbl_tokens.update(parts)
+            elif line.startswith('- Zone:'):
+                zone = line.split(':', 1)[1].strip() or '100'
+
+        rbl = ",".join(sorted(rbl_tokens))
+        if not rbl:
+            return stations
+
+        stations.append(
+            Station(
+                name=name,
+                rbl=rbl,
+                type='Unknown',
+                zone=zone
+            )
+        )
         
         return stations
     
@@ -260,9 +293,19 @@ class DataLoader:
             
             name = name_match.group(1).strip()
             
-            # Extract RBL
-            rbl_match = re.search(r'RBL:\s*(\d+)', line)
-            rbl = rbl_match.group(1) if rbl_match else ''
+            # Extract RBL (support multiple comma/space separated values)
+            rbl = ''
+            rbl_match = re.search(r'RBL:\s*([0-9,\s;]+)', line)
+            if rbl_match:
+                rbl_tokens = [
+                    token.strip()
+                    for token in re.split(r'[,\s;]+', rbl_match.group(1))
+                    if token and token.strip()
+                ]
+                rbl = ",".join(rbl_tokens)
+
+            if not rbl:
+                return None
             
             # Extract type
             type_match = re.search(r'Type:\s*(\w+)', line)

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Network Status{% endblock %}
+{% block content %}
+<div class="status-page">
+  <h1>Vienna Network Status</h1>
+  <section class="status-headline">
+    <div class="status-card" id="headline-card">
+      <h2>Overall Service</h2>
+      <p id="headline-status" class="pill pill--ok">Loading…</p>
+      <p class="status-subtext" id="headline-subtext"></p>
+    </div>
+    <div class="status-card">
+      <h2>Vehicles Online</h2>
+      <ul id="vehicle-counts" class="status-list"></ul>
+      <div class="status-meta" id="vehicle-refresh"></div>
+    </div>
+    <div class="status-card">
+      <h2>Active Disruptions</h2>
+      <p id="disruption-count">Loading…</p>
+      <div class="status-meta" id="disruption-summary"></div>
+    </div>
+    <div class="status-card">
+      <h2>GTFS Loader</h2>
+      <p id="heartbeat-status">Loading…</p>
+      <div class="status-meta" id="heartbeat-updated"></div>
+    </div>
+    <div class="status-card">
+      <h2>Last GTFS Refresh</h2>
+      <p id="status-gtfs-refresh">Loading...</p>
+    </div>
+  </section>
+
+  <section class="status-section">
+    <h2>Line Overview</h2>
+    <div id="line-grid" class="line-grid"></div>
+  </section>
+
+  <section class="status-section">
+    <h2>Top Delays</h2>
+    <table class="status-table" id="delay-table">
+      <thead>
+        <tr>
+          <th>Line</th>
+          <th>Next Station</th>
+          <th>Delay (min)</th>
+          <th>Countdown</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section class="status-section">
+    <h2>Disruption Ticker</h2>
+    <ul id="disruption-ticker" class="status-list status-list--ticker"></ul>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/status.js" type="module"></script>
+{% endblock %}
