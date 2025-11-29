@@ -11,6 +11,7 @@ Usage:
 """
 
 import logging
+import os
 import sys
 from pathlib import Path
 
@@ -18,6 +19,20 @@ from fastmcp import FastMCP
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Initialize database BEFORE importing tools (they depend on db)
+try:
+    from database import db
+    
+    class _MCPApp:
+        """Minimal app stub for db.init_app()."""
+        pass
+    
+    # Only init if DATABASE_URL is set and db not already initialized
+    if os.getenv('DATABASE_URL') and db.engine is None:
+        db.init_app(_MCPApp())
+except Exception as e:
+    logging.getLogger("mcp_server").warning(f"Database init skipped: {e}")
 
 # Import tools
 from mcp_server.tools.departures import register_departures_tool
