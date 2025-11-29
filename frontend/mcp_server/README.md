@@ -117,3 +117,5 @@ mcp-inspector python -m frontend.mcp_server.server
 - Pydantic 2.5.0+
 - Access to Wiener Linien API (via shared backend)
 
+
+

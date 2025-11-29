@@ -38,3 +38,5 @@ class DepartureResponse(BaseModel):
     departures: List[Departure] = Field(..., description="List of upcoming departures")
     timestamp: datetime = Field(default_factory=datetime.utcnow, description="Response timestamp")
 
+
+

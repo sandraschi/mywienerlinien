@@ -23,3 +23,5 @@ def register_logging_middleware(mcp: FastMCP) -> None:
             logger.error(f"MCP tool error: {tool_name} - {e}", exc_info=True)
             raise
 
+
+

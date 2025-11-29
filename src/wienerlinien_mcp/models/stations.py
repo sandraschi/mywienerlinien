@@ -34,3 +34,5 @@ class StationSearchResponse(BaseModel):
     results: List[Station] = Field(..., description="Matching stations")
     count: int = Field(..., description="Number of results")
 
+
+

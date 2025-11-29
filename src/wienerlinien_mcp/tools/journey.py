@@ -87,3 +87,5 @@ def register_journey_tool(mcp: FastMCP) -> None:
             logger.error(f"Error planning journey: {e}", exc_info=True)
             raise RuntimeError(f"Failed to plan journey: {str(e)}") from e
 
+
+

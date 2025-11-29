@@ -39,3 +39,5 @@ class LineStatusResponse(BaseModel):
     statuses: List[ServiceStatus] = Field(..., description="List of status entries")
     timestamp: datetime = Field(default_factory=datetime.utcnow, description="Response timestamp")
 
+
+

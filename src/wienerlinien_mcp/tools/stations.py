@@ -79,3 +79,5 @@ def register_station_search_tool(mcp: FastMCP) -> None:
             logger.error(f"Error searching stations: {e}", exc_info=True)
             raise RuntimeError(f"Failed to search stations: {str(e)}") from e
 
+
+

@@ -79,3 +79,5 @@ def register_status_tool(mcp: FastMCP) -> None:
             logger.error(f"Error fetching line status: {e}", exc_info=True)
             raise RuntimeError(f"Failed to fetch line status: {str(e)}") from e
 
+
+

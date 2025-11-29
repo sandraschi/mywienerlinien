@@ -23,3 +23,5 @@ def register_error_handler_middleware(mcp: FastMCP) -> None:
             logger.error(f"Internal error: {e}", exc_info=True)
             raise RuntimeError(f"An error occurred: {str(e)}") from e
 
+
+

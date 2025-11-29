@@ -114,3 +114,5 @@ def register_departures_tool(mcp: FastMCP) -> None:
             logger.error(f"Error fetching departures: {e}", exc_info=True)
             raise RuntimeError(f"Failed to fetch departures: {str(e)}") from e
 
+
+
