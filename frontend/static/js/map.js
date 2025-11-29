@@ -678,6 +678,8 @@ function drawRoute(routeData) {
 let currentArrivalsFilter = 'all';
 let currentArrivalsData = [];
 let currentSelectedStop = null; // Track currently selected stop for favorites
+let arrivalsRefreshInterval = null; // Auto-refresh interval for arrivals
+const ARRIVALS_REFRESH_MS = 30000; // Refresh arrivals every 30 seconds
 
 function highlightStopOnMap(stop, marker) {
     // Remove existing highlight if any
@@ -708,9 +710,14 @@ function highlightStopOnMap(stop, marker) {
     }
 }
 
-async function fetchArrivalsForStop(stop) {
+async function fetchArrivalsForStop(stop, isAutoRefresh = false) {
     try {
         currentSelectedStop = stop; // Store for favorites
+        
+        // Start auto-refresh interval (only on initial fetch, not auto-refresh)
+        if (!isAutoRefresh) {
+            startArrivalsAutoRefresh(stop);
+        }
         
         const listEl = document.getElementById('arrivals-list');
         const nameEl = document.getElementById('arrivals-stop-name');
@@ -718,7 +725,7 @@ async function fetchArrivalsForStop(stop) {
         const filtersEl = document.getElementById('arrivals-filters');
         const loadingEl = document.getElementById('arrivals-loading');
         
-        if (nameEl) {
+        if (nameEl && !isAutoRefresh) {
             if (stop.rbl) {
                 const isFavorite = checkIfStopIsFavorite(stop.rbl);
                 nameEl.innerHTML = `${stop.name || 'Selected stop'} <button class="favorite-btn" data-rbl="${stop.rbl}" title="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}">${isFavorite ? '★' : '☆'}</button>`;
@@ -733,21 +740,22 @@ async function fetchArrivalsForStop(stop) {
                 nameEl.textContent = stop.name || 'Selected stop';
             }
         }
-        if (metaEl) {
+        if (metaEl && !isAutoRefresh) {
             metaEl.textContent = stop.rbl ? `RBL: ${stop.rbl}` : '';
         }
         
-        // Highlight the stop on map
-        if (stop.lat && stop.lng) {
+        // Highlight the stop on map (only on initial fetch)
+        if (!isAutoRefresh && stop.lat && stop.lng) {
             highlightStopOnMap(stop, null);
         }
-        if (filtersEl) {
+        if (filtersEl && !isAutoRefresh) {
             filtersEl.style.display = 'flex';
         }
-        if (loadingEl) {
+        // Show loading only on initial fetch, not auto-refresh (to avoid flicker)
+        if (loadingEl && !isAutoRefresh) {
             loadingEl.style.display = 'flex';
         }
-        if (listEl) {
+        if (listEl && !isAutoRefresh) {
             listEl.innerHTML = '';
         }
         
@@ -763,6 +771,12 @@ async function fetchArrivalsForStop(stop) {
             loadingEl.style.display = 'none';
         }
         renderArrivalsList(listEl, currentArrivalsData);
+        
+        // Update last refresh indicator
+        if (metaEl && stop.rbl) {
+            const now = new Date();
+            metaEl.textContent = `RBL: ${stop.rbl} • Updated ${now.toLocaleTimeString()}`;
+        }
     } catch (err) {
         console.error('Error fetching arrivals', err);
         const listEl = document.getElementById('arrivals-list');
@@ -770,9 +784,35 @@ async function fetchArrivalsForStop(stop) {
         if (loadingEl) {
             loadingEl.style.display = 'none';
         }
-        if (listEl) {
+        if (listEl && !isAutoRefresh) {
             listEl.innerHTML = '<li class="empty">Failed to load arrivals.</li>';
         }
+    }
+}
+
+function startArrivalsAutoRefresh(stop) {
+    // Clear any existing interval
+    stopArrivalsAutoRefresh();
+    
+    // Start new interval
+    arrivalsRefreshInterval = setInterval(() => {
+        if (currentSelectedStop && currentSelectedStop.rbl === stop.rbl) {
+            console.log('Auto-refreshing arrivals for', stop.name);
+            fetchArrivalsForStop(stop, true);
+        } else {
+            // Stop refresh if stop changed
+            stopArrivalsAutoRefresh();
+        }
+    }, ARRIVALS_REFRESH_MS);
+    
+    console.log(`Started arrivals auto-refresh (${ARRIVALS_REFRESH_MS / 1000}s interval)`);
+}
+
+function stopArrivalsAutoRefresh() {
+    if (arrivalsRefreshInterval) {
+        clearInterval(arrivalsRefreshInterval);
+        arrivalsRefreshInterval = null;
+        console.log('Stopped arrivals auto-refresh');
     }
 }
 
@@ -1172,6 +1212,9 @@ function initializeArrivalsPanel() {
             currentArrivalsData = [];
             currentArrivalsFilter = 'all';
             currentSelectedStop = null;
+            
+            // Stop auto-refresh
+            stopArrivalsAutoRefresh();
             
             // Remove stop highlight
             if (selectedStopHighlight) {

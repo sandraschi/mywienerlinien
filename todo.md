@@ -26,6 +26,6 @@
 - [ ] Package as PWA (offline schedules, installable).
 - [ ] Push notification prototype for favorite stops (late arrivals).
 - [ ] Voice/quick query UI ("Next U1 at Stephansplatz?").
-- [ ] Auto-refresh arrivals panel every 30 seconds.
+- [x] Auto-refresh arrivals panel every 30 seconds.
 - [ ] Add arrival cards to traffic alerts (show affected departures).
 

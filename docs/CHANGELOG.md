@@ -9,6 +9,10 @@
   - Phase 3 (Personalization): favorites, Home/Work quick actions.
   - Phase 4 (Alerts): traffic info integration, mobile-first layout.
   - Added stretch goals for PWA, push notifications, voice queries.
+- Arrivals auto-refresh:
+  - Arrivals panel now auto-refreshes every 30 seconds while a stop is selected.
+  - Shows last update timestamp in the panel metadata.
+  - Auto-refresh stops when panel is cleared or different stop is selected.
 
 ## 2025-11-22
 
