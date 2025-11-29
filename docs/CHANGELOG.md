@@ -1,5 +1,15 @@
 # Changelog
 
+## 2025-11-29
+
+- Roadmap status update:
+  - Audited Phase 1-4 features and marked all as complete in `todo.md`.
+  - Phase 1 (Immediate UX): arrivals panel, stop highlighting, day/night filters.
+  - Phase 2 (Location Awareness): nearby stops API, Near Me button.
+  - Phase 3 (Personalization): favorites, Home/Work quick actions.
+  - Phase 4 (Alerts): traffic info integration, mobile-first layout.
+  - Added stretch goals for PWA, push notifications, voice queries.
+
 ## 2025-11-22
 
 - Code quality improvements:
