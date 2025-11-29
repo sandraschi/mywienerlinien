@@ -39,6 +39,10 @@ from mcp_server.tools.departures import register_departures_tool
 from mcp_server.tools.stations import register_station_search_tool
 from mcp_server.tools.status import register_status_tool
 from mcp_server.tools.journey import register_journey_tool
+from mcp_server.tools.help import register_help_tool
+from mcp_server.tools.server_status import register_server_status_tool
+from mcp_server.tools.nearby import register_nearby_stops_tool
+from mcp_server.tools.alerts import register_traffic_alerts_tool
 
 # Import prompts and resources
 from mcp_server.prompts import register_prompts
@@ -69,14 +73,24 @@ mcp = FastMCP(
 _prompt_refs = register_prompts(mcp)
 _resource_refs = register_resources(mcp)
 
-# Register tools
-register_departures_tool(mcp)
+# Register tools - Essential
+register_help_tool(mcp)
+register_server_status_tool(mcp)
+
+# Register tools - Search & Discovery
 register_station_search_tool(mcp)
-register_status_tool(mcp)
+register_nearby_stops_tool(mcp)
+
+# Register tools - Real-time
+register_departures_tool(mcp)
+register_traffic_alerts_tool(mcp)
+register_status_tool(mcp)  # line_status
+
+# Register tools - Trip Planning
 register_journey_tool(mcp)
 
 logger.info("Vienna Transit MCP Server initialized with FastMCP 2.13")
-logger.info("Registered prompts and resources for AI assistant guidance")
+logger.info(f"Registered {len(mcp._tool_manager._tools)} tools, {len(mcp._resource_manager._resources)} resources, {len(mcp._prompt_manager._prompts)} prompts")
 
 # Export for FastMCP CLI
 if __name__ == "__main__":
