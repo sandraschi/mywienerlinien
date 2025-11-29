@@ -43,6 +43,7 @@ from mcp_server.tools.help import register_help_tool
 from mcp_server.tools.server_status import register_server_status_tool
 from mcp_server.tools.nearby import register_nearby_stops_tool
 from mcp_server.tools.alerts import register_traffic_alerts_tool
+from mcp_server.tools.timetable import register_stop_timetable_tool
 
 # Import prompts and resources
 from mcp_server.prompts import register_prompts
@@ -85,6 +86,9 @@ register_nearby_stops_tool(mcp)
 register_departures_tool(mcp)
 register_traffic_alerts_tool(mcp)
 register_status_tool(mcp)  # line_status
+
+# Register tools - Schedule
+register_stop_timetable_tool(mcp)
 
 # Register tools - Trip Planning
 register_journey_tool(mcp)
