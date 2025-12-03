@@ -10,9 +10,9 @@ Integrates with calendar systems (Outlook, Google Calendar) to:
 """
 
 import logging
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Optional
-from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
 

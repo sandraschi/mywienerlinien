@@ -10,10 +10,10 @@ Enables users to:
 """
 
 import logging
-from datetime import datetime, timedelta
-from typing import Optional
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -194,9 +194,9 @@ class SocialService:
             self.db.execute_query(
                 """
             INSERT INTO user_reports
-            (report_id, user_id, report_type, severity, line, station, 
+            (report_id, user_id, report_type, severity, line, station,
              description, timestamp)
-            VALUES (:report_id, :user_id, :report_type, :severity, :line, 
+            VALUES (:report_id, :user_id, :report_type, :severity, :line,
                     :station, :description, :timestamp)
             """,
                 {
@@ -380,7 +380,7 @@ class SocialService:
         """
         try:
             query = """
-            SELECT 
+            SELECT
                 COUNT(*) as total_ratings,
                 AVG(rating) as average_rating,
                 STDDEV(rating) as stddev,
