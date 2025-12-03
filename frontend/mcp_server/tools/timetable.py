@@ -1,52 +1,55 @@
 """Stop timetable tool for Vienna Transit MCP."""
 
 import csv
-import os
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Set
+from typing import Optional
 
-from pydantic import BaseModel, Field
 from fastmcp import FastMCP
+from pydantic import BaseModel, Field
 
 
-def _load_calendar_services(day_type: str) -> Set[str]:
+def _load_calendar_services(day_type: str) -> set[str]:
     """Load service_ids that run on the specified day type from calendar.txt.
-    
+
     Args:
         day_type: One of 'weekday', 'saturday', 'sunday'
-        
+
     Returns:
         Set of service_ids that run on that day type
     """
     # Find the calendar.txt file
     gtfs_paths = [
-        Path(__file__).parent.parent.parent.parent / "scripts" / "gtfs_data" / "extracted" / "calendar.txt",
+        Path(__file__).parent.parent.parent.parent
+        / "scripts"
+        / "gtfs_data"
+        / "extracted"
+        / "calendar.txt",
         Path("scripts/gtfs_data/extracted/calendar.txt"),
         Path("D:/Dev/repos/mywienerlinien/scripts/gtfs_data/extracted/calendar.txt"),
     ]
-    
+
     calendar_path = None
     for p in gtfs_paths:
         if p.exists():
             calendar_path = p
             break
-    
+
     if not calendar_path:
         return set()  # No calendar file, return empty (will show all services)
-    
+
     # Map day_type to column names
     day_columns = {
         "weekday": ["monday", "tuesday", "wednesday", "thursday", "friday"],
         "saturday": ["saturday"],
         "sunday": ["sunday"],
     }
-    
+
     columns = day_columns.get(day_type.lower(), day_columns["weekday"])
     valid_services = set()
-    
+
     try:
-        with open(calendar_path, "r", encoding="utf-8-sig") as f:  # utf-8-sig handles BOM
+        with open(calendar_path, encoding="utf-8-sig") as f:  # utf-8-sig handles BOM
             reader = csv.DictReader(f)
             for row in reader:
                 # Check if service runs on any of the required days
@@ -57,9 +60,10 @@ def _load_calendar_services(day_type: str) -> Set[str]:
                         valid_services.add(service_id)
     except Exception as e:
         import logging
+
         logging.getLogger("timetable").warning(f"Calendar load failed: {e}")
         return set()  # On error, return empty (will show all services)
-    
+
     return valid_services
 
 
@@ -77,7 +81,7 @@ class TimetableHour(BaseModel):
 
     hour: int = Field(..., description="Hour (0-23)")
     hour_label: str = Field(..., description="Hour display (e.g., '06:00')")
-    departures: List[TimetableEntry] = Field(..., description="Departures in this hour")
+    departures: list[TimetableEntry] = Field(..., description="Departures in this hour")
     count: int = Field(..., description="Number of departures in this hour")
 
 
@@ -89,11 +93,11 @@ class StopTimetableResponse(BaseModel):
     line_filter: Optional[str] = Field(None, description="Line filter applied")
     day_type: str = Field(..., description="Day type: weekday, saturday, sunday")
     service_date: str = Field(..., description="Reference date for schedule")
-    hours: List[TimetableHour] = Field(..., description="Departures by hour")
+    hours: list[TimetableHour] = Field(..., description="Departures by hour")
     total_departures: int = Field(..., description="Total departures in timetable")
     first_departure: Optional[str] = Field(None, description="First departure time")
     last_departure: Optional[str] = Field(None, description="Last departure time")
-    lines_serving: List[str] = Field(..., description="All lines serving this stop")
+    lines_serving: list[str] = Field(..., description="All lines serving this stop")
     html: Optional[str] = Field(None, description="HTML formatted timetable")
 
 
@@ -226,7 +230,7 @@ def _generate_html_timetable(response: "StopTimetableResponse") -> str:
         <h1>🚇 {response.stop_name}</h1>
         <div class="meta">
             {response.day_type.title()} Schedule | {response.service_date}
-            {f' | Line: {response.line_filter}' if response.line_filter else ''}
+            {f" | Line: {response.line_filter}" if response.line_filter else ""}
         </div>
     </div>
 
@@ -236,11 +240,11 @@ def _generate_html_timetable(response: "StopTimetableResponse") -> str:
             <div class="label">Total Departures</div>
         </div>
         <div class="summary-card">
-            <div class="value">{response.first_departure or '--'}</div>
+            <div class="value">{response.first_departure or "--"}</div>
             <div class="label">First Service</div>
         </div>
         <div class="summary-card">
-            <div class="value">{response.last_departure or '--'}</div>
+            <div class="value">{response.last_departure or "--"}</div>
             <div class="label">Last Service</div>
         </div>
         <div class="summary-card">
@@ -253,7 +257,11 @@ def _generate_html_timetable(response: "StopTimetableResponse") -> str:
 """
     # Add line badges
     for line in sorted(response.lines_serving):
-        line_class = "U" if line.startswith("U") else ("tram" if line.isdigit() or line in ["D", "O"] else "bus")
+        line_class = (
+            "U"
+            if line.startswith("U")
+            else ("tram" if line.isdigit() or line in ["D", "O"] else "bus")
+        )
         html += f'        <span class="line-badge {line_class}">{line}</span>\n'
 
     html += """    </div>
@@ -269,7 +277,11 @@ def _generate_html_timetable(response: "StopTimetableResponse") -> str:
         if hour_data.departures:
             for dep in hour_data.departures:
                 minute = dep.time.split(":")[1]
-                line_class = "U" if dep.line.startswith("U") else ("tram" if dep.line.isdigit() or dep.line in ["D", "O"] else "bus")
+                line_class = (
+                    "U"
+                    if dep.line.startswith("U")
+                    else ("tram" if dep.line.isdigit() or dep.line in ["D", "O"] else "bus")
+                )
                 html += f'                <span class="departure"><span class="line {line_class}">{dep.line}</span><span class="minute">:{minute}</span></span>\n'
         else:
             html += '                <span class="no-service">No service</span>\n'
@@ -354,11 +366,11 @@ def register_stop_timetable_tool(mcp: FastMCP) -> None:
 
         # Load valid service_ids for the day type from calendar.txt
         valid_services = _load_calendar_services(day_type)
-        
+
         # Query timetable from database
         # Join: stops -> stop_times -> trips -> routes
         query = """
-        SELECT 
+        SELECT
             s.stop_name,
             s.stop_id,
             st.departure_time,
@@ -415,7 +427,7 @@ def register_stop_timetable_tool(mcp: FastMCP) -> None:
 
         for row in results:
             total_count += 1
-            
+
             # Filter by service_id if we have calendar data
             if valid_services:
                 service_id = row.get("service_id", "")
@@ -495,4 +507,3 @@ def register_stop_timetable_tool(mcp: FastMCP) -> None:
             response.html = _generate_html_timetable(response)
 
         return response
-

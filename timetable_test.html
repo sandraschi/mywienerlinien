@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable: Karlsplatz</title>
+    <style>
+        :root {
+            --primary: #e20210;
+            --secondary: #1a1a2e;
+            --bg: #0f0f1a;
+            --card-bg: #1a1a2e;
+            --text: #e8e8e8;
+            --muted: #888;
+            --metro: #0066cc;
+            --tram: #cc0000;
+            --bus: #009933;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary), #ff4444);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        .header h1 { font-size: 1.8em; margin-bottom: 8px; }
+        .header .meta { color: rgba(255,255,255,0.8); font-size: 0.9em; }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .summary-card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .summary-card .value { font-size: 1.5em; font-weight: bold; color: var(--primary); }
+        .summary-card .label { font-size: 0.85em; color: var(--muted); }
+        .timetable {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .hour-row {
+            display: flex;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .hour-row:last-child { border-bottom: none; }
+        .hour-label {
+            width: 80px;
+            min-width: 80px;
+            padding: 16px;
+            background: rgba(226,2,16,0.1);
+            font-weight: bold;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .departures {
+            flex: 1;
+            padding: 12px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        .departure {
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .departure .minute { font-weight: bold; }
+        .departure .line {
+            font-size: 0.75em;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: var(--metro);
+        }
+        .departure .line.tram { background: var(--tram); }
+        .departure .line.bus { background: var(--bus); }
+        .no-service {
+            color: var(--muted);
+            font-style: italic;
+            padding: 8px;
+        }
+        .lines-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .line-badge {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .line-badge.U { background: #0066cc; }
+        .line-badge.tram { background: #cc0000; }
+        .line-badge.bus { background: #009933; }
+        @media (max-width: 600px) {
+            .hour-label { width: 60px; min-width: 60px; font-size: 1em; }
+            .departure { padding: 4px 8px; font-size: 0.85em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚇 Karlsplatz</h1>
+        <div class="meta">
+            Weekday Schedule | 2025-11-29
+             | Line: U4
+        </div>
+    </div>
+
+    <div class="summary">
+        <div class="summary-card">
+            <div class="value">488</div>
+            <div class="label">Total Departures</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">00:12</div>
+            <div class="label">First Service</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">12:54</div>
+            <div class="label">Last Service</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">1</div>
+            <div class="label">Lines</div>
+        </div>
+    </div>
+
+    <div class="lines-legend">
+        <span class="line-badge U">U4</span>
+    </div>
+
+    <div class="timetable">
+        <div class="hour-row">
+            <div class="hour-label">00:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:12</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:30</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">01:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:07</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">02:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:07</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">03:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:07</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">04:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:07</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:57</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">05:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:00</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:01</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:02</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:03</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:04</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:08</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:09</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:12</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:14</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:15</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:16</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:17</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:19</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:23</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:24</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:25</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:26</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:27</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:28</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:30</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:31</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:32</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:33</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:34</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:38</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:39</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:41</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:42</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:43</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:44</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:45</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:46</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:47</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:49</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:53</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:54</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:56</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:57</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:58</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:59</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">06:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:00</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:01</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:02</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:04</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:08</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:09</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:11</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:12</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:13</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:14</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:16</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:17</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:18</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:19</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:23</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:24</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:25</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:26</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:27</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:28</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:29</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:31</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:32</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:33</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:34</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:38</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:39</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:40</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:41</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:42</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:43</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:44</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:45</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:46</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:48</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:49</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:53</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:54</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:55</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:56</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:57</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:58</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:59</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">07:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:00</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:01</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:02</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:04</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:08</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:09</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:11</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:12</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:13</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:14</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:15</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:16</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:17</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:18</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:19</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:23</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:24</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:25</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:26</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:27</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:28</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:29</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:31</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:32</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:33</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:34</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:38</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:39</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:41</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:42</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:43</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:44</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:45</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:46</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:47</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:48</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:49</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:53</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:54</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:55</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:56</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:57</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:58</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:59</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">08:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:01</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:02</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:03</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:04</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:07</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:08</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:09</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:11</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:12</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:13</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:14</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:15</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:16</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:17</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:18</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:19</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:23</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:24</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:25</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:26</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:27</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:28</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:29</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:31</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:32</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:33</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:34</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:38</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:39</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:41</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:42</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:43</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:44</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:45</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:46</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:47</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:48</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:49</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:53</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:54</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:55</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:56</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:57</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:58</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:59</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">09:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:00</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:01</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:02</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:03</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:04</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:07</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:08</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:09</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:11</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:12</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:13</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:14</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:16</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:17</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:19</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:23</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:24</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:25</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:26</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:27</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:28</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:29</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:31</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:32</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:33</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:34</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:38</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:39</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:40</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:41</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:42</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:43</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:44</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:45</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:46</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:47</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:48</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:49</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:53</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:54</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:56</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:57</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:58</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:59</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">10:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:00</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:01</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:02</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:03</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:04</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:07</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:08</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:09</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:11</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:12</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:13</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:14</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:16</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:17</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:19</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:23</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:24</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:25</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:26</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:27</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:28</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:29</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:31</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:32</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:33</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:34</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:38</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:39</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:40</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:41</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:42</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:43</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:44</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:45</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:46</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:47</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:48</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:49</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:53</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:54</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:56</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:57</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:58</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:59</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">11:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:00</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:01</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:02</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:04</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:07</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:08</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:09</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:11</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:12</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:13</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:14</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:16</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:17</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:19</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:23</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:24</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:25</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:26</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:27</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:28</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:29</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:31</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:32</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:33</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:34</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:38</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:39</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:40</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:41</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:42</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:43</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:44</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:45</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:46</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:47</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:48</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:49</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:53</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:54</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:56</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:57</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:58</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:59</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">12:00</div>
+            <div class="departures">
+                <span class="departure"><span class="line U">U4</span><span class="minute">:00</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:01</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:02</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:04</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:05</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:06</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:07</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:08</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:09</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:11</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:12</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:13</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:14</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:16</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:17</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:19</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:20</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:21</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:22</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:23</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:24</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:25</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:26</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:27</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:28</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:29</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:31</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:32</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:33</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:34</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:35</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:36</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:37</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:38</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:39</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:40</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:41</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:42</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:43</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:44</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:45</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:46</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:47</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:48</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:49</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:50</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:51</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:52</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:53</span></span>
+                <span class="departure"><span class="line U">U4</span><span class="minute">:54</span></span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">13:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">14:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">15:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">16:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">17:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">18:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">19:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">20:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">21:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">22:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+        <div class="hour-row">
+            <div class="hour-label">23:00</div>
+            <div class="departures">
+                <span class="no-service">No service</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

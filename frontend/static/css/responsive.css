@@ -1,0 +1,413 @@
+/**
+ * Responsive & Mobile Styles for Wiener Linien Live Map
+ * Phase 2 Enhancement: Touch-friendly UI and mobile optimizations
+ */
+
+/* ===== Touch-Friendly Improvements ===== */
+.btn-icon, .favorite-actions button {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+}
+
+/* Larger tap targets for mobile */
+@media (max-width: 768px) {
+    .btn-icon {
+        min-width: 48px;
+        min-height: 48px;
+    }
+    
+    .legend-item {
+        padding: 12px;
+        min-height: 48px;
+    }
+}
+
+/* ===== Favorites Panel Styles ===== */
+#favorites-panel {
+    padding: 16px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.favorites-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.favorites-empty i {
+    font-size: 48px;
+    color: #FFD700;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.favorites-empty p {
+    margin: 8px 0;
+}
+
+.favorites-hint {
+    font-size: 14px;
+    color: #999;
+}
+
+.favorite-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 8px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.favorite-item:hover {
+    background: #ebebeb;
+    transform: translateX(4px);
+}
+
+.favorite-info {
+    flex: 1;
+    cursor: pointer;
+}
+
+.favorite-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.favorite-rbl {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #E30613;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-right: 8px;
+}
+
+.favorite-type {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.favorite-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-remove {
+    color: #E30613;
+}
+
+.btn-remove:hover {
+    background: #ffebee;
+}
+
+.btn-favorite.active {
+    color: #FFD700;
+}
+
+/* ===== Advanced Filtering Styles ===== */
+.filters-panel {
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.filter-group {
+    margin-bottom: 16px;
+}
+
+.filter-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.filter-option:hover {
+    background: #e0e0e0;
+}
+
+.filter-option.active {
+    background: #E30613;
+    color: white;
+}
+
+.filter-option input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* Accessibility filter */
+.filter-accessibility {
+    background: #4CAF50;
+    color: white;
+}
+
+.filter-accessibility:hover {
+    background: #45a049;
+}
+
+/* Night mode filter */
+.filter-night {
+    background: #1a237e;
+    color: white;
+}
+
+.filter-night:hover {
+    background: #0d47a1;
+}
+
+/* ===== Mobile Responsive ===== */
+
+/* Tablets and below (768px) */
+@media (max-width: 768px) {
+    /* Adjust sidebar for mobile */
+    .sidebar {
+        width: 100%;
+        max-width: 320px;
+    }
+    
+    /* Stack filters vertically on mobile */
+    .filter-options {
+        flex-direction: column;
+    }
+    
+    .filter-option {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    /* Larger touch targets */
+    .favorite-item {
+        padding: 16px 12px;
+    }
+    
+    /* Adjust map controls */
+    .leaflet-control-zoom {
+        font-size: 18px;
+    }
+    
+    .leaflet-control-zoom a {
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+    }
+}
+
+/* Mobile phones (480px) */
+@media (max-width: 480px) {
+    /* Full-width sidebar on small screens */
+    .sidebar {
+        max-width: 100%;
+    }
+    
+    /* Reduce padding */
+    #favorites-panel {
+        padding: 12px;
+    }
+    
+    .favorite-item {
+        padding: 12px 8px;
+    }
+    
+    .filters-panel {
+        padding: 12px;
+    }
+    
+    /* Stack favorite actions vertically if needed */
+    .favorite-actions {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    /* Adjust font sizes */
+    .favorite-info h4 {
+        font-size: 14px;
+    }
+    
+    .favorite-rbl, .favorite-type {
+        font-size: 11px;
+    }
+}
+
+/* ===== PWA Install Banner ===== */
+.install-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 10000;
+    max-width: 400px;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate(-50%, 100px);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+.install-banner p {
+    margin: 0 0 12px 0;
+    color: #333;
+}
+
+.install-banner-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.install-banner button {
+    flex: 1;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.install-banner .btn-primary {
+    background: #E30613;
+    color: white;
+}
+
+.install-banner .btn-primary:hover {
+    background: #c20510;
+}
+
+.install-banner .btn-secondary {
+    background: #f5f5f5;
+    color: #666;
+}
+
+.install-banner .btn-secondary:hover {
+    background: #e0e0e0;
+}
+
+/* ===== Loading States ===== */
+.loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ===== Accessibility Enhancements ===== */
+*:focus-visible {
+    outline: 2px solid #E30613;
+    outline-offset: 2px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ===== Print Styles ===== */
+@media print {
+    .sidebar, .leaflet-control-container {
+        display: none !important;
+    }
+    
+    #map {
+        width: 100% !important;
+        height: 100vh !important;
+    }
+}
+
+/* ===== High Contrast Mode ===== */
+@media (prefers-contrast: high) {
+    .favorite-item {
+        border: 2px solid #000;
+    }
+    
+    .filter-option.active {
+        border: 3px solid #000;
+    }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===== Dark Mode Support (future) ===== */
+@media (prefers-color-scheme: dark) {
+    .favorite-item {
+        background: #2a2a2a;
+        color: #fff;
+    }
+    
+    .favorite-info h4 {
+        color: #fff;
+    }
+    
+    .filters-panel {
+        background: #1a1a1a;
+    }
+    
+    .filter-group label {
+        color: #fff;
+    }
+}
+

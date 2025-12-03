@@ -16,7 +16,7 @@ def register_help_tool(mcp: FastMCP) -> None:
 
         Args:
             topic: Help topic to display. Available topics:
-            
+
                 **Tool Usage:**
                 - overview: Available tools and getting started (default)
                 - departures: How to check real-time departures
@@ -26,12 +26,12 @@ def register_help_tool(mcp: FastMCP) -> None:
                 - alerts: Traffic disruptions and service changes
                 - status: Server health and data freshness
                 - examples: Common usage examples
-                
+
                 **Vienna Transit Info:**
                 - vienna: Vienna's public transport network overview
                 - wienerlinien: About Wiener Linien (the company)
                 - history: History of Vienna public transport
-                
+
                 **Technical Deep Dives:**
                 - gtfs: The GTFS data standard explained
                 - data: Why millions of data points are necessary
@@ -562,6 +562,7 @@ The generated HTML includes:
 # VIENNA TRANSIT INFORMATION
 # =============================================================================
 
+
 def _help_vienna() -> str:
     return """# Vienna's Public Transport Network
 
@@ -856,6 +857,7 @@ Use `help("displays")` to learn about the real-time display miracle!
 # =============================================================================
 # TECHNICAL DEEP DIVES
 # =============================================================================
+
 
 def _help_gtfs() -> str:
     return """# GTFS: The Global Transit Data Standard
@@ -1275,7 +1277,7 @@ Each tool follows this pattern:
 @mcp.tool()
 async def tool_name(params) -> ResponseModel:
     \"\"\"Detailed docstring for AI understanding.\"\"\"
-    
+
     # 1. Validate input
     # 2. Query data sources
     # 3. Transform/filter results
@@ -1357,4 +1359,3 @@ Built on **FastMCP 2.13**:
 4. **Multi-language support**
 5. **Offline GTFS mode**
 """
-

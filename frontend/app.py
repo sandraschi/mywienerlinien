@@ -22,6 +22,7 @@ try:
     from .gtfs_manager import manager as gtfs_manager
     from .vehicle_service import clear_vehicle_cache, collect_vehicle_data, get_vehicle_summary
     from .websocket_manager import get_websocket_manager, init_websocket_manager
+    from .api.analytics import router as analytics_router
 except ImportError:  # pragma: no cover - runtime fallback when package context missing
     from data_loader import data_loader  # type: ignore
     from database import db  # type: ignore
@@ -29,6 +30,10 @@ except ImportError:  # pragma: no cover - runtime fallback when package context 
     from gtfs_manager import manager as gtfs_manager  # type: ignore
     from vehicle_service import clear_vehicle_cache, collect_vehicle_data, get_vehicle_summary  # type: ignore
     from websocket_manager import get_websocket_manager, init_websocket_manager  # type: ignore
+    try:
+        from api.analytics import router as analytics_router  # type: ignore
+    except ImportError:
+        analytics_router = None
 
 try:
     import sys
@@ -80,6 +85,13 @@ fastapi_app.add_middleware(
 if STATIC_DIR.exists():
     fastapi_app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+# Register analytics router (Phase 3C)
+if analytics_router:
+    try:
+        fastapi_app.include_router(analytics_router)
+        logger.info("Analytics router registered")
+    except Exception as e:
+        logger.warning(f"Failed to register analytics router: {e}")
 
 ROUTES_CACHE = TTLCache(maxsize=1, ttl=300)
 
@@ -115,6 +127,12 @@ async def read_about(request: Request) -> HTMLResponse:
 @fastapi_app.get("/status", response_class=HTMLResponse)
 async def commuter_status_page(request: Request) -> HTMLResponse:
     return TEMPLATES.TemplateResponse("status.html", {"request": request})
+
+
+@fastapi_app.get("/analytics", response_class=HTMLResponse)
+async def analytics_dashboard_page(request: Request) -> HTMLResponse:
+    """Analytics dashboard page - Phase 3C."""
+    return TEMPLATES.TemplateResponse("analytics.html", {"request": request})
 
 
 @fastapi_app.get("/line/{line_name}", response_class=HTMLResponse)
@@ -622,6 +640,202 @@ async def list_routes() -> HTMLResponse:
     entries.sort()
     body = "<br>".join(entries)
     return HTMLResponse(body)
+
+
+# Favorites API (localStorage-based, no authentication)
+# In the future, this can be extended with user accounts and database storage
+@fastapi_app.get("/api/favorites")
+async def get_favorites(request: Request) -> JSONResponse:
+    """
+    Get favorite stations. Currently returns empty list as favorites are stored client-side.
+    Future enhancement: Support for server-side storage with user accounts.
+    """
+    return JSONResponse({
+        "favorites": [],
+        "message": "Favorites are stored locally in your browser. Use localStorage API from frontend."
+    })
+
+
+@fastapi_app.post("/api/favorites")
+async def add_favorite(request: Request) -> JSONResponse:
+    """
+    Add a favorite station. Currently handled client-side via localStorage.
+    Future enhancement: Support for server-side storage with user accounts.
+    """
+    try:
+        data = await request.json()
+        station_id = data.get("station_id")
+        station_name = data.get("station_name")
+        
+        if not station_id or not station_name:
+            raise HTTPException(status_code=400, detail="station_id and station_name are required")
+        
+        return JSONResponse({
+            "success": True,
+            "message": "Favorite added (client-side storage)",
+            "station": {
+                "id": station_id,
+                "name": station_name
+            }
+        })
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Error adding favorite: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@fastapi_app.delete("/api/favorites/{station_id}")
+async def remove_favorite(station_id: str) -> JSONResponse:
+    """
+    Remove a favorite station. Currently handled client-side via localStorage.
+    Future enhancement: Support for server-side storage with user accounts.
+    """
+    return JSONResponse({
+        "success": True,
+        "message": f"Favorite {station_id} removed (client-side storage)"
+    })
+
+
+# Journey Planning & Route Comparison API (Phase 3B)
+@fastapi_app.get("/api/journey/plan")
+async def plan_journey(request: Request) -> JSONResponse:
+    """Plan journey with multiple route options and real-time delays.
+    
+    Phase 3B Enhancement: A* pathfinding with delay-adjusted routing.
+    
+    Query Parameters:
+        from: Origin station name or ID
+        to: Destination station name or ID
+        time: Optional departure time (ISO format)
+        alternatives: Number of alternative routes (1-5, default: 3)
+        include_delays: Include real-time delay adjustments (default: true)
+        
+    Returns:
+        Multiple route options with segments, transfers, delays
+    """
+    try:
+        from_station = request.query_params.get("from")
+        to_station = request.query_params.get("to")
+        departure_time_str = request.query_params.get("time")
+        alternatives = min(5, max(1, int(request.query_params.get("alternatives", "3"))))
+        include_delays = request.query_params.get("include_delays", "true").lower() != "false"
+        
+        if not from_station or not to_station:
+            raise HTTPException(status_code=400, detail="Both 'from' and 'to' parameters are required")
+        
+        # Parse departure time
+        if departure_time_str:
+            try:
+                departure_time = datetime.fromisoformat(departure_time_str.replace("Z", "+00:00"))
+            except:
+                departure_time = datetime.now()
+        else:
+            departure_time = datetime.now()
+        
+        # Import routing services
+        try:
+            from mcp_server.routing_service import RouteSegment
+            from mcp_server.utils import find_station_by_name
+        except ImportError:
+            from frontend.mcp_server.routing_service import RouteSegment
+            from frontend.mcp_server.utils import find_station_by_name
+        
+        # Find stations
+        from_info = find_station_by_name(from_station)
+        to_info = find_station_by_name(to_station)
+        
+        if not from_info:
+            raise HTTPException(status_code=404, detail=f"Origin station '{from_station}' not found")
+        if not to_info:
+            raise HTTPException(status_code=404, detail=f"Destination station '{to_station}' not found")
+        
+        # Get journey planner (lazy loaded with A* support)
+        from mcp_server.tools.journey import get_journey_planner
+        planner = get_journey_planner()
+        
+        # Plan journey with multiple alternatives
+        route_options = planner.plan_journey(
+            from_info["id"],
+            to_info["id"],
+            departure_time,
+            num_alternatives=alternatives
+        )
+        
+        if not route_options:
+            raise HTTPException(status_code=404, detail="No routes found between these stations")
+        
+        # Adjust for real-time delays if requested
+        if include_delays:
+            try:
+                from mcp_server.realtime_service import get_realtime_service
+                import vehicle_service
+                realtime_svc = get_realtime_service(vehicle_service)
+                realtime_updates = realtime_svc.get_realtime_updates()
+                
+                # Adjust each route for delays
+                adjusted_routes = []
+                for route in route_options:
+                    adjusted = realtime_svc.adjust_route_for_delays(route, realtime_updates)
+                    adjusted_routes.append(adjusted)
+                
+                # Re-rank by reliability
+                ranked = realtime_svc.rank_routes_by_reliability(adjusted_routes, realtime_updates)
+                route_options = [route for route, score in ranked]
+                
+                logger.info(f"Applied real-time delay adjustments to {len(route_options)} routes")
+            except Exception as e:
+                logger.warning(f"Could not apply delay adjustments: {e}")
+        
+        # Convert to JSON-serializable format
+        routes_data = []
+        for route in route_options:
+            segments_data = []
+            for seg in route.segments:
+                segments_data.append({
+                    "line": seg.line,
+                    "from_station": seg.from_stop_name,
+                    "to_station": seg.to_stop_name,
+                    "departure_time": seg.departure_time.isoformat(),
+                    "arrival_time": seg.arrival_time.isoformat(),
+                    "duration_minutes": seg.duration_minutes,
+                    "vehicle_type": seg.vehicle_type,
+                    "distance_meters": round(seg.distance_meters) if seg.distance_meters else None,
+                    "is_walking": seg.line == "WALK"
+                })
+            
+            routes_data.append({
+                "from_station": from_info["name"],
+                "to_station": to_info["name"],
+                "departure_time": route.departure_time.isoformat(),
+                "arrival_time": route.arrival_time.isoformat(),
+                "total_duration_minutes": route.total_duration_minutes,
+                "transfers": route.transfers,
+                "total_distance_meters": round(route.total_distance_meters),
+                "estimated_cost": route.estimated_cost,
+                "segments": segments_data
+            })
+        
+        return JSONResponse({
+            "routes": routes_data,
+            "origin": {
+                "id": from_info["id"],
+                "name": from_info["name"]
+            },
+            "destination": {
+                "id": to_info["id"],
+                "name": to_info["name"]
+            },
+            "query_time": departure_time.isoformat(),
+            "delays_included": include_delays,
+            "timestamp": datetime.now().isoformat()
+        })
+        
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Error planning journey: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Journey planning failed: {str(exc)}")
 
 
 def initialize_app() -> None:

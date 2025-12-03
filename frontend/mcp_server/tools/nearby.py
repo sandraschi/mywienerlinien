@@ -1,10 +1,10 @@
 """Nearby stops tool for Vienna Transit MCP."""
 
 import math
-from typing import List, Optional
+from typing import Optional
 
-from pydantic import BaseModel, Field
 from fastmcp import FastMCP
+from pydantic import BaseModel, Field
 
 
 class NearbyStop(BaseModel):
@@ -16,7 +16,7 @@ class NearbyStop(BaseModel):
     distance_meters: int = Field(..., description="Distance from search point in meters")
     lat: float = Field(..., description="Latitude")
     lng: float = Field(..., description="Longitude")
-    lines: List[str] = Field(default_factory=list, description="Lines serving this stop")
+    lines: list[str] = Field(default_factory=list, description="Lines serving this stop")
 
 
 class NearbyStopsResponse(BaseModel):
@@ -25,7 +25,7 @@ class NearbyStopsResponse(BaseModel):
     lat: float = Field(..., description="Search latitude")
     lng: float = Field(..., description="Search longitude")
     radius_meters: int = Field(..., description="Search radius used")
-    stops: List[NearbyStop] = Field(..., description="Nearby stops sorted by distance")
+    stops: list[NearbyStop] = Field(..., description="Nearby stops sorted by distance")
     count: int = Field(..., description="Number of stops found")
 
 
@@ -137,4 +137,3 @@ def register_nearby_stops_tool(mcp: FastMCP) -> None:
             stops=nearby,
             count=len(nearby),
         )
-

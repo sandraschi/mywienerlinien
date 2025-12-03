@@ -1,12 +1,11 @@
 """Server status tool for Vienna Transit MCP."""
 
-import os
 import time
 from datetime import datetime, timezone
 from typing import Optional
 
-from pydantic import BaseModel, Field
 from fastmcp import FastMCP
+from pydantic import BaseModel, Field
 
 # Track server start time
 _server_start_time = time.time()
@@ -167,4 +166,3 @@ def register_server_status_tool(mcp: FastMCP) -> None:
             tools_available=tools_count,
             resources_available=resources_count,
         )
-

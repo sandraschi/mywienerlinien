@@ -23,31 +23,31 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 # Initialize database BEFORE importing tools (they depend on db)
 try:
     from database import db
-    
+
     class _MCPApp:
         """Minimal app stub for db.init_app()."""
+
         pass
-    
+
     # Only init if DATABASE_URL is set and db not already initialized
-    if os.getenv('DATABASE_URL') and db.engine is None:
+    if os.getenv("DATABASE_URL") and db.engine is None:
         db.init_app(_MCPApp())
 except Exception as e:
     logging.getLogger("mcp_server").warning(f"Database init skipped: {e}")
 
 # Import tools
-from mcp_server.tools.departures import register_departures_tool
-from mcp_server.tools.stations import register_station_search_tool
-from mcp_server.tools.status import register_status_tool
-from mcp_server.tools.journey import register_journey_tool
-from mcp_server.tools.help import register_help_tool
-from mcp_server.tools.server_status import register_server_status_tool
-from mcp_server.tools.nearby import register_nearby_stops_tool
-from mcp_server.tools.alerts import register_traffic_alerts_tool
-from mcp_server.tools.timetable import register_stop_timetable_tool
-
 # Import prompts and resources
 from mcp_server.prompts import register_prompts
 from mcp_server.resources import register_resources
+from mcp_server.tools.alerts import register_traffic_alerts_tool
+from mcp_server.tools.departures import register_departures_tool
+from mcp_server.tools.help import register_help_tool
+from mcp_server.tools.journey import register_journey_tool
+from mcp_server.tools.nearby import register_nearby_stops_tool
+from mcp_server.tools.server_status import register_server_status_tool
+from mcp_server.tools.stations import register_station_search_tool
+from mcp_server.tools.status import register_status_tool
+from mcp_server.tools.timetable import register_stop_timetable_tool
 
 # Configure logging
 logging.basicConfig(
@@ -94,10 +94,11 @@ register_stop_timetable_tool(mcp)
 register_journey_tool(mcp)
 
 logger.info("Vienna Transit MCP Server initialized with FastMCP 2.13")
-logger.info(f"Registered {len(mcp._tool_manager._tools)} tools, {len(mcp._resource_manager._resources)} resources, {len(mcp._prompt_manager._prompts)} prompts")
+logger.info(
+    f"Registered {len(mcp._tool_manager._tools)} tools, {len(mcp._resource_manager._resources)} resources, {len(mcp._prompt_manager._prompts)} prompts"
+)
 
 # Export for FastMCP CLI
 if __name__ == "__main__":
     # Run with stdio transport (for Claude Desktop)
     mcp.run(transport="stdio")
-

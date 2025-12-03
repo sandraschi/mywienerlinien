@@ -26,37 +26,38 @@ try:
 except ImportError:
     import sys
     from pathlib import Path
+
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from data_loader import data_loader
 
 
 def register_resources(mcp: FastMCP) -> list:
     """Register MCP resources with the server.
-    
+
     Resources provide reference data that helps AI assistants:
     - Understand Vienna's transit network structure
     - Reference common stations and lines
     - Access operational information
     - Provide context-aware responses
-    
+
     Following FastMCP 2.12+ standards: resources are async functions that return
     strings (usually JSON). References are stored to prevent garbage collection.
-    
+
     Args:
         mcp (FastMCP): FastMCP server instance to register resources with
-    
+
     Returns:
         list: List of resource function references to prevent garbage collection
     """
     resource_refs = []
-    
+
     @mcp.resource("vienna-transit://network/overview")
     async def network_overview() -> str:
         """Overview of Vienna's public transport network.
-        
+
         Provides high-level information about Vienna's transit system including
         line types, coverage, and operational characteristics.
-        
+
         Returns:
             Network overview text
         """
@@ -67,9 +68,9 @@ Vienna's public transport is operated by Wiener Linien and consists of:
 
 ### Metro (U-Bahn)
 - **5 Lines**: U1, U2, U3, U4, U6 (U5 is under construction)
-- **Color Coding**: 
+- **Color Coding**:
   - U1: Red
-  - U2: Purple  
+  - U2: Purple
   - U3: Orange
   - U4: Green
   - U6: Brown
@@ -107,16 +108,16 @@ Vienna's public transport is operated by Wiener Linien and consists of:
 - **Praterstern**: U1/U2 hub, near Prater park
 - **Karlsplatz**: U1/U2/U4 hub, major transfer point
 """
-    
+
     resource_refs.append(network_overview)
 
     @mcp.resource("vienna-transit://stations/major")
     async def major_stations() -> str:
         """List of major Vienna transit stations.
-        
+
         Provides information about important stations that serve as hubs or
         landmarks, helping AI assistants understand the network structure.
-        
+
         Returns:
             Major stations information
         """
@@ -124,23 +125,32 @@ Vienna's public transport is operated by Wiener Linien and consists of:
             stations = data_loader.load_stations()
             # Filter for major stations (those with multiple lines or important locations)
             major_station_names = [
-                "Stephansplatz", "Hauptbahnhof", "Schwedenplatz", "Karlsplatz",
-                "Praterstern", "Westbahnhof", "Landstraße", "Meidling",
-                "Spittelau", "Ottakring", "Floridsdorf", "Leopoldau"
+                "Stephansplatz",
+                "Hauptbahnhof",
+                "Schwedenplatz",
+                "Karlsplatz",
+                "Praterstern",
+                "Westbahnhof",
+                "Landstraße",
+                "Meidling",
+                "Spittelau",
+                "Ottakring",
+                "Floridsdorf",
+                "Leopoldau",
             ]
-            
+
             major_stations = [s for s in stations if s.name in major_station_names]
-            
+
             result = "# Major Vienna Transit Stations\n\n"
             result += "These stations serve as important hubs or landmarks:\n\n"
-            
+
             for station in sorted(major_stations, key=lambda x: x.name):
                 result += f"## {station.name}\n"
                 result += f"- **Type**: {station.type}\n"
                 if station.zone:
                     result += f"- **Zone**: {station.zone}\n"
                 result += "\n"
-            
+
             return result
         except Exception:
             return """# Major Vienna Transit Stations
@@ -161,16 +171,16 @@ Vienna's public transport is operated by Wiener Linien and consists of:
 - **Floridsdorf**: U6 terminus
 - **Leopoldau**: U1 terminus
 """
-    
+
     resource_refs.append(major_stations)
 
     @mcp.resource("vienna-transit://lines/metro")
     async def metro_lines() -> str:
         """Information about Vienna's metro (U-Bahn) lines.
-        
+
         Provides details about each U-Bahn line including routes, frequencies,
         and key stations.
-        
+
         Returns:
             Metro lines information
         """
@@ -211,33 +221,33 @@ Vienna's public transport is operated by Wiener Linien and consists of:
 - **Planned Route**: Will connect to U2
 - **Expected Completion**: 2026-2028
 """
-    
+
     resource_refs.append(metro_lines)
 
     @mcp.resource("vienna-transit://operating-hours")
     async def operating_hours() -> str:
         """Operating hours for Vienna public transport.
-        
+
         Provides information about when different services operate, including
         regular hours and night service.
-        
+
         Returns:
             Operating hours information
         """
         return """# Vienna Transit Operating Hours
 
 ## Regular Service
-- **Metro (U-Bahn)**: 
+- **Metro (U-Bahn)**:
   - First train: ~5:00 AM (varies by line)
   - Last train: ~12:30 AM (varies by line)
   - Frequency: 2-5 minutes peak, 5-8 minutes off-peak
 
-- **Tram**: 
+- **Tram**:
   - First tram: ~5:00 AM
   - Last tram: ~12:30 AM
   - Frequency: 5-10 minutes typically
 
-- **Bus**: 
+- **Bus**:
   - First bus: ~5:00 AM
   - Last bus: ~12:30 AM
   - Frequency: 5-15 minutes typically
@@ -259,15 +269,15 @@ Vienna's public transport is operated by Wiener Linien and consists of:
 - **Evening**: 4:00 PM - 6:00 PM
 - **Frequency**: Increased during peak hours
 """
-    
+
     resource_refs.append(operating_hours)
 
     @mcp.resource("vienna-transit://fares")
     async def fare_information() -> str:
         """Fare information for Vienna public transport.
-        
+
         Provides pricing information and ticket types available.
-        
+
         Returns:
             Fare information text
         """
@@ -301,8 +311,7 @@ Vienna's public transport is operated by Wiener Linien and consists of:
 - Validation machines at stations and on vehicles
 - Fines apply for unvalidated tickets
 """
-    
-    resource_refs.append(fare_information)
-    
-    return resource_refs
 
+    resource_refs.append(fare_information)
+
+    return resource_refs

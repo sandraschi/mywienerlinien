@@ -2,11 +2,15 @@
 
 FastMCP 2.13 compliant MCP server for Vienna public transport information.
 
+**Phase 3A Enhancement (2025-12-03)**: AI-powered natural language routing with real GTFS-based journey planning.
+
 ## Features
 
 - ✅ FastMCP 2.13 conformance
 - ✅ stdio transport (for Claude Desktop)
-- ✅ 4 core tools: departures, station search, journey planning, service status
+- ✅ 4 core tools: departures, station search, **enhanced journey planning**, service status
+- ✅ **5 AI prompts** for natural language assistance
+- ✅ **Real GTFS-based routing** with multi-leg journey support
 - ✅ Middleware for logging and error handling
 - ✅ Pydantic models for type safety
 - ✅ Shared backend with FastAPI web app
@@ -73,15 +77,58 @@ Check Vienna transit service status and disruptions.
 
 **Returns:** List of service status entries
 
-### 4. `journey_planner`
-Plan optimal journey between Vienna stations.
+### 4. `journey_planner` ⭐ ENHANCED
+Plan optimal journey between Vienna stations with real GTFS routing.
+
+**Phase 3A Enhancement**: Now uses actual GTFS data for route calculation!
 
 **Parameters:**
-- `from_station` (str): Origin station
-- `to_station` (str): Destination station
-- `departure_time` (str, optional): ISO format timestamp
+- `from_station` (str): Origin station (partial match supported)
+- `to_station` (str): Destination station (partial match supported)
+- `departure_time` (str, optional): ISO format timestamp (defaults to now)
 
-**Returns:** Journey plan with routes, transfers, duration
+**Returns:** Journey plan with:
+- Complete route segments (line, stops, times)
+- Number of transfers required
+- Total duration in minutes
+- Estimated cost (€2.40 for Vienna)
+- Multiple route options (direct vs. with transfers)
+
+**Routing Algorithm:**
+- Direct routes prioritized
+- Single-transfer routes if no direct connection
+- Considers actual GTFS schedule data
+- Calculates realistic travel times based on vehicle type
+- Includes 5-minute transfer buffer
+
+## AI Prompts
+
+The server provides 5 comprehensive prompts to guide Claude:
+
+### 1. `vienna_transit_guide`
+Overview of Vienna's transit system, station naming, and tool usage.
+
+### 2. `departure_checking_prompt`
+Best practices for checking departures and interpreting results.
+
+### 3. `journey_planning_prompt`
+Guidance for journey planning with transfers and timing.
+
+### 4. `natural_language_transit_assistant` ⭐ NEW
+Natural language patterns for conversational transit assistance:
+- Common user phrases and responses
+- Response style guidelines
+- Context-aware suggestions
+- Error handling templates
+- Vienna-specific facts
+
+### 5. `ai_smart_routing_helper` ⭐ NEW
+Context-aware smart routing assistance:
+- Time-of-day considerations (rush hour, late night)
+- Journey type optimization (tourist, airport, shopping)
+- Weather/seasonal recommendations
+- Smart alternative suggestions
+- Proactive travel tips
 
 ## Architecture
 

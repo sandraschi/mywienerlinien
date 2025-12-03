@@ -1,0 +1,64 @@
+{
+  "name": "Wiener Linien Live Map",
+  "short_name": "WL Live",
+  "description": "Real-time Vienna public transport tracking with vehicle positions and departures",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#E30613",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/static/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["transportation", "travel", "navigation"],
+  "lang": "de-AT",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "scope": "/",
+  "screenshots": [
+    {
+      "src": "/static/images/screenshot-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Live vehicle map view"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nearest Station",
+      "short_name": "Near Me",
+      "description": "Find nearest station with real-time departures",
+      "url": "/?action=nearme",
+      "icons": [
+        {
+          "src": "/static/images/icon-location.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "U-Bahn Lines",
+      "short_name": "U-Bahn",
+      "description": "View all metro lines",
+      "url": "/?filter=metro",
+      "icons": [
+        {
+          "src": "/static/images/icon-metro.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
+

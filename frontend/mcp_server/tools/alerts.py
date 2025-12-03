@@ -1,11 +1,11 @@
 """Traffic alerts tool for Vienna Transit MCP."""
 
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import Optional
 
 import requests
-from pydantic import BaseModel, Field
 from fastmcp import FastMCP
+from pydantic import BaseModel, Field
 
 
 class TrafficAlert(BaseModel):
@@ -16,8 +16,8 @@ class TrafficAlert(BaseModel):
     description: str = Field(..., description="Full alert description")
     severity: str = Field(..., description="Severity: low, medium, high")
     category: str = Field(..., description="Category: disruption, construction, event, info")
-    affected_lines: List[str] = Field(default_factory=list, description="Affected transit lines")
-    affected_stations: List[str] = Field(default_factory=list, description="Affected stations")
+    affected_lines: list[str] = Field(default_factory=list, description="Affected transit lines")
+    affected_stations: list[str] = Field(default_factory=list, description="Affected stations")
     start_time: Optional[datetime] = Field(None, description="When alert started")
     end_time: Optional[datetime] = Field(None, description="Expected end time")
     url: Optional[str] = Field(None, description="Link for more information")
@@ -26,7 +26,7 @@ class TrafficAlert(BaseModel):
 class TrafficAlertsResponse(BaseModel):
     """Response containing current traffic alerts."""
 
-    alerts: List[TrafficAlert] = Field(..., description="Current traffic alerts")
+    alerts: list[TrafficAlert] = Field(..., description="Current traffic alerts")
     count: int = Field(..., description="Number of active alerts")
     timestamp: datetime = Field(..., description="When alerts were fetched")
     status: str = Field(..., description="Overall system status")
@@ -139,9 +139,7 @@ def register_traffic_alerts_tool(mcp: FastMCP) -> None:
                         pass
                 if time_info.get("end"):
                     try:
-                        end_time = datetime.fromisoformat(
-                            time_info["end"].replace("Z", "+00:00")
-                        )
+                        end_time = datetime.fromisoformat(time_info["end"].replace("Z", "+00:00"))
                     except (ValueError, TypeError):
                         pass
 
@@ -183,4 +181,3 @@ def register_traffic_alerts_tool(mcp: FastMCP) -> None:
             timestamp=datetime.now(timezone.utc),
             status=status,
         )
-

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Wiener Linien Live Map</title>
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/analytics.css') }}">
+</head>
+<body>
+    <div class="analytics-container">
+        <header class="analytics-header">
+            <h1><i class="fas fa-chart-line"></i> Transit Analytics</h1>
+            <p>Historical patterns, predictions, and reliability analysis</p>
+            <a href="/" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Map</a>
+        </header>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="card-icon"><i class="fas fa-database"></i></div>
+                <div class="card-content">
+                    <h3 id="data-count">-</h3>
+                    <p>Data Points</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="card-icon"><i class="fas fa-brain"></i></div>
+                <div class="card-content">
+                    <h3 id="models-count">-</h3>
+                    <p>ML Models</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="card-icon"><i class="fas fa-star"></i></div>
+                <div class="card-content">
+                    <h3 id="reliable-line">-</h3>
+                    <p>Most Reliable</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="card-content">
+                    <h3 id="unreliable-line">-</h3>
+                    <p>Needs Attention</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Line Reliability Chart -->
+        <div class="chart-container">
+            <h2>Line Reliability (Last 30 Days)</h2>
+            <canvas id="reliability-chart"></canvas>
+        </div>
+
+        <!-- Delay Heatmap -->
+        <div class="chart-container">
+            <h2>Delay Patterns Heatmap</h2>
+            <div class="heatmap-controls">
+                <label>Line:</label>
+                <select id="heatmap-line-select">
+                    <option value="U1">U1</option>
+                    <option value="U2">U2</option>
+                    <option value="U3">U3</option>
+                    <option value="U4">U4</option>
+                    <option value="U6">U6</option>
+                </select>
+            </div>
+            <canvas id="heatmap-chart"></canvas>
+            <p class="heatmap-legend">
+                <span style="background: #4CAF50"></span> 0-2 min
+                <span style="background: #FFC107"></span> 2-5 min
+                <span style="background: #FF9800"></span> 5-8 min
+                <span style="background: #F44336"></span> 8+ min
+            </p>
+        </div>
+
+        <!-- Predictions Section -->
+        <div class="predictions-container">
+            <h2>Current Predictions</h2>
+            <div id="predictions-list" class="predictions-grid"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', path='js/analytics.js') }}"></script>
+</body>
+</html>
+

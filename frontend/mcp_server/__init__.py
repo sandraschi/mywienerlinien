@@ -6,6 +6,3 @@ Provides tools for station search, departures, journey planning, and service sta
 """
 
 __version__ = "1.0.0"
-
-
-
