@@ -23,6 +23,7 @@ try:
     from .vehicle_service import clear_vehicle_cache, collect_vehicle_data, get_vehicle_summary
     from .websocket_manager import get_websocket_manager, init_websocket_manager
     from .api.analytics import router as analytics_router
+    from .api.public_api import router as public_api_router
 except ImportError:  # pragma: no cover - runtime fallback when package context missing
     from data_loader import data_loader  # type: ignore
     from database import db  # type: ignore
@@ -32,8 +33,10 @@ except ImportError:  # pragma: no cover - runtime fallback when package context 
     from websocket_manager import get_websocket_manager, init_websocket_manager  # type: ignore
     try:
         from api.analytics import router as analytics_router  # type: ignore
+        from api.public_api import router as public_api_router  # type: ignore
     except ImportError:
         analytics_router = None
+        public_api_router = None
 
 try:
     import sys
@@ -93,6 +96,14 @@ if analytics_router:
     except Exception as e:
         logger.warning(f"Failed to register analytics router: {e}")
 
+# Register public API router (Phase 4)
+if public_api_router:
+    try:
+        fastapi_app.include_router(public_api_router)
+        logger.info("Public API router registered")
+    except Exception as e:
+        logger.warning(f"Failed to register public API router: {e}")
+
 ROUTES_CACHE = TTLCache(maxsize=1, ttl=300)
 
 
@@ -133,6 +144,97 @@ async def commuter_status_page(request: Request) -> HTMLResponse:
 async def analytics_dashboard_page(request: Request) -> HTMLResponse:
     """Analytics dashboard page - Phase 3C."""
     return TEMPLATES.TemplateResponse("analytics.html", {"request": request})
+
+
+# Multi-City API (Phase 4)
+@fastapi_app.get("/api/cities")
+async def get_cities() -> JSONResponse:
+    """Get list of available cities.
+    
+    Phase 4: Multi-city support for Austrian and international transit.
+    
+    Returns:
+        List of available cities with status
+    """
+    try:
+        from mcp_server.city_manager import get_city_manager
+        manager = get_city_manager(db)
+        cities = manager.get_available_cities()
+        
+        return JSONResponse({
+            "cities": cities,
+            "current_city": manager.get_active_city(),
+            "count": len(cities),
+            "timestamp": datetime.now().isoformat()
+        })
+    except Exception as exc:
+        logger.error(f"Error getting cities: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to get cities")
+
+
+@fastapi_app.get("/api/cities/{city_code}")
+async def get_city_info(city_code: str) -> JSONResponse:
+    """Get detailed information about a specific city.
+    
+    Args:
+        city_code: City code (e.g., "vienna", "graz", "linz")
+        
+    Returns:
+        City information and statistics
+    """
+    try:
+        from mcp_server.city_manager import get_city_manager
+        manager = get_city_manager(db)
+        
+        city_info = manager.get_city_info(city_code)
+        if not city_info:
+            raise HTTPException(status_code=404, detail=f"City {city_code} not found")
+        
+        # Get statistics
+        stats = manager.get_city_statistics(city_code)
+        city_info['statistics'] = stats
+        
+        return JSONResponse(city_info)
+        
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error(f"Error getting city info: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to get city info")
+
+
+@fastapi_app.post("/api/cities/{city_code}/switch")
+async def switch_city(city_code: str) -> JSONResponse:
+    """Switch active city.
+    
+    Args:
+        city_code: City code to switch to
+        
+    Returns:
+        Success status and new city info
+    """
+    try:
+        from mcp_server.city_manager import get_city_manager
+        manager = get_city_manager(db)
+        
+        success = manager.switch_city(city_code)
+        if not success:
+            raise HTTPException(status_code=400, detail=f"Cannot switch to city {city_code}")
+        
+        city_info = manager.get_city_info(city_code)
+        
+        return JSONResponse({
+            "success": True,
+            "city": city_info,
+            "message": f"Switched to {city_info['name']}",
+            "timestamp": datetime.now().isoformat()
+        })
+        
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error(f"Error switching city: {exc}", exc_info=True)
+        raise HTTPException(status_code=500, detail="City switch failed")
 
 
 @fastapi_app.get("/line/{line_name}", response_class=HTMLResponse)

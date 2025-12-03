@@ -13,6 +13,7 @@ from pathlib import Path
 @dataclass
 class CityConfig:
     """Configuration for a specific city's GTFS feed."""
+
     name: str
     gtfs_url: str
     timezone: str
@@ -34,7 +35,7 @@ CITIES: Dict[str, CityConfig] = {
         enable_rbl_mapping=True,
         description="Vienna public transport (Wiener Linien) - U-Bahn, trams, buses",
         map_center=(48.2082, 16.3738),
-        map_zoom=13
+        map_zoom=13,
     ),
     "munich": CityConfig(
         name="Munich",
@@ -42,7 +43,7 @@ CITIES: Dict[str, CityConfig] = {
         timezone="Europe/Berlin",
         language="de",
         enable_rbl_mapping=False,
-        description="Munich public transport (MVV) - S-Bahn, U-Bahn, trams, buses"
+        description="Munich public transport (MVV) - S-Bahn, U-Bahn, trams, buses",
     ),
     "london": CityConfig(
         name="London",
@@ -50,7 +51,7 @@ CITIES: Dict[str, CityConfig] = {
         timezone="Europe/London",
         language="en",
         enable_rbl_mapping=False,
-        description="London public transport (TfL) - Tube, buses, trams, DLR"
+        description="London public transport (TfL) - Tube, buses, trams, DLR",
     ),
     "tokyo": CityConfig(
         name="Tokyo",
@@ -58,7 +59,7 @@ CITIES: Dict[str, CityConfig] = {
         timezone="Asia/Tokyo",
         language="ja",
         enable_rbl_mapping=False,
-        description="Tokyo public transport - JR, Metro, private railways"
+        description="Tokyo public transport - JR, Metro, private railways",
     ),
     "berlin": CityConfig(
         name="Berlin",
@@ -66,7 +67,7 @@ CITIES: Dict[str, CityConfig] = {
         timezone="Europe/Berlin",
         language="de",
         enable_rbl_mapping=False,
-        description="Berlin public transport (BVG) - U-Bahn, S-Bahn, trams, buses"
+        description="Berlin public transport (BVG) - U-Bahn, S-Bahn, trams, buses",
     ),
     "paris": CityConfig(
         name="Paris",
@@ -74,7 +75,7 @@ CITIES: Dict[str, CityConfig] = {
         timezone="Europe/Paris",
         language="fr",
         enable_rbl_mapping=False,
-        description="Paris public transport (RATP/IDFM) - Metro, RER, buses, trams"
+        description="Paris public transport (RATP/IDFM) - Metro, RER, buses, trams",
     ),
     "newyork": CityConfig(
         name="New York",
@@ -84,7 +85,7 @@ CITIES: Dict[str, CityConfig] = {
         enable_rbl_mapping=False,
         description="New York public transport (MTA) - Subway, buses",
         map_center=(40.7128, -74.0060),
-        map_zoom=13
+        map_zoom=13,
     ),
     "oebb": CityConfig(
         name="ÖBB (Austria)",
@@ -94,7 +95,47 @@ CITIES: Dict[str, CityConfig] = {
         enable_rbl_mapping=False,
         description="Austrian Federal Railways (ÖBB) - National and regional train services covering all of Austria, including Vienna and Lower Austria",
         map_center=(48.2082, 16.3738),  # Centered on Vienna (central Austria)
-        map_zoom=10  # Wider zoom to show regional coverage
+        map_zoom=10,  # Wider zoom to show regional coverage
+    ),
+    "graz": CityConfig(
+        name="Graz",
+        gtfs_url="https://data.graz.gv.at/daten/package/gtfs-holding-graz-linien",
+        timezone="Europe/Vienna",
+        language="de",
+        enable_rbl_mapping=False,
+        description="Graz public transport (Holding Graz) - Trams, buses",
+        map_center=(47.0707, 15.4395),  # Graz city center
+        map_zoom=13,
+    ),
+    "linz": CityConfig(
+        name="Linz",
+        gtfs_url="https://data.linz.gv.at/katalog/verkehr-mobilitaet/gtfs/",
+        timezone="Europe/Vienna",
+        language="de",
+        enable_rbl_mapping=False,
+        description="Linz public transport (Linz AG) - Trams, buses",
+        map_center=(48.3069, 14.2858),  # Linz city center
+        map_zoom=13,
+    ),
+    "salzburg": CityConfig(
+        name="Salzburg",
+        gtfs_url="https://www.salzburg-ag.at/verkehr/fahrplaene/gtfs/",
+        timezone="Europe/Vienna",
+        language="de",
+        enable_rbl_mapping=False,
+        description="Salzburg public transport (Salzburg AG) - Buses, O-Bus",
+        map_center=(47.8095, 13.0550),  # Salzburg city center
+        map_zoom=13,
+    ),
+    "innsbruck": CityConfig(
+        name="Innsbruck",
+        gtfs_url="https://www.ivb.at/de/fahrplan/gtfs",
+        timezone="Europe/Vienna",
+        language="de",
+        enable_rbl_mapping=False,
+        description="Innsbruck public transport (IVB) - Trams, buses",
+        map_center=(47.2692, 11.4041),  # Innsbruck city center
+        map_zoom=13,
     ),
 }
 
@@ -118,7 +159,7 @@ def create_custom_config(
     enable_rbl_mapping: bool = False,
     description: str = "",
     map_center: Optional[Tuple[float, float]] = None,
-    map_zoom: int = 13
+    map_zoom: int = 13,
 ) -> CityConfig:
     """Create a custom city configuration."""
     return CityConfig(
@@ -129,7 +170,7 @@ def create_custom_config(
         enable_rbl_mapping=enable_rbl_mapping,
         description=description,
         map_center=map_center,
-        map_zoom=map_zoom
+        map_zoom=map_zoom,
     )
 
 
@@ -137,4 +178,3 @@ def get_gtfs_filename(city_name: str) -> str:
     """Generate a standardized GTFS filename for a city."""
     city_safe = city_name.lower().replace(" ", "-").replace("_", "-")
     return f"{city_safe}-gtfs.zip"
-

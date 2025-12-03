@@ -29,29 +29,29 @@ from fastmcp import FastMCP
 
 def register_prompts(mcp: FastMCP) -> list:
     """Register MCP prompts with the server.
-
+    
     Prompts help AI assistants understand:
     - When to use each tool
     - How to interpret results
     - Common Vienna transit terminology
     - Best practices for queries
-
+    
     Args:
         mcp (FastMCP): FastMCP server instance to register prompts with
-
+    
     Returns:
         list: List of prompt function references to prevent garbage collection
     """
     prompt_refs = []
-
+    
     @mcp.prompt()
     def vienna_transit_guide() -> list[dict[str, Any]]:
         """Guide for using Vienna public transport tools.
-
+        
         This prompt helps AI assistants understand Vienna's transit system and
         how to effectively use the available tools to help users plan journeys,
         check departures, and find stations.
-
+        
         Returns:
             list[dict[str, Any]]: Message format for MCP protocol
         """
@@ -117,16 +117,16 @@ Use `line_status` to:
 - Zone 100 covers most of Vienna - fare is typically €2.40 for single trip
 """
         return [{"role": "user", "content": content}]
-
+    
     prompt_refs.append(vienna_transit_guide)
 
     @mcp.prompt()
     def departure_checking_prompt() -> list[dict[str, Any]]:
         """Prompt for checking departures effectively.
-
+        
         Helps AI assistants understand how to check departures and interpret
         the results to provide helpful information to users.
-
+        
         Returns:
             list[dict[str, Any]]: Message format for MCP protocol
         """
@@ -141,7 +141,7 @@ Use `line_status` to:
 ## How to Use
 1. **Identify Station**: Use station_search if name is unclear
 2. **Call Tool**: Use next_departures with station name
-3. **Interpret Results**:
+3. **Interpret Results**: 
    - Check countdown_minutes for urgency
    - Note delays (delay_minutes)
    - Consider vehicle_type (metro is usually fastest)
@@ -161,16 +161,16 @@ Use `line_status` to:
 - "What buses leave from [station] in the next 10 minutes?"
 """
         return [{"role": "user", "content": content}]
-
+    
     prompt_refs.append(departure_checking_prompt)
 
     @mcp.prompt()
     def journey_planning_prompt() -> list[dict[str, Any]]:
         """Prompt for journey planning assistance.
-
+        
         Guides AI assistants on helping users plan trips between stations,
         including transfers, timing, and route optimization.
-
+        
         Returns:
             list[dict[str, Any]]: Message format for MCP protocol
         """
@@ -209,16 +209,16 @@ Use `line_status` to:
 - "I need to be at [location] by [time], when should I leave?"
 """
         return [{"role": "user", "content": content}]
-
+    
     prompt_refs.append(journey_planning_prompt)
-
+    
     @mcp.prompt()
     def natural_language_transit_assistant() -> list[dict[str, Any]]:
         """Natural language templates for common transit queries.
-
+        
         Phase 3A Enhancement: Helps AI assistants understand and respond to
         natural language transit queries with conversational, helpful responses.
-
+        
         Returns:
             list[dict[str, Any]]: Message format for MCP protocol
         """
@@ -342,16 +342,16 @@ Assistant:
 Remember: Be helpful, conversational, and proactive!
 """
         return [{"role": "user", "content": content}]
-
+    
     prompt_refs.append(natural_language_transit_assistant)
-
+    
     @mcp.prompt()
     def ai_smart_routing_helper() -> list[dict[str, Any]]:
         """AI-powered smart routing assistance.
-
+        
         Phase 3A Enhancement: Helps AI assistants provide intelligent routing
         suggestions based on context, time of day, and user preferences.
-
+        
         Returns:
             list[dict[str, Any]]: Message format for MCP protocol
         """
@@ -499,7 +499,7 @@ User: "I want to visit Schönbrunn then Prater"
 ### Multiple Options
 "You have a few options:
 1. Fastest: [route1] - [X] minutes
-2. Fewest transfers: [route2] - [Y] minutes
+2. Fewest transfers: [route2] - [Y] minutes  
 3. Most scenic: [route3] - [Z] minutes
 
 I'd recommend option 1 unless you prefer a leisurely ride!"
@@ -510,7 +510,8 @@ I'd recommend option 1 unless you prefer a leisurely ride!"
 Remember: Be smart, be contextual, be helpful!
 """
         return [{"role": "user", "content": content}]
-
+    
     prompt_refs.append(ai_smart_routing_helper)
-
+    
     return prompt_refs
+
