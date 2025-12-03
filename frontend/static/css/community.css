@@ -1,0 +1,306 @@
+/**
+ * Community Dashboard Styles
+ * Phase 5: Social features and integrations
+ */
+
+.community-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f5f5f5;
+    min-height: 100vh;
+}
+
+.community-header {
+    background: linear-gradient(135deg, #E30613 0%, #C20510 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.community-header h1 {
+    margin: 0 0 8px 0;
+    font-size: 32px;
+}
+
+.community-header p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Weather Widget */
+.weather-widget {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.weather-icon {
+    font-size: 48px;
+}
+
+.weather-temp {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+}
+
+.weather-condition {
+    color: #666;
+    font-size: 16px;
+}
+
+.weather-recommendations {
+    flex: 1;
+    padding-left: 20px;
+    border-left: 2px solid #eee;
+}
+
+.weather-rec {
+    padding: 4px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Quick Report Card */
+.quick-report-card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quick-report-card h2 {
+    margin: 0 0 16px 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.report-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-input {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #E30613;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: #E30613;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #c20510;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #f5f5f5;
+    color: #666;
+}
+
+.btn-secondary:hover {
+    background: #e0e0e0;
+}
+
+/* Reports Section */
+.reports-section, .tips-section, .ratings-section {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reports-section h2, .tips-section h2, .ratings-section h2 {
+    margin: 0 0 16px 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.report-card {
+    padding: 16px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border-left: 4px solid #E30613;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.report-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+}
+
+.badge-delay { background: #FF9800; }
+.badge-crowding { background: #FFC107; }
+.badge-disruption { background: #F44336; }
+.badge-cleanliness { background: #2196F3; }
+.badge-safety { background: #9C27B0; }
+.badge-accessibility { background: #4CAF50; }
+.badge-other { background: #9E9E9E; }
+
+.report-line {
+    font-weight: 600;
+    color: #666;
+}
+
+.report-description {
+    margin: 8px 0;
+    color: #333;
+    line-height: 1.6;
+}
+
+.report-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+}
+
+.report-time {
+    font-size: 12px;
+    color: #999;
+}
+
+.vote-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.vote-btn:hover {
+    color: #E30613;
+}
+
+/* Tips Section */
+.tips-search {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.tips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Line Ratings */
+.line-ratings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.rating-card {
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.rating-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.rating-stars {
+    font-size: 18px;
+    color: #FFD700;
+    margin-bottom: 8px;
+}
+
+.rating-meta {
+    font-size: 12px;
+    color: #999;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .community-container {
+        padding: 12px;
+    }
+
+    .community-header, .weather-widget, .quick-report-card {
+        padding: 20px;
+    }
+
+    .weather-widget {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .weather-recommendations {
+        border-left: none;
+        border-top: 2px solid #eee;
+        padding-left: 0;
+        padding-top: 16px;
+    }
+
+    .line-ratings-grid {
+        grid-template-columns: 1fr;
+    }
+}
+

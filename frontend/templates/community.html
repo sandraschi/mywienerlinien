@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - Wiener Linien Live Map</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/community.css') }}">
+</head>
+<body>
+    <div class="community-container">
+        <header class="community-header">
+            <h1><i class="fas fa-users"></i> Community</h1>
+            <p>Share tips, report issues, connect with fellow commuters</p>
+            <a href="/" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Map</a>
+        </header>
+
+        <!-- Weather Widget -->
+        <div class="weather-widget">
+            <div class="weather-icon" id="weather-icon">☀️</div>
+            <div class="weather-info">
+                <div class="weather-temp" id="weather-temp">--°C</div>
+                <div class="weather-condition" id="weather-condition">Loading...</div>
+            </div>
+            <div id="weather-recommendations" class="weather-recommendations"></div>
+        </div>
+
+        <!-- Quick Report -->
+        <div class="quick-report-card">
+            <h2>Report an Issue</h2>
+            <div class="report-form">
+                <select id="report-type" class="form-input">
+                    <option value="delay">Delay</option>
+                    <option value="crowding">Crowding</option>
+                    <option value="disruption">Disruption</option>
+                    <option value="cleanliness">Cleanliness</option>
+                    <option value="safety">Safety Issue</option>
+                    <option value="accessibility">Accessibility</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="text" id="report-line" placeholder="Line (e.g., U1)" class="form-input">
+                <input type="text" id="report-station" placeholder="Station" class="form-input">
+                <textarea id="report-description" placeholder="Description..." class="form-input" rows="3"></textarea>
+                <button onclick="communityDashboard.submitReport()" class="btn-primary">
+                    <i class="fas fa-paper-plane"></i> Submit Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Reports -->
+        <div class="reports-section">
+            <h2>Recent Reports</h2>
+            <div id="reports-list" class="reports-list"></div>
+        </div>
+
+        <!-- Station Tips -->
+        <div class="tips-section">
+            <h2>Station Tips</h2>
+            <div class="tips-search">
+                <input type="text" id="tips-station-search" placeholder="Search station..." class="form-input">
+                <button onclick="communityDashboard.searchTips()" class="btn-secondary">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div id="tips-list" class="tips-list"></div>
+        </div>
+
+        <!-- Line Ratings -->
+        <div class="ratings-section">
+            <h2>Line Ratings</h2>
+            <div id="line-ratings" class="line-ratings-grid"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', path='js/community.js') }}"></script>
+</body>
+</html>
+

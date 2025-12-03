@@ -146,6 +146,12 @@ async def analytics_dashboard_page(request: Request) -> HTMLResponse:
     return TEMPLATES.TemplateResponse("analytics.html", {"request": request})
 
 
+@fastapi_app.get("/community", response_class=HTMLResponse)
+async def community_dashboard_page(request: Request) -> HTMLResponse:
+    """Community dashboard page - Phase 5."""
+    return TEMPLATES.TemplateResponse("community.html", {"request": request})
+
+
 # Multi-City API (Phase 4)
 @fastapi_app.get("/api/cities")
 async def get_cities() -> JSONResponse:
