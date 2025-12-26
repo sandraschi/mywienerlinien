@@ -58,6 +58,12 @@ class DatabaseManager:
 
     def init_app(self, app):
         """Initialize the database connection using Flask app configuration."""
+        # Check if we're in development mode - skip database entirely
+        dev_mode = os.getenv("APP_ENV", "").lower() in ("development", "dev")
+        if dev_mode:
+            logger.info("Development mode: skipping database initialization")
+            return
+
         if self.engine is not None:
             return
 

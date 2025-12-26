@@ -105,6 +105,12 @@ class GTFSManager:
             self.logger.info("Test mode detected; skipping GTFS bootstrap.")
             return
 
+        # Check if we're in development mode without database
+        dev_mode = os.getenv("APP_ENV", "").lower() in ("development", "dev")
+        if dev_mode and (db.engine is None or not self._can_connect_to_db()):
+            self.logger.info("Development mode without database; skipping GTFS bootstrap.")
+            return
+
         with self._lock:
             if self._needs_refresh(check_database=True):
                 self.logger.info("GTFS data is missing or stale. Starting bootstrap…")
@@ -113,6 +119,17 @@ class GTFSManager:
                 self.logger.info("Existing GTFS data is fresh.")
 
         self._start_background_refresh()
+
+    def _can_connect_to_db(self) -> bool:
+        """Check if we can connect to the database."""
+        try:
+            if db.engine:
+                with db.engine.connect() as conn:
+                    conn.execute("SELECT 1")
+                return True
+        except Exception:
+            pass
+        return False
 
     # ------------------------------------------------------------------
     # Internal helpers
