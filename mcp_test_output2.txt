@@ -1,0 +1,25 @@
+2025-12-04 23:25:49,900 - mcp_server - INFO - Vienna Transit MCP Server initialized with FastMCP 2.13
+2025-12-04 23:25:49,900 - mcp_server - INFO - Registered 9 tools, 5 resources, 5 prompts
+
+
++-----------------------------------------------------------------------------+
+|                                                                             |
+|                        \u2584\u2580\u2580 \u2584\u2580\u2588 \u2588\u2580\u2580 \u2580\u2588\u2580 \u2588\u2580\u2584\u2580\u2588 \u2588\u2580\u2580 \u2588\u2580\u2588                        |
+|                        \u2588\u2580  \u2588\u2580\u2588 \u2584\u2584\u2588  \u2588  \u2588 \u2580 \u2588 \u2588\u2584\u2584 \u2588\u2580\u2580                        |
+|                                                                             |
+|                               FastMCP 2.13.1                                |
+|                                                                             |
+|                                                                             |
+|                    \U0001f5a5  Server name: vienna-transit                           |
+|                                                                             |
+|                    \U0001f4e6 Transport:   STDIO                                    |
+|                                                                             |
+|                    \U0001f4da Docs:        https://gofastmcp.com                    |
+|                    \U0001f680 Hosting:     https://fastmcp.cloud                    |
+|                                                                             |
++-----------------------------------------------------------------------------+
+
+
+[12/04/25 23:25:49] INFO     Starting MCP server                 server.py:1971
+                             'vienna-transit' with transport                   
+                             'stdio'                                           

@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python310\lib\runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "C:\Users\sandr\AppData\Local\Programs\Python\Python310\lib\runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "D:\Dev\repos\mywienerlinien\frontend\mcp_server\server.py", line 42, in <module>
+    from mcp_server.tools.alerts import register_traffic_alerts_tool
+  File "D:\Dev\repos\mywienerlinien\frontend\mcp_server\tools\__init__.py", line 8, in <module>
+    from .journey import register_journey_tool
+  File "D:\Dev\repos\mywienerlinien\frontend\mcp_server\tools\journey.py", line 14, in <module>
+    from ..routing_service import JourneyPlanner
+  File "D:\Dev\repos\mywienerlinien\frontend\mcp_server\routing_service.py", line 16, in <module>
+    from .graph_service import TransitGraph, AStarRouter
+  File "D:\Dev\repos\mywienerlinien\frontend\mcp_server\graph_service.py", line 306, in <module>
+    class AStarRouter:
+  File "D:\Dev\repos\mywienerlinien\frontend\mcp_server\graph_service.py", line 319, in AStarRouter
+    ) -> Optional[List[TransitEdge]]:
+NameError: name 'List' is not defined. Did you mean: 'list'?

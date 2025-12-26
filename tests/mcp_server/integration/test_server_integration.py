@@ -21,7 +21,7 @@ async def test_server_initialization():
     assert mcp.name == "vienna-transit"
 
     # Assert prompts are registered
-    assert len(_prompt_refs) == 3
+    assert len(_prompt_refs) == 5
 
     # Assert resources are registered
     assert len(_resource_refs) == 5
@@ -71,7 +71,7 @@ async def test_prompts_and_resources_access():
     from mcp_server.server import _prompt_refs, _resource_refs
 
     # Test prompts
-    assert len(_prompt_refs) == 3
+    assert len(_prompt_refs) == 5
     for prompt_ref in _prompt_refs:
         result = prompt_ref()
         assert isinstance(result, list)

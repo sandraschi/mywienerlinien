@@ -1,0 +1,20 @@
+=====================================
+Docker Context Fix - 12/04/2025 15:39:42
+=====================================
+
+Available contexts:
+NAME            DESCRIPTION                               DOCKER ENDPOINT                             ERROR
+default *       Current DOCKER_HOST based configuration   npipe:////./pipe/docker_engine              
+desktop-linux   Docker Desktop                            npipe:////./pipe/dockerDesktopLinuxEngine   
+
+Trying desktop-linux context...
+Current context is now "desktop-linux"
+desktop-linux
+failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+
+Trying default context...
+default
+Current context is now "default"
+failed to connect to the docker API at npipe:////./pipe/docker_engine; check if the path is correct and if the daemon is running: open //./pipe/docker_engine: The system cannot find the file specified.
+
+=====================================

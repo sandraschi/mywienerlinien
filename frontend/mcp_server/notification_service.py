@@ -13,7 +13,6 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -46,11 +45,11 @@ class Notification:
     priority: NotificationPriority
     title: str
     message: str
-    line: Optional[str]
-    station: Optional[str]
-    action_url: Optional[str]
+    line: str | None
+    station: str | None
+    action_url: str | None
     created_at: datetime
-    expires_at: Optional[datetime]
+    expires_at: datetime | None
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
@@ -92,7 +91,8 @@ class SmartNotificationService:
     def _create_table(self):
         """Create notifications table."""
         try:
-            self.db.execute_query("""
+            self.db.execute_query(
+                """
             CREATE TABLE IF NOT EXISTS notifications (
                 id SERIAL PRIMARY KEY,
                 notification_id VARCHAR(100) UNIQUE,
@@ -108,12 +108,15 @@ class SmartNotificationService:
                 sent BOOLEAN DEFAULT FALSE,
                 sent_at TIMESTAMP
             )
-            """)
+            """
+            )
 
-            self.db.execute_query("""
+            self.db.execute_query(
+                """
             CREATE INDEX IF NOT EXISTS idx_notifications_created
             ON notifications(created_at DESC)
-            """)
+            """
+            )
 
         except Exception as e:
             logger.error(f"Error creating notifications table: {e}", exc_info=True)
@@ -146,7 +149,7 @@ class SmartNotificationService:
                 results = self.db.execute_query(query, {"station_name": station.get("name")})
                 for row in results:
                     lines.add(row["route_short_name"])
-            except:
+            except Exception:
                 pass
 
         # Check predictions for each line
@@ -274,7 +277,7 @@ class SmartNotificationService:
             return False
 
     def get_active_notifications(
-        self, user_favorites: Optional[list[str]] = None
+        self, user_favorites: list[str] | None = None
     ) -> list[Notification]:
         """Get active notifications for user.
 
@@ -326,7 +329,7 @@ class SmartNotificationService:
 
 
 # Singleton
-_notification_service: Optional[SmartNotificationService] = None
+_notification_service: SmartNotificationService | None = None
 
 
 def get_notification_service(db_manager, prediction_service, historical_collector):

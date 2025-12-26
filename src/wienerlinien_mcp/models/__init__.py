@@ -1,9 +1,9 @@
 """Pydantic models for MCP tool requests and responses."""
 
 from .departures import Departure, DepartureResponse
-from .stations import Station, StationSearchResponse
 from .journey import JourneyPlan, JourneySegment
-from .status import ServiceStatus, LineStatusResponse
+from .stations import Station, StationSearchResponse
+from .status import LineStatusResponse, ServiceStatus
 
 __all__ = [
     "Departure",
@@ -15,6 +15,3 @@ __all__ = [
     "ServiceStatus",
     "LineStatusResponse",
 ]
-
-
-

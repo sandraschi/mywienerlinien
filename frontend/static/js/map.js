@@ -57,39 +57,39 @@ function initializeWebSocket() {
     socket = io({
         path: '/ws/socket.io'
     });
-    
+
     // Connection events
-    socket.on('connect', function() {
+    socket.on('connect', function () {
         console.log('Connected to WebSocket server');
         updateConnectionStatus('Connected', 'success');
-        
+
         // Request initial data
         socket.emit('request_updates', { type: 'all' });
         updateSocketFilters();
     });
-    
-    socket.on('disconnect', function() {
+
+    socket.on('disconnect', function () {
         console.log('Disconnected from WebSocket server');
         updateConnectionStatus('Disconnected', 'error');
     });
-    
+
     // Real-time updates
-    socket.on('vehicle_updates', function(data) {
+    socket.on('vehicle_updates', function (data) {
         console.log('Received vehicle updates:', data.vehicles.length);
         updateVehicleMarkers(data.vehicles);
     });
-    
-    socket.on('disruption_alert', function(alert) {
+
+    socket.on('disruption_alert', function (alert) {
         console.log('Received disruption alert:', alert);
         handleDisruptionAlert(alert);
     });
-    
-    socket.on('disruption_alerts', function(data) {
+
+    socket.on('disruption_alerts', function (data) {
         console.log('Received disruption alerts:', data.alerts.length);
         updateDisruptionAlerts(data.alerts);
     });
-    
-    socket.on('system_status', function(status) {
+
+    socket.on('system_status', function (status) {
         console.log('Received system status:', status);
         updateSystemStatus(status);
     });
@@ -133,41 +133,41 @@ async function loadCityConfig(cityKey) {
 async function initializeMap() {
     // Get city from URL or localStorage
     currentCity = getCityFromURL();
-    
+
     // Load city configuration
     cityConfig = await loadCityConfig(currentCity);
-    
+
     // Update page title
     document.title = `${cityConfig.name} Live Map`;
     const headerTitle = document.querySelector('.header h1');
     if (headerTitle) {
         headerTitle.textContent = `${cityConfig.name} Live Map`;
     }
-    
+
     // Update city selector if it exists
     const citySelector = document.getElementById('city-selector');
     if (citySelector) {
         citySelector.value = currentCity;
     }
-    
+
     // Get map center from city config or use defaults
     const mapCenter = cityConfig.map_center || { lat: 48.2082, lng: 16.3738 };
     const mapZoom = cityConfig.map_zoom || 13;
-    
+
     // Create map centered on selected city
     map = L.map('map').setView([mapCenter.lat, mapCenter.lng], mapZoom);
-    
+
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
-    
+
     // Initialize WebSocket connection
     initializeWebSocket();
-    
+
     // Load initial data
     loadInitialData();
-    
+
     // Set up periodic refresh
     setInterval(refreshVehicleData, 60000); // Refresh every 60 seconds
 
@@ -182,34 +182,34 @@ async function switchCity(cityKey) {
     const url = new URL(window.location.href);
     url.searchParams.set('city', cityKey);
     window.history.pushState({ city: cityKey }, '', url);
-    
+
     // Update current city
     currentCity = cityKey;
     localStorage.setItem('selectedCity', cityKey);
-    
+
     // Reload city config
     cityConfig = await loadCityConfig(cityKey);
-    
+
     // Update page title
     document.title = `${cityConfig.name} Live Map`;
     const headerTitle = document.querySelector('.header h1');
     if (headerTitle) {
         headerTitle.textContent = `${cityConfig.name} Live Map`;
     }
-    
+
     // Update city selector
     const citySelector = document.getElementById('city-selector');
     if (citySelector) {
         citySelector.value = cityKey;
     }
-    
+
     // Update map center
     if (cityConfig.map_center && map) {
         const mapCenter = cityConfig.map_center;
         const mapZoom = cityConfig.map_zoom || 13;
         map.setView([mapCenter.lat, mapCenter.lng], mapZoom);
     }
-    
+
     // Clear existing data
     vehicleMarkers.forEach((marker) => {
         if (map.hasLayer(marker)) {
@@ -217,7 +217,7 @@ async function switchCity(cityKey) {
         }
     });
     vehicleMarkers.clear();
-    
+
     routePolylines.forEach((polylines) => {
         polylines.forEach((polyline) => {
             if (map.hasLayer(polyline)) {
@@ -226,7 +226,7 @@ async function switchCity(cityKey) {
         });
     });
     routePolylines.clear();
-    
+
     lineStopMarkers.forEach((markers) => {
         markers.forEach((marker) => {
             if (map.hasLayer(marker)) {
@@ -235,10 +235,10 @@ async function switchCity(cityKey) {
         });
     });
     lineStopMarkers.clear();
-    
+
     selectedLines.clear();
     lineRouteCache.clear();
-    
+
     // Reload data for new city
     await loadInitialData();
 }
@@ -383,7 +383,13 @@ function renderLineMatrix() {
     }
 
     filteredLines
-        .sort((a, b) => a.name.localeCompare(b.name))
+        .sort((a, b) => {
+            const aIsAlpha = isNaN(parseInt(a.name[0]));
+            const bIsAlpha = isNaN(parseInt(b.name[0]));
+            if (aIsAlpha && !bIsAlpha) return -1;
+            if (!aIsAlpha && bIsAlpha) return 1;
+            return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+        })
         .forEach((line) => {
             container.appendChild(createLineCheckbox(line));
         });
@@ -409,6 +415,7 @@ function createLineCheckbox(line) {
 
     const text = document.createElement('span');
     text.textContent = line.name;
+    text.style.color = '#333';
 
     label.appendChild(input);
     label.appendChild(colorDot);
@@ -687,7 +694,7 @@ function highlightStopOnMap(stop, marker) {
         map.removeLayer(selectedStopHighlight);
         selectedStopHighlight = null;
     }
-    
+
     // Create pulsing circle highlight
     if (stop.lat && stop.lng) {
         selectedStopHighlight = L.circle([stop.lat, stop.lng], {
@@ -699,7 +706,7 @@ function highlightStopOnMap(stop, marker) {
             opacity: 0.8,
             className: 'stop-highlight'
         }).addTo(map);
-        
+
         // Zoom to stop if needed (but don't zoom too close)
         const currentZoom = map.getZoom();
         if (currentZoom < 15) {
@@ -713,18 +720,18 @@ function highlightStopOnMap(stop, marker) {
 async function fetchArrivalsForStop(stop, isAutoRefresh = false) {
     try {
         currentSelectedStop = stop; // Store for favorites
-        
+
         // Start auto-refresh interval (only on initial fetch, not auto-refresh)
         if (!isAutoRefresh) {
             startArrivalsAutoRefresh(stop);
         }
-        
+
         const listEl = document.getElementById('arrivals-list');
         const nameEl = document.getElementById('arrivals-stop-name');
         const metaEl = document.getElementById('arrivals-stop-meta');
         const filtersEl = document.getElementById('arrivals-filters');
         const loadingEl = document.getElementById('arrivals-loading');
-        
+
         if (nameEl && !isAutoRefresh) {
             if (stop.rbl) {
                 const isFavorite = checkIfStopIsFavorite(stop.rbl);
@@ -743,7 +750,7 @@ async function fetchArrivalsForStop(stop, isAutoRefresh = false) {
         if (metaEl && !isAutoRefresh) {
             metaEl.textContent = stop.rbl ? `RBL: ${stop.rbl}` : '';
         }
-        
+
         // Highlight the stop on map (only on initial fetch)
         if (!isAutoRefresh && stop.lat && stop.lng) {
             highlightStopOnMap(stop, null);
@@ -758,7 +765,7 @@ async function fetchArrivalsForStop(stop, isAutoRefresh = false) {
         if (listEl && !isAutoRefresh) {
             listEl.innerHTML = '';
         }
-        
+
         const url = `/api/arrivals?rbl=${encodeURIComponent(stop.rbl)}`;
         const resp = await fetch(url);
         if (!resp.ok) {
@@ -766,12 +773,12 @@ async function fetchArrivalsForStop(stop, isAutoRefresh = false) {
         }
         const data = await resp.json();
         currentArrivalsData = data.vehicles || [];
-        
+
         if (loadingEl) {
             loadingEl.style.display = 'none';
         }
         renderArrivalsList(listEl, currentArrivalsData);
-        
+
         // Update last refresh indicator
         if (metaEl && stop.rbl) {
             const now = new Date();
@@ -793,7 +800,7 @@ async function fetchArrivalsForStop(stop, isAutoRefresh = false) {
 function startArrivalsAutoRefresh(stop) {
     // Clear any existing interval
     stopArrivalsAutoRefresh();
-    
+
     // Start new interval
     arrivalsRefreshInterval = setInterval(() => {
         if (currentSelectedStop && currentSelectedStop.rbl === stop.rbl) {
@@ -804,7 +811,7 @@ function startArrivalsAutoRefresh(stop) {
             stopArrivalsAutoRefresh();
         }
     }, ARRIVALS_REFRESH_MS);
-    
+
     console.log(`Started arrivals auto-refresh (${ARRIVALS_REFRESH_MS / 1000}s interval)`);
 }
 
@@ -819,8 +826,8 @@ function stopArrivalsAutoRefresh() {
 function isNightRoute(line) {
     if (!line) return false;
     const lineUpper = line.toUpperCase();
-    return lineUpper.includes('N') || lineUpper.startsWith('N') || 
-           (lineUpper.match(/^\d+$/) && parseInt(lineUpper) >= 20 && parseInt(lineUpper) <= 99);
+    return lineUpper.includes('N') || lineUpper.startsWith('N') ||
+        (lineUpper.match(/^\d+$/) && parseInt(lineUpper) >= 20 && parseInt(lineUpper) <= 99);
 }
 
 function filterArrivals(vehicles, filter) {
@@ -850,19 +857,19 @@ function getLineTypeClass(line) {
 
 function renderArrivalsList(listEl, vehicles) {
     if (!listEl) return;
-    
+
     // Apply current filter
     const filtered = filterArrivals(vehicles, currentArrivalsFilter);
-    
+
     listEl.innerHTML = '';
     if (!filtered.length) {
-        const message = currentArrivalsFilter === 'all' 
-            ? 'No upcoming departures.' 
+        const message = currentArrivalsFilter === 'all'
+            ? 'No upcoming departures.'
             : `No ${currentArrivalsFilter} departures.`;
         listEl.innerHTML = `<li class="empty">${message}</li>`;
         return;
     }
-    
+
     const sorted = filtered.slice().sort((a, b) => (a.countdown ?? 0) - (b.countdown ?? 0));
     sorted.slice(0, 20).forEach((v) => {
         const li = document.createElement('li');
@@ -870,9 +877,9 @@ function renderArrivalsList(listEl, vehicles) {
         const countdownText = countdown !== null ? `${countdown} min` : 'soon';
         const delay = v.delay ? `${v.delay} min` : '';
         const lineTypeClass = getLineTypeClass(v.line);
-        const countdownClass = countdown !== null && countdown < 3 ? 'soon' : 
-                              (v.delay && v.delay > 2 ? 'delayed' : '');
-        
+        const countdownClass = countdown !== null && countdown < 3 ? 'soon' :
+            (v.delay && v.delay > 2 ? 'delayed' : '');
+
         li.innerHTML = `
             <div class="arrival-item">
                 <span class="arrival-line ${lineTypeClass}">${v.line || ''}</span>
@@ -896,10 +903,10 @@ function setupArrivalsFilters() {
             // Update active state
             filterButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
+
             // Update filter
             currentArrivalsFilter = btn.dataset.filter || 'all';
-            
+
             // Re-render with new filter
             const listEl = document.getElementById('arrivals-list');
             if (listEl && currentArrivalsData.length > 0) {
@@ -972,7 +979,7 @@ function toggleStopFavorite(stop) {
     try {
         const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
         if (!favorites.stops) favorites.stops = {};
-        
+
         if (favorites.stops[stop.rbl]) {
             delete favorites.stops[stop.rbl];
         } else {
@@ -984,10 +991,10 @@ function toggleStopFavorite(stop) {
                 timestamp: Date.now()
             };
         }
-        
+
         localStorage.setItem('favorites', JSON.stringify(favorites));
         renderFavoritesList();
-        
+
         // Update favorite button in arrivals panel
         if (currentSelectedStop && currentSelectedStop.rbl === stop.rbl) {
             const nameEl = document.getElementById('arrivals-stop-name');
@@ -1011,20 +1018,20 @@ function toggleStopFavorite(stop) {
 function renderFavoritesList() {
     const listEl = document.getElementById('favorites-list');
     if (!listEl) return;
-    
+
     try {
         const favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
         const stops = favorites.stops || {};
         const home = favorites.home || null;
         const work = favorites.work || null;
-        
+
         listEl.innerHTML = '';
-        
+
         if (Object.keys(stops).length === 0 && !home && !work) {
             listEl.innerHTML = '<li class="empty">No favorites yet. Click a stop and use the star icon to add.</li>';
             return;
         }
-        
+
         // Add home/work if set
         if (home) {
             const li = document.createElement('li');
@@ -1046,7 +1053,7 @@ function renderFavoritesList() {
             });
             listEl.appendChild(li);
         }
-        
+
         if (work) {
             const li = document.createElement('li');
             li.className = 'favorite-item work';
@@ -1067,11 +1074,11 @@ function renderFavoritesList() {
             });
             listEl.appendChild(li);
         }
-        
+
         // Add regular favorites
         Object.values(stops).forEach(stop => {
             if (stop.rbl === (home?.rbl) || stop.rbl === (work?.rbl)) return; // Skip if already shown as home/work
-            
+
             const li = document.createElement('li');
             li.className = 'favorite-item';
             li.innerHTML = `
@@ -1097,34 +1104,34 @@ function renderFavoritesList() {
 function initializeTrafficAlerts() {
     const alertsList = document.getElementById('traffic-alerts-list');
     const loadingEl = document.getElementById('traffic-alerts-loading');
-    
+
     async function loadTrafficAlerts() {
         if (loadingEl) loadingEl.style.display = 'flex';
         if (alertsList) alertsList.innerHTML = '';
-        
+
         try {
             const resp = await fetch('/api/traffic-info');
             if (!resp.ok) throw new Error(resp.status);
             const data = await resp.json();
-            
+
             if (loadingEl) loadingEl.style.display = 'none';
-            
+
             if (!alertsList) return;
-            
+
             if (!data.alerts || data.alerts.length === 0) {
                 alertsList.innerHTML = '<li class="empty">No service alerts at this time.</li>';
                 return;
             }
-            
+
             alertsList.innerHTML = '';
             data.alerts.forEach(alert => {
                 const li = document.createElement('li');
                 li.className = `traffic-alert-item severity-${alert.severity || 'low'}`;
-                
+
                 const linesHtml = alert.lines && alert.lines.length > 0
                     ? `<div class="traffic-alert-lines">${alert.lines.map(line => `<span class="traffic-alert-line">${line}</span>`).join('')}</div>`
                     : '';
-                
+
                 li.innerHTML = `
                     <div class="traffic-alert-title">${alert.title || 'Service Alert'}</div>
                     <div class="traffic-alert-description">${alert.description || ''}</div>
@@ -1140,7 +1147,7 @@ function initializeTrafficAlerts() {
             }
         }
     }
-    
+
     // Load alerts on init and refresh every 5 minutes
     loadTrafficAlerts();
     setInterval(loadTrafficAlerts, 5 * 60 * 1000);
@@ -1149,7 +1156,7 @@ function initializeTrafficAlerts() {
 function initializeFavoritesPanel() {
     const homeBtn = document.getElementById('favorite-home');
     const workBtn = document.getElementById('favorite-work');
-    
+
     if (homeBtn) {
         homeBtn.addEventListener('click', () => {
             if (currentSelectedStop && currentSelectedStop.rbl) {
@@ -1170,7 +1177,7 @@ function initializeFavoritesPanel() {
             }
         });
     }
-    
+
     if (workBtn) {
         workBtn.addEventListener('click', () => {
             if (currentSelectedStop && currentSelectedStop.rbl) {
@@ -1191,7 +1198,7 @@ function initializeFavoritesPanel() {
             }
         });
     }
-    
+
     renderFavoritesList();
 }
 
@@ -1212,10 +1219,10 @@ function initializeArrivalsPanel() {
             currentArrivalsData = [];
             currentArrivalsFilter = 'all';
             currentSelectedStop = null;
-            
+
             // Stop auto-refresh
             stopArrivalsAutoRefresh();
-            
+
             // Remove stop highlight
             if (selectedStopHighlight) {
                 map.removeLayer(selectedStopHighlight);
@@ -1228,7 +1235,7 @@ function initializeArrivalsPanel() {
             });
         });
     }
-    
+
     // Setup filter buttons
     setupArrivalsFilters();
     const nearMeBtn = document.getElementById('near-me-button');
@@ -1262,7 +1269,7 @@ function initializeArrivalsPanel() {
 async function loadVehicleData() {
     try {
         showLoading(); // Show loading during vehicle data refresh
-        
+
         const params = new URLSearchParams();
         if (currentFilters.vehicleType !== 'all') {
             params.append('type', currentFilters.vehicleType);
@@ -1273,14 +1280,14 @@ async function loadVehicleData() {
         } else if (lines.length > 1) {
             params.append('lines', lines.join(','));
         }
-        
+
         const response = await fetch(`/api/vehicles?${params}`);
         const data = await response.json();
-        
+
         if (data.vehicles) {
             updateVehicleMarkers(data.vehicles);
         }
-        
+
         hideLoading(); // Hide loading when done
     } catch (error) {
         console.error('Error loading vehicle data:', error);
@@ -1349,10 +1356,10 @@ function buildVehiclePopup(vehicle) {
 function getVehicleIcon(type, line) {
     const iconSize = [32, 32];
     const iconAnchor = [16, 16];
-    
+
     let iconUrl;
     let color;
-    
+
     switch (type.toLowerCase()) {
         case 'metro':
             color = '#FF0000';
@@ -1370,7 +1377,7 @@ function getVehicleIcon(type, line) {
         default:
             color = '#999999';
     }
-    
+
     // Create custom icon with line number
     return L.divIcon({
         className: 'vehicle-marker',
@@ -1385,10 +1392,10 @@ function getVehicleIcon(type, line) {
 function handleDisruptionAlert(alert) {
     // Store the alert
     disruptionAlerts.set(alert.id, alert);
-    
+
     // Show notification
     showDisruptionNotification(alert);
-    
+
     // Update disruption display
     updateDisruptionDisplay();
 }
@@ -1417,9 +1424,9 @@ function showDisruptionNotification(alert) {
             <p>${alert.description}</p>
         </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Auto-remove after 10 seconds
     setTimeout(() => {
         if (notification.parentElement) {
@@ -1432,14 +1439,14 @@ function showDisruptionNotification(alert) {
 function updateDisruptionDisplay() {
     const container = document.getElementById('disruption-container');
     if (!container) return;
-    
+
     container.innerHTML = '';
-    
+
     if (disruptionAlerts.size === 0) {
         container.innerHTML = '<p>No active disruptions</p>';
         return;
     }
-    
+
     disruptionAlerts.forEach(alert => {
         const alertElement = document.createElement('div');
         alertElement.className = `disruption-item ${alert.severity}`;
@@ -1565,7 +1572,7 @@ function showError(message) {
     if (errorDiv) {
         errorDiv.textContent = message;
         errorDiv.style.display = 'block';
-        
+
         setTimeout(() => {
             errorDiv.style.display = 'none';
         }, 5000);
@@ -1579,7 +1586,7 @@ function showSuccess(message) {
     if (successDiv) {
         successDiv.textContent = message;
         successDiv.style.display = 'block';
-        
+
         setTimeout(() => {
             successDiv.style.display = 'none';
         }, 3000);
@@ -1592,7 +1599,7 @@ async function initializeCitySelector() {
     if (!citySelector) {
         return;
     }
-    
+
     try {
         const response = await fetch('/api/cities');
         if (!response.ok) {
@@ -1601,10 +1608,10 @@ async function initializeCitySelector() {
         }
         const data = await response.json();
         const cities = data.cities || [];
-        
+
         // Clear existing options
         citySelector.innerHTML = '';
-        
+
         // Add cities to dropdown
         cities.forEach(city => {
             const option = document.createElement('option');
@@ -1615,7 +1622,7 @@ async function initializeCitySelector() {
             }
             citySelector.appendChild(option);
         });
-        
+
         // Add change event listener
         citySelector.addEventListener('change', async (e) => {
             const selectedCity = e.target.value;
@@ -1629,10 +1636,10 @@ async function initializeCitySelector() {
 }
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
     // Hide loading overlay by default
     hideLoading();
-    
+
     const buildTimestamp = document.getElementById('build-timestamp');
     if (buildTimestamp) {
         const now = new Date();
@@ -1649,17 +1656,17 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // Initialize city selector first
     await initializeCitySelector();
-    
+
     // Then initialize map (which will use the selected city)
     await initializeMap();
-    
+
     // Set up event listeners
     const vehicleTypeSelect = document.getElementById('vehicle-type-select');
-    
+
     if (vehicleTypeSelect) {
         vehicleTypeSelect.addEventListener('change', onVehicleTypeChange);
     }
-    
+
     // Handle browser back/forward buttons
     window.addEventListener('popstate', async (e) => {
         if (e.state && e.state.city) {
@@ -1671,6 +1678,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
         }
     });
-    
+
     console.log('Live Map initialized');
 });

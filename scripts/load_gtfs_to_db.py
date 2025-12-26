@@ -4,9 +4,10 @@ import logging
 import os
 import sys
 import time
+from collections.abc import Iterable
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional, Tuple
+from typing import Any, Optional
 
 import pandas as pd
 from sqlalchemy import text
@@ -70,7 +71,7 @@ if LOG_DIR:
 
 def record_heartbeat(stage: str, **details: Any) -> None:
     """Emit a structured heartbeat for monitoring/alerting.”"""
-    payload: Dict[str, Any] = {
+    payload: dict[str, Any] = {
         "stage": stage,
         "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
         "details": details,
@@ -121,7 +122,9 @@ def _get_table(feed: Any, table_name: str, candidates: Iterable[str]) -> Optiona
         table = getattr(feed, attr, None)
         if table is not None:
             return table
-    logger.warning("Feed missing expected table '%s' (candidates: %s)", table_name, ", ".join(candidates))
+    logger.warning(
+        "Feed missing expected table '%s' (candidates: %s)", table_name, ", ".join(candidates)
+    )
     return None
 
 
@@ -138,12 +141,12 @@ def disable_materialized_view_triggers(session: Session) -> None:
     disabled_count = 0
     for trigger_name, table_name in trigger_table_map:
         try:
-            session.execute(
-                text(f'ALTER TABLE {table_name} DISABLE TRIGGER {trigger_name};')
-            )
+            session.execute(text(f"ALTER TABLE {table_name} DISABLE TRIGGER {trigger_name};"))
             disabled_count += 1
         except Exception as exc:
-            logger.warning("Could not disable trigger %s on table %s: %s", trigger_name, table_name, exc)
+            logger.warning(
+                "Could not disable trigger %s on table %s: %s", trigger_name, table_name, exc
+            )
     session.commit()
     logger.info("Disabled %d materialized view refresh triggers.", disabled_count)
 
@@ -178,7 +181,7 @@ def optimize_database_for_bulk_load(session: Session) -> str:
         # Get current synchronous_commit setting
         result = session.execute(text("SHOW synchronous_commit;"))
         original_value = result.scalar() or "on"
-        
+
         # Disable synchronous commits for much faster bulk loading
         # This is safe because we're doing a full reload (truncate + insert)
         session.execute(text("SET synchronous_commit = off;"))
@@ -195,8 +198,10 @@ def restore_database_settings(session: Session, original_sync_commit: str) -> No
     logger.info("Restoring database settings...")
     try:
         # Validate value is safe (should only be 'on', 'off', 'local', 'remote_write', or 'remote_apply')
-        safe_values = {'on', 'off', 'local', 'remote_write', 'remote_apply'}
-        value = original_sync_commit.lower() if original_sync_commit.lower() in safe_values else 'on'
+        safe_values = {"on", "off", "local", "remote_write", "remote_apply"}
+        value = (
+            original_sync_commit.lower() if original_sync_commit.lower() in safe_values else "on"
+        )
         session.execute(text(f"SET synchronous_commit = {value};"))
         session.commit()
         logger.info("Restored synchronous_commit to %s", value)
@@ -215,7 +220,10 @@ def recreate_indexes(session: Session) -> None:
         ("idx_routes_agency_id", "CREATE INDEX idx_routes_agency_id ON routes(agency_id);"),
         ("idx_trips_route_id", "CREATE INDEX idx_trips_route_id ON trips(route_id);"),
         ("idx_shapes_shape_id", "CREATE INDEX idx_shapes_shape_id ON shapes(shape_id);"),
-        ("idx_stops_geom", "CREATE INDEX idx_stops_geom ON stops USING GIST (ST_SetSRID(ST_MakePoint(stop_lon, stop_lat), 4326));"),
+        (
+            "idx_stops_geom",
+            "CREATE INDEX idx_stops_geom ON stops USING GIST (ST_SetSRID(ST_MakePoint(stop_lon, stop_lat), 4326));",
+        ),
     ]
     created_count = 0
     for index_name, create_sql in indexes_to_create:
@@ -240,15 +248,15 @@ def enable_materialized_view_triggers(session: Session) -> None:
     enabled_count = 0
     for trigger_name, table_name in trigger_table_map:
         try:
-            session.execute(
-                text(f'ALTER TABLE {table_name} ENABLE TRIGGER {trigger_name};')
-            )
+            session.execute(text(f"ALTER TABLE {table_name} ENABLE TRIGGER {trigger_name};"))
             enabled_count += 1
         except Exception as exc:
-            logger.warning("Could not enable trigger %s on table %s: %s", trigger_name, table_name, exc)
+            logger.warning(
+                "Could not enable trigger %s on table %s: %s", trigger_name, table_name, exc
+            )
     session.commit()
     logger.info("Enabled %d materialized view refresh triggers.", enabled_count)
-    
+
     logger.info("Refreshing materialized view route_stop_patterns...")
     start = time.perf_counter()
     try:
@@ -257,12 +265,17 @@ def enable_materialized_view_triggers(session: Session) -> None:
         session.commit()
         logger.info("Materialized view refreshed in %.1f seconds.", time.perf_counter() - start)
     except Exception as exc:
-        logger.warning("Could not refresh materialized view (non-concurrent): %s", exc, exc_info=True)
+        logger.warning(
+            "Could not refresh materialized view (non-concurrent): %s", exc, exc_info=True
+        )
         # Try concurrent refresh as fallback
         try:
             session.execute(text("REFRESH MATERIALIZED VIEW CONCURRENTLY route_stop_patterns;"))
             session.commit()
-            logger.info("Materialized view refreshed (concurrent) in %.1f seconds.", time.perf_counter() - start)
+            logger.info(
+                "Materialized view refreshed (concurrent) in %.1f seconds.",
+                time.perf_counter() - start,
+            )
         except Exception as exc2:
             logger.error("Failed to refresh materialized view: %s", exc2, exc_info=True)
 
@@ -273,7 +286,7 @@ def truncate_tables(session: Session) -> None:
     session.execute(
         text(
             """
-            TRUNCATE TABLE 
+            TRUNCATE TABLE
                 stop_times,
                 trips,
                 routes,
@@ -327,11 +340,20 @@ def load_agencies(session: Session, feed: Any, default_timezone: str = "Europe/V
     session.bulk_insert_mappings(Agency, mappings)
     session.commit()
     logger.info("Agencies loaded: %d (%.1f seconds)", len(agencies), time.perf_counter() - start)
-    record_heartbeat("agencies_loaded", count=len(agencies), duration_seconds=round(time.perf_counter() - start, 1))
+    record_heartbeat(
+        "agencies_loaded",
+        count=len(agencies),
+        duration_seconds=round(time.perf_counter() - start, 1),
+    )
     return len(agencies)
 
 
-def load_stops(session: Session, feed: Any, metadata_dir: Optional[Path] = None, enable_rbl_mapping: bool = True) -> int:
+def load_stops(
+    session: Session,
+    feed: Any,
+    metadata_dir: Optional[Path] = None,
+    enable_rbl_mapping: bool = True,
+) -> int:
     stops_df = getattr(feed, "stops", None)
     if stops_df is None or stops_df.empty:
         logger.warning("No stops found; skipping stop load.")
@@ -340,7 +362,7 @@ def load_stops(session: Session, feed: Any, metadata_dir: Optional[Path] = None,
     start = time.perf_counter()
     rows = stops_df.to_dict(orient="records")
 
-    rbl_mapping: Dict[str, Dict[str, object]] = {}
+    rbl_mapping: dict[str, dict[str, object]] = {}
     if metadata_dir is not None and enable_rbl_mapping:
         try:
             rbl_mapping = build_stop_rbl_mapping(rows, metadata_dir, logger)
@@ -380,7 +402,6 @@ def load_stops(session: Session, feed: Any, metadata_dir: Optional[Path] = None,
                 stop_object.stop_desc = f"DIVA:{diva_value}"
         stops.append(stop_object)
 
-
     if not stops:
         logger.warning("No stop records to insert.")
         return 0
@@ -405,7 +426,9 @@ def load_stops(session: Session, feed: Any, metadata_dir: Optional[Path] = None,
     session.bulk_insert_mappings(Stop, mappings)
     session.commit()
     logger.info("Stops loaded: %d (%.1f seconds)", len(stops), time.perf_counter() - start)
-    record_heartbeat("stops_loaded", count=len(stops), duration_seconds=round(time.perf_counter() - start, 1))
+    record_heartbeat(
+        "stops_loaded", count=len(stops), duration_seconds=round(time.perf_counter() - start, 1)
+    )
     return len(stops)
 
 
@@ -492,7 +515,9 @@ def load_shapes(session: Session, feed: Any, chunk_size: int, max_shapes: Option
         session.commit()
 
     logger.info("Shapes loaded: %d (%.1f seconds)", processed, time.perf_counter() - start)
-    record_heartbeat("shapes_loaded", count=processed, duration_seconds=round(time.perf_counter() - start, 1))
+    record_heartbeat(
+        "shapes_loaded", count=processed, duration_seconds=round(time.perf_counter() - start, 1)
+    )
     return processed
 
 
@@ -512,7 +537,9 @@ def load_routes(session: Session, feed: Any) -> int:
                 route_short_name=_safe(row.get("route_short_name")) or "",
                 route_long_name=_safe(row.get("route_long_name")) or "",
                 route_desc=_safe(row.get("route_desc")),
-                route_type=int(_safe(row.get("route_type")) or 3),
+                route_type=int(
+                    _safe(row.get("route_type")) if _safe(row.get("route_type")) is not None else 3
+                ),
                 route_url=_safe(row.get("route_url")),
                 route_color=(_safe(row.get("route_color")) or "FFFFFF").upper(),
                 route_text_color=(_safe(row.get("route_text_color")) or "000000").upper(),
@@ -541,7 +568,9 @@ def load_routes(session: Session, feed: Any) -> int:
     session.bulk_insert_mappings(Route, mappings)
     session.commit()
     logger.info("Routes loaded: %d (%.1f seconds)", len(routes), time.perf_counter() - start)
-    record_heartbeat("routes_loaded", count=len(routes), duration_seconds=round(time.perf_counter() - start, 1))
+    record_heartbeat(
+        "routes_loaded", count=len(routes), duration_seconds=round(time.perf_counter() - start, 1)
+    )
     return len(routes)
 
 
@@ -550,7 +579,7 @@ def load_trips_and_stop_times(
     feed: Any,
     chunk_size: int,
     max_trips: Optional[int],
-) -> Tuple[int, int]:
+) -> tuple[int, int]:
     trips_df = getattr(feed, "trips", None)
     if trips_df is None or trips_df.empty:
         logger.warning("No trips found; skipping trips and stop times.")
@@ -580,7 +609,9 @@ def load_trips_and_stop_times(
         # Filter to the subset of stop_times that correspond to the trips we plan to insert,
         # then sort once and build an index for quick lookups.
         stop_times_df = stop_times_df[stop_times_df["trip_id"].isin(trips_df["trip_id"])].copy()
-        stop_times_df = stop_times_df.sort_values(["trip_id", "stop_sequence"]).reset_index(drop=True)
+        stop_times_df = stop_times_df.sort_values(["trip_id", "stop_sequence"]).reset_index(
+            drop=True
+        )
         stop_times_indices = {}
         if not stop_times_df.empty:
             raw_indices = stop_times_df.groupby("trip_id").indices
@@ -618,7 +649,10 @@ def load_trips_and_stop_times(
                     direction_id=_safe_int(getattr(trip_row, "direction_id", None)),
                     block_id=_safe(getattr(trip_row, "block_id", None)),
                     shape_id=_safe(getattr(trip_row, "shape_id", None)),
-                    wheelchair_accessible=_safe_int(getattr(trip_row, "wheelchair_accessible", None)) or 0,
+                    wheelchair_accessible=_safe_int(
+                        getattr(trip_row, "wheelchair_accessible", None)
+                    )
+                    or 0,
                     bikes_allowed=_safe_int(getattr(trip_row, "bikes_allowed", None)) or 0,
                 )
             )
@@ -746,8 +780,8 @@ def load_gtfs_to_db(
     feed = gk.read_feed(gtfs_path, dist_units="km")
     logger.info("Feed loaded in %.1f seconds.", time.perf_counter() - start)
 
-    SessionLocal = sessionmaker(bind=engine)
-    session = SessionLocal()
+    session_factory = sessionmaker(bind=engine)
+    session = session_factory()
 
     # Use provided metadata_dir or default location
     if metadata_dir is None:
@@ -768,32 +802,39 @@ def load_gtfs_to_db(
     try:
         # Optimize database settings for bulk loading (disable synchronous_commit)
         original_sync_commit = optimize_database_for_bulk_load(session)
-        
+
         # Disable triggers and indexes before bulk loading for maximum performance
         disable_materialized_view_triggers(session)
         disable_indexes(session)
-        
+
         # Determine if RBL mapping should be enabled (Vienna-specific, only if metadata_dir exists)
         enable_rbl = metadata_dir.exists() and metadata_dir.is_dir()
-        
+
         truncate_tables(session)
         summary["agencies"] = load_agencies(session, feed, default_timezone=default_timezone)
-        summary["stops"] = load_stops(session, feed, metadata_dir=metadata_dir if enable_rbl else None, enable_rbl_mapping=enable_rbl)
+        summary["stops"] = load_stops(
+            session,
+            feed,
+            metadata_dir=metadata_dir if enable_rbl else None,
+            enable_rbl_mapping=enable_rbl,
+        )
         summary["shapes"] = load_shapes(session, feed, chunk_size, max_shapes)
         summary["routes"] = load_routes(session, feed)
-        trips_loaded, stop_times_loaded = load_trips_and_stop_times(session, feed, chunk_size, max_trips)
+        trips_loaded, stop_times_loaded = load_trips_and_stop_times(
+            session, feed, chunk_size, max_trips
+        )
         summary["trips"] = trips_loaded
         summary["stop_times"] = stop_times_loaded
-        
+
         # Recreate indexes before re-enabling triggers (indexes needed for view refresh)
         recreate_indexes(session)
-        
+
         # Re-enable triggers and refresh materialized view once at the end
         enable_materialized_view_triggers(session)
-        
+
         # Restore database settings
         restore_database_settings(session, original_sync_commit)
-        
+
         logger.info("GTFS import completed: %s", summary)
         record_heartbeat("completed", **summary)
     except Exception as exc:
@@ -867,7 +908,3 @@ if __name__ == "__main__":
         max_shapes=args.max_shapes,
         max_trips=args.max_trips,
     )
-
-
-
-

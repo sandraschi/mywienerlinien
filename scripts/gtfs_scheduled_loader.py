@@ -25,7 +25,9 @@ def main() -> int:
     log_dir.mkdir(parents=True, exist_ok=True)
     marker_path = log_dir / "gtfs_last_success.txt"
 
-    gtfs_path = os.getenv("GTFS_ZIP_PATH", str(BASE_DIR / "scripts" / "gtfs_data" / "wienerlinien-gtfs.zip"))
+    gtfs_path = os.getenv(
+        "GTFS_ZIP_PATH", str(BASE_DIR / "scripts" / "gtfs_data" / "wienerlinien-gtfs.zip")
+    )
 
     # Optional force refresh
     force = os.getenv("GTFS_FORCE_REFRESH", "0").lower() in ("1", "true", "yes")
@@ -42,7 +44,9 @@ def main() -> int:
             is_stale = True
 
     if not force and not is_stale:
-        print(f"[GTFS] Up-to-date (last success: {marker_path.read_text(encoding='utf-8').strip()}). Skipping reload.")
+        print(
+            f"[GTFS] Up-to-date (last success: {marker_path.read_text(encoding='utf-8').strip()}). Skipping reload."
+        )
         return 0
 
     print(f"[GTFS] Running import (reason: {'force' if force else f'stale>{refresh_days}d'})")
@@ -74,4 +78,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-

@@ -9,7 +9,7 @@ def test_prompts_registration(mock_mcp_server):
     """Test that prompts are registered correctly."""
     prompt_refs = register_prompts(mock_mcp_server)
 
-    assert len(prompt_refs) == 3
+    assert len(prompt_refs) == 5
     assert "vienna_transit_guide" in [p.__name__ for p in prompt_refs]
     assert "departure_checking_prompt" in [p.__name__ for p in prompt_refs]
     assert "journey_planning_prompt" in [p.__name__ for p in prompt_refs]

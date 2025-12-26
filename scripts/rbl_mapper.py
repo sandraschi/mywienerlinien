@@ -14,9 +14,10 @@ import math
 import re
 import unicodedata
 from collections import defaultdict
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Optional
 
 import requests
 
@@ -79,7 +80,7 @@ def _download_dataset(filename: str, cache_dir: Path, logger: logging.Logger) ->
     return target_path
 
 
-def _read_csv_dicts(path: Path, logger: logging.Logger) -> List[Dict[str, str]]:
+def _read_csv_dicts(path: Path, logger: logging.Logger) -> list[dict[str, str]]:
     try:
         with path.open("r", encoding="iso-8859-1", newline="") as handle:
             reader = csv.DictReader(handle, delimiter=";")
@@ -108,10 +109,10 @@ def _safe_float(value: Optional[str]) -> Optional[float]:
         return None
 
 
-def _load_haltestellen(cache_dir: Path, logger: logging.Logger) -> List[Haltestelle]:
+def _load_haltestellen(cache_dir: Path, logger: logging.Logger) -> list[Haltestelle]:
     path = _download_dataset(HALTESTELLEN_FILE, cache_dir, logger)
     raw_rows = _read_csv_dicts(path, logger)
-    haltestellen: List[Haltestelle] = []
+    haltestellen: list[Haltestelle] = []
 
     for row in raw_rows:
         haltestellen_id = row.get("HALTESTELLEN_ID")
@@ -133,10 +134,10 @@ def _load_haltestellen(cache_dir: Path, logger: logging.Logger) -> List[Halteste
     return haltestellen
 
 
-def _load_steige(cache_dir: Path, logger: logging.Logger) -> List[Steig]:
+def _load_steige(cache_dir: Path, logger: logging.Logger) -> list[Steig]:
     path = _download_dataset(STEIGE_FILE, cache_dir, logger)
     raw_rows = _read_csv_dicts(path, logger)
-    steige: List[Steig] = []
+    steige: list[Steig] = []
 
     for row in raw_rows:
         haltestellen_id = row.get("FK_HALTESTELLEN_ID")
@@ -158,8 +159,8 @@ def _load_steige(cache_dir: Path, logger: logging.Logger) -> List[Steig]:
 
 def _build_haltestellen_index(
     haltestellen: Sequence[Haltestelle],
-) -> Tuple[Dict[str, List[Haltestelle]], List[Haltestelle]]:
-    by_name: Dict[str, List[Haltestelle]] = defaultdict(list)
+) -> tuple[dict[str, list[Haltestelle]], list[Haltestelle]]:
+    by_name: dict[str, list[Haltestelle]] = defaultdict(list)
     for entry in haltestellen:
         if entry.norm_name:
             by_name[entry.norm_name].append(entry)
@@ -176,7 +177,7 @@ def _match_haltestelle(
     stop_name: str,
     stop_lat: Optional[float],
     stop_lon: Optional[float],
-    haltestellen_by_name: Dict[str, List[Haltestelle]],
+    haltestellen_by_name: dict[str, list[Haltestelle]],
     haltestellen: Sequence[Haltestelle],
 ) -> Optional[Haltestelle]:
     norm_name = _normalize_name(stop_name)
@@ -207,10 +208,10 @@ def _match_haltestelle(
 
 
 def build_stop_rbl_mapping(
-    gtfs_stops: Iterable[Dict[str, object]],
+    gtfs_stops: Iterable[dict[str, object]],
     cache_dir: Path,
     logger: logging.Logger,
-) -> Dict[str, Dict[str, object]]:
+) -> dict[str, dict[str, object]]:
     """
     Return mapping from GTFS stop_id to RBL metadata.
 
@@ -234,12 +235,12 @@ def build_stop_rbl_mapping(
 
     haltestellen_by_name, haltestellen_list = _build_haltestellen_index(haltestellen)
 
-    rbl_by_haltestelle: Dict[str, List[str]] = defaultdict(list)
+    rbl_by_haltestelle: dict[str, list[str]] = defaultdict(list)
     for entry in steige:
         if entry.haltestellen_id and entry.rbl:
             rbl_by_haltestelle[entry.haltestellen_id].append(entry.rbl)
 
-    mapping: Dict[str, Dict[str, object]] = {}
+    mapping: dict[str, dict[str, object]] = {}
     matched = 0
     unmatched = 0
 
@@ -283,7 +284,10 @@ def build_stop_rbl_mapping(
             "matched_name": haltestelle.name,
             "distance": (
                 None
-                if lat_f is None or lon_f is None or haltestelle.lat is None or haltestelle.lon is None
+                if lat_f is None
+                or lon_f is None
+                or haltestelle.lat is None
+                or haltestelle.lon is None
                 else _distance(haltestelle.lat, haltestelle.lon, lat_f, lon_f)
             ),
         }
@@ -301,5 +305,3 @@ __all__ = [
     "MetadataDownloadError",
     "build_stop_rbl_mapping",
 ]
-
-

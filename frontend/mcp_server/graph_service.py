@@ -6,13 +6,13 @@ This module builds a graph representation of the Vienna transit network
 and implements A* pathfinding for optimal multi-transfer routing.
 """
 
-import logging
 import heapq
-from datetime import datetime, timedelta
-from typing import Optional
-from dataclasses import dataclass, field
-from collections import defaultdict
+import logging
 import math
+from collections import defaultdict
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+from typing import Optional, Union
 
 logger = logging.getLogger(__name__)
 
@@ -115,7 +115,7 @@ class TransitGraph:
     def _load_nodes(self):
         """Load all stops as graph nodes."""
         query = """
-        SELECT 
+        SELECT
             stop_id,
             stop_name,
             stop_lat,
@@ -253,7 +253,7 @@ class TransitGraph:
 
     def _haversine(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
         """Calculate haversine distance between two points."""
-        R = 6371000  # Earth radius in meters
+        radius_earth = 6371000  # Earth radius in meters
         phi1 = math.radians(lat1)
         phi2 = math.radians(lat2)
         delta_phi = math.radians(lat2 - lat1)
@@ -265,7 +265,7 @@ class TransitGraph:
         )
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-        return R * c
+        return radius_earth * c
 
     def get_neighbors(self, stop_id: str) -> list[TransitEdge]:
         """Get all outgoing edges from a stop."""
@@ -316,7 +316,7 @@ class AStarRouter:
         to_stop_id: str,
         max_transfers: int = 3,
         departure_time: Optional[datetime] = None,
-    ) -> Optional[List[TransitEdge]]:
+    ) -> Optional[list[TransitEdge]]:
         """Find optimal path using A* algorithm.
 
         Args:
@@ -342,7 +342,7 @@ class AStarRouter:
 
         # Initialize A* data structures
         open_set = []
-        closed_set: Set[str] = set()
+        closed_set: set[str] = set()
 
         # Start node
         start_node = SearchNode(
@@ -353,7 +353,7 @@ class AStarRouter:
         )
 
         heapq.heappush(open_set, start_node)
-        best_nodes: Dict[str, SearchNode] = {from_stop_id: start_node}
+        best_nodes: dict[str, SearchNode] = {from_stop_id: start_node}
 
         while open_set:
             current = heapq.heappop(open_set)
@@ -431,7 +431,7 @@ class AStarRouter:
 
         return transfers
 
-    def _reconstruct_path(self, goal_node: SearchNode) -> List[TransitEdge]:
+    def _reconstruct_path(self, goal_node: SearchNode) -> list[TransitEdge]:
         """Reconstruct path from goal node to start."""
         path = []
         current = goal_node
@@ -451,7 +451,7 @@ class AStarRouter:
         num_routes: int = 3,
         max_transfers: int = 3,
         departure_time: Optional[datetime] = None,
-    ) -> List[List[TransitEdge]]:
+    ) -> list[list[TransitEdge]]:
         """Find multiple alternative routes between stops.
 
         Args:
@@ -465,7 +465,7 @@ class AStarRouter:
             List of paths, each path is a list of edges
         """
         routes = []
-        blocked_edges: Set[Tuple[str, str, str]] = set()
+        blocked_edges: set[tuple[str, str, str]] = set()
 
         for attempt in range(num_routes):
             # Find path avoiding blocked edges
@@ -491,17 +491,17 @@ class AStarRouter:
         self,
         from_stop_id: str,
         to_stop_id: str,
-        blocked_edges: Set[Tuple[str, str, str]],
+        blocked_edges: set[tuple[str, str, str]],
         max_transfers: int,
         departure_time: Optional[datetime],
-    ) -> Optional[List[TransitEdge]]:
+    ) -> Optional[list[TransitEdge]]:
         """Find path while avoiding blocked edges."""
         # Similar to find_path but skip blocked edges
         if departure_time is None:
             departure_time = datetime.now()
 
         open_set = []
-        closed_set: Set[str] = set()
+        closed_set: set[str] = set()
 
         start_node = SearchNode(
             stop_id=from_stop_id,
@@ -511,7 +511,7 @@ class AStarRouter:
         )
 
         heapq.heappush(open_set, start_node)
-        best_nodes: Dict[str, SearchNode] = {from_stop_id: start_node}
+        best_nodes: dict[str, SearchNode] = {from_stop_id: start_node}
 
         while open_set:
             current = heapq.heappop(open_set)
@@ -568,7 +568,7 @@ class AStarRouter:
 
         return None
 
-    def _get_main_line(self, path: List[TransitEdge]) -> Optional[str]:
+    def _get_main_line(self, path: list[TransitEdge]) -> str | None:
         """Get the main transit line used in path (not walking)."""
         for edge in path:
             if not edge.is_walking:

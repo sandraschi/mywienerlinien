@@ -1,7 +1,6 @@
 """Nearby stops tool for Vienna Transit MCP."""
 
 import math
-from typing import Optional
 
 from fastmcp import FastMCP
 from pydantic import BaseModel, Field
@@ -11,7 +10,7 @@ class NearbyStop(BaseModel):
     """A stop near the specified location."""
 
     name: str = Field(..., description="Stop name")
-    rbl: Optional[str] = Field(None, description="RBL code")
+    rbl: str | None = Field(None, description="RBL code")
     type: str = Field(..., description="Stop type (metro, tram, bus)")
     distance_meters: int = Field(..., description="Distance from search point in meters")
     lat: float = Field(..., description="Latitude")
@@ -31,7 +30,7 @@ class NearbyStopsResponse(BaseModel):
 
 def _haversine_distance(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
     """Calculate distance between two coordinates in meters."""
-    R = 6371000  # Earth's radius in meters
+    radius_earth = 6371000  # Earth's radius in meters
 
     phi1 = math.radians(lat1)
     phi2 = math.radians(lat2)
@@ -44,7 +43,7 @@ def _haversine_distance(lat1: float, lng1: float, lat2: float, lng2: float) -> f
     )
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-    return R * c
+    return radius_earth * c
 
 
 def register_nearby_stops_tool(mcp: FastMCP) -> None:

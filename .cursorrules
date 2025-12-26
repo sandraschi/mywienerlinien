@@ -53,11 +53,60 @@
 
 ---
 
+## Rule #2: Docker Development - Stop Wasting Time on Rebuilds
+
+**NEVER wait 5 minutes for a Docker rebuild for code changes!**
+
+**Read First:** `DOCKER_DEV_GUIDE.md` (in this repo)
+
+**Quick Commands:**
+
+```powershell
+# Hot-reload in Docker (edit → save → 1 second reload)
+docker compose up -d
+
+# Native Python (fastest, 5 second startup)
+.\run_dev.ps1
+```
+
+**When to Rebuild:**
+- ✅ Only when `requirements.txt` changes
+- ✅ Only when `Dockerfile` changes
+- ❌ NOT for Python code changes (.py files)
+- ❌ NOT for static files (HTML/CSS/JS)
+
+**NEVER use --no-cache unless:**
+- ✅ `requirements.txt` changed AND regular build failed
+- ✅ Final production build
+- ❌ NEVER for code changes (wastes 15 minutes downloading entire internet)
+- ❌ NEVER "just to be safe" (it's not safer, just slower)
+
+**Build Commands:**
+```powershell
+# Regular code change (30 seconds)
+docker compose build frontend
+
+# WRONG: Code change with --no-cache (15 minutes wasted!)
+docker compose build --no-cache frontend  # ❌ DON'T DO THIS
+
+# Best: Use hot-reload (1 second, no build!)
+docker compose up -d  # Edit, save, done ✅
+```
+
+**Time Saved:**
+- Old way: 100 changes × 5 min = 8.3 hours wasted
+- New way: 100 changes × 1 sec = 1.7 minutes
+- **You save 8+ hours per project!**
+
+---
+
 ## Quick Reference
 
 **Central Docs Location:** `D:\Dev\repos\mcp-central-docs\`
 
 **Start Here:** `D:\Dev\repos\mcp-central-docs\README.md`
+
+**Docker Guide:** `DOCKER_DEV_GUIDE.md` (this repo) + `D:\Dev\repos\mcp-central-docs\docs\patterns\docker-development.md`
 
 **When in doubt:** Read the central README and navigate from there.
 

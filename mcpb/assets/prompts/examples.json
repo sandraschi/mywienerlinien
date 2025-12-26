@@ -1,0 +1,104 @@
+{
+  "examples": [
+    {
+      "title": "Check Airport Departures",
+      "description": "Find next trains from Vienna Airport to city center",
+      "tools": ["next_departures", "journey_planner"],
+      "steps": [
+        "Find airport station details",
+        "Check next departures to city center",
+        "Plan complete journey with transfers"
+      ]
+    },
+    {
+      "title": "Plan City Center Route",
+      "description": "Navigate between major Vienna attractions",
+      "tools": ["station_search", "journey_planner"],
+      "steps": [
+        "Locate Stephansdom station",
+        "Find Karlsplatz interchange",
+        "Plan walking route between nearby stops"
+      ]
+    },
+    {
+      "title": "Check Service Disruptions",
+      "description": "Monitor transit service status and delays",
+      "tools": ["line_status"],
+      "steps": [
+        "Check overall service status",
+        "Identify affected lines",
+        "Find alternative routes"
+      ]
+    },
+    {
+      "title": "Night Travel Planning",
+      "description": "Plan travel during night hours with limited service",
+      "tools": ["next_departures", "line_status"],
+      "steps": [
+        "Check night service availability",
+        "Find operating lines and schedules",
+        "Plan route with night buses/trams"
+      ]
+    }
+  ],
+  "quick_commands": [
+    {
+      "command": "Next train from Westbahnhof",
+      "tools": ["next_departures"],
+      "description": "Check departures from main western station"
+    },
+    {
+      "command": "How to get to Stephansdom",
+      "tools": ["journey_planner"],
+      "description": "Plan route to city center cathedral"
+    },
+    {
+      "command": "Is U1 running normally?",
+      "tools": ["line_status"],
+      "description": "Check metro line status"
+    },
+    {
+      "command": "Find nearest station to Karlsplatz",
+      "tools": ["station_search"],
+      "description": "Locate transit stops near major square"
+    }
+  ],
+  "workflows": {
+    "commuter": [
+      "Check daily route status",
+      "Monitor for service changes",
+      "Plan alternative routes for disruptions",
+      "Track favorite station departures"
+    ],
+    "tourist": [
+      "Learn major station locations",
+      "Understand line colors and numbers",
+      "Plan multi-attraction itineraries",
+      "Check accessibility features"
+    ],
+    "night_travel": [
+      "Identify night service routes",
+      "Check operating hours",
+      "Plan return journeys",
+      "Monitor service reliability"
+    ]
+  },
+  "station_categories": {
+    "airports": ["Flughafen Wien", "Flughafen Wien Bahnhof"],
+    "train_stations": ["Westbahnhof", "Südbahnhof", "Franz-Josefs-Bahnhof", "Wien Meidling"],
+    "city_center": ["Stephansplatz", "Karlsplatz", "Schottentor", "Stubentor"],
+    "university": ["Universität Wien", "TU Wien", "Wirtschaftsuniversität"],
+    "shopping": ["Mariahilfer Straße", "Kärntner Straße", "Naschmarkt"],
+    "attractions": ["Schönbrunn", "Belvedere", "Prater", "Naschmarkt"]
+  },
+  "line_types": {
+    "u_bahn": ["U1", "U2", "U3", "U4", "U6"],
+    "trams": ["1", "2", "6", "18", "31", "38", "43", "44", "46", "49", "52", "60", "62", "65", "66", "67", "68", "71", "74", "80", "82", "84", "D", "E2", "O"],
+    "buses": ["2A", "3A", "4A", "7A", "8A", "9A", "13A", "14A", "37A", "38A", "40A", "42A", "44A", "48A", "49A", "50A", "51A", "52A", "53A", "54A", "55A", "56A", "57A", "59A", "60A", "62A", "63A", "66A", "67A", "68A", "69A", "70A", "71A", "72A", "74A", "75A", "76A", "77A", "78A", "79A", "80A", "81A", "82A", "83A", "84A", "85A", "87A", "88A", "89A", "90A", "91A", "92A", "93A", "94A", "95A", "96A", "97A", "98A", "99A"],
+    "night_lines": ["N6", "N8", "N25", "N31", "N35", "N38", "N41", "N43", "N46", "N49", "N54", "N60", "N62", "N66", "N68", "N71", "N75", "N81", "N82", "N84", "N85", "N87", "N88", "N89", "N90", "N91", "N95", "N96", "N97", "N98", "N99"]
+  }
+}
+
+
+
+

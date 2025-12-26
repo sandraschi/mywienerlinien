@@ -30,37 +30,36 @@ def build_api_response(
     """Construct a minimal Wiener Linien API response for a single monitor."""
 
     return {
-        'data': {
-            'monitors': [
+        "data": {
+            "monitors": [
                 {
-                    'lines': [
+                    "lines": [
                         {
-                            'name': line_name,
-                            'type': line_type,
-                            'departures': {
-                                'departure': [
+                            "name": line_name,
+                            "type": line_type,
+                            "departures": {
+                                "departure": [
                                     {
-                                        'vehicle': {
-                                            'towards': 'Central Station',
-                                            'platform': '1',
-                                            'barrierFree': True,
+                                        "vehicle": {
+                                            "towards": "Central Station",
+                                            "platform": "1",
+                                            "barrierFree": True,
                                         },
-                                        'departureTime': {
-                                            'timePlanned': '2024-01-01T00:00:00Z',
-                                            'timeReal': '2024-01-01T00:01:00Z',
-                                            'countdown': countdown,
+                                        "departureTime": {
+                                            "timePlanned": "2024-01-01T00:00:00Z",
+                                            "timeReal": "2024-01-01T00:01:00Z",
+                                            "countdown": countdown,
                                         },
                                     }
                                 ]
                             },
                         }
                     ],
-                    'locationStop': {
-                        'geometry': {'coordinates': [longitude, latitude]},
-                        'properties': {'title': 'Sample Station'},
+                    "locationStop": {
+                        "geometry": {"coordinates": [longitude, latitude]},
+                        "properties": {"title": "Sample Station"},
                     },
                 }
             ]
         }
     }
-

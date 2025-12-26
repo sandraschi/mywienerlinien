@@ -51,26 +51,6 @@
       "description": "Plan optimal journey between Vienna stations"
     }
   ],
-  "prompts": [
-    {
-      "name": "vienna_transit_guide",
-      "description": "Comprehensive guide to Vienna's transit system and tool usage",
-      "arguments": [],
-      "text": "file://assets/prompts/vienna-transit-guide.md"
-    },
-    {
-      "name": "departure_checking_prompt",
-      "description": "Best practices for checking departures effectively",
-      "arguments": [],
-      "text": "file://assets/prompts/departure-checking.md"
-    },
-    {
-      "name": "journey_planning_prompt",
-      "description": "Guidance for journey planning assistance",
-      "arguments": [],
-      "text": "file://assets/prompts/journey-planning.md"
-    }
-  ],
   "compatibility": {
     "platforms": ["win32", "darwin", "linux"],
     "python": ">=3.9"

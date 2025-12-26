@@ -7,6 +7,7 @@ import os
 from dataclasses import asdict
 from datetime import datetime, timedelta
 from pathlib import Path
+
 import socketio
 from cachetools import TTLCache
 from fastapi import FastAPI, HTTPException, Request
@@ -16,21 +17,26 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 try:
+    from .api.analytics import router as analytics_router
+    from .api.public_api import router as public_api_router
     from .data_loader import data_loader
     from .database import db
     from .disruption_alerts import disruption_monitor
     from .gtfs_manager import manager as gtfs_manager
     from .vehicle_service import clear_vehicle_cache, collect_vehicle_data, get_vehicle_summary
     from .websocket_manager import get_websocket_manager, init_websocket_manager
-    from .api.analytics import router as analytics_router
-    from .api.public_api import router as public_api_router
 except ImportError:  # pragma: no cover - runtime fallback when package context missing
     from data_loader import data_loader  # type: ignore
     from database import db  # type: ignore
     from disruption_alerts import disruption_monitor  # type: ignore
     from gtfs_manager import manager as gtfs_manager  # type: ignore
-    from vehicle_service import clear_vehicle_cache, collect_vehicle_data, get_vehicle_summary  # type: ignore
+    from vehicle_service import (  # type: ignore
+        clear_vehicle_cache,
+        collect_vehicle_data,
+        get_vehicle_summary,
+    )
     from websocket_manager import get_websocket_manager, init_websocket_manager  # type: ignore
+
     try:
         from api.analytics import router as analytics_router  # type: ignore
         from api.public_api import router as public_api_router  # type: ignore
@@ -41,12 +47,14 @@ except ImportError:  # pragma: no cover - runtime fallback when package context 
 try:
     import sys
     from pathlib import Path
+
     sys.path.insert(0, str(Path(__file__).parent.parent))
-    from scripts.city_config import list_cities, get_city_config  # type: ignore
+    from scripts.city_config import get_city_config, list_cities  # type: ignore
 except ImportError:
     # Fallback if city_config is not available
     def list_cities():
         return {}
+
     def get_city_config(city_name: str):
         return None
 
@@ -156,23 +164,26 @@ async def community_dashboard_page(request: Request) -> HTMLResponse:
 @fastapi_app.get("/api/cities")
 async def get_cities() -> JSONResponse:
     """Get list of available cities.
-    
+
     Phase 4: Multi-city support for Austrian and international transit.
-    
+
     Returns:
         List of available cities with status
     """
     try:
         from mcp_server.city_manager import get_city_manager
+
         manager = get_city_manager(db)
         cities = manager.get_available_cities()
-        
-        return JSONResponse({
-            "cities": cities,
-            "current_city": manager.get_active_city(),
-            "count": len(cities),
-            "timestamp": datetime.now().isoformat()
-        })
+
+        return JSONResponse(
+            {
+                "cities": cities,
+                "current_city": manager.get_active_city(),
+                "count": len(cities),
+                "timestamp": datetime.now().isoformat(),
+            }
+        )
     except Exception as exc:
         logger.error(f"Error getting cities: {exc}", exc_info=True)
         raise HTTPException(status_code=500, detail="Failed to get cities")
@@ -181,27 +192,28 @@ async def get_cities() -> JSONResponse:
 @fastapi_app.get("/api/cities/{city_code}")
 async def get_city_info(city_code: str) -> JSONResponse:
     """Get detailed information about a specific city.
-    
+
     Args:
         city_code: City code (e.g., "vienna", "graz", "linz")
-        
+
     Returns:
         City information and statistics
     """
     try:
         from mcp_server.city_manager import get_city_manager
+
         manager = get_city_manager(db)
-        
+
         city_info = manager.get_city_info(city_code)
         if not city_info:
             raise HTTPException(status_code=404, detail=f"City {city_code} not found")
-        
+
         # Get statistics
         stats = manager.get_city_statistics(city_code)
-        city_info['statistics'] = stats
-        
+        city_info["statistics"] = stats
+
         return JSONResponse(city_info)
-        
+
     except HTTPException:
         raise
     except Exception as exc:
@@ -212,30 +224,33 @@ async def get_city_info(city_code: str) -> JSONResponse:
 @fastapi_app.post("/api/cities/{city_code}/switch")
 async def switch_city(city_code: str) -> JSONResponse:
     """Switch active city.
-    
+
     Args:
         city_code: City code to switch to
-        
+
     Returns:
         Success status and new city info
     """
     try:
         from mcp_server.city_manager import get_city_manager
+
         manager = get_city_manager(db)
-        
+
         success = manager.switch_city(city_code)
         if not success:
             raise HTTPException(status_code=400, detail=f"Cannot switch to city {city_code}")
-        
+
         city_info = manager.get_city_info(city_code)
-        
-        return JSONResponse({
-            "success": True,
-            "city": city_info,
-            "message": f"Switched to {city_info['name']}",
-            "timestamp": datetime.now().isoformat()
-        })
-        
+
+        return JSONResponse(
+            {
+                "success": True,
+                "city": city_info,
+                "message": f"Switched to {city_info['name']}",
+                "timestamp": datetime.now().isoformat(),
+            }
+        )
+
     except HTTPException:
         raise
     except Exception as exc:
@@ -245,7 +260,9 @@ async def switch_city(city_code: str) -> JSONResponse:
 
 @fastapi_app.get("/line/{line_name}", response_class=HTMLResponse)
 async def read_line_info(request: Request, line_name: str) -> HTMLResponse:
-    return TEMPLATES.TemplateResponse("line_info.html", {"request": request, "line_name": line_name})
+    return TEMPLATES.TemplateResponse(
+        "line_info.html", {"request": request, "line_name": line_name}
+    )
 
 
 @fastapi_app.get("/api/vehicles")
@@ -319,7 +336,11 @@ async def get_lines() -> JSONResponse:
 @fastapi_app.get("/api/lines/{line_name}")
 async def get_line_overview(line_name: str) -> JSONResponse:
     normalized_name = _normalize_line_identifier(line_name)
-    logger.info("Fetching overview for line %s", normalized_name, extra={"route_short_name": normalized_name})
+    logger.info(
+        "Fetching overview for line %s",
+        normalized_name,
+        extra={"route_short_name": normalized_name},
+    )
 
     try:
         line_info = data_loader.get_line_by_name(normalized_name)
@@ -364,14 +385,20 @@ async def get_line_route(line_name: str) -> JSONResponse:
 @fastapi_app.get("/api/lines/{line_name}/stations")
 async def get_line_stations(line_name: str) -> JSONResponse:
     normalized_name = _normalize_line_identifier(line_name)
-    logger.info("Fetching stations for line %s", normalized_name, extra={"route_short_name": normalized_name})
+    logger.info(
+        "Fetching stations for line %s",
+        normalized_name,
+        extra={"route_short_name": normalized_name},
+    )
 
     try:
         stations = data_loader.get_gtfs_line_stations(normalized_name)
-        return JSONResponse({
-            "line": normalized_name,
-            "stations": stations,
-        })
+        return JSONResponse(
+            {
+                "line": normalized_name,
+                "stations": stations,
+            }
+        )
     except Exception as exc:
         logger.error("Error fetching stations for line %s: %s", normalized_name, exc, exc_info=True)
         raise HTTPException(status_code=500, detail="Failed to fetch stations")
@@ -410,61 +437,63 @@ async def get_traffic_info() -> JSONResponse:
     """Fetch traffic disruptions and alerts from Wiener Linien /trafficInfo endpoint."""
     try:
         import requests
-        
+
         # Cache for 5 minutes
         # Check cache
-        cached_data = getattr(get_traffic_info, '_cache', None)
-        cache_time = getattr(get_traffic_info, '_cache_time', None)
-        
+        cached_data = getattr(get_traffic_info, "_cache", None)
+        cache_time = getattr(get_traffic_info, "_cache_time", None)
+
         if cached_data and cache_time:
             if datetime.now() - cache_time < timedelta(minutes=5):
                 return JSONResponse(cached_data)
-        
+
         # Fetch from Wiener Linien API
         url = "https://www.wienerlinien.at/ogd_realtime/trafficInfoList"
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-        
+
         data = response.json()
-        
+
         # Transform to our format
         alerts = []
-        if isinstance(data, dict) and 'data' in data:
-            for item in data.get('data', []):
-                if 'attributes' in item:
-                    attrs = item['attributes']
+        if isinstance(data, dict) and "data" in data:
+            for item in data.get("data", []):
+                if "attributes" in item:
+                    attrs = item["attributes"]
                     alert = {
-                        'id': item.get('id', ''),
-                        'title': attrs.get('title', ''),
-                        'description': attrs.get('description', ''),
-                        'severity': attrs.get('severity', 'info'),
-                        'lines': attrs.get('relatedLines', []),
-                        'start_time': attrs.get('startTime', ''),
-                        'end_time': attrs.get('endTime', ''),
-                        'type': attrs.get('type', ''),
+                        "id": item.get("id", ""),
+                        "title": attrs.get("title", ""),
+                        "description": attrs.get("description", ""),
+                        "severity": attrs.get("severity", "info"),
+                        "lines": attrs.get("relatedLines", []),
+                        "start_time": attrs.get("startTime", ""),
+                        "end_time": attrs.get("endTime", ""),
+                        "type": attrs.get("type", ""),
                     }
                     alerts.append(alert)
-        
+
         result = {
-            'alerts': alerts,
-            'timestamp': datetime.utcnow().isoformat(),
-            'count': len(alerts)
+            "alerts": alerts,
+            "timestamp": datetime.utcnow().isoformat(),
+            "count": len(alerts),
         }
-        
+
         # Cache the result
         get_traffic_info._cache = result
         get_traffic_info._cache_time = datetime.now()
-        
+
         return JSONResponse(result)
     except Exception as exc:
         logger.error("Error fetching traffic info: %s", exc, exc_info=True)
         # Return empty result on error
-        return JSONResponse({
-            'alerts': [],
-            'timestamp': datetime.utcnow().isoformat(),
-            'count': 0,
-            'error': str(exc)
-        })
+        return JSONResponse(
+            {
+                "alerts": [],
+                "timestamp": datetime.utcnow().isoformat(),
+                "count": 0,
+                "error": str(exc),
+            }
+        )
 
 
 @fastapi_app.get("/api/stops/nearby")
@@ -487,14 +516,16 @@ async def get_stops_nearby(request: Request) -> JSONResponse:
 
         # Fetch all stops and compute distances (fallback without PostGIS function)
         stops = db.get_stations()  # expected to include name, rbl, type, lat, lng
+
         def haversine(a_lat: float, a_lon: float, b_lat: float, b_lon: float) -> float:
-            from math import radians, sin, cos, asin, sqrt
+            from math import asin, cos, radians, sin, sqrt
+
             R = 6371000.0
             d_lat = radians(b_lat - a_lat)
             d_lon = radians(b_lon - a_lon)
             la1 = radians(a_lat)
             la2 = radians(b_lat)
-            h = sin(d_lat/2)**2 + cos(la1) * cos(la2) * sin(d_lon/2)**2
+            h = sin(d_lat / 2) ** 2 + cos(la1) * cos(la2) * sin(d_lon / 2) ** 2
             return 2 * R * asin(sqrt(h))
 
         enriched = []
@@ -503,14 +534,16 @@ async def get_stops_nearby(request: Request) -> JSONResponse:
             s_lon = stop.get("lng")
             if isinstance(s_lat, (int, float)) and isinstance(s_lon, (int, float)):
                 distance = haversine(lat, lon, float(s_lat), float(s_lon))
-                enriched.append({
-                    "name": stop.get("name"),
-                    "rbl": stop.get("rbl"),
-                    "type": stop.get("type"),
-                    "lat": s_lat,
-                    "lng": s_lon,
-                    "distance_m": round(distance, 1),
-                })
+                enriched.append(
+                    {
+                        "name": stop.get("name"),
+                        "rbl": stop.get("rbl"),
+                        "type": stop.get("type"),
+                        "lat": s_lat,
+                        "lng": s_lon,
+                        "distance_m": round(distance, 1),
+                    }
+                )
 
         enriched.sort(key=lambda x: x["distance_m"])
         return JSONResponse({"stops": enriched[:limit], "origin": {"lat": lat, "lon": lon}})
@@ -519,6 +552,7 @@ async def get_stops_nearby(request: Request) -> JSONResponse:
     except Exception as exc:
         logger.error("Error in get_stops_nearby: %s", exc, exc_info=True)
         raise HTTPException(status_code=500, detail="Internal server error")
+
 
 @fastapi_app.get("/api/stations")
 async def get_stations() -> JSONResponse:
@@ -568,16 +602,18 @@ async def get_disruptions(request: Request) -> JSONResponse:
     try:
         line_filter = request.query_params.get("line")
         severity_filter = request.query_params.get("severity")
-        
+
         if line_filter:
             disruptions = disruption_monitor.get_disruptions_by_line(line_filter)
         elif severity_filter:
             from disruption_alerts import DisruptionSeverity
 
-            disruptions = disruption_monitor.get_disruptions_by_severity(DisruptionSeverity(severity_filter))
+            disruptions = disruption_monitor.get_disruptions_by_severity(
+                DisruptionSeverity(severity_filter)
+            )
         else:
             disruptions = disruption_monitor.get_active_disruptions()
-        
+
         disruption_data = [
             {
                 "id": disruption.id,
@@ -610,18 +646,22 @@ async def get_disruption_summary() -> JSONResponse:
     except Exception as exc:
         logger.error("Error in get_disruption_summary: %s", exc, exc_info=True)
         raise HTTPException(status_code=500, detail="Internal server error")
-        
+
 
 @fastapi_app.get("/api/status")
 async def get_system_status() -> JSONResponse:
     try:
         ws_manager = get_websocket_manager()
         active_disruptions = disruption_monitor.get_active_disruptions()
-        filter_summary = ws_manager.get_filters_summary() if ws_manager else {
-            "clients": 0,
-            "line_filters": 0,
-            "type_filters": 0,
-        }
+        filter_summary = (
+            ws_manager.get_filters_summary()
+            if ws_manager
+            else {
+                "clients": 0,
+                "line_filters": 0,
+                "type_filters": 0,
+            }
+        )
         status = {
             "websocket_clients": ws_manager.get_connected_clients_count() if ws_manager else 0,
             "active_disruptions": len(active_disruptions),
@@ -629,7 +669,9 @@ async def get_system_status() -> JSONResponse:
             "vehicle_total": ws_manager.get_vehicle_total_count() if ws_manager else 0,
             "filters": filter_summary,
             "data_cache_status": data_loader.get_cache_status(),
-            "last_api_check": disruption_monitor.last_check.isoformat() if disruption_monitor.last_check else None,
+            "last_api_check": disruption_monitor.last_check.isoformat()
+            if disruption_monitor.last_check
+            else None,
             "timestamp": datetime.utcnow().isoformat(),
         }
         return JSONResponse(status)
@@ -638,22 +680,41 @@ async def get_system_status() -> JSONResponse:
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
+@fastapi_app.get("/api/health")
+async def get_health_status() -> JSONResponse:
+    """Fast health check endpoint for container health checks.
+
+    This endpoint provides a lightweight health check that responds quickly
+    without doing expensive operations like data loading or complex queries.
+    """
+    # Ultra-simple health check - no datetime, no complex operations
+    return JSONResponse({
+        "status": "healthy",
+        "service": "mywienerlinien"
+    })
+
+
 @fastapi_app.get("/api/status/summary")
 async def get_status_summary() -> JSONResponse:
     try:
         vehicle_summary = get_vehicle_summary()
         disruption_summary = disruption_monitor.get_disruption_summary()
-        heartbeat_path = Path(os.getenv("GTFS_HEARTBEAT_PATH", "/app/data/gtfs_loader_heartbeat.json"))
+        heartbeat_path = Path(
+            os.getenv("GTFS_HEARTBEAT_PATH", "/app/data/gtfs_loader_heartbeat.json")
+        )
         heartbeat_info = None
         if heartbeat_path.exists():
             heartbeat_info = {
                 "path": str(heartbeat_path),
-                "updated_at": datetime.utcfromtimestamp(heartbeat_path.stat().st_mtime).isoformat() + "Z",
+                "updated_at": datetime.utcfromtimestamp(heartbeat_path.stat().st_mtime).isoformat()
+                + "Z",
             }
         # Read last GTFS refresh marker
         try:
             marker_path = LOGS_DIR / "gtfs_last_success.txt"
-            last_gtfs_refresh = marker_path.read_text(encoding="utf-8").strip() if marker_path.exists() else None
+            last_gtfs_refresh = (
+                marker_path.read_text(encoding="utf-8").strip() if marker_path.exists() else None
+            )
         except Exception:
             last_gtfs_refresh = None
         payload = {
@@ -685,7 +746,7 @@ async def get_cities() -> JSONResponse:
             if city_config.map_center:
                 city_data["map_center"] = {
                     "lat": city_config.map_center[0],
-                    "lng": city_config.map_center[1]
+                    "lng": city_config.map_center[1],
                 }
                 city_data["map_zoom"] = city_config.map_zoom
             cities_list.append(city_data)
@@ -702,7 +763,7 @@ async def get_city_info(city_key: str) -> JSONResponse:
         city_config = get_city_config(city_key)
         if not city_config:
             raise HTTPException(status_code=404, detail="City not found")
-        
+
         city_data = {
             "key": city_key,
             "name": city_config.name,
@@ -714,7 +775,7 @@ async def get_city_info(city_key: str) -> JSONResponse:
         if city_config.map_center:
             city_data["map_center"] = {
                 "lat": city_config.map_center[0],
-                "lng": city_config.map_center[1]
+                "lng": city_config.map_center[1],
             }
             city_data["map_zoom"] = city_config.map_zoom
         return JSONResponse(city_data)
@@ -758,10 +819,12 @@ async def get_favorites(request: Request) -> JSONResponse:
     Get favorite stations. Currently returns empty list as favorites are stored client-side.
     Future enhancement: Support for server-side storage with user accounts.
     """
-    return JSONResponse({
-        "favorites": [],
-        "message": "Favorites are stored locally in your browser. Use localStorage API from frontend."
-    })
+    return JSONResponse(
+        {
+            "favorites": [],
+            "message": "Favorites are stored locally in your browser. Use localStorage API from frontend.",
+        }
+    )
 
 
 @fastapi_app.post("/api/favorites")
@@ -774,18 +837,17 @@ async def add_favorite(request: Request) -> JSONResponse:
         data = await request.json()
         station_id = data.get("station_id")
         station_name = data.get("station_name")
-        
+
         if not station_id or not station_name:
             raise HTTPException(status_code=400, detail="station_id and station_name are required")
-        
-        return JSONResponse({
-            "success": True,
-            "message": "Favorite added (client-side storage)",
-            "station": {
-                "id": station_id,
-                "name": station_name
+
+        return JSONResponse(
+            {
+                "success": True,
+                "message": "Favorite added (client-side storage)",
+                "station": {"id": station_id, "name": station_name},
             }
-        })
+        )
     except HTTPException:
         raise
     except Exception as exc:
@@ -799,26 +861,25 @@ async def remove_favorite(station_id: str) -> JSONResponse:
     Remove a favorite station. Currently handled client-side via localStorage.
     Future enhancement: Support for server-side storage with user accounts.
     """
-    return JSONResponse({
-        "success": True,
-        "message": f"Favorite {station_id} removed (client-side storage)"
-    })
+    return JSONResponse(
+        {"success": True, "message": f"Favorite {station_id} removed (client-side storage)"}
+    )
 
 
 # Journey Planning & Route Comparison API (Phase 3B)
 @fastapi_app.get("/api/journey/plan")
 async def plan_journey(request: Request) -> JSONResponse:
     """Plan journey with multiple route options and real-time delays.
-    
+
     Phase 3B Enhancement: A* pathfinding with delay-adjusted routing.
-    
+
     Query Parameters:
         from: Origin station name or ID
         to: Destination station name or ID
         time: Optional departure time (ISO format)
         alternatives: Number of alternative routes (1-5, default: 3)
         include_delays: Include real-time delay adjustments (default: true)
-        
+
     Returns:
         Multiple route options with segments, transfers, delays
     """
@@ -828,10 +889,12 @@ async def plan_journey(request: Request) -> JSONResponse:
         departure_time_str = request.query_params.get("time")
         alternatives = min(5, max(1, int(request.query_params.get("alternatives", "3"))))
         include_delays = request.query_params.get("include_delays", "true").lower() != "false"
-        
+
         if not from_station or not to_station:
-            raise HTTPException(status_code=400, detail="Both 'from' and 'to' parameters are required")
-        
+            raise HTTPException(
+                status_code=400, detail="Both 'from' and 'to' parameters are required"
+            )
+
         # Parse departure time
         if departure_time_str:
             try:
@@ -840,105 +903,109 @@ async def plan_journey(request: Request) -> JSONResponse:
                 departure_time = datetime.now()
         else:
             departure_time = datetime.now()
-        
+
         # Import routing services
         try:
             from mcp_server.routing_service import RouteSegment
             from mcp_server.utils import find_station_by_name
         except ImportError:
-            from frontend.mcp_server.routing_service import RouteSegment
             from frontend.mcp_server.utils import find_station_by_name
-        
+
         # Find stations
         from_info = find_station_by_name(from_station)
         to_info = find_station_by_name(to_station)
-        
+
         if not from_info:
-            raise HTTPException(status_code=404, detail=f"Origin station '{from_station}' not found")
+            raise HTTPException(
+                status_code=404, detail=f"Origin station '{from_station}' not found"
+            )
         if not to_info:
-            raise HTTPException(status_code=404, detail=f"Destination station '{to_station}' not found")
-        
+            raise HTTPException(
+                status_code=404, detail=f"Destination station '{to_station}' not found"
+            )
+
         # Get journey planner (lazy loaded with A* support)
         from mcp_server.tools.journey import get_journey_planner
+
         planner = get_journey_planner()
-        
+
         # Plan journey with multiple alternatives
         route_options = planner.plan_journey(
-            from_info["id"],
-            to_info["id"],
-            departure_time,
-            num_alternatives=alternatives
+            from_info["id"], to_info["id"], departure_time, num_alternatives=alternatives
         )
-        
+
         if not route_options:
             raise HTTPException(status_code=404, detail="No routes found between these stations")
-        
+
         # Adjust for real-time delays if requested
         if include_delays:
             try:
-                from mcp_server.realtime_service import get_realtime_service
                 import vehicle_service
+                from mcp_server.realtime_service import get_realtime_service
+
                 realtime_svc = get_realtime_service(vehicle_service)
                 realtime_updates = realtime_svc.get_realtime_updates()
-                
+
                 # Adjust each route for delays
                 adjusted_routes = []
                 for route in route_options:
                     adjusted = realtime_svc.adjust_route_for_delays(route, realtime_updates)
                     adjusted_routes.append(adjusted)
-                
+
                 # Re-rank by reliability
                 ranked = realtime_svc.rank_routes_by_reliability(adjusted_routes, realtime_updates)
                 route_options = [route for route, score in ranked]
-                
+
                 logger.info(f"Applied real-time delay adjustments to {len(route_options)} routes")
             except Exception as e:
                 logger.warning(f"Could not apply delay adjustments: {e}")
-        
+
         # Convert to JSON-serializable format
         routes_data = []
         for route in route_options:
             segments_data = []
             for seg in route.segments:
-                segments_data.append({
-                    "line": seg.line,
-                    "from_station": seg.from_stop_name,
-                    "to_station": seg.to_stop_name,
-                    "departure_time": seg.departure_time.isoformat(),
-                    "arrival_time": seg.arrival_time.isoformat(),
-                    "duration_minutes": seg.duration_minutes,
-                    "vehicle_type": seg.vehicle_type,
-                    "distance_meters": round(seg.distance_meters) if seg.distance_meters else None,
-                    "is_walking": seg.line == "WALK"
-                })
-            
-            routes_data.append({
-                "from_station": from_info["name"],
-                "to_station": to_info["name"],
-                "departure_time": route.departure_time.isoformat(),
-                "arrival_time": route.arrival_time.isoformat(),
-                "total_duration_minutes": route.total_duration_minutes,
-                "transfers": route.transfers,
-                "total_distance_meters": round(route.total_distance_meters),
-                "estimated_cost": route.estimated_cost,
-                "segments": segments_data
-            })
-        
-        return JSONResponse({
-            "routes": routes_data,
-            "origin": {
-                "id": from_info["id"],
-                "name": from_info["name"]
-            },
-            "destination": {
-                "id": to_info["id"],
-                "name": to_info["name"]
-            },
-            "query_time": departure_time.isoformat(),
-            "delays_included": include_delays,
-            "timestamp": datetime.now().isoformat()
-        })
-        
+                segments_data.append(
+                    {
+                        "line": seg.line,
+                        "from_station": seg.from_stop_name,
+                        "to_station": seg.to_stop_name,
+                        "departure_time": seg.departure_time.isoformat(),
+                        "arrival_time": seg.arrival_time.isoformat(),
+                        "duration_minutes": seg.duration_minutes,
+                        "vehicle_type": seg.vehicle_type,
+                        "distance_meters": round(seg.distance_meters)
+                        if seg.distance_meters
+                        else None,
+                        "is_walking": seg.line == "WALK",
+                    }
+                )
+
+            routes_data.append(
+                {
+                    "from_station": from_info["name"],
+                    "to_station": to_info["name"],
+                    "departure_time": route.departure_time.isoformat(),
+                    "arrival_time": route.arrival_time.isoformat(),
+                    "total_duration_minutes": route.total_duration_minutes,
+                    "transfers": route.transfers,
+                    "total_distance_meters": round(route.total_distance_meters),
+                    "estimated_cost": route.estimated_cost,
+                    "segments": segments_data,
+                }
+            )
+
+        return JSONResponse(
+            {
+                "routes": routes_data,
+                "origin": {"id": from_info["id"], "name": from_info["name"]},
+                "destination": {"id": to_info["id"], "name": to_info["name"]},
+                "query_time": departure_time.isoformat(),
+                "delays_included": include_delays,
+                "timestamp": datetime.now().isoformat(),
+            }
+        )
+
     except HTTPException:
         raise
     except Exception as exc:
@@ -964,9 +1031,11 @@ def initialize_app() -> None:
             logger.error("GTFS bootstrap failed: %s", exc, exc_info=True)
             raise
 
-    data_loader.load_lines()
-    data_loader.load_stations()
-    data_loader.load_routes()
+    # Data loading is now lazy - only load when first requested
+    # This speeds up startup from ~67 seconds to ~1 second
+    # data_loader.load_lines()  # Commented out for lazy loading
+    # data_loader.load_stations()  # Commented out for lazy loading
+    # data_loader.load_routes()  # Commented out for lazy loading
     clear_vehicle_cache()
 
 
@@ -978,4 +1047,3 @@ if __name__ == "__main__":  # pragma: no cover - manual execution helper
     import uvicorn
 
     uvicorn.run("app:app", host="0.0.0.0", port=3080, reload=True)
-

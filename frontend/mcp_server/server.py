@@ -40,6 +40,7 @@ except Exception as e:
 from mcp_server.prompts import register_prompts
 from mcp_server.resources import register_resources
 from mcp_server.tools.alerts import register_traffic_alerts_tool
+from mcp_server.tools.cities import register_cities_tools
 from mcp_server.tools.departures import register_departures_tool
 from mcp_server.tools.help import register_help_tool
 from mcp_server.tools.journey import register_journey_tool
@@ -77,6 +78,9 @@ _resource_refs = register_resources(mcp)
 # Register tools - Essential
 register_help_tool(mcp)
 register_server_status_tool(mcp)
+
+# Register tools - Multi-City Management (Phase 6)
+register_cities_tools(mcp)
 
 # Register tools - Search & Discovery
 register_station_search_tool(mcp)

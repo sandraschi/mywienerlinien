@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
 import socketio
 
@@ -24,9 +24,9 @@ class WebSocketManager:
 
     def __init__(self, sio: socketio.AsyncServer) -> None:
         self.sio = sio
-        self.connected_clients: Dict[str, Dict[str, Any]] = {}
+        self.connected_clients: dict[str, dict[str, Any]] = {}
         self._running = False
-        self._background_task: Optional[asyncio.Task[None]] = None
+        self._background_task: asyncio.Task[None] | None = None
         self._vehicle_snapshot_count = 0
         self._vehicle_total_count = 0
         self._register_handlers()
@@ -61,7 +61,7 @@ class WebSocketManager:
     def get_vehicle_total_count(self) -> int:
         return self._vehicle_total_count
 
-    def get_filters_summary(self) -> Dict[str, int]:
+    def get_filters_summary(self) -> dict[str, int]:
         summary = {
             "clients": len(self.connected_clients),
             "line_filters": 0,
@@ -84,7 +84,7 @@ class WebSocketManager:
 
     def _register_handlers(self) -> None:
         @self.sio.event
-        async def connect(sid: str, environ: Dict[str, Any], auth: Any) -> bool:
+        async def connect(sid: str, environ: dict[str, Any], auth: Any) -> bool:
             self.connected_clients[sid] = {
                 "connected_at": datetime.utcnow(),
                 "filters": {"vehicle_type": "all", "lines": set()},
@@ -103,21 +103,21 @@ class WebSocketManager:
             logger.info("Client disconnected: %s", sid)
 
         @self.sio.on("join_room")
-        async def join_room_event(sid: str, data: Dict[str, Any]) -> None:
+        async def join_room_event(sid: str, data: dict[str, Any]) -> None:
             room = data.get("room") if isinstance(data, dict) else None
             if room:
                 await self.sio.enter_room(sid, room)
                 logger.info("Client %s joined room %s", sid, room)
 
         @self.sio.on("leave_room")
-        async def leave_room_event(sid: str, data: Dict[str, Any]) -> None:
+        async def leave_room_event(sid: str, data: dict[str, Any]) -> None:
             room = data.get("room") if isinstance(data, dict) else None
             if room:
                 await self.sio.leave_room(sid, room)
                 logger.info("Client %s left room %s", sid, room)
 
         @self.sio.on("request_updates")
-        async def request_updates_event(sid: str, data: Dict[str, Any]) -> None:
+        async def request_updates_event(sid: str, data: dict[str, Any]) -> None:
             update_type = data.get("type") if isinstance(data, dict) else "all"
 
             if update_type in {"vehicles", "all"}:
@@ -128,10 +128,13 @@ class WebSocketManager:
                 await self._send_status(sid)
 
         @self.sio.on("update_filters")
-        async def update_filters_event(sid: str, data: Dict[str, Any]) -> None:
+        async def update_filters_event(sid: str, data: dict[str, Any]) -> None:
             filters = self.connected_clients.setdefault(
                 sid,
-                {"connected_at": datetime.utcnow(), "filters": {"vehicle_type": "all", "lines": set()}},
+                {
+                    "connected_at": datetime.utcnow(),
+                    "filters": {"vehicle_type": "all", "lines": set()},
+                },
             )["filters"]
 
             if isinstance(data, dict):
@@ -172,13 +175,17 @@ class WebSocketManager:
                 logger.error("Error in websocket broadcast loop: %s", exc, exc_info=True)
             await asyncio.sleep(30)
 
-    async def _send_vehicle_updates(self, sid: Optional[str] = None) -> None:
+    async def _send_vehicle_updates(self, sid: str | None = None) -> None:
         if sid:
             client = self.connected_clients.get(sid, {})
             filters = client.get("filters", {}) if client else {}
-            requested_lines = sorted(filters.get("lines") or []) if isinstance(filters.get("lines"), (set, list)) else None
+            requested_lines = (
+                sorted(filters.get("lines") or [])
+                if isinstance(filters.get("lines"), (set, list))
+                else None
+            )
         else:
-            aggregated: Set[str] = set()
+            aggregated: set[str] = set()
             for metadata in self.connected_clients.values():
                 lines_filter = metadata.get("filters", {}).get("lines")
                 if isinstance(lines_filter, (set, list)):
@@ -191,7 +198,7 @@ class WebSocketManager:
         self._vehicle_snapshot_count = total_vehicles
         self._vehicle_total_count = total_vehicles
 
-        targets: List[str]
+        targets: list[str]
         if sid:
             targets = [sid]
         else:
@@ -222,7 +229,7 @@ class WebSocketManager:
                 },
             )
 
-    async def _send_disruptions(self, sid: Optional[str] = None) -> None:
+    async def _send_disruptions(self, sid: str | None = None) -> None:
         disruptions = disruption_monitor.get_active_disruptions()
         disruption_payload = [
             {
@@ -243,7 +250,7 @@ class WebSocketManager:
             to=sid,
         )
 
-    async def _send_status(self, sid: Optional[str] = None) -> None:
+    async def _send_status(self, sid: str | None = None) -> None:
         vehicle_summary = get_vehicle_summary()
         self._vehicle_snapshot_count = vehicle_summary.get("vehicles_total", 0)
         self._vehicle_total_count = vehicle_summary.get("vehicles_total", 0)
@@ -259,7 +266,9 @@ class WebSocketManager:
         await self.sio.emit("system_status", payload, to=sid)
 
     @staticmethod
-    def _apply_filters(vehicles: List[Dict[str, Any]], filters: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def _apply_filters(
+        vehicles: list[dict[str, Any]], filters: dict[str, Any]
+    ) -> list[dict[str, Any]]:
         if not vehicles:
             return []
 
@@ -285,7 +294,7 @@ class WebSocketManager:
         return filtered
 
 
-_manager: Optional[WebSocketManager] = None
+_manager: WebSocketManager | None = None
 
 
 def init_websocket_manager(sio: socketio.AsyncServer) -> WebSocketManager:
@@ -295,9 +304,8 @@ def init_websocket_manager(sio: socketio.AsyncServer) -> WebSocketManager:
     return _manager
 
 
-def get_websocket_manager() -> Optional[WebSocketManager]:
+def get_websocket_manager() -> WebSocketManager | None:
     return _manager
 
 
 __all__ = ["WebSocketManager", "init_websocket_manager", "get_websocket_manager"]
-

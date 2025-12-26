@@ -10,7 +10,6 @@ import types
 import pytest
 from fastapi.testclient import TestClient
 
-
 os.environ.setdefault("WIENER_LINIEN_TEST_MODE", "1")
 
 
@@ -82,4 +81,3 @@ def app_client(app_module):
     client = TestClient(app_module.fastapi_app)
     with client:
         yield client
-

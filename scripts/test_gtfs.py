@@ -20,7 +20,7 @@ print("Directories created")
 # Test file writing
 try:
     test_file = DATA_DIR / "test_file.txt"
-    with open(test_file, 'w', encoding='utf-8') as f:
+    with open(test_file, "w", encoding="utf-8") as f:
         f.write("Test successful!")
     print(f"Successfully wrote to {test_file}")
 except Exception as e:

@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Development Best Practices - Stop Wasting Time</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            background: #e74c3c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 600px;
+        }
+        
+        nav {
+            background: #f8f9fa;
+            padding: 30px 20px;
+            border-right: 2px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        nav h3 {
+            font-size: 1.1em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        nav ul {
+            list-style: none;
+        }
+        
+        nav li {
+            margin-bottom: 8px;
+        }
+        
+        nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            display: block;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        main {
+            padding: 40px;
+        }
+        
+        section {
+            margin-bottom: 60px;
+            scroll-margin-top: 20px;
+        }
+        
+        h2 {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            font-size: 1.5em;
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h4 {
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e74c3c;
+        }
+        
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .danger {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .emoji {
+            font-size: 1.3em;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .toc-section {
+            margin-bottom: 25px;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        
+        .back-to-top:hover {
+            background: #5568d3;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐳 Docker Development Best Practices</h1>
+            <p>Stop Wasting Time on Rebuilds - Save 8+ Hours Per Project</p>
+        </header>
+        
+        <div class="stats">
+            ⏱️ Time Saved: 8-25 hours per project | 💰 ROI: 4,780% | 🚀 Speed: 300x faster iterations
+        </div>
+        
+        <div class="layout">
+            <nav id="toc">
+                <h3>📑 Table of Contents</h3>
+                
+                <div class="toc-section">
+                    <strong>Core Patterns</strong>
+                    <ul>
+                        <li><a href="#hot-reload">Hot-Reload Development</a></li>
+                        <li><a href="#no-cache-trap">The --no-cache Trap</a></li>
+                        <li><a href="#volume-mounts">Volume Mount Best Practices</a></li>
+                        <li><a href="#buildkit">BuildKit Cache Optimization</a></li>
+                    </ul>
+                </div>
+                
+                <div class="toc-section">
+                    <strong>Analysis</strong>
+                    <ul>
+                        <li><a href="#time-savings">Time Savings Analysis</a></li>
+                        <li><a href="#roi">ROI Calculator</a></li>
+                        <li><a href="#real-world">Real-World Examples</a></li>
+                    </ul>
+                </div>
+                
+                <div class="toc-section">
+                    <strong>Implementation</strong>
+                    <ul>
+                        <li><a href="#setup">Quick Setup Guide</a></li>
+                        <li><a href="#frameworks">Framework Commands</a></li>
+                        <li><a href="#troubleshooting">Troubleshooting</a></li>
+                    </ul>
+                </div>
+                
+                <div class="toc-section">
+                    <strong>Reference</strong>
+                    <ul>
+                        <li><a href="#decision-tree">Decision Tree</a></li>
+                        <li><a href="#anti-patterns">Anti-Patterns</a></li>
+                        <li><a href="#checklist">Adoption Checklist</a></li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <main>
+                <!-- HOT-RELOAD PATTERN -->
+                <section id="hot-reload">
+                    <h2><span class="emoji">🔥</span> Hot-Reload Development Pattern</h2>
+                    
+                    <div class="danger">
+                        <strong>⚠️ The Problem:</strong> Traditional Docker development wastes 5 minutes on EVERY code change.
+                    </div>
+                    
+                    <h3>The Traditional (Broken) Workflow</h3>
+                    <pre><code># Change 3 lines of code
+docker compose build  # ⏳ Wait 5 minutes
+# Test, find bug
+docker compose build  # ⏳ Wait 5 minutes AGAIN
+# Repeat 20 times = 100 minutes wasted</code></pre>
+                    
+                    <h3>The Solution: Volume Mounts + Hot-Reload</h3>
+                    
+                    <div class="success">
+                        <strong>✅ Core Principle:</strong> Code lives on HOST, container reads via volume mount.
+                    </div>
+                    
+                    <pre><code>services:
+  app:
+    build: ./app
+    volumes:
+      - ./app:/app  # 👈 Mount code directory
+    command: uvicorn app:app --reload  # 👈 Hot-reload enabled</code></pre>
+                    
+                    <p><strong>Result:</strong> Edit code → Save → See changes in <strong>1 second</strong> ✅</p>
+                    
+                    <h3>Pattern 1: Hot-Reload in Docker</h3>
+                    <p><strong>Best for:</strong> Full-stack development with multiple services</p>
+                    
+                    <pre><code>services:
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    volumes:
+      - ./frontend:/app
+      - /app/.venv  # Exclude venv
+    command: uvicorn app:app --reload
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DEBUG=true</code></pre>
+                    
+                    <h3>Pattern 2: Native Development</h3>
+                    <p><strong>Best for:</strong> Fastest iteration, debugging</p>
+                    
+                    <pre><code># Start database only
+docker compose up -d db
+
+# Run app natively
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+
+$env:DATABASE_URL = "postgresql://user:pass@localhost:5433/db"
+uvicorn app:app --reload</code></pre>
+                    
+                    <div class="info">
+                        <strong>💡 Benefits:</strong>
+                        <ul>
+                            <li>⚡ Code changes in ~1 second</li>
+                            <li>🐳 Full Docker environment</li>
+                            <li>👥 Team consistency</li>
+                            <li>🔧 Only rebuild when dependencies change</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- NO-CACHE TRAP -->
+                <section id="no-cache-trap">
+                    <h2><span class="emoji">🚨</span> The --no-cache Trap</h2>
+                    
+                    <div class="danger">
+                        <strong>🔴 CRITICAL:</strong> The most expensive Docker mistake that wastes HOURS
+                    </div>
+                    
+                    <h3>The Trap</h3>
+                    
+                    <pre><code># ❌ WRONG: Downloads entire internet (15+ minutes)
+docker compose build --no-cache frontend
+
+# ✅ RIGHT: Uses cached layers (30 seconds)
+docker compose build frontend
+
+# ✅ BEST: Hot-reload (1 second, no build!)
+# Just save your .py file</code></pre>
+                    
+                    <h3>When --no-cache is WRONG (99% of time)</h3>
+                    <ul>
+                        <li>❌ Changed Python/Node/Go code files</li>
+                        <li>❌ Changed HTML/CSS/JS files</li>
+                        <li>❌ Changed config files (.env, .yaml, .json)</li>
+                        <li>❌ "Just to be safe" (not safer, just slower)</li>
+                        <li>❌ After git pull</li>
+                        <li>❌ "It failed once so now I always use it"</li>
+                    </ul>
+                    
+                    <h3>When --no-cache is Appropriate (1% of time)</h3>
+                    <ul>
+                        <li>✅ <code>requirements.txt</code> changed AND regular build failed</li>
+                        <li>✅ Final production build before deployment</li>
+                        <li>✅ Suspected cache corruption (very rare)</li>
+                    </ul>
+                    
+                    <h3>Real Cost Analysis</h3>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Build Type</th>
+                                <th>Time</th>
+                                <th>What Happens</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Regular Build</td>
+                                <td>30 sec - 2 min</td>
+                                <td>Uses cached pip packages, only copies changed code</td>
+                            </tr>
+                            <tr>
+                                <td>--no-cache Build</td>
+                                <td>10-20 minutes</td>
+                                <td>Downloads 50+ packages, compiles everything from scratch</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Waste Per Build</strong></td>
+                                <td><strong>8-19 minutes</strong></td>
+                                <td><strong>Downloading packages you already have!</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="danger">
+                        <strong>Over 20 rebuilds:</strong> 160-380 minutes wasted = <strong>2.6-6.3 HOURS</strong> of your life gone!
+                    </div>
+                    
+                    <h3>Why People Fall Into This Trap</h3>
+                    
+                    <h4>1. "My build failed once, so now I always use it"</h4>
+                    <p><strong>Fix:</strong> Investigate why build failed, fix root cause. Don't use sledgehammer when screwdriver works.</p>
+                    
+                    <h4>2. "I want to be sure everything is fresh"</h4>
+                    <p><strong>Fix:</strong> Docker layer caching is reliable. Only invalidates cache when files actually change.</p>
+                    
+                    <h4>3. "Someone told me to always use it"</h4>
+                    <p><strong>Fix:</strong> That person was wrong. Share this guide with them.</p>
+                    
+                    <h4>4. "The docs/tutorial used it"</h4>
+                    <p><strong>Fix:</strong> Many tutorials are poorly written. They use --no-cache to avoid caching issues in demos.</p>
+                </section>
+                
+                <!-- VOLUME MOUNTS -->
+                <section id="volume-mounts">
+                    <h2><span class="emoji">📂</span> Volume Mount Best Practices</h2>
+                    
+                    <div class="info">
+                        <strong>Core Principle:</strong> Code lives on HOST, container reads via volume mount.
+                    </div>
+                    
+                    <h3>Basic Pattern</h3>
+                    <pre><code>services:
+  app:
+    volumes:
+      - ./app:/app  # Mount source code</code></pre>
+                    
+                    <h3>Advanced: Selective Mounting</h3>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>❌ Bad</th>
+                                <th>✅ Good</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <code>volumes:<br>&nbsp;&nbsp;- .:/app</code><br>
+                                    (Mounts everything including .git, __pycache__)
+                                </td>
+                                <td>
+                                    <code>volumes:<br>
+                                    &nbsp;&nbsp;- ./app:/app/app<br>
+                                    &nbsp;&nbsp;- ./static:/app/static<br>
+                                    &nbsp;&nbsp;- /app/.venv  # Exclude<br>
+                                    &nbsp;&nbsp;- /app/__pycache__  # Exclude</code>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>Excluding Directories</h3>
+                    <pre><code>volumes:
+  - ./app:/app
+  - /app/.venv           # 👈 Exclude venv
+  - /app/node_modules    # 👈 Exclude node_modules
+  - /app/__pycache__     # 👈 Exclude cache</code></pre>
+                    
+                    <p><strong>Why:</strong> Container dependencies differ from host (different OS, Python version, etc.)</p>
+                    
+                    <h3>Read-Only Mounts</h3>
+                    <pre><code>volumes:
+  - ./config:/app/config:ro   # Read-only
+  - ./certs:/app/certs:ro      # Read-only</code></pre>
+                    
+                    <h3>Named Volumes for Data</h3>
+                    <pre><code>services:
+  db:
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:  # Managed by Docker</code></pre>
+                </section>
+                
+                <!-- BUILDKIT -->
+                <section id="buildkit">
+                    <h2><span class="emoji">⚡</span> BuildKit Cache Optimization</h2>
+                    
+                    <p><strong>For when you DO need to rebuild:</strong> Make it fast with cache mounts</p>
+                    
+                    <h3>Enable BuildKit</h3>
+                    <pre><code># PowerShell
+$env:DOCKER_BUILDKIT = "1"
+
+# Or in docker-compose.yml
+services:
+  app:
+    build:
+      context: .
+      cache_from:
+        - myapp:latest</code></pre>
+                    
+                    <h3>Cache Mount Pattern - Python</h3>
+                    <pre><code>FROM python:3.11-slim
+
+WORKDIR /app
+
+# Cache pip downloads between builds
+RUN --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    pip install -r requirements.txt
+
+COPY . .</code></pre>
+                    
+                    <div class="success">
+                        <strong>Result:</strong> Only NEW or CHANGED packages are downloaded. Existing packages use cache.
+                    </div>
+                    
+                    <h3>Cache Mount Pattern - Node.js</h3>
+                    <pre><code>FROM node:18-alpine
+
+WORKDIR /app
+
+# Cache npm packages between builds
+RUN --mount=type=cache,target=/root/.npm \
+    --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    npm ci
+
+COPY . .</code></pre>
+                    
+                    <h3>Multi-Stage Build with Cache</h3>
+                    <pre><code># Stage 1: Dependencies (cached)
+FROM python:3.11-slim as deps
+WORKDIR /app
+RUN --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    pip install -r requirements.txt
+
+# Stage 2: Development (uses deps cache)
+FROM deps as dev
+CMD ["uvicorn", "app:app", "--reload"]
+
+# Stage 3: Production (uses deps cache)
+FROM deps as prod
+COPY . .
+CMD ["uvicorn", "app:app", "--workers", "4"]</code></pre>
+                    
+                    <h3>Performance Comparison</h3>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Scenario</th>
+                                <th>Without BuildKit</th>
+                                <th>With BuildKit</th>
+                                <th>Savings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>First build</td>
+                                <td>10 min</td>
+                                <td>10 min</td>
+                                <td>0 min</td>
+                            </tr>
+                            <tr>
+                                <td>Code change</td>
+                                <td>10 min</td>
+                                <td>30 sec</td>
+                                <td>9.5 min</td>
+                            </tr>
+                            <tr>
+                                <td>Add 1 package</td>
+                                <td>10 min</td>
+                                <td>3 min</td>
+                                <td>7 min</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                
+                <!-- TIME SAVINGS -->
+                <section id="time-savings">
+                    <h2><span class="emoji">⏱️</span> Time Savings Analysis</h2>
+                    
+                    <h3>Scenario 1: Small Project (100 changes)</h3>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Calculation</th>
+                                <th>Total Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Old Way (Rebuild)</td>
+                                <td>100 × 5 min</td>
+                                <td><strong>500 min = 8.3 hours</strong></td>
+                            </tr>
+                            <tr>
+                                <td>New Way (Hot-Reload)</td>
+                                <td>100 × 1 sec + 2 rebuilds × 5 min</td>
+                                <td><strong>11.7 minutes</strong></td>
+                            </tr>
+                            <tr style="background: #d4edda;">
+                                <td><strong>Time Saved</strong></td>
+                                <td></td>
+                                <td><strong>488 minutes = 8.1 hours</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>Scenario 2: Using --no-cache (Worst Case)</h3>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Calculation</th>
+                                <th>Total Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Habitual --no-cache</td>
+                                <td>100 × 15 min</td>
+                                <td><strong>1,500 min = 25 hours</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Hot-Reload</td>
+                                <td>100 × 1 sec</td>
+                                <td><strong>1.7 minutes</strong></td>
+                            </tr>
+                            <tr style="background: #d4edda;">
+                                <td><strong>Time Saved</strong></td>
+                                <td></td>
+                                <td><strong>1,498 min = 24.97 hours</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>Cumulative: 10 Projects</h3>
+                    
+                    <div class="success">
+                        <strong>10 projects × 8.1 hours saved = 81 hours = 2 full work weeks</strong>
+                    </div>
+                </section>
+                
+                <!-- ROI -->
+                <section id="roi">
+                    <h2><span class="emoji">💰</span> ROI Calculator</h2>
+                    
+                    <h3>Setup Cost</h3>
+                    <ul>
+                        <li>Add volumes to docker-compose.yml: <strong>2 minutes</strong></li>
+                        <li>Add --reload flag: <strong>30 seconds</strong></li>
+                        <li>Create .dockerignore: <strong>2 minutes</strong></li>
+                        <li>Test and verify: <strong>5 minutes</strong></li>
+                    </ul>
+                    <p><strong>Total setup: ~10 minutes</strong></p>
+                    
+                    <h3>Break-Even Analysis</h3>
+                    <pre><code>Setup cost: 10 minutes
+First rebuild saved: 5 minutes
+
+Break-even point: After 2 code changes
+Every subsequent change: Pure profit (5 min saved each)</code></pre>
+                    
+                    <div class="success">
+                        <strong>After 100 changes:</strong><br>
+                        Time invested: 10 minutes<br>
+                        Time saved: 488 minutes<br>
+                        <strong>ROI: 4,780% return on time investment</strong> 🎉
+                    </div>
+                </section>
+                
+                <!-- REAL WORLD -->
+                <section id="real-world">
+                    <h2><span class="emoji">🌍</span> Real-World Examples</h2>
+                    
+                    <h3>MyWienerLinien Project</h3>
+                    
+                    <p><strong>What Happened:</strong></p>
+                    <ul>
+                        <li>Implemented Phases 2-5 features (~6,700 lines)</li>
+                        <li>Made ~100 code changes</li>
+                        <li>Used Docker rebuilds for each test</li>
+                        <li>Some rebuilds used --no-cache "to be safe"</li>
+                    </ul>
+                    
+                    <p><strong>Time Wasted:</strong></p>
+                    <pre><code>Estimated rebuilds: 30
+Average rebuild time: 7 minutes (mix of regular and --no-cache)
+Total wait time: 210 minutes = 3.5 hours
+
+With hot-reload:
+30 changes × 1 second = 30 seconds
+Actual rebuilds needed: 2 (requirements.txt changed)
+2 × 7 minutes = 14 minutes
+Total: 14.5 minutes
+
+<strong>Time wasted: 195.5 minutes = 3.26 hours</strong></code></pre>
+                    
+                    <div class="warning">
+                        <strong>Lesson:</strong> Hot-reload would have saved 3+ hours in a single dev session!
+                    </div>
+                </section>
+                
+                <!-- DECISION TREE -->
+                <section id="decision-tree">
+                    <h2><span class="emoji">🌳</span> Decision Tree: What to Do When</h2>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>What Changed?</th>
+                                <th>Command</th>
+                                <th>Time</th>
+                                <th>Why</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #d4edda;">
+                                <td>Python/JS/Go code</td>
+                                <td><strong>No build!</strong> Just save</td>
+                                <td>1 sec</td>
+                                <td>Hot-reload handles it</td>
+                            </tr>
+                            <tr style="background: #d4edda;">
+                                <td>HTML/CSS/JS static</td>
+                                <td><strong>No build!</strong> Refresh browser</td>
+                                <td>0 sec</td>
+                                <td>Auto-updates</td>
+                            </tr>
+                            <tr style="background: #fff3cd;">
+                                <td>requirements.txt</td>
+                                <td><code>docker compose build</code></td>
+                                <td>2-3 min</td>
+                                <td>Dependencies changed</td>
+                            </tr>
+                            <tr style="background: #fff3cd;">
+                                <td>Dockerfile</td>
+                                <td><code>docker compose build</code></td>
+                                <td>2-3 min</td>
+                                <td>Build config changed</td>
+                            </tr>
+                            <tr style="background: #d1ecf1;">
+                                <td>.env / .yaml config</td>
+                                <td><code>docker compose restart</code></td>
+                                <td>5 sec</td>
+                                <td>Just reload config</td>
+                            </tr>
+                            <tr style="background: #f8d7da;">
+                                <td>requirements.txt (failed)</td>
+                                <td><code>build --no-cache</code></td>
+                                <td>15 min</td>
+                                <td>Last resort only!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                
+                <!-- SETUP GUIDE -->
+                <section id="setup">
+                    <h2><span class="emoji">🚀</span> Quick Setup Guide</h2>
+                    
+                    <h3>Step 1: Add Volume Mounts</h3>
+                    <pre><code># docker-compose.yml
+services:
+  frontend:
+    volumes:
+      - ./frontend:/app
+      - /app/.venv</code></pre>
+                    
+                    <h3>Step 2: Enable Hot-Reload</h3>
+                    <pre><code>services:
+  frontend:
+    command: uvicorn app:app --reload  # 👈 Add --reload</code></pre>
+                    
+                    <h3>Step 3: Create .dockerignore</h3>
+                    <pre><code>__pycache__/
+*.pyc
+.venv/
+.git/
+.pytest_cache/
+*.log
+.DS_Store
+node_modules/</code></pre>
+                    
+                    <h3>Step 4: Test</h3>
+                    <pre><code>docker compose up -d
+
+# Edit a Python file
+# Save
+# Check logs: docker compose logs frontend
+# Should see: "Reloading..."</code></pre>
+                    
+                    <div class="success">
+                        <strong>Done!</strong> You now have instant hot-reload. Never wait 5 minutes again!
+                    </div>
+                </section>
+                
+                <!-- FRAMEWORKS -->
+                <section id="frameworks">
+                    <h2><span class="emoji">🛠️</span> Framework-Specific Commands</h2>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Framework</th>
+                                <th>Command</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>FastAPI</td>
+                                <td><code>uvicorn app:app --reload</code></td>
+                            </tr>
+                            <tr>
+                                <td>Flask</td>
+                                <td><code>flask run --reload</code></td>
+                            </tr>
+                            <tr>
+                                <td>Django</td>
+                                <td><code>python manage.py runserver 0.0.0.0:8000</code></td>
+                            </tr>
+                            <tr>
+                                <td>Express (Node)</td>
+                                <td><code>nodemon server.js</code></td>
+                            </tr>
+                            <tr>
+                                <td>Next.js</td>
+                                <td><code>npm run dev</code></td>
+                            </tr>
+                            <tr>
+                                <td>Go</td>
+                                <td><code>air -c .air.toml</code></td>
+                            </tr>
+                            <tr>
+                                <td>Rust</td>
+                                <td><code>cargo watch -x run</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                
+                <!-- TROUBLESHOOTING -->
+                <section id="troubleshooting">
+                    <h2><span class="emoji">🔧</span> Troubleshooting</h2>
+                    
+                    <h3>Changes Not Appearing?</h3>
+                    
+                    <pre><code># 1. Check volume mount
+docker inspect mycontainer | grep Mounts
+
+# 2. Check hot-reload enabled
+docker logs mycontainer | grep reload
+
+# 3. Restart container
+docker compose restart app
+
+# 4. Check file permissions (Linux/Mac)
+docker compose exec app chown -R appuser:appuser /app</code></pre>
+                    
+                    <h3>Port Already in Use?</h3>
+                    
+                    <pre><code># Windows
+netstat -ano | findstr "8000"
+
+# Linux/Mac
+lsof -i :8000
+
+# Change port in docker-compose.yml
+ports:
+  - "8001:8000"  # Different host port</code></pre>
+                    
+                    <h3>Database Connection Fails (Native Dev)?</h3>
+                    
+                    <pre><code># Ensure DB container running
+docker compose up -d db
+
+# Check DB port
+docker compose ps db
+
+# Test connection
+psql -h localhost -p 5433 -U user -d db</code></pre>
+                </section>
+                
+                <!-- ANTI-PATTERNS -->
+                <section id="anti-patterns">
+                    <h2><span class="emoji">⛔</span> Anti-Patterns Summary</h2>
+                    
+                    <h3>Top 5 Docker Development Mistakes</h3>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Anti-Pattern</th>
+                                <th>Cost</th>
+                                <th>Fix</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Using --no-cache for code changes</td>
+                                <td>14.5 min per build</td>
+                                <td>Use regular build or hot-reload</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>No volume mounts</td>
+                                <td>5 min per change</td>
+                                <td>Add volumes to docker-compose.yml</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Forgetting --reload flag</td>
+                                <td>Manual restart needed</td>
+                                <td>Add --reload to command</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Mounting everything (including .git)</td>
+                                <td>Slower, conflicts</td>
+                                <td>Selective mounts + .dockerignore</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Wrong layer order in Dockerfile</td>
+                                <td>Invalidates cache</td>
+                                <td>Dependencies first, code last</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                
+                <!-- CHECKLIST -->
+                <section id="checklist">
+                    <h2><span class="emoji">✅</span> Adoption Checklist</h2>
+                    
+                    <p>Implement this pattern in your project:</p>
+                    
+                    <div class="info">
+                        <strong>Setup (10 minutes one-time):</strong>
+                        <ul>
+                            <li>☐ Create <code>.dockerignore</code> file</li>
+                            <li>☐ Add volume mounts to <code>docker-compose.yml</code></li>
+                            <li>☐ Add <code>--reload</code> flag to service commands</li>
+                            <li>☐ Create <code>docker-compose.dev.yml</code> for dev overrides (optional)</li>
+                            <li>☐ Create <code>run_dev.ps1</code> for native option (optional)</li>
+                            <li>☐ Update <code>Dockerfile</code> with multi-stage build (optional)</li>
+                            <li>☐ Enable BuildKit in environment</li>
+                            <li>☐ Test hot-reload works</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="success">
+                        <strong>Daily Use:</strong>
+                        <ul>
+                            <li>☐ <code>docker compose up -d</code> (once per day)</li>
+                            <li>☐ Edit code → Save → Test (instant)</li>
+                            <li>☐ Only rebuild when <code>requirements.txt</code> changes</li>
+                            <li>☐ NEVER use <code>--no-cache</code> for code changes</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- SUMMARY -->
+                <section id="summary">
+                    <h2><span class="emoji">🎯</span> Summary</h2>
+                    
+                    <div class="info">
+                        <h3>The Three Rules of Fast Docker Development</h3>
+                        <ol>
+                            <li><strong>Use Hot-Reload:</strong> Volume mounts + --reload = 1 second iterations</li>
+                            <li><strong>Never --no-cache for code:</strong> Only for failed dependency builds</li>
+                            <li><strong>Only rebuild when needed:</strong> Dependencies changed? Rebuild. Code changed? Hot-reload.</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="success">
+                        <h3>Time Savings Per Project</h3>
+                        <ul>
+                            <li>Small (100 changes): <strong>8 hours saved</strong></li>
+                            <li>Medium (300 changes): <strong>24 hours saved</strong></li>
+                            <li>Large (500 changes): <strong>40 hours saved</strong></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="danger">
+                        <h3>What NOT to Do</h3>
+                        <ul>
+                            <li>❌ Rebuild for every code change</li>
+                            <li>❌ Use --no-cache habitually</li>
+                            <li>❌ Skip volume mounts "because it's complicated"</li>
+                            <li>❌ Wait 5 minutes for 3-line changes</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Tools You Have</h3>
+                    <ul>
+                        <li>📄 <code>DOCKER_DEV_GUIDE.md</code> - Local project guide</li>
+                        <li>📄 <code>run_dev.ps1</code> - Native development script</li>
+                        <li>📄 <code>.cursorrules</code> - Automated reminders</li>
+                        <li>📚 Central docs: <code>mcp-central-docs/docs/patterns/docker-development.md</code></li>
+                        <li>🧠 Advanced Memory: 5 comprehensive notes with all patterns</li>
+                    </ul>
+                    
+                    <div class="success">
+                        <strong>Your Docker suffering ends today!</strong> 🎉<br>
+                        Never waste another 5 minutes waiting for a rebuild.
+                    </div>
+                </section>
+            </main>
+        </div>
+        
+        <footer>
+            <p><strong>Docker Development Best Practices</strong></p>
+            <p>Last Updated: December 4, 2025</p>
+            <p>Documentation: D:\Dev\repos\mcp-central-docs\docs\patterns\docker-development.md</p>
+            <p style="margin-top: 20px; opacity: 0.8;">
+                Saves 8-25 hours per project | ROI: 4,780% | 300x faster iterations
+            </p>
+        </footer>
+    </div>
+    
+    <a href="#toc" class="back-to-top">↑ Top</a>
+    
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Highlight active section in TOC
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    document.querySelectorAll('nav a').forEach(link => {
+                        link.style.fontWeight = link.getAttribute('href') === `#${id}` ? 'bold' : 'normal';
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        document.querySelectorAll('section[id]').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
+

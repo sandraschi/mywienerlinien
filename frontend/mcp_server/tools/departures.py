@@ -119,7 +119,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
                     if isinstance(timestamp, str):
                         try:
                             vehicle_time = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
-                        except:
+                        except ValueError:
                             vehicle_time = now
                     else:
                         vehicle_time = timestamp

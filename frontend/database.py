@@ -4,17 +4,18 @@ Database module for handling PostgreSQL operations.
 This module provides a database session factory and common database operations
 for the Wiener Linien application.
 """
-import os
-from decimal import Decimal
-from typing import List, Dict, Optional, Any
-
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.pool import QueuePool
 
 # Configure logging
 import logging
+import os
+from decimal import Decimal
+from typing import Any, Dict, List, Optional
+
+from sqlalchemy import create_engine, text
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.pool import QueuePool
+
 logger = logging.getLogger(__name__)
 
 
@@ -29,38 +30,42 @@ ROUTE_TYPE_NAMES = {
     7: "Funicular",
     11: "Trolleybus",
     12: "Monorail",
-    800: "Bus"
+    800: "Bus",
 }
+
 
 class DatabaseManager:
     """
     Manages database connections and sessions.
     """
+
     _instance = None
-    
+
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(DatabaseManager, cls).__new__(cls)
             cls._instance._initialized = False
         return cls._instance
-    
+
     def __init__(self):
         if self._initialized:
             return
-            
+
         self._initialized = True
         self.engine = None
         self.session_factory = None
-        self._default_color = '#3f51b5'
-    
+        self._default_color = "#3f51b5"
+
     def init_app(self, app):
         """Initialize the database connection using Flask app configuration."""
         if self.engine is not None:
             return
-            
+
         # Get database URL from environment or use default
-        db_url = os.getenv('DATABASE_URL', 'postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien')
-        
+        db_url = os.getenv(
+            "DATABASE_URL", "postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien"
+        )
+
         # Configure the SQLAlchemy engine with connection pooling
         self.engine = create_engine(
             db_url,
@@ -71,26 +76,22 @@ class DatabaseManager:
             pool_recycle=1800,  # Recycle connections after 30 minutes
             pool_pre_ping=True,  # Enable connection liveness checks
             connect_args={
-                'connect_timeout': 10,
-                'keepalives': 1,
-                'keepalives_idle': 30,
-                'keepalives_interval': 10,
-                'keepalives_count': 5
-            }
+                "connect_timeout": 10,
+                "keepalives": 1,
+                "keepalives_idle": 30,
+                "keepalives_interval": 10,
+                "keepalives_count": 5,
+            },
         )
-        
+
         # Create a scoped session factory
         self.session_factory = scoped_session(
-            sessionmaker(
-                autocommit=False,
-                autoflush=False,
-                bind=self.engine
-            )
+            sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
         )
-        
+
         # Test the connection
         self._test_connection()
-    
+
     def _test_connection(self):
         """Test the database connection."""
         try:
@@ -100,26 +101,26 @@ class DatabaseManager:
         except Exception as e:
             logger.error(f"Failed to connect to the database: {str(e)}")
             raise
-    
+
     def get_session(self):
         """Get a new database session."""
         if not self.session_factory:
             raise RuntimeError("Database not initialized. Call init_app first.")
         return self.session_factory()
-    
+
     def close_session(self, exception=None):
         """Close the current database session."""
         if self.session_factory:
             self.session_factory.remove()
-    
+
     def execute_query(self, query: str, params: Optional[Dict] = None) -> List[Dict]:
         """
         Execute a raw SQL query and return the results as a list of dictionaries.
-        
+
         Args:
             query: The SQL query to execute
             params: Optional parameters for the query
-            
+
         Returns:
             List of dictionaries representing the query results
         """
@@ -153,8 +154,8 @@ class DatabaseManager:
         value = color.strip()
         if not value:
             return self._default_color
-        if not value.startswith('#'):
-            value = f'#{value}'
+        if not value.startswith("#"):
+            value = f"#{value}"
         if len(value) == 4:
             return value.upper()
         if len(value) == 7:
@@ -163,14 +164,14 @@ class DatabaseManager:
         if len(value) > 7:
             value = value[:7]
         return value.upper()
-    
+
     def get_vehicles(self, line_number: Optional[str] = None) -> List[Dict]:
         """
         Get vehicle positions from the database.
-        
+
         Args:
             line_number: Optional line number to filter by
-            
+
         Returns:
             List of vehicle positions
         """
@@ -187,18 +188,18 @@ class DatabaseManager:
         FROM 
             vehicles v
         """
-        
+
         if line_number:
             query += " WHERE v.line_number = :line_number"
-            
+
         query += " ORDER BY v.last_update DESC"
-        
-        return self.execute_query(query, {'line_number': line_number})
-    
+
+        return self.execute_query(query, {"line_number": line_number})
+
     def get_routes(self) -> List[Dict]:
         """
         Get all routes from the database.
-        
+
         Returns:
             List of routes with their details
         """
@@ -226,9 +227,9 @@ class DatabaseManager:
         ORDER BY 
             r.route_type, r.route_short_name
         """
-        
+
         return self.execute_query(query)
-        
+
     def get_line_overview(self, line_name: str) -> Optional[Dict]:
         """Return high-level information about a specific line."""
         query = """
@@ -255,30 +256,32 @@ class DatabaseManager:
             stop_count DESC
         """
 
-        rows = self.execute_query(query, {'line_name': line_name})
+        rows = self.execute_query(query, {"line_name": line_name})
         if not rows:
             return None
 
         primary = rows[0]
         variants = []
         for row in rows:
-            variants.append({
-                'route_id': row['route_id'],
-                'trip_count': int(row.get('trip_count') or 0),
-                'stop_count': int(row.get('stop_count') or 0)
-            })
+            variants.append(
+                {
+                    "route_id": row["route_id"],
+                    "trip_count": int(row.get("trip_count") or 0),
+                    "stop_count": int(row.get("stop_count") or 0),
+                }
+            )
 
         return {
-            'route_id': primary['route_id'],
-            'line': primary['route_short_name'],
-            'name': primary.get('route_long_name'),
-            'route_type': primary.get('route_type'),
-            'route_type_name': ROUTE_TYPE_NAMES.get(primary.get('route_type'), 'Unknown'),
-            'color': self._normalize_color(primary.get('route_color')),
-            'text_color': self._normalize_color(primary.get('route_text_color')),
-            'trip_count': int(primary.get('trip_count') or 0),
-            'stop_count': int(primary.get('stop_count') or 0),
-            'variants': variants
+            "route_id": primary["route_id"],
+            "line": primary["route_short_name"],
+            "name": primary.get("route_long_name"),
+            "route_type": primary.get("route_type"),
+            "route_type_name": ROUTE_TYPE_NAMES.get(primary.get("route_type"), "Unknown"),
+            "color": self._normalize_color(primary.get("route_color")),
+            "text_color": self._normalize_color(primary.get("route_text_color")),
+            "trip_count": int(primary.get("trip_count") or 0),
+            "stop_count": int(primary.get("stop_count") or 0),
+            "variants": variants,
         }
 
     def get_line_route_data(self, line_name: str) -> Optional[Dict]:
@@ -299,7 +302,7 @@ class DatabaseManager:
             ORDER BY 
                 r.route_id
             """,
-            {'line_name': line_name}
+            {"line_name": line_name},
         )
 
         if not routes:
@@ -317,7 +320,7 @@ class DatabaseManager:
                 ORDER BY shape_id, direction_id NULLS LAST, trip_id
                 LIMIT 4
                 """,
-                {'route_id': route['route_id']}
+                {"route_id": route["route_id"]},
             )
 
             for shape in shapes:
@@ -334,43 +337,54 @@ class DatabaseManager:
                     ORDER BY 
                         shape_pt_sequence
                     """,
-                    {'shape_id': shape['shape_id']}
+                    {"shape_id": shape["shape_id"]},
                 )
 
                 if not points:
                     continue
 
                 coordinates = [
-                    [self._to_float(point['shape_pt_lat']), self._to_float(point['shape_pt_lon'])]
+                    [self._to_float(point["shape_pt_lat"]), self._to_float(point["shape_pt_lon"])]
                     for point in points
-                    if self._to_float(point['shape_pt_lat']) is not None and self._to_float(point['shape_pt_lon']) is not None
+                    if self._to_float(point["shape_pt_lat"]) is not None
+                    and self._to_float(point["shape_pt_lon"]) is not None
                 ]
 
                 if not coordinates:
                     continue
 
-                segments.append({
-                    'route_id': route['route_id'],
-                    'shape_id': shape['shape_id'],
-                    'direction_id': shape.get('direction_id'),
-                    'coordinates': coordinates
-                })
+                segments.append(
+                    {
+                        "route_id": route["route_id"],
+                        "shape_id": shape["shape_id"],
+                        "direction_id": shape.get("direction_id"),
+                        "coordinates": coordinates,
+                    }
+                )
 
         overview = self.get_line_overview(line_name)
-        type_code = overview['route_type'] if overview else routes[0].get('route_type')
-        type_name = overview['route_type_name'] if overview else ROUTE_TYPE_NAMES.get(routes[0].get('route_type'), 'Unknown')
+        type_code = overview["route_type"] if overview else routes[0].get("route_type")
+        type_name = (
+            overview["route_type_name"]
+            if overview
+            else ROUTE_TYPE_NAMES.get(routes[0].get("route_type"), "Unknown")
+        )
 
         return {
-            'line': overview['line'] if overview else routes[0]['route_short_name'],
-            'name': overview['name'] if overview else routes[0].get('route_long_name'),
-            'type': type_name,
-            'type_code': type_code,
-            'type_name': type_name,
-            'color': overview['color'] if overview else self._normalize_color(routes[0].get('route_color')),
-            'text_color': overview['text_color'] if overview else self._normalize_color(routes[0].get('route_text_color')),
-            'segments': segments,
-            'stops': self.get_line_stations(line_name),
-            'overview': overview,
+            "line": overview["line"] if overview else routes[0]["route_short_name"],
+            "name": overview["name"] if overview else routes[0].get("route_long_name"),
+            "type": type_name,
+            "type_code": type_code,
+            "type_name": type_name,
+            "color": overview["color"]
+            if overview
+            else self._normalize_color(routes[0].get("route_color")),
+            "text_color": overview["text_color"]
+            if overview
+            else self._normalize_color(routes[0].get("route_text_color")),
+            "segments": segments,
+            "stops": self.get_line_stations(line_name),
+            "overview": overview,
         }
 
     def get_line_stations(self, line_name: str) -> List[Dict]:
@@ -408,24 +422,30 @@ class DatabaseManager:
         ORDER BY stop_sequence
         """
 
-        rows = self.execute_query(query, {'line_name': line_name})
+        rows = self.execute_query(query, {"line_name": line_name})
         stations: List[Dict[str, Any]] = []
         for row in rows:
-            stations.append({
-                'id': row['stop_id'],
-                'name': row['stop_name'],
-                'rbl': row['stop_code'],
-                'lat': self._to_float(row['stop_lat']),
-                'lng': self._to_float(row['stop_lon']),
-                'sequence': int(row['stop_sequence']) if row.get('stop_sequence') is not None else None,
-                'direction': int(row['direction_id']) if row.get('direction_id') is not None else None
-            })
+            stations.append(
+                {
+                    "id": row["stop_id"],
+                    "name": row["stop_name"],
+                    "rbl": row["stop_code"],
+                    "lat": self._to_float(row["stop_lat"]),
+                    "lng": self._to_float(row["stop_lon"]),
+                    "sequence": int(row["stop_sequence"])
+                    if row.get("stop_sequence") is not None
+                    else None,
+                    "direction": int(row["direction_id"])
+                    if row.get("direction_id") is not None
+                    else None,
+                }
+            )
         return stations
 
     def get_stations(self) -> List[Dict]:
         """
         Get all stations from the database.
-        
+
         Returns:
             List of stations with their details
         """
@@ -449,16 +469,16 @@ class DatabaseManager:
         ORDER BY 
             s.stop_name
         """
-        
+
         return self.execute_query(query)
-    
+
     def get_stops(self, route_id: Optional[str] = None) -> List[Dict]:
         """
         Get stops from the database, optionally filtered by route.
-        
+
         Args:
             route_id: Optional route ID to filter stops by
-            
+
         Returns:
             List of stops with their details
         """
@@ -482,12 +502,12 @@ class DatabaseManager:
         LEFT JOIN 
             routes r ON t.route_id = r.route_id
         """
-        
+
         params = {}
         if route_id:
             query += " WHERE t.route_id = :route_id"
-            params['route_id'] = route_id
-            
+            params["route_id"] = route_id
+
         query += """
         GROUP BY 
             s.stop_id, s.stop_name, s.stop_lat, s.stop_lon, 
@@ -495,17 +515,17 @@ class DatabaseManager:
         ORDER BY 
             s.stop_name
         """
-        
+
         return self.execute_query(query, params)
-    
+
     def get_route_stops(self, route_id: str, direction_id: Optional[int] = None) -> List[Dict]:
         """
         Get all stops for a specific route and optional direction.
-        
+
         Args:
             route_id: The route ID
             direction_id: Optional direction ID (0 or 1)
-            
+
         Returns:
             List of stops in order for the route
         """
@@ -533,30 +553,32 @@ class DatabaseManager:
         WHERE 
             t.route_id = :route_id
         """
-        
-        params = {'route_id': route_id}
-        
+
+        params = {"route_id": route_id}
+
         if direction_id is not None:
             query += " AND t.direction_id = :direction_id"
-            params['direction_id'] = direction_id
-            
+            params["direction_id"] = direction_id
+
         query += """
         ORDER BY 
             t.direction_id, st.stop_sequence
         """
-        
+
         return self.execute_query(query, params)
+
 
 # Create a singleton instance
 db = DatabaseManager()
 
+
 def init_db(app):
     """Initialize the database with the Flask app."""
     db.init_app(app)
-    
+
     # Register teardown handler
     @app.teardown_appcontext
     def shutdown_session(exception=None):
         db.close_session(exception)
-    
+
     return db

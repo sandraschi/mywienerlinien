@@ -101,7 +101,7 @@ def register_traffic_alerts_tool(mcp: FastMCP) -> None:
 
                 # Apply line filter
                 if line_filter:
-                    if line_filter.upper() not in [l.upper() for l in affected_lines]:
+                    if line_filter.upper() not in [line.upper() for line in affected_lines]:
                         continue
 
                 # Extract affected stations

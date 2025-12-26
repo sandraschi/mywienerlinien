@@ -100,14 +100,14 @@ services:
       db:
         condition: service_healthy
     command: >
-      sh -c "uvicorn app:app --host 0.0.0.0 --port 3080"
+      sh -c "uvicorn app:app --host 0.0.0.0 --port 3080 --reload"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3080/api/status"]
+      test: ["CMD", "curl", "-f", "http://localhost:3080/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 20s
+      start_period: 30s
 
   # Loki - Log Aggregation
   loki:

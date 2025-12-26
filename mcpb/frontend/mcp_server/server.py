@@ -20,14 +20,13 @@ from fastmcp import FastMCP
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Import tools
-from mcp_server.tools.departures import register_departures_tool
-from mcp_server.tools.stations import register_station_search_tool
-from mcp_server.tools.status import register_status_tool
-from mcp_server.tools.journey import register_journey_tool
-
 # Import prompts and resources
 from mcp_server.prompts import register_prompts
 from mcp_server.resources import register_resources
+from mcp_server.tools.departures import register_departures_tool
+from mcp_server.tools.journey import register_journey_tool
+from mcp_server.tools.stations import register_station_search_tool
+from mcp_server.tools.status import register_status_tool
 
 # Configure logging
 logging.basicConfig(
@@ -67,4 +66,3 @@ logger.info("Registered prompts and resources for AI assistant guidance")
 if __name__ == "__main__":
     # Run with stdio transport (for Claude Desktop)
     mcp.run(transport="stdio")
-

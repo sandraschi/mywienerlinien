@@ -1,0 +1,50 @@
+=====================================
+MyWienerLinien Status - 12/24/2025 01:20:44
+=====================================
+
+[1] Docker Version:
+Docker version 29.1.2, build 890dcca
+
+[2] Container Status:
+NAMES                   STATUS                    PORTS
+wienerlinien-frontend   Up 40 minutes (healthy)   0.0.0.0:3079->3080/tcp, [::]:3079->3080/tcp
+wienerlinien-db         Up 41 minutes (healthy)   0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp
+
+[3] Docker Compose Status:
+NAME                    IMAGE                           COMMAND                  SERVICE    CREATED          STATUS                      PORTS
+grafana                 grafana/grafana:latest          "/run.sh"                grafana    41 minutes ago   Up 41 minutes (healthy)     0.0.0.0:3140->3000/tcp, [::]:3140->3000/tcp
+loki                    grafana/loki:latest             "/usr/bin/loki -confÔÇª"   loki       41 minutes ago   Up 41 minutes (unhealthy)   0.0.0.0:3193->3100/tcp, [::]:3193->3100/tcp
+promtail                grafana/promtail:latest         "/usr/bin/promtail -ÔÇª"   promtail   41 minutes ago   Up 41 minutes               
+wienerlinien-db         postgis/postgis:15-3.3-alpine   "docker-entrypoint.sÔÇª"   db         41 minutes ago   Up 41 minutes (healthy)     0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp
+wienerlinien-frontend   mywienerlinien-frontend         "sh -c 'uvicorn app:ÔÇª"   frontend   41 minutes ago   Up 40 minutes (healthy)     0.0.0.0:3079->3080/tcp, [::]:3079->3080/tcp
+
+[4] Frontend Logs (last 20):
+INFO:     127.0.0.1:60298 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     172.23.0.1:40478 - "GET /api/arrivals?rbl=352%2C385%2C4404%2C4433 HTTP/1.1" 200 OK
+2025-12-24 00:19:33,245 - vehicle_service - INFO - Vehicle snapshot filtered
+INFO:     172.23.0.1:33896 - "GET /api/traffic-info HTTP/1.1" 200 OK
+2025-12-24 00:19:45,147 - app - INFO - Fetching vehicles: type=all lines=['U1', 'U2', 'U3', 'U4', 'U6'] station=None
+2025-12-24 00:19:54,060 - vehicle_service - INFO - Vehicle snapshot filtered
+INFO:     172.23.0.1:33896 - "GET /api/vehicles?lines=U1%2CU2%2CU3%2CU6%2CU4 HTTP/1.1" 200 OK
+2025-12-24 00:19:54,060 - app - WARNING - No vehicles found matching the criteria
+2025-12-24 00:19:54,061 - vehicle_service - INFO - Vehicle snapshot filtered
+2025-12-24 00:19:57,615 - vehicle_service - ERROR - API request failed for RBL 3431: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=3431&sender=mywienerlinien.live-map%40example.com
+2025-12-24 00:19:58,744 - vehicle_service - INFO - Vehicle snapshot filtered
+2025-12-24 00:20:09,404 - vehicle_service - INFO - Vehicle snapshot filtered
+2025-12-24 00:20:30,592 - vehicle_service - INFO - Vehicle snapshot filtered
+INFO:     172.23.0.1:33896 - "GET /api/arrivals?rbl=352%2C385%2C4404%2C4433 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38478 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     172.23.0.1:47212 - "GET /api/arrivals?rbl=352%2C385%2C4404%2C4433 HTTP/1.1" 200 OK
+2025-12-24 00:20:43,884 - vehicle_service - ERROR - API request failed for RBL 2058: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=2058&sender=mywienerlinien.live-map%40example.com
+2025-12-24 00:20:44,206 - vehicle_service - ERROR - API request failed for RBL 2065: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=2065&sender=mywienerlinien.live-map%40example.com
+2025-12-24 00:20:44,555 - vehicle_service - ERROR - API request failed for RBL 2588: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=2588&sender=mywienerlinien.live-map%40example.com
+2025-12-24 00:20:44,874 - vehicle_service - ERROR - API request failed for RBL 4937: 403 Client Error: Forbidden for url: https://www.wienerlinien.at/ogd_realtime/monitor?rbl=4937&sender=mywienerlinien.live-map%40example.com
+
+[5] Endpoint Tests:
+❌ Home page: The request was canceled due to the configured HttpClient.Timeout of 5 seconds elapsing.
+❌ Analytics: The request was canceled due to the configured HttpClient.Timeout of 5 seconds elapsing.
+❌ Community: The request was canceled due to the configured HttpClient.Timeout of 5 seconds elapsing.
+
+=====================================
+Check complete! Saved to: D:\Dev\repos\mywienerlinien\status_output.txt
+=====================================

@@ -1,13 +1,13 @@
 """Pydantic models for journey planning MCP tools."""
 
 from datetime import datetime
-from typing import List, Optional
-from pydantic import BaseModel, Field, ConfigDict
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class JourneySegment(BaseModel):
     """A segment of a journey (e.g., one leg with transfers)."""
-    
+
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
@@ -17,11 +17,11 @@ class JourneySegment(BaseModel):
                 "departure_time": "2025-01-15T14:30:00Z",
                 "arrival_time": "2025-01-15T14:45:00Z",
                 "duration_minutes": 15,
-                "vehicle_type": "metro"
+                "vehicle_type": "metro",
             }
         }
     )
-    
+
     line: str = Field(..., description="Line name")
     from_station: str = Field(..., description="Origin station")
     to_station: str = Field(..., description="Destination station")
@@ -33,7 +33,7 @@ class JourneySegment(BaseModel):
 
 class JourneyPlan(BaseModel):
     """Complete journey plan between two stations."""
-    
+
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
@@ -43,16 +43,15 @@ class JourneyPlan(BaseModel):
                 "total_duration_minutes": 15,
                 "segments": [],
                 "transfers": 0,
-                "estimated_cost": "€2.40"
+                "estimated_cost": "€2.40",
             }
         }
     )
-    
+
     from_station: str = Field(..., description="Origin station name")
     to_station: str = Field(..., description="Destination station name")
     departure_time: datetime = Field(..., description="Requested departure time")
     total_duration_minutes: int = Field(..., description="Total journey duration in minutes")
-    segments: List[JourneySegment] = Field(..., description="Journey segments")
+    segments: list[JourneySegment] = Field(..., description="Journey segments")
     transfers: int = Field(..., description="Number of transfers required")
-    estimated_cost: Optional[str] = Field(None, description="Estimated fare cost")
-
+    estimated_cost: str | None = Field(None, description="Estimated fare cost")

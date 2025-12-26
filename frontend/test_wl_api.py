@@ -9,6 +9,7 @@ directly to debug the public API:
 from __future__ import annotations
 
 import json
+
 import requests
 
 API_URL = "https://www.wienerlinien.at/ogd_realtime/monitor"
@@ -56,7 +57,9 @@ def main() -> None:
         print(f"Coordinates: {coords}")
 
         for j, line in enumerate(monitor.get("lines", [])):
-            print(f"\n  Line {j + 1}: {line.get('name', 'N/A')} towards {line.get('towards', 'N/A')}")
+            print(
+                f"\n  Line {j + 1}: {line.get('name', 'N/A')} towards {line.get('towards', 'N/A')}"
+            )
             print(f"  Type: {line.get('type', 'unknown')}")
 
             departures = line.get("departures", {}).get("departure", [])
@@ -81,4 +84,3 @@ def main() -> None:
 
 if __name__ == "__main__":  # pragma: no cover - manual execution only
     main()
-

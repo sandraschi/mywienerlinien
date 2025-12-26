@@ -23,14 +23,14 @@ if str(_frontend_path) not in sys.path:
     sys.path.insert(0, str(_frontend_path))
 
 # Import tools
-from wienerlinien_mcp.tools.departures import register_departures_tool
-from wienerlinien_mcp.tools.stations import register_station_search_tool
-from wienerlinien_mcp.tools.status import register_status_tool
-from wienerlinien_mcp.tools.journey import register_journey_tool
+from wienerlinien_mcp.middleware.error_handler import register_error_handler_middleware
 
 # Import middleware
 from wienerlinien_mcp.middleware.logging import register_logging_middleware
-from wienerlinien_mcp.middleware.error_handler import register_error_handler_middleware
+from wienerlinien_mcp.tools.departures import register_departures_tool
+from wienerlinien_mcp.tools.journey import register_journey_tool
+from wienerlinien_mcp.tools.stations import register_station_search_tool
+from wienerlinien_mcp.tools.status import register_status_tool
 
 # Configure logging
 logging.basicConfig(
@@ -61,6 +61,3 @@ logger.info("Wiener Linien MCP Server initialized with FastMCP 2.13")
 if __name__ == "__main__":
     # Run with stdio transport (for Claude Desktop)
     mcp.run(transport="stdio")
-
-
-

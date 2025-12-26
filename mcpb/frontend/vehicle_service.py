@@ -6,8 +6,9 @@ import logging
 import re
 import threading
 import time
+from collections.abc import Iterable
 from datetime import datetime
-from typing import Any, Dict, Iterable, List, Optional, Set
+from typing import Any
 
 import requests
 
@@ -22,11 +23,11 @@ logger = logging.getLogger(__name__)
 
 VEHICLE_CACHE_TTL = 30  # seconds
 MAX_RBLS_PER_LINE = 12
-_vehicle_snapshot_cache: Dict[str, Dict[str, Any]] = {}
+_vehicle_snapshot_cache: dict[str, dict[str, Any]] = {}
 _vehicle_cache_lock = threading.Lock()
 
 
-def vehicle_cache_key(station: Optional[str], lines: Optional[Iterable[str]]) -> str:
+def vehicle_cache_key(station: str | None, lines: Iterable[str] | None) -> str:
     if station:
         return f"station:{station}"
     if lines:
@@ -41,7 +42,7 @@ def clear_vehicle_cache() -> None:
         _vehicle_snapshot_cache.clear()
 
 
-def fetch_vehicle_data(rbl_number: str) -> Optional[Dict[str, Any]]:
+def fetch_vehicle_data(rbl_number: str) -> dict[str, Any] | None:
     """Fetch vehicle data from the Wiener Linien API for a specific RBL."""
 
     try:
@@ -58,7 +59,7 @@ def fetch_vehicle_data(rbl_number: str) -> Optional[Dict[str, Any]]:
         return None
 
 
-def fetch_traffic_info() -> Optional[Dict[str, Any]]:
+def fetch_traffic_info() -> dict[str, Any] | None:
     try:
         url = "https://www.wienerlinien.at/ogd_realtime/trafficInfo"
         response = requests.get(url, timeout=10)
@@ -69,7 +70,7 @@ def fetch_traffic_info() -> Optional[Dict[str, Any]]:
         return None
 
 
-def fetch_news() -> Optional[Dict[str, Any]]:
+def fetch_news() -> dict[str, Any] | None:
     try:
         url = "https://www.wienerlinien.at/ogd_realtime/news"
         response = requests.get(url, timeout=10)
@@ -80,7 +81,7 @@ def fetch_news() -> Optional[Dict[str, Any]]:
         return None
 
 
-def _calculate_delay(departure_time: Dict[str, Any]) -> int:
+def _calculate_delay(departure_time: dict[str, Any]) -> int:
     try:
         planned_time = departure_time.get("timePlanned")
         real_time = departure_time.get("timeReal")
@@ -96,11 +97,11 @@ def _calculate_delay(departure_time: Dict[str, Any]) -> int:
 
 def collect_vehicle_data(
     vehicle_type: str = "all",
-    line: Optional[str] = None,
-    station: Optional[str] = None,
-    lines: Optional[List[str]] = None,
-) -> Dict[str, Any]:
-    normalized_lines: List[str] = []
+    line: str | None = None,
+    station: str | None = None,
+    lines: list[str] | None = None,
+) -> dict[str, Any]:
+    normalized_lines: list[str] = []
     if lines:
         normalized_lines = sorted({value.strip().upper() for value in lines if value})
 
@@ -117,7 +118,9 @@ def collect_vehicle_data(
             age = VEHICLE_CACHE_TTL + 1
 
         if age > VEHICLE_CACHE_TTL:
-            raw_snapshot = _refresh_vehicle_snapshot(station, set(normalized_lines) if normalized_lines else None)
+            raw_snapshot = _refresh_vehicle_snapshot(
+                station, set(normalized_lines) if normalized_lines else None
+            )
             _vehicle_snapshot_cache[cache_key] = raw_snapshot
         else:
             raw_snapshot = snapshot  # type: ignore[assignment]
@@ -134,9 +137,7 @@ def collect_vehicle_data(
 
     if line_filters:
         vehicles = [
-            vehicle
-            for vehicle in vehicles
-            if vehicle.get("line", "").upper() in line_filters
+            vehicle for vehicle in vehicles if vehicle.get("line", "").upper() in line_filters
         ]
 
     logger.info(
@@ -158,9 +159,9 @@ def collect_vehicle_data(
 
 
 def get_vehicle_summary(
-    lines: Optional[Iterable[str]] = None,
-    station: Optional[str] = None,
-) -> Dict[str, Any]:
+    lines: Iterable[str] | None = None,
+    station: str | None = None,
+) -> dict[str, Any]:
     """Return aggregated statistics for dashboards."""
     snapshot = collect_vehicle_data(
         vehicle_type="all",
@@ -170,9 +171,9 @@ def get_vehicle_summary(
     )
     vehicles = snapshot["vehicles"]
 
-    per_type: Dict[str, int] = {}
-    lines_seen: Dict[str, int] = {}
-    delayed: List[Dict[str, Any]] = []
+    per_type: dict[str, int] = {}
+    lines_seen: dict[str, int] = {}
+    delayed: list[dict[str, Any]] = []
 
     for vehicle in vehicles:
         vehicle_type = vehicle.get("type", "unknown").lower() or "unknown"
@@ -233,8 +234,8 @@ def get_vehicle_summary(
     }
 
 
-def _refresh_vehicle_snapshot(station: Optional[str], line_filters: Optional[Set[str]]) -> Dict[str, Any]:
-    vehicles: List[Dict[str, Any]] = []
+def _refresh_vehicle_snapshot(station: str | None, line_filters: set[str] | None) -> dict[str, Any]:
+    vehicles: list[dict[str, Any]] = []
     successful_requests = 0
     failed_requests = 0
 
@@ -245,7 +246,7 @@ def _refresh_vehicle_snapshot(station: Optional[str], line_filters: Optional[Set
 
     if not stations_to_query:
         all_stations = data_loader.load_stations()
-        major_stations: List[str] = []
+        major_stations: list[str] = []
         for station_info in all_stations:
             if not station_info.rbl:
                 continue
@@ -326,11 +327,11 @@ def _refresh_vehicle_snapshot(station: Optional[str], line_filters: Optional[Set
     }
 
 
-def _determine_rbls_for_lines(line_filters: Optional[Set[str]]) -> List[str]:
+def _determine_rbls_for_lines(line_filters: set[str] | None) -> list[str]:
     if not line_filters:
         return []
 
-    rbls: List[str] = []
+    rbls: list[str] = []
 
     for line_name in line_filters:
         try:
@@ -375,4 +376,3 @@ __all__ = [
     "vehicle_cache_key",
     "VEHICLE_CACHE_TTL",
 ]
-
