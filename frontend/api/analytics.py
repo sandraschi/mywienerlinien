@@ -32,7 +32,7 @@ async def get_line_reliability(
     """
     try:
         from ..database import db
-        from ..mcp_server.historical_data import get_historical_collector
+        from ..wienerlinien_mcp.historical_data import get_historical_collector
 
         collector = get_historical_collector(db)
         stats = collector.get_line_reliability_stats(days=days)
@@ -70,7 +70,7 @@ async def get_delay_patterns(
     """
     try:
         from ..database import db
-        from ..mcp_server.historical_data import get_historical_collector
+        from ..wienerlinien_mcp.historical_data import get_historical_collector
 
         collector = get_historical_collector(db)
         patterns = collector.analyze_delay_patterns(line=line)
@@ -105,7 +105,7 @@ async def get_line_prediction(
         Delay prediction with confidence
     """
     try:
-        from ..mcp_server.prediction_service import get_prediction_service
+        from ..wienerlinien_mcp.prediction_service import get_prediction_service
 
         predictor = get_prediction_service()
 
@@ -208,8 +208,8 @@ async def get_analytics_summary() -> JSONResponse:
     """
     try:
         from ..database import db
-        from ..mcp_server.historical_data import get_historical_collector
-        from ..mcp_server.prediction_service import ML_AVAILABLE, get_prediction_service
+        from ..wienerlinien_mcp.historical_data import get_historical_collector
+        from ..wienerlinien_mcp.prediction_service import ML_AVAILABLE, get_prediction_service
 
         collector = get_historical_collector(db)
         predictor = get_prediction_service()

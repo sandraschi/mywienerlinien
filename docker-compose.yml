@@ -25,7 +25,7 @@ services:
     networks:
       - wienerlinien-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U wienerlinien -d wienerlinien"]
+      test: [ "CMD-SHELL", "pg_isready -U wienerlinien -d wienerlinien" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -63,20 +63,10 @@ services:
     profiles:
       - loader
     command: >
-      bash -c "
-      echo 'Waiting for PostgreSQL to be ready...' &&
-      until pg_isready -h db -U wienerlinien -d wienerlinien -q; do
+      bash -c " echo 'Waiting for PostgreSQL to be ready...' && until pg_isready -h db -U wienerlinien -d wienerlinien -q; do
         echo 'PostgreSQL is not ready yet. Retrying in 5 seconds...' &&
         sleep 5
-      done &&
-      echo 'Creating database schema...' &&
-      psql -h db -U wienerlinien -d wienerlinien -f /app/db/init-scripts/01_init_db.sql &&
-      echo 'Installing Python dependencies...' &&
-      pip install -r /app/requirements-db.txt &&
-      echo 'GTFS scheduled loader: running if stale or forced...' &&
-      python /app/scripts/gtfs_scheduled_loader.py &&
-      echo 'GTFS scheduled loader finished.'
-      "
+      done && echo 'Creating database schema...' && psql -h db -U wienerlinien -d wienerlinien -f /app/db/init-scripts/01_init_db.sql && echo 'Installing Python dependencies...' && pip install -r /app/requirements-db.txt && echo 'GTFS scheduled loader: running if stale or forced...' && python /app/scripts/gtfs_scheduled_loader.py && echo 'GTFS scheduled loader finished.' "
 
   # Frontend Application
   frontend:
@@ -103,7 +93,7 @@ services:
       sh -c "uvicorn app:app --host 0.0.0.0 --port 3080 --reload"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3080/api/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:3080/api/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -122,11 +112,6 @@ services:
     networks:
       - wienerlinien-network
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
 
   # Promtail - Log Collector
   promtail:
@@ -164,7 +149,7 @@ services:
       - loki
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health" ]
       interval: 30s
       timeout: 5s
       retries: 3

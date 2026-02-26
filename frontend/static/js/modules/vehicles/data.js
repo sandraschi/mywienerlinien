@@ -11,10 +11,14 @@ import { fetchWithTimeout } from '../utils/api.js';
 let vehiclesCache = null;
 let lastUpdateTime = null;
 let eventSource = null;
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 3;
 
 /**
- * Load vehicles data from the API
- * @returns {Promise<Array>} Array of vehicle objects
+ * Load vehicle departure data from the API
+ * NOTE: Wiener Linien API only provides stop-based departure information,
+ * not real-time GPS positions of vehicles in transit.
+ * @returns {Promise<Array>} Array of departure events (not actual vehicles)
  */
 export async function loadVehiclesData() {
     try {
@@ -56,36 +60,80 @@ export async function loadVehiclesData() {
             responseTimestamp: new Date().toISOString()
         });
 
+        // Group vehicles by coordinates to handle stacking
+        const coordGroups = new Map();
+
         // Process and normalize vehicle data
-        vehicles = vehicles.map(vehicle => ({
-            ...vehicle,
-            // Ensure coordinates are in the correct format
-            coordinates: vehicle.coordinates && Array.isArray(vehicle.coordinates)
-                ? vehicle.coordinates
-                : [vehicle.lat, vehicle.lng].filter(Boolean).length === 2
-                    ? [vehicle.lat, vehicle.lng]
-                    : null,
-            // Normalize vehicle type
-            type: normalizeVehicleType(vehicle.type),
-            // Ensure required fields
-            id: vehicle.id || generateVehicleId(vehicle),
-            routeId: vehicle.routeId || null,
-            lastUpdated: vehicle.lastUpdated || new Date().toISOString()
-        }));
+        vehicles = vehicles.map(vehicle => {
+            // Debug coordinate processing for first few vehicles
+            const hasExistingCoords = vehicle.coordinates && Array.isArray(vehicle.coordinates);
+            const fallbackCoords = [vehicle.lat, vehicle.lng].filter(Boolean);
+            let finalCoords = hasExistingCoords ? vehicle.coordinates : fallbackCoords;
+
+            if (!vehicle.id || vehicle.id.includes('transit') || vehicle.id.includes('68A_2629_0')) { // Debug transit vehicles
+                logger.debug(`Processing vehicle ${vehicle.id}:`, {
+                    lat: vehicle.lat,
+                    lng: vehicle.lng,
+                    hasExistingCoords,
+                    fallbackCoords,
+                    finalCoords,
+                    inTransit: vehicle.in_transit
+                });
+            }
+
+            // Apply stacking offset for departure events at stops
+            if (finalCoords && finalCoords.length === 2) {
+                const coordKey = `${finalCoords[0]},${finalCoords[1]}`;
+                const groupIndex = coordGroups.get(coordKey) || 0;
+                coordGroups.set(coordKey, groupIndex + 1);
+
+                // Add small offset based on group index (spread vehicles slightly)
+                if (groupIndex > 0) {
+                    const offset = 0.0001 * groupIndex; // ~10 meters offset
+                    finalCoords = [
+                        finalCoords[0] + (Math.random() - 0.5) * offset,
+                        finalCoords[1] + (Math.random() - 0.5) * offset
+                    ];
+                }
+            }
+
+            return {
+                ...vehicle,
+                // Ensure coordinates are in the correct format [lat, lng] for Leaflet
+                coordinates: finalCoords && finalCoords.length === 2 ? finalCoords : null,
+                // Normalize vehicle type
+                type: normalizeVehicleType(vehicle.type),
+                // Ensure required fields
+                id: vehicle.id || generateVehicleId(vehicle),
+                routeId: vehicle.routeId || null,
+                lastUpdated: vehicle.lastUpdated || new Date().toISOString()
+            };
+        });
         
+        // Debug: log coordinate processing
+        logger.debug(`Processing ${vehicles.length} vehicles before coordinate filtering`);
+        vehicles.forEach((v, i) => {
+            if (i < 3) { // Log first 3 vehicles
+                logger.debug(`Vehicle ${i}: id=${v.id}, lat=${v.lat}, lng=${v.lng}, hasCoordinates=${!!v.coordinates}`);
+            }
+        });
+
         // Filter out vehicles without valid coordinates
-        vehicles = vehicles.filter(vehicle => 
-            vehicle.coordinates && 
+        const beforeFilter = vehicles.length;
+        vehicles = vehicles.filter(vehicle =>
+            vehicle.coordinates &&
             vehicle.coordinates.length === 2 &&
-            !isNaN(vehicle.coordinates[0]) && 
+            !isNaN(vehicle.coordinates[0]) &&
             !isNaN(vehicle.coordinates[1])
         );
-        
+
+        logger.info(`Filtered ${beforeFilter} vehicles down to ${vehicles.length} with valid coordinates`);
+
         // Update cache
         vehiclesCache = vehicles;
         lastUpdateTime = now;
-        
-        logger.debug(`Loaded ${vehicles.length} vehicles`);
+
+        logger.info(`Loaded ${vehicles.length} vehicles with coordinate offsets applied`);
         return vehicles;
         
     } catch (error) {
@@ -129,6 +177,15 @@ export function startVehicleUpdates(onUpdate) {
         // Handle errors
         eventSource.onerror = (error) => {
             logger.error('Vehicle updates error:', error);
+            reconnectAttempts++;
+
+            if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+                logger.warn(`Max reconnect attempts (${MAX_RECONNECT_ATTEMPTS}) reached. Falling back to REST API polling.`);
+                eventSource.close();
+                eventSource = null;
+                return;
+            }
+
             // Attempt to reconnect after a delay
             setTimeout(() => {
                 if (eventSource) {

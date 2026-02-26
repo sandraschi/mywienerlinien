@@ -93,10 +93,10 @@ pip install -e .
 
 ```powershell
 # From project root
-python -m frontend.mcp_server.server
+python -m frontend.wienerlinien_mcp.server
 
 # Or with FastMCP CLI
-fastmcp dev frontend.mcp_server.server:mcp
+fastmcp dev frontend.wienerlinien_mcp.server:mcp
 ```
 
 ### 2. Claude Desktop Configuration (Native Execution)
@@ -113,7 +113,7 @@ Add to `claude_desktop_config.json`:
   "mcpServers": {
     "vienna-transit": {
       "command": "python",
-      "args": ["-m", "frontend.mcp_server.server"],
+      "args": ["-m", "frontend.wienerlinien_mcp.server"],
       "cwd": "D:\\Dev\\repos\\mywienerlinien",
       "env": {
         "DATABASE_URL": "postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien"
@@ -132,7 +132,7 @@ python test_mcp.py
 
 # Test with database
 $env:DATABASE_URL = "postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien"
-python -m frontend.mcp_server.server
+python -m frontend.wienerlinien_mcp.server
 ```
 
 ---
@@ -397,7 +397,7 @@ This MCP server runs alongside the FastAPI web server:
 ### Core Components
 
 ```
-mcp_server/
+wienerlinien_mcp/
 ├── server.py                  # FastMCP server initialization
 ├── tools/                     # Tool implementations (9 tools)
 │   ├── help.py               # Help tool
@@ -439,7 +439,7 @@ mcp_server/
 
 ```powershell
 # Test with MCP Inspector
-mcp-inspector python -m frontend.mcp_server.server
+mcp-inspector python -m frontend.wienerlinien_mcp.server
 ```
 
 ### Manual Testing
@@ -478,13 +478,13 @@ See `../../docs/MCP_TESTING_GUIDE.md` for comprehensive test scenarios:
 
 ```powershell
 # Linting
-ruff check mcp_server/
+ruff check wienerlinien_mcp/
 
 # Formatting
-ruff format mcp_server/
+ruff format wienerlinien_mcp/
 
 # Type checking
-mypy mcp_server/ --ignore-missing-imports
+mypy wienerlinien_mcp/ --ignore-missing-imports
 ```
 
 ### Debugging
@@ -492,7 +492,7 @@ mypy mcp_server/ --ignore-missing-imports
 ```powershell
 # Enable debug logging
 $env:LOG_LEVEL = "DEBUG"
-python -m frontend.mcp_server.server
+python -m frontend.wienerlinien_mcp.server
 ```
 
 ---

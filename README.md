@@ -1,12 +1,14 @@
 # Vienna Transit - Dual Standard Application
 
-**Last Updated:** 2025-12-17
+**Last Updated:** 2025-12-27
 **Status:** ✅ Production Ready | 🏆 SOTA Compliant | 🚀 Fully Operational
 **Version:** 2.0.1 (Phase 1-5 Complete + Schema Migration)
 
 A comprehensive Vienna public transport application with **two complementary interfaces**:
-- **🌐 Web Application**: Interactive real-time map with vehicle tracking
+- **🌐 Web Application**: Interactive real-time map with departure information
 - **🤖 MCP Server**: AI assistant integration for Claude Desktop (SOTA compliant)
+
+**Important Note**: Due to Wiener Linien API limitations, the map shows **departure events at stops** rather than real-time GPS vehicle positions. This is the best real-time information available from the official API.
 
 Both interfaces share the same backend logic and data sources, providing a unified experience across web and AI platforms.
 
@@ -186,8 +188,28 @@ Both interfaces use the same core modules:
 
 ---
 
-## 📦 Installation
+## 🚀 Installation
 
+### Prerequisites
+- [uv](https://docs.astral.sh/uv/) installed (RECOMMENDED)
+- Python 3.12+
+
+### 📦 Quick Start
+Run immediately via `uvx`:
+```bash
+uvx vienna-transit-mcp
+```
+
+### 🎯 Claude Desktop Integration
+Add to your `claude_desktop_config.json`:
+```json
+"mcpServers": {
+  "vienna-transit-mcp": {
+    "command": "uv",
+    "args": ["--directory", "D:/Dev/repos/mywienerlinien", "run", "vienna-transit-mcp"]
+  }
+}
+```
 ### Prerequisites
 - Python 3.9 or higher
 - Docker & Docker Compose
@@ -241,14 +263,28 @@ docker compose down
 
 See `DOCKER_DEV_GUIDE.md` for comprehensive development workflow.
 
-### 3. MCP Server (Claude Desktop - Native Execution)
+### 3. MCP Server (Claude Desktop / Cursor IDE - Native Execution)
 
 **Important:** 
 - MCP server runs natively (NOT in Docker)
-- Entry point: `frontend.mcp_server.server:mcp` (NOT `:main`)
+- Entry point: `frontend.mcp_server.server` (module execution)
 - Connects to Docker database on `localhost:5433`
 
 **Why Native:** MCP uses stdio transport which requires direct process communication. Docker stdio plumbing is complex and fragile. Native execution is simpler.
+
+#### For Cursor IDE
+
+**Important:** Cursor uses system Python. Install dependencies in the Python that Cursor uses:
+
+```powershell
+# Find system Python path (check Cursor error logs if needed)
+# Example: C:\Users\sandr\AppData\Local\Programs\Python\Python310\python.exe
+python -m pip install -e .
+```
+
+See `CURSOR_SETUP.md` for detailed Cursor configuration instructions.
+
+#### For Claude Desktop
 
 Add to `claude_desktop_config.json`:
 
@@ -258,14 +294,17 @@ Add to `claude_desktop_config.json`:
     "vienna-transit": {
       "command": "python",
       "args": ["-m", "frontend.mcp_server.server"],
-      "cwd": "D:\\Dev\\repos\\mywienerlinien",
       "env": {
+        "PYTHONPATH": "D:/Dev/repos/mywienerlinien",
+        "PYTHONUNBUFFERED": "1",
         "DATABASE_URL": "postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien"
       }
     }
   }
 }
 ```
+
+**Note:** Some JSON linters object to `cwd` parameter. Using `-m` module execution with `PYTHONPATH` avoids this issue.
 
 ---
 

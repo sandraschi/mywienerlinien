@@ -1,15 +1,13 @@
 """Shared utilities for MCP server tools."""
 
-import sys
-from pathlib import Path
+try:
+    from ..data_loader import data_loader
+except ImportError:
+    import sys
+    from pathlib import Path
 
-# Add frontend to path for backend imports
-_project_root = Path(__file__).parent.parent.parent
-_frontend_path = _project_root / "frontend"
-if str(_frontend_path) not in sys.path:
-    sys.path.insert(0, str(_frontend_path))
-
-from data_loader import data_loader
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from data_loader import data_loader
 
 
 def find_station_by_name(query: str) -> dict | None:

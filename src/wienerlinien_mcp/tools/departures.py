@@ -1,41 +1,81 @@
 """MCP tool for getting next departures from stations."""
 
 import logging
-import sys
 from datetime import datetime
-from pathlib import Path
 
 from fastmcp import FastMCP
 
-# Add frontend to path for backend imports
-_project_root = Path(__file__).parent.parent.parent.parent
-_frontend_path = _project_root / "frontend"
-if str(_frontend_path) not in sys.path:
-    sys.path.insert(0, str(_frontend_path))
+try:
+    from ...data_loader import data_loader
+    from ...vehicle_service import collect_vehicle_data
+    from ..models.departures import Departure, DepartureResponse
+    from ..utils import find_station_by_name
+except ImportError:
+    import sys
+    from pathlib import Path
 
-from data_loader import data_loader
-from vehicle_service import collect_vehicle_data
-
-from wienerlinien_mcp.models.departures import Departure, DepartureResponse
-from wienerlinien_mcp.utils import find_station_by_name
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+    from data_loader import data_loader
+    from wienerlinien_mcp.models.departures import Departure, DepartureResponse
+    from wienerlinien_mcp.utils import find_station_by_name
+    from vehicle_service import collect_vehicle_data
 
 logger = logging.getLogger(__name__)
 
 
 def register_departures_tool(mcp: FastMCP) -> None:
-    """Register the next_departures tool with the MCP server."""
+    """Register the next_departures tool with the MCP server.
+
+    This tool provides real-time departure information for Vienna public transport
+    stations. It queries the Wiener Linien API and returns upcoming departures with
+    line numbers, destinations, departure times, delays, and vehicle types.
+
+    Args:
+        mcp: FastMCP server instance to register the tool with
+    """
 
     @mcp.tool()
     async def next_departures(station: str, max_results: int = 5) -> DepartureResponse:
         """Get next departures from a Vienna transit station.
 
+        Retrieves real-time departure information for the specified station, including
+        metro (U-Bahn), tram, bus, and night bus services. Results are sorted by
+        departure time and include countdown timers, delays, and vehicle types.
+
+        The tool supports fuzzy station name matching, so partial names work well.
+        For example, "Stephans" will match "Stephansplatz" and "Stephansdom".
+
         Args:
-            station: Station name (supports German/English, partial matching)
-                   Examples: "Stephansplatz", "Schwedenplatz", "Hauptbahnhof"
-            max_results: Maximum departures to return (1-10, default: 5)
+            station (str): Station name (supports German/English, partial matching).
+                Examples: "Stephansplatz", "Schwedenplatz", "Hauptbahnhof",
+                "Stephans" (partial match), "HBF" (common abbreviation).
+            max_results (int): Maximum departures to return. Must be between 1 and 10.
+                Default is 5. Higher values provide more options but may include
+                departures further in the future.
 
         Returns:
-            List of departures with line, destination, time, delay, platform
+            DepartureResponse: Response containing:
+                - station_name (str): Full name of the matched station
+                - station_rbl (str, optional): RBL code (Vienna-specific station identifier)
+                - departures (List[Departure]): List of Departure objects with:
+                    * line (str): Line identifier (e.g., "U1", "D", "13A", "N25")
+                    * destination (str): Next station or final destination
+                    * departure_time (datetime): Scheduled departure datetime (UTC)
+                    * countdown_minutes (int): Minutes until departure
+                    * delay_minutes (int, optional): Delay in minutes (None if on time)
+                    * platform (str, optional): Platform/track number (if available)
+                    * vehicle_type (str): Type of vehicle (metro, tram, bus, nightbus)
+                - timestamp (datetime): Response generation timestamp
+
+        Raises:
+            ValueError: If station name cannot be found or matched. Includes
+                suggestions for similar station names.
+            RuntimeError: If API request fails or data cannot be processed.
+
+        Example:
+            >>> result = await next_departures("Stephansplatz", max_results=3)
+            >>> print(f"Next {len(result.departures)} departures from {result.station_name}")
+            Next 3 departures from Stephansplatz
         """
         try:
             # Validate max_results
@@ -79,7 +119,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
                     if isinstance(timestamp, str):
                         try:
                             vehicle_time = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
-                        except:
+                        except ValueError:
                             vehicle_time = now
                     else:
                         vehicle_time = timestamp
@@ -113,3 +153,32 @@ def register_departures_tool(mcp: FastMCP) -> None:
         except Exception as e:
             logger.error(f"Error fetching departures: {e}", exc_info=True)
             raise RuntimeError(f"Failed to fetch departures: {str(e)}") from e
+
+
+async def get_next_departures_internal(station_name: str, max_results: int = 5) -> list[dict]:
+    """Internal helper for public API compatibility.
+
+    Args:
+        station_name: Station to search for
+        max_results: Max results to return
+
+    Returns:
+        List of dicts containing departure info
+    """
+    from ..utils import find_station_by_name
+
+    station_info = find_station_by_name(station_name)
+    if not station_info:
+        return []
+
+    # Simple mock/proxy call to vehicles
+    # In a real scenario, this would call the same logic as the tool
+    # but return plain dicts instead of Pydantic models (if needed)
+    from vehicle_service import collect_vehicle_data
+
+    result = collect_vehicle_data(
+        vehicle_type="all",
+        station=station_info.get("rbl"),
+        lines=None,
+    )
+    return result.get("vehicles", [])[:max_results]

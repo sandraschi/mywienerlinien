@@ -1,10 +1,12 @@
 /**
- * Vehicles module - Manages vehicle tracking and visualization
+ * Departure Events module - Manages stop-based departure information display
+ * NOTE: Wiener Linien API only provides departure events at stops,
+ * not real-time GPS tracking of vehicles in transit.
  */
 
 import { logger } from '../utils/logger.js';
 import { loadVehiclesData, startVehicleUpdates } from './data.js';
-import { setupVehicleVisualization } from './visualization.js';
+import { setupVehicleVisualization, updateVehicleMarkers } from './visualization.js';
 import { initVehicleUI } from './ui.js';
 
 // Store vehicles data
@@ -116,10 +118,11 @@ async function refreshVehicles(map) {
         
         // Load vehicle data
         vehicles = await loadVehiclesData();
-        
+        logger.info(`Loaded ${vehicles.length} vehicles from API`);
+
         // Update vehicle markers
-        updateVehicleMarkers(map);
-        
+        updateVehicleDisplay(map);
+
         logger.info(`Refreshed ${vehicles.length} vehicles`);
         
     } catch (error) {
@@ -134,8 +137,21 @@ async function refreshVehicles(map) {
  * Update vehicle markers on the map
  * @private
  */
-function updateVehicleMarkers(map) {
-    // Implementation moved to visualization.js
+function updateVehicleDisplay(map) {
+    try {
+        // Add all vehicles to active set by default
+        vehicles.forEach(vehicle => {
+            activeVehicles.add(vehicle.id);
+        });
+
+        logger.debug(`Updating markers for ${vehicles.length} vehicles, ${activeVehicles.size} active`);
+
+        // Call the visualization function
+        updateVehicleMarkers(map, vehicles, vehicleLayers, activeVehicles);
+
+    } catch (error) {
+        logger.error('Failed to update vehicle markers:', error);
+    }
 }
 
 /**

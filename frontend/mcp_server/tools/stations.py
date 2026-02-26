@@ -13,7 +13,7 @@ except ImportError:
 
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from data_loader import data_loader
-    from mcp_server.models.stations import Station, StationSearchResponse
+    from wienerlinien_mcp.models.stations import Station, StationSearchResponse
 
 logger = logging.getLogger(__name__)
 

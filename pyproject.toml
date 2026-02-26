@@ -41,7 +41,7 @@ dependencies = [
     "partridge==0.1.0",
     "gtfs-kit==12.0.0",
     # MCP Server dependencies
-    "fastmcp>=2.14.0,<3.0.0",
+    "fastmcp>=2.14.3,<3.0.0",
     "pydantic>=2.5.0",
     # ML dependencies (Phase 3C)
     "scikit-learn>=1.3.0",
@@ -96,4 +96,5 @@ python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 asyncio_mode = "auto"
+
 

@@ -22,8 +22,8 @@ function Start-WienerLinien {
         docker-compose up -d
         if ($LASTEXITCODE -eq 0) {
             Write-Status "Wiener Linien app started successfully!" "Green"
-            Write-Status "Access the app at: http://localhost:3080" "Cyan"
-            Write-Status "API status: http://localhost:3080/api/status" "Cyan"
+            Write-Status "Access the app at: http://localhost:10722" "Cyan"
+            Write-Status "API status: http://localhost:10722/api/status" "Cyan"
         } else {
             Write-Status "Failed to start Wiener Linien app" "Red"
         }

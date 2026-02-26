@@ -1,5 +1,6 @@
 /**
- * Vehicle visualization and map interaction
+ * Departure event visualization and map interaction
+ * NOTE: Shows departure events at stops, not actual vehicle positions
  */
 
 import L from 'leaflet';
@@ -223,27 +224,27 @@ function createPopupContent(vehicle) {
     icon.className = `fas ${getVehicleIcon(vehicle.type)}`;
     
     const title = document.createElement('h3');
-    title.textContent = vehicle.label || `Vehicle ${vehicle.id}`;
-    
+    title.textContent = vehicle.label || `Line ${vehicle.line || vehicle.id}`;
+
     header.appendChild(icon);
     header.appendChild(title);
     content.appendChild(header);
-    
-    // Add vehicle details
+
+    // Add departure details
     const details = document.createElement('div');
     details.className = 'vehicle-details';
-    
-    if (vehicle.routeId) {
+
+    if (vehicle.line) {
         const route = document.createElement('div');
         route.className = 'vehicle-route';
-        route.innerHTML = `<strong>Route:</strong> ${vehicle.routeId}`;
+        route.innerHTML = `<strong>Line:</strong> ${vehicle.line}`;
         details.appendChild(route);
     }
-    
-    if (vehicle.destination) {
+
+    if (vehicle.direction || vehicle.towards) {
         const dest = document.createElement('div');
         dest.className = 'vehicle-destination';
-        dest.innerHTML = `<strong>To:</strong> ${vehicle.destination}`;
+        dest.innerHTML = `<strong>Direction:</strong> ${vehicle.direction || vehicle.towards}`;
         details.appendChild(dest);
     }
     

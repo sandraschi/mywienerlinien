@@ -16,6 +16,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
+import subprocess
 
 try:
     from .api.analytics import router as analytics_router
@@ -24,7 +26,11 @@ try:
     from .database import db
     from .disruption_alerts import disruption_monitor
     from .gtfs_manager import manager as gtfs_manager
-    from .vehicle_service import clear_vehicle_cache, collect_vehicle_data, get_vehicle_summary
+    from .vehicle_service import (
+        clear_vehicle_cache,
+        collect_vehicle_data,
+        get_vehicle_summary,
+    )
     from .websocket_manager import get_websocket_manager, init_websocket_manager
 except ImportError:  # pragma: no cover - runtime fallback when package context missing
     from data_loader import data_loader  # type: ignore
@@ -49,7 +55,9 @@ try:
     import sys
     from pathlib import Path
 
-    sys.path.insert(0, str(Path(__file__).parent.parent))
+    _root = Path(__file__).parent.parent
+    sys.path.insert(0, str(_root))
+    sys.path.insert(0, str(_root / "src"))
     from scripts.city_config import get_city_config, list_cities  # type: ignore
 except ImportError:
     # Fallback if city_config is not available
@@ -82,6 +90,7 @@ TEST_MODE = os.getenv("WIENER_LINIEN_TEST_MODE", "").strip() == "1"
 sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
 websocket_manager = init_websocket_manager(sio)
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan manager (replaces deprecated @app.on_event)."""
@@ -94,6 +103,7 @@ async def lifespan(app: FastAPI):
 
     if not TEST_MODE:
         websocket_manager.stop()
+
 
 fastapi_app = FastAPI(
     title="Wiener Linien Live Map",
@@ -134,8 +144,6 @@ def _normalize_line_identifier(line_name: str) -> str:
     return line_name.strip()
 
 
-
-
 @fastapi_app.get("/", response_class=HTMLResponse)
 async def read_index(request: Request) -> HTMLResponse:
     return TEMPLATES.TemplateResponse("index.html", {"request": request})
@@ -174,7 +182,7 @@ async def get_cities() -> JSONResponse:
         List of available cities with status
     """
     try:
-        from mcp_server.city_manager import get_city_manager
+        from wienerlinien_mcp.city_manager import get_city_manager
 
         manager = get_city_manager(db)
         cities = manager.get_available_cities()
@@ -203,7 +211,7 @@ async def get_city_info(city_code: str) -> JSONResponse:
         City information and statistics
     """
     try:
-        from mcp_server.city_manager import get_city_manager
+        from wienerlinien_mcp.city_manager import get_city_manager
 
         manager = get_city_manager(db)
 
@@ -235,13 +243,15 @@ async def switch_city(city_code: str) -> JSONResponse:
         Success status and new city info
     """
     try:
-        from mcp_server.city_manager import get_city_manager
+        from wienerlinien_mcp.city_manager import get_city_manager
 
         manager = get_city_manager(db)
 
         success = manager.switch_city(city_code)
         if not success:
-            raise HTTPException(status_code=400, detail=f"Cannot switch to city {city_code}")
+            raise HTTPException(
+                status_code=400, detail=f"Cannot switch to city {city_code}"
+            )
 
         city_info = manager.get_city_info(city_code)
 
@@ -360,7 +370,12 @@ async def get_line_overview(line_name: str) -> JSONResponse:
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error("Error fetching overview for line %s: %s", normalized_name, exc, exc_info=True)
+        logger.error(
+            "Error fetching overview for line %s: %s",
+            normalized_name,
+            exc,
+            exc_info=True,
+        )
         raise HTTPException(status_code=500, detail="Failed to fetch line overview")
 
 
@@ -381,7 +396,9 @@ async def get_line_route(line_name: str) -> JSONResponse:
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error("Error fetching route for line %s: %s", normalized_name, exc, exc_info=True)
+        logger.error(
+            "Error fetching route for line %s: %s", normalized_name, exc, exc_info=True
+        )
         raise HTTPException(status_code=500, detail="Failed to fetch route data")
 
 
@@ -403,7 +420,12 @@ async def get_line_stations(line_name: str) -> JSONResponse:
             }
         )
     except Exception as exc:
-        logger.error("Error fetching stations for line %s: %s", normalized_name, exc, exc_info=True)
+        logger.error(
+            "Error fetching stations for line %s: %s",
+            normalized_name,
+            exc,
+            exc_info=True,
+        )
         raise HTTPException(status_code=500, detail="Failed to fetch stations")
 
 
@@ -417,7 +439,11 @@ async def get_arrivals(request: Request) -> JSONResponse:
 
         lines = None
         if lines_param:
-            lines = [piece.strip().upper() for piece in lines_param.split(",") if piece.strip()]
+            lines = [
+                piece.strip().upper()
+                for piece in lines_param.split(",")
+                if piece.strip()
+            ]
 
         if not rbl and not lines:
             raise HTTPException(status_code=400, detail="Provide rbl or lines")
@@ -549,7 +575,9 @@ async def get_stops_nearby(request: Request) -> JSONResponse:
                 )
 
         enriched.sort(key=lambda x: x["distance_m"])
-        return JSONResponse({"stops": enriched[:limit], "origin": {"lat": lat, "lon": lon}})
+        return JSONResponse(
+            {"stops": enriched[:limit], "origin": {"lat": lat, "lon": lon}}
+        )
     except HTTPException:
         raise
     except Exception as exc:
@@ -629,7 +657,9 @@ async def get_disruptions(request: Request) -> JSONResponse:
                 "affected_stations": disruption.affected_stations,
                 "affected_lines": disruption.affected_lines,
                 "start_time": disruption.start_time.isoformat(),
-                "end_time": disruption.end_time.isoformat() if disruption.end_time else None,
+                "end_time": disruption.end_time.isoformat()
+                if disruption.end_time
+                else None,
                 "created_at": disruption.created_at.isoformat(),
                 "updated_at": disruption.updated_at.isoformat(),
             }
@@ -651,6 +681,87 @@ async def get_disruption_summary() -> JSONResponse:
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
+@fastapi_app.get("/api/vehicles")
+def get_vehicles() -> JSONResponse:
+    """Get departure events at stops (Wiener Linien API limitation).
+
+    NOTE: Wiener Linien does not provide real-time GPS vehicle positions.
+    This endpoint returns departure information at stops, not actual vehicle locations.
+    """
+    logger.info("Vehicles endpoint called - minimal version")
+
+    # Return mock vehicle data for development mode
+    # In production, this would come from WebSocket or cached data
+    logger.info("Returning mock vehicle data for development")
+    vehicles = [
+        {
+            "id": "mock_tram_1",
+            "type": "tram",
+            "line": "D",
+            "routeId": "D",
+            "coordinates": [16.3768, 48.2082],
+            "lat": 48.2082,
+            "lng": 16.3768,
+            "direction": "North",
+            "towards": "Test Station",
+            "delay": 0,
+            "lastUpdated": datetime.now().isoformat(),
+            "station": "Mock Station",
+            "nextStation": "Next Stop",
+        },
+        {
+            "id": "mock_bus_1",
+            "type": "buscity",
+            "line": "68A",
+            "routeId": "68A",
+            "coordinates": [16.3738, 48.2062],
+            "lat": 48.2062,
+            "lng": 16.3738,
+            "direction": "East",
+            "towards": "City Center",
+            "delay": 2,
+            "lastUpdated": datetime.now().isoformat(),
+            "station": "Bus Stop",
+            "nextStation": "Next Bus Stop",
+        },
+    ]
+
+    # Convert to frontend-compatible format
+    vehicle_data = []
+    for vehicle in vehicles:
+        vehicle_data.append(
+            {
+                "id": vehicle.get("id", f"vehicle_{len(vehicle_data)}"),
+                "type": vehicle.get("type", "unknown"),
+                "line": vehicle.get("line", ""),
+                "routeId": vehicle.get("line", ""),
+                "coordinates": vehicle.get(
+                    "coordinates", [vehicle.get("lng", 0), vehicle.get("lat", 0)]
+                ),
+                "lat": vehicle.get("lat"),
+                "lng": vehicle.get("lng"),
+                "direction": vehicle.get("direction", ""),
+                "towards": vehicle.get("towards", ""),
+                "delay": vehicle.get("delay", 0),
+                "lastUpdated": vehicle.get("lastUpdated", datetime.now().isoformat()),
+                "station": vehicle.get("station", ""),
+                "nextStation": vehicle.get("nextStation", ""),
+            }
+        )
+
+    vehicles = vehicle_data
+    logger.info("Returning %d vehicles to frontend", len(vehicles))
+
+    return JSONResponse(
+        {
+            "vehicles": vehicles,
+            "count": len(vehicles),
+            "timestamp": datetime.now().isoformat(),
+            "filters": {"type": "all", "lines": []},
+        }
+    )
+
+
 @fastapi_app.get("/api/status")
 async def get_system_status() -> JSONResponse:
     try:
@@ -666,7 +777,9 @@ async def get_system_status() -> JSONResponse:
             }
         )
         status = {
-            "websocket_clients": ws_manager.get_connected_clients_count() if ws_manager else 0,
+            "websocket_clients": ws_manager.get_connected_clients_count()
+            if ws_manager
+            else 0,
             "active_disruptions": len(active_disruptions),
             "vehicle_count": ws_manager.get_vehicle_count() if ws_manager else 0,
             "vehicle_total": ws_manager.get_vehicle_total_count() if ws_manager else 0,
@@ -691,10 +804,54 @@ async def get_health_status() -> JSONResponse:
     without doing expensive operations like data loading or complex queries.
     """
     # Ultra-simple health check - no datetime, no complex operations
-    return JSONResponse({
-        "status": "healthy",
-        "service": "mywienerlinien"
-    })
+    return JSONResponse({"status": "healthy", "service": "mywienerlinien"})
+
+
+class LaunchRequest(BaseModel):
+    repo_path: str
+
+
+@fastapi_app.post("/api/fleet/launch")
+async def launch_app(request: LaunchRequest):
+    """Launch another MCP app via its start.ps1 script."""
+    path = Path(request.repo_path)
+    if not path.exists():
+        raise HTTPException(
+            status_code=404, detail=f"Path {request.repo_path} does not exist"
+        )
+
+    # Security check
+    allowed_base = Path("D:/Dev/repos")
+    try:
+        path.relative_to(allowed_base)
+    except ValueError:
+        raise HTTPException(status_code=403, detail="Access denied")
+
+    start_script = path / "web_sota" / "start.ps1"
+    if not start_script.exists():
+        start_script = path / "web" / "start.ps1"
+        if not start_script.exists():
+            # Fallback for older repos
+            start_script = path / "start.ps1"
+            if not start_script.exists():
+                raise HTTPException(status_code=400, detail="No start.ps1 found")
+
+    try:
+        subprocess.Popen(
+            [
+                "powershell.exe",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                str(start_script),
+            ],
+            cwd=str(path),
+            creationflags=subprocess.CREATE_NEW_CONSOLE,
+        )
+        return {"success": True, "message": f"Launched {path.name}"}
+    except Exception as e:
+        logger.error(f"Launch failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @fastapi_app.get("/api/status/summary")
@@ -709,14 +866,18 @@ async def get_status_summary() -> JSONResponse:
         if heartbeat_path.exists():
             heartbeat_info = {
                 "path": str(heartbeat_path),
-                "updated_at": datetime.utcfromtimestamp(heartbeat_path.stat().st_mtime).isoformat()
+                "updated_at": datetime.utcfromtimestamp(
+                    heartbeat_path.stat().st_mtime
+                ).isoformat()
                 + "Z",
             }
         # Read last GTFS refresh marker
         try:
             marker_path = LOGS_DIR / "gtfs_last_success.txt"
             last_gtfs_refresh = (
-                marker_path.read_text(encoding="utf-8").strip() if marker_path.exists() else None
+                marker_path.read_text(encoding="utf-8").strip()
+                if marker_path.exists()
+                else None
             )
         except Exception:
             last_gtfs_refresh = None
@@ -813,6 +974,7 @@ async def health_check() -> JSONResponse:
             try:
                 # Simple query to test database connection
                 from sqlalchemy import text
+
                 with db.engine.connect() as conn:
                     conn.execute(text("SELECT 1"))
                 db_status = "healthy"
@@ -826,7 +988,7 @@ async def health_check() -> JSONResponse:
                 "status": "healthy",
                 "timestamp": datetime.now().isoformat(),
                 "database": db_status,
-                "version": "2.0.0"
+                "version": "2.0.0",
             }
         )
     except Exception as exc:
@@ -873,7 +1035,9 @@ async def add_favorite(request: Request) -> JSONResponse:
         station_name = data.get("station_name")
 
         if not station_id or not station_name:
-            raise HTTPException(status_code=400, detail="station_id and station_name are required")
+            raise HTTPException(
+                status_code=400, detail="station_id and station_name are required"
+            )
 
         return JSONResponse(
             {
@@ -896,7 +1060,10 @@ async def remove_favorite(station_id: str) -> JSONResponse:
     Future enhancement: Support for server-side storage with user accounts.
     """
     return JSONResponse(
-        {"success": True, "message": f"Favorite {station_id} removed (client-side storage)"}
+        {
+            "success": True,
+            "message": f"Favorite {station_id} removed (client-side storage)",
+        }
     )
 
 
@@ -921,8 +1088,12 @@ async def plan_journey(request: Request) -> JSONResponse:
         from_station = request.query_params.get("from")
         to_station = request.query_params.get("to")
         departure_time_str = request.query_params.get("time")
-        alternatives = min(5, max(1, int(request.query_params.get("alternatives", "3"))))
-        include_delays = request.query_params.get("include_delays", "true").lower() != "false"
+        alternatives = min(
+            5, max(1, int(request.query_params.get("alternatives", "3")))
+        )
+        include_delays = (
+            request.query_params.get("include_delays", "true").lower() != "false"
+        )
 
         if not from_station or not to_station:
             raise HTTPException(
@@ -932,7 +1103,9 @@ async def plan_journey(request: Request) -> JSONResponse:
         # Parse departure time
         if departure_time_str:
             try:
-                departure_time = datetime.fromisoformat(departure_time_str.replace("Z", "+00:00"))
+                departure_time = datetime.fromisoformat(
+                    departure_time_str.replace("Z", "+00:00")
+                )
             except:
                 departure_time = datetime.now()
         else:
@@ -940,10 +1113,10 @@ async def plan_journey(request: Request) -> JSONResponse:
 
         # Import routing services
         try:
-            from mcp_server.routing_service import RouteSegment
-            from mcp_server.utils import find_station_by_name
+            from wienerlinien_mcp.routing_service import RouteSegment
+            from wienerlinien_mcp.utils import find_station_by_name
         except ImportError:
-            from frontend.mcp_server.utils import find_station_by_name
+            from frontend.wienerlinien_mcp.utils import find_station_by_name
 
         # Find stations
         from_info = find_station_by_name(from_station)
@@ -959,23 +1132,28 @@ async def plan_journey(request: Request) -> JSONResponse:
             )
 
         # Get journey planner (lazy loaded with A* support)
-        from mcp_server.tools.journey import get_journey_planner
+        from wienerlinien_mcp.tools.journey import get_journey_planner
 
         planner = get_journey_planner()
 
         # Plan journey with multiple alternatives
         route_options = planner.plan_journey(
-            from_info["id"], to_info["id"], departure_time, num_alternatives=alternatives
+            from_info["id"],
+            to_info["id"],
+            departure_time,
+            num_alternatives=alternatives,
         )
 
         if not route_options:
-            raise HTTPException(status_code=404, detail="No routes found between these stations")
+            raise HTTPException(
+                status_code=404, detail="No routes found between these stations"
+            )
 
         # Adjust for real-time delays if requested
         if include_delays:
             try:
                 import vehicle_service
-                from mcp_server.realtime_service import get_realtime_service
+                from wienerlinien_mcp.realtime_service import get_realtime_service
 
                 realtime_svc = get_realtime_service(vehicle_service)
                 realtime_updates = realtime_svc.get_realtime_updates()
@@ -983,14 +1161,20 @@ async def plan_journey(request: Request) -> JSONResponse:
                 # Adjust each route for delays
                 adjusted_routes = []
                 for route in route_options:
-                    adjusted = realtime_svc.adjust_route_for_delays(route, realtime_updates)
+                    adjusted = realtime_svc.adjust_route_for_delays(
+                        route, realtime_updates
+                    )
                     adjusted_routes.append(adjusted)
 
                 # Re-rank by reliability
-                ranked = realtime_svc.rank_routes_by_reliability(adjusted_routes, realtime_updates)
+                ranked = realtime_svc.rank_routes_by_reliability(
+                    adjusted_routes, realtime_updates
+                )
                 route_options = [route for route, score in ranked]
 
-                logger.info(f"Applied real-time delay adjustments to {len(route_options)} routes")
+                logger.info(
+                    f"Applied real-time delay adjustments to {len(route_options)} routes"
+                )
             except Exception as e:
                 logger.warning(f"Could not apply delay adjustments: {e}")
 
@@ -1044,7 +1228,9 @@ async def plan_journey(request: Request) -> JSONResponse:
         raise
     except Exception as exc:
         logger.error("Error planning journey: %s", exc, exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Journey planning failed: {str(exc)}")
+        raise HTTPException(
+            status_code=500, detail=f"Journey planning failed: {str(exc)}"
+        )
 
 
 def initialize_app() -> None:
@@ -1054,15 +1240,24 @@ def initialize_app() -> None:
     # In development mode, database is optional
     dev_mode = os.getenv("APP_ENV", "").lower() in ("development", "dev") or TEST_MODE
 
-    # Temporarily skip database initialization to get server running
-    logger.info("Skipping database initialization for development")
+    # Initialize database even in development mode
+    logger.info("Initializing database connection")
+    try:
+        db.init_app(None)  # Initialize database connection
+        logger.info("Database connection initialized successfully")
+    except Exception as exc:
+        logger.error("Database initialization failed: %s", exc, exc_info=True)
+        if not dev_mode:
+            raise
 
     if not TEST_MODE:
         try:
             gtfs_manager.ensure_data_ready()
         except Exception as exc:  # pragma: no cover - startup critical
             if dev_mode:
-                logger.warning("GTFS bootstrap failed (continuing in dev mode): %s", exc)
+                logger.warning(
+                    "GTFS bootstrap failed (continuing in dev mode): %s", exc
+                )
                 # Don't raise in dev mode - allow app to start without GTFS data
             else:
                 logger.error("GTFS bootstrap failed: %s", exc, exc_info=True)
@@ -1077,7 +1272,9 @@ def initialize_app() -> None:
         clear_vehicle_cache()
     except Exception as exc:
         if dev_mode:
-            logger.warning("Vehicle cache clear failed (continuing in dev mode): %s", exc)
+            logger.warning(
+                "Vehicle cache clear failed (continuing in dev mode): %s", exc
+            )
         else:
             raise
 
@@ -1088,11 +1285,14 @@ if dev_mode:
     app = fastapi_app
     logger.info("Running in development mode without Socket.IO")
 else:
-    socket_app = socketio.ASGIApp(sio, other_asgi_app=fastapi_app, socketio_path="/ws/socket.io")
+    socket_app = socketio.ASGIApp(
+        sio, other_asgi_app=fastapi_app, socketio_path="/ws/socket.io"
+    )
     app = socket_app
 
 
 if __name__ == "__main__":  # pragma: no cover - manual execution helper
     import uvicorn
 
-    uvicorn.run("app:app", host="0.0.0.0", port=3080, reload=True)
+    port = int(os.environ.get("PORT", "10722"))
+    uvicorn.run("app:app", host="0.0.0.0", port=port, reload=True)

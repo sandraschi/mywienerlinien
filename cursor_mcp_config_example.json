@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "vienna-transit": {
+      "command": "python",
+      "args": [
+        "-m",
+        "frontend.mcp_server.server"
+      ],
+      "env": {
+        "PYTHONPATH": "D:/Dev/repos/mywienerlinien",
+        "PYTHONUNBUFFERED": "1",
+        "DATABASE_URL": "postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien"
+      }
+    }
+  }
+}

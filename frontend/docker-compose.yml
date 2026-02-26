@@ -3,7 +3,7 @@ services:
     build: .
     container_name: wiener-linien-app
     ports:
-      - "3080:3080"
+      - "10722:3080"
     environment:
       - APP_ENV=development
       - PYTHONUNBUFFERED=1

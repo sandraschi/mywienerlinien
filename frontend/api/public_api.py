@@ -148,7 +148,7 @@ async def public_departures(
     """
     try:
         # Import MCP tool
-        from mcp_server.tools.departures import get_next_departures_internal
+        from wienerlinien_mcp.tools.departures import get_next_departures_internal
 
         departures = await get_next_departures_internal(station, min(10, max(1, limit)))
 
@@ -247,8 +247,8 @@ async def public_journey(
         Journey plan with routes
     """
     try:
-        from mcp_server.tools.journey import get_journey_planner
-        from mcp_server.utils import find_station_by_name
+        from wienerlinien_mcp.tools.journey import get_journey_planner
+        from wienerlinien_mcp.utils import find_station_by_name
 
         # Find stations
         from_info = find_station_by_name(from_station)
@@ -326,7 +326,7 @@ async def public_prediction(line: str, api_key: str = Depends(verify_api_key)) -
         Delay prediction
     """
     try:
-        from mcp_server.prediction_service import get_prediction_service
+        from wienerlinien_mcp.prediction_service import get_prediction_service
 
         predictor = get_prediction_service()
         prediction = predictor.predict_delay(line, datetime.now(), use_fallback=True)

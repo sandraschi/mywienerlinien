@@ -2,8 +2,14 @@ const REFRESH_MS = 30_000;
 
 const headlineStatusEl = document.getElementById('headline-status');
 const headlineSubtextEl = document.getElementById('headline-subtext');
-const vehicleCountsEl = document.getElementById('vehicle-counts');
-const vehicleRefreshEl = document.getElementById('vehicle-refresh');
+  const vehicleCountsEl = document.getElementById('vehicle-counts');
+  const vehicleRefreshEl = document.getElementById('vehicle-refresh');
+
+  // Update labels to reflect departure events, not vehicles
+  const vehicleLabel = document.querySelector('.vehicle-count-label');
+  if (vehicleLabel) {
+    vehicleLabel.textContent = 'Active Departures';
+  }
 const disruptionCountEl = document.getElementById('disruption-count');
 const disruptionSummaryEl = document.getElementById('disruption-summary');
 const heartbeatStatusEl = document.getElementById('heartbeat-status');
@@ -31,7 +37,7 @@ async function fetchJson(url) {
 
 function renderHeadline(summary) {
   const disruptionCount = summary?.disruptions?.active ?? 0;
-  const vehiclesTotal = summary?.vehicles?.vehicles_total ?? 0;
+  const departuresTotal = summary?.vehicles?.vehicles_total ?? 0;
   const delayed = summary?.vehicles?.delayed?.length ?? 0;
 
   let statusText = 'Good Service';
@@ -47,7 +53,7 @@ function renderHeadline(summary) {
 
   headlineStatusEl.textContent = statusText;
   headlineStatusEl.className = `pill ${statusClass}`;
-  headlineSubtextEl.textContent = `${vehiclesTotal} vehicles in service, ${delayed} reported delays.`;
+  headlineSubtextEl.textContent = `${departuresTotal} active departures, ${delayed} reported delays.`;
 }
 
 function renderVehicleCounts(summary) {

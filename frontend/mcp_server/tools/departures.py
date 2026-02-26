@@ -16,8 +16,8 @@ except ImportError:
 
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from data_loader import data_loader
-    from mcp_server.models.departures import Departure, DepartureResponse
-    from mcp_server.utils import find_station_by_name
+    from wienerlinien_mcp.models.departures import Departure, DepartureResponse
+    from wienerlinien_mcp.utils import find_station_by_name
     from vehicle_service import collect_vehicle_data
 
 logger = logging.getLogger(__name__)

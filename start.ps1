@@ -25,7 +25,7 @@ function Show-Menu {
     
     Write-Host "Available Applications:" -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "[1] Start Wiener Linien App (Port 3080)" -ForegroundColor Green
+    Write-Host "[1] Start Wiener Linien App (Port 10722)" -ForegroundColor Green
     Write-Host "[2] Start Docsify Documentation (Port 3301)" -ForegroundColor Green
     Write-Host "[3] Start Both Applications" -ForegroundColor Green
     Write-Host "[4] Stop Wiener Linien App" -ForegroundColor Red
@@ -43,7 +43,7 @@ function Start-WienerLinien {
     Push-Location "frontend"
     try {
         & ".\start_wiener_linien.ps1" "start"
-        Write-Status "Wiener Linien app should be available at: http://localhost:3080" "Cyan"
+        Write-Status "Wiener Linien app should be available at: http://localhost:10722" "Cyan"
     }
     finally {
         Pop-Location
@@ -75,7 +75,7 @@ function Start-Both {
     
     Write-Host ""
     Write-Status "Both applications started!" "Green"
-    Write-Status "Wiener Linien app: http://localhost:3080" "Cyan"
+    Write-Status "Wiener Linien app: http://localhost:10722" "Cyan"
     Write-Status "Docsify documentation: http://localhost:3301" "Cyan"
 }
 

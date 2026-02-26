@@ -1,38 +1,74 @@
 """MCP tool for searching stations."""
 
 import logging
-import sys
-from pathlib import Path
 
 from fastmcp import FastMCP
 
-# Add frontend to path for backend imports
-_project_root = Path(__file__).parent.parent.parent.parent
-_frontend_path = _project_root / "frontend"
-if str(_frontend_path) not in sys.path:
-    sys.path.insert(0, str(_frontend_path))
+try:
+    from ...data_loader import data_loader
+    from ..models.stations import Station, StationSearchResponse
+except ImportError:
+    import sys
+    from pathlib import Path
 
-from data_loader import data_loader
-
-from wienerlinien_mcp.models.stations import Station, StationSearchResponse
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+    from data_loader import data_loader
+    from wienerlinien_mcp.models.stations import Station, StationSearchResponse
 
 logger = logging.getLogger(__name__)
 
 
 def register_station_search_tool(mcp: FastMCP) -> None:
-    """Register the station_search tool with the MCP server."""
+    """Register the station_search tool with the MCP server.
+
+    This tool provides station search functionality for Vienna's public transport
+    network. It searches through all stations (metro, tram, bus) and returns
+    matching results with station details including coordinates and types.
+
+    Args:
+        mcp: FastMCP server instance to register the tool with
+    """
 
     @mcp.tool()
     async def station_search(query: str, limit: int = 10) -> StationSearchResponse:
         """Find Vienna transit stations by name or location.
 
+        Searches Vienna's public transport network for stations matching the
+        query string. Supports partial matching, so users can search with
+        incomplete station names. Results are prioritized by exact matches
+        first, then partial matches.
+
+        The search is case-insensitive and works with both German and English
+        station names. Common abbreviations are also supported (e.g., "HBF"
+        for "Hauptbahnhof").
+
         Args:
-            query: Search query (station name, partial match supported)
-                 Examples: "Stephans", "Hauptbahnhof", "Schweden"
-            limit: Maximum results to return (1-20, default: 10)
+            query (str): Search query string. Can be a full station name, partial
+                name, or abbreviation. Examples: "Stephans", "Hauptbahnhof",
+                "Schweden", "HBF", "Stephansplatz".
+            limit (int): Maximum number of results to return. Must be between 1
+                and 20. Default is 10. Higher limits provide more options but
+                may include less relevant matches.
 
         Returns:
-            List of matching stations with name, RBL, coordinates, type
+            StationSearchResponse: Response containing:
+                - query (str): The original search query
+                - results (List[Station]): List of Station objects with:
+                    * name (str): Full station name
+                    * rbl (str, optional): RBL code (Vienna-specific station identifier)
+                    * type (str): Station type (metro, tram, bus)
+                    * zone (str, optional): Fare zone (typically "100" for most of Vienna)
+                    * lat (float, optional): Latitude coordinate
+                    * lng (float, optional): Longitude coordinate
+                - count (int): Number of results returned
+
+        Raises:
+            RuntimeError: If search fails or data cannot be loaded.
+
+        Example:
+            >>> result = await station_search("Stephans", limit=5)
+            >>> print(f"Found {result.count} stations matching '{result.query}'")
+            Found 2 stations matching 'Stephans'
         """
         try:
             # Validate limit

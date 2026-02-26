@@ -18,9 +18,9 @@ except ImportError:
 
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from database import db
-    from mcp_server.models.journey import JourneyPlan, JourneySegment
-    from mcp_server.routing_service import JourneyPlanner
-    from mcp_server.utils import find_station_by_name
+    from wienerlinien_mcp.models.journey import JourneyPlan, JourneySegment
+    from wienerlinien_mcp.routing_service import JourneyPlanner
+    from wienerlinien_mcp.utils import find_station_by_name
 
 logger = logging.getLogger(__name__)
 

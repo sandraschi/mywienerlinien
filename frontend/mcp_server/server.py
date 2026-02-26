@@ -5,9 +5,9 @@ This server provides MCP tools for Vienna public transport information.
 It runs with stdio transport for Claude Desktop integration.
 
 Usage:
-    python -m mcp_server.server
+    python -m wienerlinien_mcp.server
     # Or with FastMCP CLI:
-    fastmcp dev mcp_server.server:mcp
+    fastmcp dev wienerlinien_mcp.server:mcp
 """
 
 import logging
@@ -33,29 +33,29 @@ try:
     if os.getenv("DATABASE_URL") and db.engine is None:
         db.init_app(_MCPApp())
 except Exception as e:
-    logging.getLogger("mcp_server").warning(f"Database init skipped: {e}")
+    logging.getLogger("wienerlinien_mcp").warning(f"Database init skipped: {e}")
 
 # Import tools
 # Import prompts and resources
-from mcp_server.prompts import register_prompts
-from mcp_server.resources import register_resources
-from mcp_server.tools.alerts import register_traffic_alerts_tool
-from mcp_server.tools.cities import register_cities_tools
-from mcp_server.tools.departures import register_departures_tool
-from mcp_server.tools.help import register_help_tool
-from mcp_server.tools.journey import register_journey_tool
-from mcp_server.tools.nearby import register_nearby_stops_tool
-from mcp_server.tools.server_status import register_server_status_tool
-from mcp_server.tools.stations import register_station_search_tool
-from mcp_server.tools.status import register_status_tool
-from mcp_server.tools.timetable import register_stop_timetable_tool
+from wienerlinien_mcp.prompts import register_prompts
+from wienerlinien_mcp.resources import register_resources
+from wienerlinien_mcp.tools.alerts import register_traffic_alerts_tool
+from wienerlinien_mcp.tools.cities import register_cities_tools
+from wienerlinien_mcp.tools.departures import register_departures_tool
+from wienerlinien_mcp.tools.help import register_help_tool
+from wienerlinien_mcp.tools.journey import register_journey_tool
+from wienerlinien_mcp.tools.nearby import register_nearby_stops_tool
+from wienerlinien_mcp.tools.server_status import register_server_status_tool
+from wienerlinien_mcp.tools.stations import register_station_search_tool
+from wienerlinien_mcp.tools.status import register_status_tool
+from wienerlinien_mcp.tools.timetable import register_stop_timetable_tool
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
-logger = logging.getLogger("mcp_server")
+logger = logging.getLogger("wienerlinien_mcp")
 
 # Create FastMCP server instance
 mcp = FastMCP(
@@ -65,8 +65,8 @@ mcp = FastMCP(
 
 # Note: Middleware support may vary by FastMCP version
 # Middleware registration commented out until FastMCP 2.13 middleware API is confirmed
-# from mcp_server.middleware.logging import register_logging_middleware
-# from mcp_server.middleware.error_handler import register_error_handler_middleware
+# from wienerlinien_mcp.middleware.logging import register_logging_middleware
+# from wienerlinien_mcp.middleware.error_handler import register_error_handler_middleware
 # register_error_handler_middleware(mcp)
 # register_logging_middleware(mcp)
 
