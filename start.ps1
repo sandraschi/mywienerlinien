@@ -1,3 +1,8 @@
+# *********************************************************************************
+# * SOTA Fleet Orchestration - Standardized Start System (v1.19.0)                *
+# * Generated/Repaired by Antigravity on 2026-03-03                  *
+# *********************************************************************************
+
 # MyWienerLinien Application Manager - PowerShell Version
 # Comprehensive script to manage both Wiener Linien app and Docsify documentation
 

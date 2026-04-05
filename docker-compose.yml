@@ -77,11 +77,13 @@ services:
     environment:
       - DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
       - APP_ENV=development
+      - PYTHONPATH=/app:/repo/src
     volumes:
       - ./frontend:/app
       - ./data:/app/data
       - ./scripts:/scripts
       - ./models:/models
+      - .:/repo
     ports:
       - "3079:3080"
     networks:

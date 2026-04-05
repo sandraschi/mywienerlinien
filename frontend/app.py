@@ -171,104 +171,7 @@ async def community_dashboard_page(request: Request) -> HTMLResponse:
     return TEMPLATES.TemplateResponse("community.html", {"request": request})
 
 
-# Multi-City API (Phase 4)
-@fastapi_app.get("/api/cities")
-async def get_cities() -> JSONResponse:
-    """Get list of available cities.
-
-    Phase 4: Multi-city support for Austrian and international transit.
-
-    Returns:
-        List of available cities with status
-    """
-    try:
-        from wienerlinien_mcp.city_manager import get_city_manager
-
-        manager = get_city_manager(db)
-        cities = manager.get_available_cities()
-
-        return JSONResponse(
-            {
-                "cities": cities,
-                "current_city": manager.get_active_city(),
-                "count": len(cities),
-                "timestamp": datetime.now().isoformat(),
-            }
-        )
-    except Exception as exc:
-        logger.error(f"Error getting cities: {exc}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Failed to get cities")
-
-
-@fastapi_app.get("/api/cities/{city_code}")
-async def get_city_info(city_code: str) -> JSONResponse:
-    """Get detailed information about a specific city.
-
-    Args:
-        city_code: City code (e.g., "vienna", "graz", "linz")
-
-    Returns:
-        City information and statistics
-    """
-    try:
-        from wienerlinien_mcp.city_manager import get_city_manager
-
-        manager = get_city_manager(db)
-
-        city_info = manager.get_city_info(city_code)
-        if not city_info:
-            raise HTTPException(status_code=404, detail=f"City {city_code} not found")
-
-        # Get statistics
-        stats = manager.get_city_statistics(city_code)
-        city_info["statistics"] = stats
-
-        return JSONResponse(city_info)
-
-    except HTTPException:
-        raise
-    except Exception as exc:
-        logger.error(f"Error getting city info: {exc}", exc_info=True)
-        raise HTTPException(status_code=500, detail="Failed to get city info")
-
-
-@fastapi_app.post("/api/cities/{city_code}/switch")
-async def switch_city(city_code: str) -> JSONResponse:
-    """Switch active city.
-
-    Args:
-        city_code: City code to switch to
-
-    Returns:
-        Success status and new city info
-    """
-    try:
-        from wienerlinien_mcp.city_manager import get_city_manager
-
-        manager = get_city_manager(db)
-
-        success = manager.switch_city(city_code)
-        if not success:
-            raise HTTPException(
-                status_code=400, detail=f"Cannot switch to city {city_code}"
-            )
-
-        city_info = manager.get_city_info(city_code)
-
-        return JSONResponse(
-            {
-                "success": True,
-                "city": city_info,
-                "message": f"Switched to {city_info['name']}",
-                "timestamp": datetime.now().isoformat(),
-            }
-        )
-
-    except HTTPException:
-        raise
-    except Exception as exc:
-        logger.error(f"Error switching city: {exc}", exc_info=True)
-        raise HTTPException(status_code=500, detail="City switch failed")
+# Multi-City API (Phase 4) - NOTE: actual route handlers defined later using city_config
 
 
 @fastapi_app.get("/line/{line_name}", response_class=HTMLResponse)
@@ -483,23 +386,39 @@ async def get_traffic_info() -> JSONResponse:
 
         data = response.json()
 
-        # Transform to our format
+        # WL API V1.4 trafficInfoList response shape:
+        # {"data": {"trafficInfos": [...], "trafficInfoCategories": [...]}}
+        # Each trafficInfo has: name, priority, owner, ownerFormatted,
+        #   title, description, descriptionHTML, time, attributes, references
         alerts = []
         if isinstance(data, dict) and "data" in data:
-            for item in data.get("data", []):
-                if "attributes" in item:
-                    attrs = item["attributes"]
-                    alert = {
-                        "id": item.get("id", ""),
-                        "title": attrs.get("title", ""),
-                        "description": attrs.get("description", ""),
-                        "severity": attrs.get("severity", "info"),
-                        "lines": attrs.get("relatedLines", []),
-                        "start_time": attrs.get("startTime", ""),
-                        "end_time": attrs.get("endTime", ""),
-                        "type": attrs.get("type", ""),
-                    }
-                    alerts.append(alert)
+            traffic_infos = data["data"].get("trafficInfos") or []
+            for item in traffic_infos:
+                attrs = item.get("attributes") or {}
+                refs = item.get("references") or {}
+                # Collect related line names
+                related_lines = []
+                for line_ref in (refs.get("lines") or []):
+                    name = line_ref.get("name") or line_ref.get("shortName") or ""
+                    if name:
+                        related_lines.append(name)
+                time_info = item.get("time") or {}
+                alert = {
+                    "id": item.get("name", ""),
+                    "title": item.get("title", ""),
+                    "description": item.get("description", ""),
+                    "description_html": item.get("descriptionHTML", ""),
+                    "severity": attrs.get("severity", "info"),
+                    "status": item.get("attributes", {}).get("status", ""),
+                    "lines": related_lines,
+                    "start_time": time_info.get("start", ""),
+                    "end_time": time_info.get("end", ""),
+                    "created": time_info.get("created", ""),
+                    "last_update": time_info.get("lastupdate", ""),
+                    "type": item.get("owner", ""),
+                    "priority": item.get("priority", ""),
+                }
+                alerts.append(alert)
 
         result = {
             "alerts": alerts,
@@ -681,87 +600,6 @@ async def get_disruption_summary() -> JSONResponse:
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@fastapi_app.get("/api/vehicles")
-def get_vehicles() -> JSONResponse:
-    """Get departure events at stops (Wiener Linien API limitation).
-
-    NOTE: Wiener Linien does not provide real-time GPS vehicle positions.
-    This endpoint returns departure information at stops, not actual vehicle locations.
-    """
-    logger.info("Vehicles endpoint called - minimal version")
-
-    # Return mock vehicle data for development mode
-    # In production, this would come from WebSocket or cached data
-    logger.info("Returning mock vehicle data for development")
-    vehicles = [
-        {
-            "id": "mock_tram_1",
-            "type": "tram",
-            "line": "D",
-            "routeId": "D",
-            "coordinates": [16.3768, 48.2082],
-            "lat": 48.2082,
-            "lng": 16.3768,
-            "direction": "North",
-            "towards": "Test Station",
-            "delay": 0,
-            "lastUpdated": datetime.now().isoformat(),
-            "station": "Mock Station",
-            "nextStation": "Next Stop",
-        },
-        {
-            "id": "mock_bus_1",
-            "type": "buscity",
-            "line": "68A",
-            "routeId": "68A",
-            "coordinates": [16.3738, 48.2062],
-            "lat": 48.2062,
-            "lng": 16.3738,
-            "direction": "East",
-            "towards": "City Center",
-            "delay": 2,
-            "lastUpdated": datetime.now().isoformat(),
-            "station": "Bus Stop",
-            "nextStation": "Next Bus Stop",
-        },
-    ]
-
-    # Convert to frontend-compatible format
-    vehicle_data = []
-    for vehicle in vehicles:
-        vehicle_data.append(
-            {
-                "id": vehicle.get("id", f"vehicle_{len(vehicle_data)}"),
-                "type": vehicle.get("type", "unknown"),
-                "line": vehicle.get("line", ""),
-                "routeId": vehicle.get("line", ""),
-                "coordinates": vehicle.get(
-                    "coordinates", [vehicle.get("lng", 0), vehicle.get("lat", 0)]
-                ),
-                "lat": vehicle.get("lat"),
-                "lng": vehicle.get("lng"),
-                "direction": vehicle.get("direction", ""),
-                "towards": vehicle.get("towards", ""),
-                "delay": vehicle.get("delay", 0),
-                "lastUpdated": vehicle.get("lastUpdated", datetime.now().isoformat()),
-                "station": vehicle.get("station", ""),
-                "nextStation": vehicle.get("nextStation", ""),
-            }
-        )
-
-    vehicles = vehicle_data
-    logger.info("Returning %d vehicles to frontend", len(vehicles))
-
-    return JSONResponse(
-        {
-            "vehicles": vehicles,
-            "count": len(vehicles),
-            "timestamp": datetime.now().isoformat(),
-            "filters": {"type": "all", "lines": []},
-        }
-    )
-
-
 @fastapi_app.get("/api/status")
 async def get_system_status() -> JSONResponse:
     try:
@@ -798,12 +636,7 @@ async def get_system_status() -> JSONResponse:
 
 @fastapi_app.get("/api/health")
 async def get_health_status() -> JSONResponse:
-    """Fast health check endpoint for container health checks.
-
-    This endpoint provides a lightweight health check that responds quickly
-    without doing expensive operations like data loading or complex queries.
-    """
-    # Ultra-simple health check - no datetime, no complex operations
+    """Fast health check endpoint for container health checks."""
     return JSONResponse({"status": "healthy", "service": "mywienerlinien"})
 
 
@@ -962,38 +795,6 @@ async def serve_data_file(path: str) -> FileResponse:
         if file_path.exists() and file_path.suffix.lower() == ".md":
             return FileResponse(file_path, media_type="text/markdown")
     raise HTTPException(status_code=404, detail="File not found")
-
-
-@fastapi_app.get("/api/health")
-async def health_check() -> JSONResponse:
-    """Health check endpoint for container monitoring."""
-    try:
-        # Basic health check - ensure database connection if available
-        db_status = "unknown"
-        if db.engine is not None:
-            try:
-                # Simple query to test database connection
-                from sqlalchemy import text
-
-                with db.engine.connect() as conn:
-                    conn.execute(text("SELECT 1"))
-                db_status = "healthy"
-            except Exception as e:
-                db_status = f"unhealthy: {str(e)}"
-        else:
-            db_status = "not_initialized"
-
-        return JSONResponse(
-            {
-                "status": "healthy",
-                "timestamp": datetime.now().isoformat(),
-                "database": db_status,
-                "version": "2.0.0",
-            }
-        )
-    except Exception as exc:
-        logger.error(f"Health check failed: {exc}", exc_info=True)
-        raise HTTPException(status_code=503, detail="Service unhealthy")
 
 
 @fastapi_app.get("/routes", response_class=HTMLResponse)

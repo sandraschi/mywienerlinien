@@ -1,20 +1,20 @@
 # Vienna Transit - Dual Standard Application
 
 **Last Updated:** 2025-12-27
-**Status:** ✅ Production Ready | 🏆 SOTA Compliant | 🚀 Fully Operational
+**Status:**  Production Ready |  SOTA Compliant |  Fully Operational
 **Version:** 2.0.1 (Phase 1-5 Complete + Schema Migration)
 
 A comprehensive Vienna public transport application with **two complementary interfaces**:
-- **🌐 Web Application**: Interactive real-time map with departure information
-- **🤖 MCP Server**: AI assistant integration for Claude Desktop (SOTA compliant)
+- ** Web Application**: Interactive real-time map with departure information
+- ** MCP Server**: AI assistant integration for Claude Desktop (SOTA compliant)
 
-**Important Note**: Due to Wiener Linien API limitations, the map shows **departure events at stops** rather than real-time GPS vehicle positions. This is the best real-time information available from the official API.
+**Important Note**: Due to Wiener Linien API limitations, the map shows **departure events at stops** rather than real-time GPS vehicle positions. This is the  real-time information available from the official API.
 
 Both interfaces share the same backend logic and data sources, providing a unified experience across web and AI platforms.
 
 ---
 
-## 🎯 Quick Start
+##  Quick Start
 
 ### Docker (Recommended - With Hot-Reload!)
 
@@ -26,7 +26,7 @@ docker compose up -d
 # Grafana: http://localhost:3140
 
 # For development (instant code changes):
-# Edit files → Changes auto-reload in 1 second!
+# Edit files  Changes auto-reload in 1 second!
 # See DOCKER_DEV_GUIDE.md for details
 ```
 
@@ -42,16 +42,16 @@ docker compose up -d
 
 ---
 
-## 🏆 SOTA Features
+##  SOTA Features
 
 ### MCP Server (10/10 SOTA Score)
 
-✅ **FastMCP 2.13 Compliant**
+ **FastMCP 2.13 Compliant**
 - **12 Production-Ready Tools**: All fully implemented with real features
 - **5 AI Prompts**: Comprehensive guidance for Claude
 - **5 Resources**: Transit system reference data
-- **🚀 Ultra-Fast Startup**: 3-5 seconds (vs. 67 seconds previously)
-- **🌍 Multi-City Ready**: Phase 6 tools for city management
+- ** Ultra-Fast Startup**: 3-5 seconds (vs. 67 seconds previously)
+- ** Multi-City Ready**: Phase 6 tools for city management
 - **Real GTFS Routing**: A* pathfinding with multi-transfer support
 - **ML Predictions**: Delay forecasting with Random Forest (Phase 3C)
 - **Multi-City Support**: Framework for multiple cities (Phase 4)
@@ -60,22 +60,22 @@ See `SOTA_CHECKLIST.md` for detailed compliance report.
 
 ---
 
-## 🎉 Recent Updates (December 2025)
+##  Recent Updates (December 2025)
 
-### ✅ **Database Schema Migration Complete**
+###  **Database Schema Migration Complete**
 - **Fixed critical schema mismatch** between application code and database
 - **Migrated cities table** from old schema (`name`, `country`) to new Phase 4 schema (`city_code`, `city_name`, `map_center_lat`, etc.)
 - **Applied Vienna city configuration** with proper coordinates (48.2082, 16.3738) and metadata
 - **Enhanced health check** with improved timeout handling (30s timeout, 40s start period)
 
-### ✅ **Full Data Loading Verified**
+###  **Full Data Loading Verified**
 - **4,684 stops** - Complete Vienna transit station network
 - **1,138 routes** - All metro, tram, and bus lines
 - **562,609 trips** - Comprehensive scheduling data
 - **10,629,882 stop times** - Complete timetable database
 - **Real-time vehicle tracking** - 51+ active vehicles currently monitored
 
-### ✅ **System Status: Fully Operational**
+###  **System Status: Fully Operational**
 - **Backend APIs**: All endpoints responding with live data
 - **WebSocket connections**: Active real-time updates
 - **MCP Server**: 12 tools, 5 prompts, 5 resources - ready for Claude Desktop
@@ -88,7 +88,7 @@ See `SOTA_CHECKLIST.md` for detailed compliance report.
 
 ## Architecture Overview
 
-### 🌐 FastAPI Web Application
+###  FastAPI Web Application
 - **Purpose**: Human-friendly web interface for real-time transit visualization
 - **Transport**: HTTP/WebSocket
 - **Location**: `frontend/app.py`
@@ -104,7 +104,7 @@ See `SOTA_CHECKLIST.md` for detailed compliance report.
   - Advanced filtering and sorting
   - Analytics dashboard (Chart.js visualizations)
 
-### 🤖 FastMCP MCP Server (Runs Natively, NOT in Docker)
+###  FastMCP MCP Server (Runs Natively, NOT in Docker)
 - **Purpose**: AI assistant integration for natural language transit queries
 - **Transport**: stdio (for Claude Desktop)
 - **Location**: `frontend/mcp_server/`
@@ -121,7 +121,7 @@ See `SOTA_CHECKLIST.md` for detailed compliance report.
   - **Multi-city architecture** (Phase 4)
   - **Production error handling**
 
-### 🔄 Shared Backend
+###  Shared Backend
 Both interfaces use the same core modules:
 - `data_loader.py` - GTFS data loading and station management
 - `database.py` - PostgreSQL/PostGIS database layer
@@ -135,16 +135,16 @@ Both interfaces use the same core modules:
 
 ---
 
-## 🚀 Phase Implementation Status
+##  Phase Implementation Status
 
-### ✅ Phase 1: Core Infrastructure (Complete)
+###  Phase 1: Core Infrastructure (Complete)
 - GTFS data loading and processing
 - Real-time vehicle tracking
 - Interactive map with 198 lines
 - PostgreSQL/PostGIS database
 - Docker containerization
 
-### ✅ Phase 2: PWA & Favorites (Complete)
+###  Phase 2: PWA & Favorites (Complete)
 - Progressive Web App support
 - Service worker for offline capability
 - App manifest for installability
@@ -152,35 +152,35 @@ Both interfaces use the same core modules:
 - Mobile optimization
 - Geolocation integration
 
-### ✅ Phase 3A: Advanced Routing (Complete)
+###  Phase 3A: Advanced Routing (Complete)
 - A* pathfinding algorithm
 - Transit graph construction
 - Multi-transfer support
 - Real-time delay integration
 - Journey comparison
 
-### ✅ Phase 3B: Advanced Filtering (Complete)
+###  Phase 3B: Advanced Filtering (Complete)
 - Line type filters (metro, tram, bus)
 - Direction filters
 - Zone filters
 - Accessibility filters
 - Schedule-based filters
 
-### ✅ Phase 3C: ML & Analytics (Complete)
+###  Phase 3C: ML & Analytics (Complete)
 - Historical data collection
 - ML delay predictions (Random Forest/Gradient Boosting)
 - Analytics dashboard with Chart.js
 - Smart notifications
 - Model training scripts
 
-### ✅ Phase 4: Multi-City Support (Complete)
+###  Phase 4: Multi-City Support (Complete)
 - City configuration framework
 - Database migrations for cities table
 - City switching API
 - Support for multiple Austrian cities
 - Public API with rate limiting
 
-### ✅ Phase 5: Integration Features (Complete)
+###  Phase 5: Integration Features (Complete)
 - Weather integration (OpenWeatherMap)
 - Calendar integration
 - Social features (user-generated content)
@@ -188,19 +188,19 @@ Both interfaces use the same core modules:
 
 ---
 
-## 🚀 Installation
+##  Installation
 
 ### Prerequisites
 - [uv](https://docs.astral.sh/uv/) installed (RECOMMENDED)
 - Python 3.12+
 
-### 📦 Quick Start
+###  Quick Start
 Run immediately via `uvx`:
 ```bash
 uvx vienna-transit-mcp
 ```
 
-### 🎯 Claude Desktop Integration
+###  Claude Desktop Integration
 Add to your `claude_desktop_config.json`:
 ```json
 "mcpServers": {
@@ -231,7 +231,7 @@ pip install -e .
 
 ---
 
-## 🎮 Usage
+##  Usage
 
 ### 1. Docker (Production + Development)
 
@@ -249,7 +249,7 @@ docker compose restart frontend
 docker compose down
 ```
 
-**Hot-Reload Enabled!** Edit Python/HTML/CSS files → Changes appear in 1 second!
+**Hot-Reload Enabled!** Edit Python/HTML/CSS files  Changes appear in 1 second!
 
 ### 2. Native Development (Fastest)
 
@@ -308,7 +308,7 @@ Add to `claude_desktop_config.json`:
 
 ---
 
-## 🛠️ MCP Tools (12 Total)
+##  MCP Tools (12 Total)
 
 ### Essential Tools
 1. **`help`** - Get help with MCP tools and Vienna transit
@@ -334,10 +334,10 @@ Add to `claude_desktop_config.json`:
 
 ---
 
-## 📊 Current Status
+##  Current Status
 
 ### Database
-- **GTFS Import**: 25-50x faster (13 hours → 15-30 minutes)
+- **GTFS Import**: 25-50x faster (13 hours  15-30 minutes)
 - **Performance**: Optimized triggers, indexes, bulk inserts
 - **Phase 4 Migration**: Cities table and multi-city schema
 
@@ -361,21 +361,21 @@ Add to `claude_desktop_config.json`:
 
 ---
 
-## 🐳 Docker Development Tips
+##  Docker Development Tips
 
-### ⚡ Hot-Reload (Zero Rebuild!)
+###  Hot-Reload (Zero Rebuild!)
 ```powershell
 # Edit any .py/.html/.css file
-# → Changes appear in 1 second! No rebuild needed!
+# Changes appear in 1 second! No rebuild needed!
 ```
 
-### 🔧 Regular Rebuilds (10 seconds)
+###  Regular Rebuilds (10 seconds)
 ```powershell
 # For Python code changes
 docker compose restart frontend  # Fast! Uses cache!
 ```
 
-### 🐌 Full Rebuild (ONLY for dependency changes!)
+###  Full Rebuild (ONLY for dependency changes!)
 ```powershell
 # ONLY when requirements.txt changes!
 docker compose down
@@ -383,13 +383,13 @@ docker compose build frontend
 docker compose up -d
 ```
 
-**❌ NEVER use `--no-cache` for code changes!** (Wastes 15+ minutes)
+** NEVER use `--no-cache` for code changes!** (Wastes 15+ minutes)
 
 See `DOCKER_DEV_GUIDE.md` and `DOCKER_GUIDE_COMPLETE.html` for details.
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 ### MCP Server Testing
 ```powershell
@@ -411,7 +411,7 @@ See `docs/MCP_TESTING_GUIDE.md` for comprehensive test scenarios.
 
 ---
 
-## 📚 Documentation
+##  Documentation
 
 ### Core Documentation
 - `README.md` - This file (overview and setup)
@@ -436,7 +436,7 @@ See `docs/MCP_TESTING_GUIDE.md` for comprehensive test scenarios.
 
 ---
 
-## 🎯 Wiener Linien API
+##  Wiener Linien API
 
 ### Endpoints
 - `/monitor` - Real-time departures with vehicle positions
@@ -452,7 +452,7 @@ See `docs/MCP_TESTING_GUIDE.md` for comprehensive test scenarios.
 
 ---
 
-## 🔧 Development Guidelines
+##  Development Guidelines
 
 ### Code Quality
 ```powershell
@@ -490,7 +490,7 @@ See `docs/RULEBOOK.md` for complete guidelines.
 
 ---
 
-## 🚀 Deployment
+##  Deployment
 
 ### Docker Production
 ```powershell
@@ -510,7 +510,7 @@ OPENWEATHER_API_KEY=your_key_here
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 1. Read the [Rulebook](docs/RULEBOOK.md)
 2. Follow code quality standards
@@ -520,7 +520,7 @@ OPENWEATHER_API_KEY=your_key_here
 
 ---
 
-## 📝 License
+##  License
 
 Part of the Annoyinator Barnacle Projects collection.
 
@@ -529,7 +529,7 @@ Part of the Annoyinator Barnacle Projects collection.
 
 ---
 
-## 🎉 Acknowledgments
+##  Acknowledgments
 
 - **Wiener Linien** for open data API
 - **FastMCP** for MCP protocol implementation
@@ -538,4 +538,4 @@ Part of the Annoyinator Barnacle Projects collection.
 
 ---
 
-**Vienna Transit is SOTA compliant and production-ready!** 🏆✨
+**Vienna Transit is SOTA compliant and production-ready!** 

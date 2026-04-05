@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "vienna-transit-mcp"
-version = "1.0.0"
-description = "Vienna Transit MCP Server - FastMCP 2.13 compliant MCP server for Vienna public transport information"
+version = "1.1.0"
+description = "Vienna Transit MCP Server - FastMCP 3.x compliant MCP server for Vienna public transport information"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
     {name = "Vienna Transit MCP Contributors"}
@@ -18,7 +18,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -31,7 +30,7 @@ dependencies = [
     "uvicorn[standard]>=0.35",
     "python-socketio[asyncio]==5.11.2",
     "SQLAlchemy==2.0.23",
-    "psycopg2-binary==2.9.9",
+    "asyncpg>=0.29.0",
     "requests==2.31.0",
     "python-dotenv>=1.1.0",
     "Jinja2==3.1.2",
@@ -41,7 +40,7 @@ dependencies = [
     "partridge==0.1.0",
     "gtfs-kit==12.0.0",
     # MCP Server dependencies
-    "fastmcp>=2.14.3,<3.0.0",
+    "fastmcp>=3.1.0,<4",
     "pydantic>=2.5.0",
     # ML dependencies (Phase 3C)
     "scikit-learn>=1.3.0",
@@ -59,32 +58,21 @@ dev = [
 ]
 
 [project.scripts]
-vienna-transit-mcp = "frontend.mcp_server.server:mcp"
+vienna-transit-mcp = "wienerlinien_mcp.server:mcp.run"
 
 [tool.setuptools]
-packages = ["frontend", "frontend.mcp_server"]
+package-dir = {"" = "src", "frontend" = "frontend"}
+packages = ["wienerlinien_mcp", "wienerlinien_mcp.tools", "wienerlinien_mcp.models", "wienerlinien_mcp.middleware"]
 
 [tool.setuptools.package-data]
 "*" = ["*.md", "*.txt", "*.json"]
 
 [tool.black]
 line-length = 100
-target-version = ["py39", "py310", "py311", "py312"]
-
-[tool.ruff]
-line-length = 100
-target-version = "py39"
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "N", "W", "UP"]
-ignore = ["E501"]
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
+target-version = ["py310", "py311", "py312"]
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.10"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false
@@ -97,4 +85,31 @@ python_classes = ["Test*"]
 python_functions = ["test_*"]
 asyncio_mode = "auto"
 
+[tool.ruff]
+line-length = 120
+target-version = "py312"
 
+[tool.ruff.lint]
+# Hardened v13.1 Rule Set
+select = [
+    "E", "F", "I", "UP", "B", "S", "A", "ANN", "COM", "C4", "DTZ", "PIE", "T20", "PYI", "Q", "RSE", "RET", "SLF", "SIM", "TID", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY", "FLY", "PERF", "FURB", "LOG", "RUF"
+]
+ignore = [
+    "ANN101", # Missing type annotation for self
+    "ANN102", # Missing type annotation for cls
+    "COM812", # Trailing comma missing (handled by formatter)
+    "ISC001", # Single line implicit string concatenation (handled by formatter)
+    "PLR0913", # Too many arguments
+    "S101",   # Use of assert (standard for pytest)
+    "TRY003", # Avoid specifying long messages in exceptions
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "ANN", "PLR", "TRY", "S105", "S106", "SLF001", "ARG002", "PLC0415"]
+"server.py" = ["T20", "ARG001", "ARG002"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

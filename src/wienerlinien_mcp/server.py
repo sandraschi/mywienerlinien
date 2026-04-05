@@ -1,5 +1,5 @@
 """
-Vienna Transit MCP Server - FastMCP 2.13 Compliant
+Vienna Transit MCP Server - FastMCP 3.x Compliant
 
 This server provides MCP tools for Vienna public transport information.
 It runs with stdio transport for Claude Desktop integration.
@@ -104,10 +104,8 @@ register_journey_tool(mcp)
 # Register tools - Route Info
 register_routes_tool(mcp)
 
-logger.info("Vienna Transit MCP Server initialized with FastMCP 2.13")
-logger.info(
-    f"Registered {len(mcp._tool_manager._tools)} tools, {len(mcp._resource_manager._resources)} resources, {len(mcp._prompt_manager._prompts)} prompts"
-)
+logger.info("Vienna Transit MCP Server initialized with FastMCP 3.x")
+logger.info("Tools, resources and prompts registered successfully")
 
 # Export for FastMCP CLI
 if __name__ == "__main__":

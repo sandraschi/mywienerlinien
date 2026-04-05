@@ -269,8 +269,8 @@ async function loadLines() {
         const data = await response.json();
         lineData = (data.lines || []).map((line) => ({
             ...line,
-            normalizedType: normalizeLineType(line.type),
-            color: line.color || getLineTypeColor(normalizeLineType(line.type))
+            normalizedType: normalizeLineType(line.type, line.name),
+            color: line.color || getLineTypeColor(normalizeLineType(line.type, line.name))
         }));
 
         renderLineSelectionControls();
@@ -280,9 +280,17 @@ async function loadLines() {
     }
 }
 
-function normalizeLineType(type) {
+function normalizeLineType(type, lineName) {
     if (!type) {
         return 'unknown';
+    }
+
+    // Night bus detection by line name (N-prefix) — takes priority over type
+    if (lineName) {
+        const nameUpper = lineName.toString().trim().toUpperCase();
+        if (/^N\d/.test(nameUpper)) {
+            return 'nightbus';
+        }
     }
 
     const value = type.toString().trim().toLowerCase();
@@ -845,13 +853,10 @@ function getLineTypeClass(line) {
     if (!line) return '';
     const lineUpper = line.toUpperCase();
     if (lineUpper.startsWith('U')) return 'metro';
-    if (lineUpper.match(/^[A-Z]$/) || lineUpper.match(/^\d{1,2}$/)) {
-        const num = parseInt(lineUpper);
-        if (num >= 20 && num <= 99) return 'nightbus';
-        return 'tram';
-    }
-    if (isNightRoute(line)) return 'nightbus';
-    if (lineUpper.match(/^\d{3,}$/)) return 'bus';
+    if (/^N\d/.test(lineUpper)) return 'nightbus';
+    if (lineUpper.match(/^[A-EOR-Z]$/) || lineUpper.match(/^\d{1,2}$/)) return 'tram';
+    if (lineUpper.match(/^\d{3,}/)) return 'bus';
+    if (lineUpper.match(/[A-Z]/)) return 'bus';
     return '';
 }
 
