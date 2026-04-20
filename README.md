@@ -1,5 +1,7 @@
 # Vienna Transit - Dual Standard Application
 
+[![FastMCP Version](https://img.shields.io/badge/FastMCP-3.1.0-blue?style=flat-square&logo=python&logoColor=white)](https://github.com/sandraschi/fastmcp) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff) [![Built with Just](https://img.shields.io/badge/Built_with-Just-000000?style=flat-square&logo=gnu-bash&logoColor=white)](https://github.com/casey/just)
+
 **Last Updated:** 2025-12-27
 **Status:**  Production Ready |  SOTA Compliant |  Fully Operational
 **Version:** 2.0.1 (Phase 1-5 Complete + Schema Migration)
@@ -46,7 +48,7 @@ docker compose up -d
 
 ### MCP Server (10/10 SOTA Score)
 
- **FastMCP 2.13 Compliant**
+ **FastMCP 3.1.0 Compliant**
 - **12 Production-Ready Tools**: All fully implemented with real features
 - **5 AI Prompts**: Comprehensive guidance for Claude
 - **5 Resources**: Transit system reference data
@@ -114,7 +116,7 @@ See `SOTA_CHECKLIST.md` for detailed compliance report.
   - **9 core tools**: Departures, search, journey planning, status, help, alerts, timetable, nearby, server status
   - **5 prompts**: AI assistant guidance for Vienna transit
   - **5 resources**: Transit system reference data
-  - **FastMCP 2.13 compliant** (SOTA)
+  - **FastMCP 3.1.0 compliant** (SOTA)
   - **Google-style docstrings**
   - **Real GTFS-based routing** with A* pathfinding
   - **ML delay predictions** (Phase 3C)
@@ -519,6 +521,17 @@ OPENWEATHER_API_KEY=your_key_here
 5. Update documentation
 
 ---
+
+
+## 🛡️ Industrial Quality Stack
+
+This project adheres to **SOTA 14.1** industrial standards for high-fidelity agentic orchestration:
+
+- **Python (Core)**: [Ruff](https://astral.sh/ruff) for linting and formatting. Zero-tolerance for `print` statements in core handlers (`T201`).
+- **Webapp (UI)**: [Biome](https://biomejs.dev/) for sub-millisecond linting. Strict `noConsoleLog` enforcement.
+- **Protocol Compliance**: Hardened `stdout/stderr` isolation to ensure crash-resistant JSON-RPC communication.
+- **Automation**: [Justfile](./justfile) recipes for all fleet operations (`just lint`, `just fix`, `just dev`).
+- **Security**: Automated audits via `bandit` and `safety`.
 
 ##  License
 

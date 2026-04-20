@@ -1,4 +1,14 @@
-﻿# Wiener Linien web_sota start script
+﻿Param([switch]$Headless)
+
+# --- SOTA Headless Standard ---
+if ($Headless -and ($Host.UI.RawUI.WindowTitle -notmatch 'Hidden')) {
+    Start-Process pwsh -ArgumentList '-NoProfile', '-File', $PSCommandPath, '-Headless' -WindowStyle Hidden
+    exit
+}
+$WindowStyle = if ($Headless) { 'Hidden' } else { 'Normal' }
+# ------------------------------
+
+# Wiener Linien web_sota start script
 # Frontend: Vite on port 10896 (proxies /api â†’ localhost:3079)
 # No separate backend needed â€” uses the running Docker stack on port 3079
 
@@ -38,6 +48,7 @@ Start-Process powershell -ArgumentList "-NoProfile", "-WindowStyle", "Hidden", "
 
 Write-Host "Browser will open automatically when Vite is ready." -ForegroundColor Gray
 npm run dev -- --port $WebPort --host
+
 
 
 
