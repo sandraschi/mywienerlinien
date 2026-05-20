@@ -1,6 +1,11 @@
 # Vienna Transit - Dual Standard Application
 
-[![FastMCP Version](https://img.shields.io/badge/FastMCP-3.1.0-blue?style=flat-square&logo=python&logoColor=white)](https://github.com/sandraschi/fastmcp) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff) [![Built with Just](https://img.shields.io/badge/Built_with-Just-000000?style=flat-square&logo=gnu-bash&logoColor=white)](https://github.com/casey/just)
+<p align="center">
+  <a href="https://github.com/casey/just"><img src="https://img.shields.io/badge/just-ready_to_go-7c5cfc?style=flat-square&logo=just&logoColor=white" alt="Just"></a>
+  <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Ruff"></a>
+  <a href="https://python.org"><img src="https://img.shields.io/badge/Python-3.13+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python"></a>
+  <a href="https://github.com/PrefectHQ/fastmcp"><img src="https://img.shields.io/badge/FastMCP-3.2-7c5cfc?style=flat-square" alt="FastMCP"></a>
+</p>
 
 **Last Updated:** 2025-12-27
 **Status:**  Production Ready |  SOTA Compliant |  Fully Operational
@@ -15,6 +20,20 @@ A comprehensive Vienna public transport application with **two complementary int
 Both interfaces share the same backend logic and data sources, providing a unified experience across web and AI platforms.
 
 ---
+
+## Quick Start
+
+```powershell
+git clone https://github.com/sandraschi/mywienerlinien
+cd mywienerlinien
+just
+```
+
+This opens an interactive dashboard showing all available commands. Run `just bootstrap` to install dependencies, then `just serve` or `just dev` to start.
+
+### Manual Setup
+
+If you don't have `just` installed:
 
 ##  Quick Start
 
@@ -551,4 +570,4 @@ Part of the Annoyinator Barnacle Projects collection.
 
 ---
 
-**Vienna Transit is SOTA compliant and production-ready!** 
+**Vienna Transit is SOTA compliant and production-ready!**
