@@ -16,3 +16,5 @@ Vienna Transit MCP Server - FastMCP 3.1.0x compliant MCP server for Vienna publi
 - `README.md` — full documentation
 - `pyproject.toml` — build config and entry points
 - `CLAUDE.md` — Claude Code context (if present)
+
+Install docs: follow mcp-central-docs/standards/AGENT_INSTALL_REFERENCE.md
