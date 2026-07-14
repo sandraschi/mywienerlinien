@@ -26,10 +26,10 @@ foreach ($plugin in $plugins.GetEnumerator()) {
     Write-Host "Downloading $($plugin.Key)..."
     try {
         Invoke-WebRequest -Uri $plugin.Value -OutFile $outputPath -UseBasicParsing
-        Write-Host "✓ Downloaded $($plugin.Key)" -ForegroundColor Green
+        Write-Host "âœ“ Downloaded $($plugin.Key)" -ForegroundColor Green
     }
     catch {
-        Write-Host "✗ Failed to download $($plugin.Key): $_" -ForegroundColor Red
+        Write-Host "âœ- Failed to download $($plugin.Key): $_" -ForegroundColor Red
     }
 }
 

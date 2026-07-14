@@ -10,10 +10,17 @@ $WindowStyle = if ($Headless) { 'Hidden' } else { 'Normal' }
 # ------------------------------
 
 # Wiener Linien web_sota start script
-# Frontend: Vite on port 10896 (proxies /api â†’ localhost:3079)
-# No separate backend needed â€” uses the running Docker stack on port 3079
+# Frontend: Vite on port 10896 (proxies /api ├óÔÇáÔÇÖ localhost:3079)
+# No separate backend needed ├óÔé¼ÔÇØ uses the running Docker stack on port 3079
 
 $WebPort = 10896
+$FleetStartPath = Join-Path $ProjectRoot "scripts\FleetStartMode.ps1"
+if (-not (Test-Path -LiteralPath $FleetStartPath)) {
+    Write-Host "ERROR: Missing vendored launcher helper: $FleetStartPath" -ForegroundColor Red
+    exit 1
+}
+. $FleetStartPath
+
 $PSScriptRoot_ = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
 Write-Host "Checking port $WebPort..." -ForegroundColor Yellow

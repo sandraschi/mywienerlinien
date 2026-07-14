@@ -79,9 +79,9 @@ function Convert-ToAbsolutePath {
     return [System.IO.Path]::GetFullPath((Join-Path (Get-Location) $PathValue))
 }
 
-Write-Host "`n╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Magenta
-Write-Host "║       📦 Repository Backup (Windows Native ZIP) 📦      ║" -ForegroundColor Magenta
-Write-Host "╚═══════════════════════════════════════════════════════════╝`n" -ForegroundColor Magenta
+Write-Host "`nâ•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•-" -ForegroundColor Magenta
+Write-Host "â•‘       ðŸ“¦ Repository Backup (Windows Native ZIP) ðŸ“¦      â•‘" -ForegroundColor Magenta
+Write-Host "â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•`n" -ForegroundColor Magenta
 
 # Resolve source path
 if ($SourcePath) {
@@ -91,21 +91,21 @@ if ($SourcePath) {
 }
 
 if (-not (Test-Path $sourceDirectory)) {
-    Write-Host "❌ Error: Source path not found: $sourceDirectory" -ForegroundColor Red
+    Write-Host "âŒ Error: Source path not found: $sourceDirectory" -ForegroundColor Red
     exit 1
 }
 
 # Sanity check: prevent running directly on root drives
 $rootPath = [System.IO.Path]::GetPathRoot($sourceDirectory)
 if ($rootPath -and [System.IO.Path]::GetFullPath($sourceDirectory).TrimEnd('\') -eq $rootPath.TrimEnd('\')) {
-    Write-Host "❌ Refusing to back up root drive: $sourceDirectory" -ForegroundColor Red
+    Write-Host "âŒ Refusing to back up root drive: $sourceDirectory" -ForegroundColor Red
     exit 1
 }
 
 # Check repo markers
 $gitFolder = Join-Path $sourceDirectory ".git"
 if (-not (Test-Path $gitFolder)) {
-    Write-Host "❌ Error: Source path must be a git repository (.git folder not found)." -ForegroundColor Red
+    Write-Host "âŒ Error: Source path must be a git repository (.git folder not found)." -ForegroundColor Red
     exit 1
 }
 
@@ -139,7 +139,7 @@ if ($BackupTargets -and $BackupTargets.Count -gt 0) {
         if ($absolute) {
             $targetList += [pscustomobject]@{ Label = $targetPath; Root = $absolute }
         } else {
-            Write-Host "⚠️  Skipping invalid target: $targetPath" -ForegroundColor Yellow
+            Write-Host "âš ï¸  Skipping invalid target: $targetPath" -ForegroundColor Yellow
         }
     }
 } else {
@@ -152,7 +152,7 @@ if ($BackupTargets -and $BackupTargets.Count -gt 0) {
 }
 
 if (-not $targetList -or $targetList.Count -eq 0) {
-    Write-Host "❌ No valid backup targets defined." -ForegroundColor Red
+    Write-Host "âŒ No valid backup targets defined." -ForegroundColor Red
     exit 1
 }
 
@@ -163,12 +163,12 @@ foreach ($target in $targetList) {
 
     if (-not (Test-Path $rootPath)) {
         New-Item -ItemType Directory -Path $rootPath -Force | Out-Null
-        Write-Host "✅ Created target root: $rootPath" -ForegroundColor Green
+        Write-Host "âœ… Created target root: $rootPath" -ForegroundColor Green
     }
 
     if (-not (Test-Path $repoTargetDir)) {
         New-Item -ItemType Directory -Path $repoTargetDir -Force | Out-Null
-        Write-Host "✅ Created: $repoTargetDir" -ForegroundColor Green
+        Write-Host "âœ… Created: $repoTargetDir" -ForegroundColor Green
     }
 
     $backupPath = Join-Path $repoTargetDir $backupName
@@ -182,7 +182,7 @@ foreach ($target in $targetList) {
 
 $repoRoot = $repoInfo.FullName
 
-Write-Host "📋 Backup Configuration:" -ForegroundColor Cyan
+Write-Host "ðŸ“‹ Backup Configuration:" -ForegroundColor Cyan
 Write-Host "  Repository:    $repoName" -ForegroundColor White
 Write-Host "  Source path:   $repoRoot" -ForegroundColor White
 Write-Host "  Timestamp:     $timestamp" -ForegroundColor White
@@ -260,13 +260,13 @@ $exclusions += $excludeLargeTestFiles
 if (-not $BackupData) {
     $exclusions += $dataExclusions
 } else {
-    Write-Host "💾 Including GTFS/data artifacts (--BackupData enabled)" -ForegroundColor Cyan
+    Write-Host "ðŸ’¾ Including GTFS/data artifacts (--BackupData enabled)" -ForegroundColor Cyan
 }
 
 if (-not $FullHistory) {
     $exclusions += ".git"
 } else {
-    Write-Host "📚 Including .git history (--FullHistory enabled)" -ForegroundColor Cyan
+    Write-Host "ðŸ“š Including .git history (--FullHistory enabled)" -ForegroundColor Cyan
 }
 
 if (-not $IncludeBuild) {
@@ -299,14 +299,14 @@ $wildcardPatterns = $normalizedExclusions | ForEach-Object {
     [System.Management.Automation.WildcardPattern]::new($_, [System.Management.Automation.WildcardOptions]::IgnoreCase)
 }
 
-Write-Host "🚫 Excluding:" -ForegroundColor Yellow
+Write-Host "ðŸš« Excluding:" -ForegroundColor Yellow
 foreach ($excl in $normalizedExclusions) {
     Write-Host "  - $excl" -ForegroundColor Gray
 }
 Write-Host ""
 
 # Calculate sizes
-Write-Host "📊 Analyzing repository size..." -ForegroundColor Cyan
+Write-Host "ðŸ“Š Analyzing repository size..." -ForegroundColor Cyan
 
 $allFiles = Get-ChildItem -Path $sourceDirectory -Recurse -File -ErrorAction SilentlyContinue
 $totalSize = ($allFiles | Measure-Object -Property Length -Sum).Sum / 1MB
@@ -339,13 +339,13 @@ Write-Host "  Backup size:   $([math]::Round($backupSize, 2)) MB" -ForegroundCol
 Write-Host "  Reduction:     $([math]::Round(($excludedSize / $totalSize) * 100, 1))%`n" -ForegroundColor Cyan
 
 # Create backup
-Write-Host "🔄 Creating backups..." -ForegroundColor Cyan
+Write-Host "ðŸ”„ Creating backups..." -ForegroundColor Cyan
 
 try {
     Add-Type -AssemblyName System.IO.Compression.FileSystem
 
     foreach ($detail in $targetDetails) {
-        Write-Host "  → $($detail.Label)..." -ForegroundColor Gray
+        Write-Host "  â†’ $($detail.Label)..." -ForegroundColor Gray
         if (Test-Path $detail.BackupFile) {
             Remove-Item $detail.BackupFile -Force
         }
@@ -359,13 +359,13 @@ try {
         }
 
         $zipArchive.Dispose()
-        Write-Host "  ✅ $($detail.Label) backup complete (folder structure preserved)" -ForegroundColor Green
+        Write-Host "  âœ… $($detail.Label) backup complete (folder structure preserved)" -ForegroundColor Green
     }
 
-    Write-Host "`n✅ Backups created successfully with folder structure!`n" -ForegroundColor Green
+    Write-Host "`nâœ… Backups created successfully with folder structure!`n" -ForegroundColor Green
 
 } catch {
-    Write-Host "❌ Error creating backup: $_" -ForegroundColor Red
+    Write-Host "âŒ Error creating backup: $_" -ForegroundColor Red
     exit 1
 }
 
@@ -375,11 +375,11 @@ if (Test-Path $primaryBackup) {
     $compressionRatio = if ($backupSize -gt 0) { ($finalSize / $backupSize) * 100 } else { 0 }
 
     Write-Host ""
-    Write-Host "╔═══════════════════════════════════════════════════════════╗" -ForegroundColor Green
-    Write-Host "║              📦 Backup Complete! 📦                     ║" -ForegroundColor Green
-    Write-Host "╚═══════════════════════════════════════════════════════════╝" -ForegroundColor Green
+    Write-Host "â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•-" -ForegroundColor Green
+    Write-Host "â•‘              ðŸ“¦ Backup Complete! ðŸ“¦                     â•‘" -ForegroundColor Green
+    Write-Host "â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•" -ForegroundColor Green
     Write-Host ""
-    Write-Host "📊 Backup Statistics:" -ForegroundColor Cyan
+    Write-Host "ðŸ“Š Backup Statistics:" -ForegroundColor Cyan
     Write-Host "  File:           $backupName" -ForegroundColor White
     foreach ($detail in $targetDetails) {
         Write-Host "  Location:       $($detail.BackupFile)" -ForegroundColor White
@@ -391,16 +391,16 @@ if (Test-Path $primaryBackup) {
     Write-Host "  Method:         .NET ZIP API (folder structure preserved)" -ForegroundColor Green
     Write-Host ""
 
-    Write-Host "💡 To restore:" -ForegroundColor Cyan
+    Write-Host "ðŸ’¡ To restore:" -ForegroundColor Cyan
     Write-Host "  Expand-Archive -Path `"$primaryBackup`" -DestinationPath `"destination-folder`"" -ForegroundColor Gray
     Write-Host ""
 
 } else {
-    Write-Host "❌ Error: Primary backup file not created" -ForegroundColor Red
+    Write-Host "âŒ Error: Primary backup file not created" -ForegroundColor Red
     foreach ($detail in $targetDetails) {
         Write-Host "  $($detail.Label): $(Test-Path $detail.BackupFile)" -ForegroundColor Gray
     }
     exit 1
 }
 
-Write-Host "✅ Done!`n" -ForegroundColor Green
+Write-Host "âœ… Done!`n" -ForegroundColor Green
