@@ -6,11 +6,16 @@ volumes:
   loki_data: {}
   grafana-storage: {}
   postgres_data: {}
+  wienerlinien_data: {}
+  gtfs_data: {}
 
 services:
   # Database
   db:
-    image: postgis/postgis:15-3.3-alpine
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    image: wienerlinien-db:local
     container_name: wienerlinien-db
     environment:
       POSTGRES_USER: wienerlinien
@@ -19,7 +24,6 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./db/init-scripts:/docker-entrypoint-initdb.d
     ports:
       - "5433:5432"
     networks:
@@ -36,25 +40,21 @@ services:
   # Or: docker compose up gtfs-loader (with GTFS_FORCE_REFRESH=1 env var)
   gtfs-loader:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: frontend/Dockerfile
+    image: wienerlinien-frontend:latest
     container_name: wienerlinien-gtfs-loader
     environment:
       - DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
       - PGPASSWORD=wienerlinien
-      - GTFS_LOG_DIR=/logs
+      - GTFS_LOG_DIR=/app/logs
       - GTFS_REFRESH_DAYS=${GTFS_REFRESH_DAYS:-365}
       - GTFS_ZIP_PATH=/app/scripts/gtfs_data/wienerlinien-gtfs.zip
       - GTFS_METADATA_DIR=/app/scripts/gtfs_data
       - GTFS_FORCE_REFRESH=${GTFS_FORCE_REFRESH:-0}
     volumes:
-      - ./frontend:/app
-      - ./scripts:/app/scripts
-      - ./db/init-scripts:/app/db/init-scripts
-      - ./requirements-db.txt:/app/requirements-db.txt
-      - ./models:/app/models
-      - ./data:/app/data
-      - ./frontend/logs:/logs
+      - gtfs_data:/app/scripts/gtfs_data
+      - wienerlinien_data:/app/data
     networks:
       - wienerlinien-network
     depends_on:
@@ -66,24 +66,22 @@ services:
       bash -c " echo 'Waiting for PostgreSQL to be ready...' && until pg_isready -h db -U wienerlinien -d wienerlinien -q; do
         echo 'PostgreSQL is not ready yet. Retrying in 5 seconds...' &&
         sleep 5
-      done && echo 'Creating database schema...' && psql -h db -U wienerlinien -d wienerlinien -f /app/db/init-scripts/01_init_db.sql && echo 'Installing Python dependencies...' && pip install -r /app/requirements-db.txt && echo 'GTFS scheduled loader: running if stale or forced...' && python /app/scripts/gtfs_scheduled_loader.py && echo 'GTFS scheduled loader finished.' "
+      done && echo 'Creating database schema...' && psql -h db -U wienerlinien -d wienerlinien -f /app/db/init-scripts/01_init_db.sql && echo 'GTFS scheduled loader: running if stale or forced...' && python /app/scripts/gtfs_scheduled_loader.py && echo 'GTFS scheduled loader finished.' "
 
   # Frontend Application
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: frontend/Dockerfile
+    image: wienerlinien-frontend:latest
     container_name: wienerlinien-frontend
     environment:
       - DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
       - APP_ENV=development
-      - PYTHONPATH=/app:/repo/src
+      - PYTHONPATH=/app
     volumes:
-      - ./frontend:/app
-      - ./data:/app/data
-      - ./scripts:/scripts
-      - ./models:/models
-      - .:/repo
+      - wienerlinien_data:/app/data
+      - gtfs_data:/app/scripts/gtfs_data
     ports:
       - "3079:3080"
     networks:

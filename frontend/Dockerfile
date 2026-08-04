@@ -1,12 +1,13 @@
-# Use Python 3.11 slim image
+# Vienna Transit app image (frontend app + GTFS loader share this image).
+# Build context is the REPO ROOT so scripts/, models/ and db/ are available
+# (gtfs_manager imports scripts.* at app import time).
 FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
-# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
 ENV DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
 
 # Install system dependencies
@@ -19,13 +20,18 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements files
-COPY requirements.txt .
+COPY frontend/requirements.txt requirements.txt
+COPY requirements-db.txt requirements-db.txt
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir -r requirements-db.txt
 
-# Copy application code
-COPY . .
+# Copy application code (frontend app + shared scripts/models/db)
+COPY frontend/ ./
+COPY scripts/ ./scripts/
+COPY models/ ./models/
+COPY db/init-scripts/ ./db/init-scripts/
 
 # Create logs directory
 RUN mkdir -p logs
