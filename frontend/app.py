@@ -1067,6 +1067,13 @@ def initialize_app() -> None:
                 logger.error("GTFS bootstrap failed: %s", exc, exc_info=True)
                 raise
 
+    # Start the disruption monitor (incidents from the OGD trafficInfoList).
+    if not TEST_MODE:
+        try:
+            disruption_monitor.start_monitoring()
+        except Exception as exc:  # pragma: no cover - startup defensive
+            logger.error("Disruption monitor start failed: %s", exc, exc_info=True)
+
     # Data loading is now lazy - only load when first requested
     # This speeds up startup from ~67 seconds to ~1 second
     # data_loader.load_lines()  # Commented out for lazy loading

@@ -2,6 +2,24 @@
 
 All notable changes to mywienerlinien are documented here.
 
+## [2.0.1] - 2026-08-04 (incidents pipeline)
+
+### Fixed
+
+- **Disruption monitor was dead**: it fetched the wrong OGD endpoints
+  (`/trafficInfo` and `/news` - both 404; correct: `/trafficInfoList`,
+  `/newsList`) and was never started (`start_monitoring()` had no call site).
+  Now started in `initialize_app()`.
+- **V1.4 payload mapping**: trafficInfos identify items by `name` (not `id`)
+  and carry `references.lines` / `time.start|end` / German-date strings -
+  previously every poll created duplicate alerts with timestamp ids and
+  `fromisoformat` crashed on `DD.MM.YYYY HH:MM` (tz-aware vs naive datetime
+  comparison). Rewritten mapping + tolerant datetime parser.
+- Verified: monitor creates/updates real alerts (lift outages, S16/S48 line
+  notices), `/api/traffic-info` returns 238 alerts, `/api/disruptions`
+  serves active incidents. The OGD live API is used for incidents exactly as
+  intended - vehicle positions remain schedule-interpolated.
+
 ## [2.0.1] - 2026-08-04 (pseudo-live vehicle tracking)
 
 ### Added

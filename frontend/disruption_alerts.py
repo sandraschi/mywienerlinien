@@ -149,7 +149,7 @@ class DisruptionMonitor:
     def _fetch_traffic_info(self) -> Optional[Dict[str, Any]]:
         """Fetch traffic information from the API."""
         try:
-            url = f"{self.api_base_url}/trafficInfo"
+            url = f"{self.api_base_url}/trafficInfoList"
             response = requests.get(url, timeout=self.api_timeout)
             response.raise_for_status()
             return response.json()
@@ -163,7 +163,7 @@ class DisruptionMonitor:
     def _fetch_news(self) -> Optional[Dict[str, Any]]:
         """Fetch news and announcements from the API."""
         try:
-            url = f"{self.api_base_url}/news"
+            url = f"{self.api_base_url}/newsList"
             response = requests.get(url, timeout=self.api_timeout)
             response.raise_for_status()
             return response.json()
@@ -192,45 +192,85 @@ class DisruptionMonitor:
         except Exception as e:
             logger.error(f"Error processing news info: {e}")
 
-    def _create_disruption_from_traffic_info(self, info: Dict[str, Any]):
-        """Create a disruption alert from traffic information."""
+    @staticmethod
+    def _parse_api_datetime(value: Any) -> Optional[datetime]:
+        """Tolerant datetime parsing for the OGD API (ISO or 'DD.MM.YYYY HH:MM').
+
+        Returns a naive datetime in the local (container) time so it compares
+        cleanly with datetime.now() used elsewhere in this module.
+        """
+        if not value:
+            return None
+        text = str(value).strip().replace("Z", "+00:00")
+        parsed: Optional[datetime] = None
         try:
-            disruption_id = info.get("id", str(datetime.now().timestamp()))
+            parsed = datetime.fromisoformat(text)
+        except ValueError:
+            pass
+        if parsed is None:
+            for fmt in ("%d.%m.%Y %H:%M", "%d.%m.%Y %H:%M:%S", "%Y-%m-%dT%H:%M:%S%z"):
+                try:
+                    parsed = datetime.strptime(text, fmt)
+                    break
+                except ValueError:
+                    continue
+        if parsed is None:
+            return None
+        if parsed.tzinfo is not None:
+            parsed = parsed.astimezone().replace(tzinfo=None)
+        return parsed
+
+    def _create_disruption_from_traffic_info(self, info: Dict[str, Any]):
+        """Create a disruption alert from traffic information (OGD V1.4 shape)."""
+        try:
+            # V1.4 trafficInfos identify items by `name` (e.g. 'ftazS_488').
+            disruption_id = info.get("name") or info.get("id") or str(int(time.time() * 1000))
 
             # Check if this disruption already exists
             if disruption_id in self.disruptions:
                 self._update_existing_disruption(disruption_id, info)
                 return
 
+            refs = info.get("references") or {}
+            lines = [
+                ref.get("name") or ref.get("shortName") or ""
+                for ref in (refs.get("lines") or [])
+                if ref.get("name") or ref.get("shortName")
+            ]
+            stops = [
+                ref.get("name") or ""
+                for ref in (refs.get("stops") or [])
+                if ref.get("name")
+            ]
+            time_info = info.get("time") or {}
+            start_time = self._parse_api_datetime(time_info.get("start"))
+            end_time = self._parse_api_datetime(time_info.get("end"))
+
             # Create new disruption
             alert = DisruptionAlert(
                 id=disruption_id,
-                line=info.get("line", ""),
+                line=lines[0] if lines else "",
                 type=self._determine_disruption_type(info),
                 severity=self._determine_severity(info),
                 status=DisruptionStatus.ACTIVE,
                 title=info.get("title", "Service Disruption"),
                 description=info.get("description", ""),
-                affected_stations=info.get("affectedStations", []),
-                affected_lines=info.get("affectedLines", []),
-                start_time=datetime.fromisoformat(
-                    info.get("startTime", datetime.now().isoformat())
-                ),
-                end_time=datetime.fromisoformat(info.get("endTime", ""))
-                if info.get("endTime")
-                else None,
-                estimated_duration=self._parse_duration(info.get("estimatedDuration")),
+                affected_stations=stops,
+                affected_lines=lines,
+                start_time=start_time or datetime.now(),
+                end_time=end_time,
+                estimated_duration=None,
                 created_at=datetime.now(),
                 updated_at=datetime.now(),
                 source="traffic_info",
-                external_id=info.get("externalId"),
+                external_id=disruption_id,
                 url=info.get("url"),
-                contact_info=info.get("contactInfo"),
+                contact_info=info.get("ownerFormatted"),
             )
 
             self.disruptions[disruption_id] = alert
             self._notify_subscribers(alert, "new")
-            logger.info(f"Created new disruption alert: {disruption_id}")
+            logger.info(f"Created new disruption alert: {disruption_id} ({len(lines)} line(s))")
 
         except Exception as e:
             logger.error(f"Error creating disruption from traffic info: {e}")
@@ -288,8 +328,9 @@ class DisruptionMonitor:
                 disruption.description = info.get("description", disruption.description)
                 disruption.status = self._determine_status(info)
 
-                if info.get("endTime"):
-                    disruption.end_time = datetime.fromisoformat(info["endTime"])
+                end_time = self._parse_api_datetime((info.get("time") or {}).get("end"))
+                if end_time:
+                    disruption.end_time = end_time
 
                 self._notify_subscribers(disruption, "updated")
                 logger.info(f"Updated disruption: {disruption_id}")
