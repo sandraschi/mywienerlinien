@@ -19,6 +19,7 @@ import time
 from collections.abc import Iterable
 from datetime import datetime
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -31,12 +32,27 @@ except ImportError:  # pragma: no cover - runtime fallback when package context 
 
 logger = logging.getLogger(__name__)
 
-VEHICLE_CACHE_TTL = 30  # seconds
+# GTFS stop_times are published in local time (Europe/Vienna for this feed).
+_VIENNA_TZ = ZoneInfo("Europe/Vienna")
+
+
+def _now_local() -> datetime:
+    """Current wall-clock time in the feed's local timezone."""
+    return datetime.now(_VIENNA_TZ)
+
+VEHICLE_CACHE_TTL = 60  # seconds
 MAX_RBLS_PER_LINE = 30  # enough to cover a full line
+# Lines shown by default (no line filter): schedule-interpolated pseudo
+# vehicles. Trams with frequent headways look best "in motion".
+DEFAULT_PSEUDO_LINES = ["12", "26", "1", "2", "D", "71"]
+# Per-line cap so the default map stays light (multiple service variants can
+# double-count the same corridor).
+MAX_VEHICLES_PER_LINE = 60
 _vehicle_snapshot_cache: dict[str, dict[str, Any]] = {}
 _vehicle_cache_lock = threading.Lock()
+_refresh_locks: dict[str, threading.Lock] = {}
 
-# V1.4 API base — no sender param required
+# V1.4 API base - no sender param required
 _WL_BASE = "http://www.wienerlinien.at/ogd_realtime"
 
 
@@ -44,7 +60,7 @@ _WL_BASE = "http://www.wienerlinien.at/ogd_realtime"
 # Low-level API helpers
 # ---------------------------------------------------------------------------
 
-def _get(url: str, params: dict | None = None, timeout: int = 10) -> dict | None:
+def _get(url: str, params: dict | None = None, timeout: int = 6) -> dict | None:
     """GET with basic error handling. Returns parsed JSON or None."""
     try:
         r = requests.get(url, params=params, timeout=timeout)
@@ -102,6 +118,129 @@ def _lerp(a: float, b: float, t: float) -> float:
     return a + (b - a) * t
 
 
+def _parse_gtfs_seconds(t: str) -> int | None:
+    """Parse GTFS HH:MM:SS (or H:MM:SS) to seconds-of-day.
+
+    Times >= 24:00:00 (midnight-crossing trips) return None - those trips are
+    excluded from schedule interpolation (v1 limitation).
+    """
+    try:
+        parts = [int(p) for p in str(t).strip().split(":")]
+        if len(parts) != 3:
+            return None
+        h, m, s = parts
+        if h >= 24:
+            return None
+        return h * 3600 + m * 60 + s
+    except (ValueError, TypeError):
+        return None
+
+
+def _schedule_pseudo_vehicles(line_name: str, now: datetime | None = None) -> list[dict[str, Any]]:
+    """Interpolate pseudo-live vehicle markers from the GTFS schedule itself.
+
+    There is no real-time GPS signal from the vehicles. But the schedule tells
+    us exactly when each trip is supposed to depart each stop, so for every
+    trip that is "on the road right now" (its previous stop was departed and
+    its next stop has not been reached), we place a marker linearly between
+    the two bracketing stops. One marker per active trip - correct for any
+    headway, including frequent lines like tram 12.
+
+    Returns the same payload shape as the countdown-based interpolation.
+    """
+    now = now or _now_local()
+    now_s = now.hour * 3600 + now.minute * 60 + now.second
+
+    # Push a time window into SQL so the 6.1M-row stop_times table is not
+    # scanned in full: only rows whose bracket can contain "now" are fetched.
+    # departure_time/arrival_time are "HH:MM:SS" strings - lexicographic
+    # comparison is valid for times within the same day.
+    def _fmt(seconds: int) -> str:
+        seconds = max(0, min(seconds, 86399))
+        return f"{seconds // 3600:02d}:{(seconds % 3600) // 60:02d}:{seconds % 60:02d}"
+
+    win_start = _fmt(now_s - 2700)   # 45 min back
+    win_end = _fmt(now_s + 3600)     # 60 min ahead
+
+    rows = db.execute_query(
+        """
+        SELECT t.trip_id, t.trip_headsign, t.direction_id,
+               st.stop_sequence, st.arrival_time, st.departure_time,
+               s.stop_id, s.stop_name, s.stop_lat, s.stop_lon
+        FROM routes r
+        JOIN trips t ON t.route_id = r.route_id
+        JOIN stop_times st ON st.trip_id = t.trip_id
+        JOIN stops s ON s.stop_id = st.stop_id
+        WHERE LOWER(r.route_short_name) = LOWER(:line)
+          AND s.stop_lat IS NOT NULL AND s.stop_lon IS NOT NULL
+          AND st.departure_time <= :win_end
+          AND st.arrival_time >= :win_start
+        ORDER BY t.trip_id, st.stop_sequence
+        """,
+        {"line": line_name, "win_start": win_start, "win_end": win_end},
+    )
+    if not rows:
+        logger.info("No schedule rows for line %s", line_name)
+        return []
+
+    # Group rows by trip, preserving stop_sequence order
+    trips: dict[str, list[dict]] = {}
+    for row in rows:
+        trips.setdefault(row["trip_id"], []).append(row)
+
+    vehicles: list[dict[str, Any]] = []
+    for trip_id, stops in trips.items():
+        stops = sorted(stops, key=lambda r: int(r.get("stop_sequence") or 0))
+        if len(stops) < 2:
+            continue
+
+        headsign = stops[0].get("trip_headsign") or ""
+        direction_id = stops[0].get("direction_id")
+
+        for i in range(len(stops) - 1):
+            dep_s = _parse_gtfs_seconds(stops[i].get("departure_time") or "")
+            arr_s = _parse_gtfs_seconds(stops[i + 1].get("arrival_time") or "")
+            if dep_s is None or arr_s is None or arr_s <= dep_s:
+                continue
+            # Vehicle is on this segment when it has departed stop i
+            # and has not yet arrived at stop i+1.
+            if dep_s <= now_s < arr_s:
+                fraction = min(1.0, max(0.0, (now_s - dep_s) / (arr_s - dep_s)))
+                a = stops[i]
+                b = stops[i + 1]
+                lat = _lerp(float(a["stop_lat"]), float(b["stop_lat"]), fraction)
+                lng = _lerp(float(a["stop_lon"]), float(b["stop_lon"]), fraction)
+                vehicles.append({
+                    "id": f"{line_name}_{trip_id[:12]}_{i}",
+                    "type": _guess_vehicle_type(line_name),
+                    "line": line_name,
+                    "routeId": line_name,
+                    "trip_id": trip_id,
+                    "lat": round(lat, 6),
+                    "lng": round(lng, 6),
+                    "coordinates": [round(lng, 6), round(lat, 6)],
+                    "direction": "R" if direction_id in (1, "1") else "H",
+                    "towards": headsign or b["stop_name"],
+                    "next_station": b["stop_name"],
+                    "delay": 0,
+                    "countdown": max(0, (arr_s - now_s) // 60),
+                    "timestamp": now.isoformat(),
+                    "platform": "",
+                    "barrier_free": True,
+                    "interpolated": True,
+                    "schedule_based": True,
+                    "segment_from": a["stop_name"],
+                    "segment_to": b["stop_name"],
+                    "segment_fraction": round(fraction, 3),
+                })
+                break  # one marker per trip
+
+    if vehicles:
+        logger.info("Schedule-interpolated %d pseudo-vehicles for line %s",
+                    len(vehicles), line_name)
+    return vehicles
+
+
 def _guess_vehicle_type(line_name: str) -> str:
     u = line_name.upper()
     if re.match(r"^U\d", u):
@@ -117,6 +256,26 @@ def _interpolate_vehicles_for_line(line_name: str) -> list[dict[str, Any]]:
     """
     Build pseudo-realtime vehicle positions for *line_name*.
 
+    Preferred source: the GTFS schedule (stop_times in Postgres). For each
+    trip that is between two stops right now, place a marker interpolated
+    between the bracketing stop coordinates. This works at any headway.
+
+    Fallback: query the live OGD /monitor countdown at every stop of the line
+    and interpolate between stops with bracketing countdowns (best-effort for
+    sparse service; unreliable at frequent headways because the monitor shows
+    the next vehicle at each stop).
+    """
+    schedule = _schedule_pseudo_vehicles(line_name)
+    if schedule:
+        return schedule
+    logger.info("Schedule interpolation empty for %s - falling back to countdowns", line_name)
+    return _countdown_pseudo_vehicles(line_name)
+
+
+def _countdown_pseudo_vehicles(line_name: str) -> list[dict[str, Any]]:
+    """
+    Build pseudo-realtime vehicle positions for *line_name*.
+
     Algorithm:
       1. Load ordered stops from the DB (with lat/lon).
       2. For each stop that has an RBL, query the /monitor endpoint.
@@ -126,7 +285,7 @@ def _interpolate_vehicles_for_line(line_name: str) -> list[dict[str, Any]]:
       5. Return one vehicle dict per inferred in-transit segment.
 
     This is intentionally approximate. Multiple vehicles on the same line
-    are not tracked individually — only the nearest departure at each stop
+    are not tracked individually - only the nearest departure at each stop
     is used. Good enough for a visual "something is moving" indicator.
     """
     try:
@@ -335,11 +494,16 @@ def _refresh_vehicle_snapshot(
 ) -> dict[str, Any]:
     """
     Primary mode (line_filters set): interpolate pseudo-positions along the
-    full line route, falling back to raw monitor data if interpolation fails.
+    full line route from the GTFS schedule (stop_times in Postgres) - no
+    dependency on the live WL API.
 
-    Station mode: departure board for a single stop.
+    Default mode (no filters): schedule-interpolated pseudo-vehicles for the
+    DEFAULT_PSEUDO_LINES set. The Wiener Linien OGD API provides no vehicle
+    positions (only incidents/blockages), so raw monitor scraping is NOT used
+    for the map's vehicle layer.
 
-    Default mode: coarse sample of a few major stops for a map overview.
+    Station mode: departure board for a single stop (uses the OGD monitor
+    API - requires the API key in production).
     """
     vehicles: list[dict[str, Any]] = []
     successful = 0
@@ -347,21 +511,17 @@ def _refresh_vehicle_snapshot(
 
     if line_filters:
         for line_name in sorted(line_filters):
-            line_veh = _interpolate_vehicles_for_line(line_name)
+            line_veh = _schedule_pseudo_vehicles(line_name)
             if line_veh:
                 vehicles.extend(line_veh)
                 successful += 1
             else:
-                # Fallback: raw departure board for first few stops
-                rbls = _determine_rbls_for_lines({line_name})
-                for rbl in rbls[:6]:
-                    data = fetch_vehicle_data(rbl)
-                    if data and "data" in data:
-                        _parse_monitor_response(data, line_name, vehicles)
-                        successful += 1
-                    else:
-                        failed += 1
-                    time.sleep(0.1)
+                line_veh = _countdown_pseudo_vehicles(line_name)
+                if line_veh:
+                    vehicles.extend(line_veh)
+                    successful += 1
+                else:
+                    failed += 1
 
     elif station:
         data = fetch_vehicle_data(station)
@@ -372,25 +532,13 @@ def _refresh_vehicle_snapshot(
             failed += 1
 
     else:
-        all_stations = data_loader.load_stations()
-        sample_rbls: list[str] = []
-        for st in all_stations:
-            if not st.rbl:
-                continue
-            for token in re.split(r"[,\s;]+", st.rbl):
-                t = token.strip()
-                if t and t not in sample_rbls:
-                    sample_rbls.append(t)
-            if len(sample_rbls) >= 8:
-                break
-        for rbl in sample_rbls:
-            data = fetch_vehicle_data(rbl)
-            if data and "data" in data:
-                _parse_monitor_response(data, None, vehicles)
+        for line_name in DEFAULT_PSEUDO_LINES:
+            line_veh = _schedule_pseudo_vehicles(line_name)
+            if line_veh:
+                vehicles.extend(line_veh[:MAX_VEHICLES_PER_LINE])
                 successful += 1
             else:
                 failed += 1
-            time.sleep(0.1)
 
     return {
         "vehicles": vehicles,
@@ -424,11 +572,21 @@ def collect_vehicle_data(
         age = (time.monotonic() - snapshot["fetched_at"]) if snapshot else VEHICLE_CACHE_TTL + 1
 
     if age > VEHICLE_CACHE_TTL and not use_cache_only:
-        raw_snapshot = _refresh_vehicle_snapshot(
-            station, set(normalized_lines) if normalized_lines else None
-        )
-        with _vehicle_cache_lock:
-            _vehicle_snapshot_cache[cache_key] = raw_snapshot
+        # Serialize refreshes per key: concurrent callers wait on one
+        # computation instead of each scanning the schedule themselves.
+        refresh_lock = _refresh_locks.setdefault(cache_key, threading.Lock())
+        with refresh_lock:
+            with _vehicle_cache_lock:
+                snapshot = _vehicle_snapshot_cache.get(cache_key)
+                age = (time.monotonic() - snapshot["fetched_at"]) if snapshot else VEHICLE_CACHE_TTL + 1
+            if age > VEHICLE_CACHE_TTL:
+                raw_snapshot = _refresh_vehicle_snapshot(
+                    station, set(normalized_lines) if normalized_lines else None
+                )
+                with _vehicle_cache_lock:
+                    _vehicle_snapshot_cache[cache_key] = raw_snapshot
+            else:
+                raw_snapshot = snapshot
     elif snapshot:
         raw_snapshot = snapshot
     else:

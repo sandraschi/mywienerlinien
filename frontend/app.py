@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
 from contextlib import asynccontextmanager
@@ -208,7 +209,8 @@ async def get_vehicles(request: Request) -> JSONResponse:
         station,
     )
 
-    result = collect_vehicle_data(
+    result = await asyncio.to_thread(
+        collect_vehicle_data,
         vehicle_type=vehicle_type,
         station=station,
         lines=lines if lines else None,
@@ -351,7 +353,8 @@ async def get_arrivals(request: Request) -> JSONResponse:
         if not rbl and not lines:
             raise HTTPException(status_code=400, detail="Provide rbl or lines")
 
-        result = collect_vehicle_data(
+        result = await asyncio.to_thread(
+            collect_vehicle_data,
             vehicle_type=vehicle_type,
             station=rbl,
             lines=lines,

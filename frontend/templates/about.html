@@ -15,7 +15,7 @@
                 <a href="{{ url_for('read_index') }}" class="nav-brand">Wiener Linien</a>
                 <div class="nav-links">
                     <a href="{{ url_for('read_index') }}" class="nav-link">Map</a>
-                    <a href="{{ url_for('read_line_info') }}" class="nav-link">Lines</a>
+                    <a href="/line/26" class="nav-link">Lines</a>
                     <a href="{{ url_for('read_about') }}" class="nav-link active">About</a>
                 </div>
             </div>
@@ -206,8 +206,17 @@
                     <h4>Quick Links</h4>
                     <ul>
                 <li><a href="{{ url_for('read_index') }}">Live Map</a></li>
-                <li><a href="{{ url_for('read_line_info') }}">Lines & Routes</a></li>
+                <li><a href="/line/26">Lines & Routes</a></li>
                         <li><a href="https://www.wienerlinien.at" target="_blank">Official Website</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Data & Tech</h4>
+                    <ul>
+                        <li>GTFS feed: Wiener Linien OGD (GTFS + incident API)</li>
+                        <li>Schedule loaded into PostgreSQL/PostGIS</li>
+                        <li><a href="https://github.com/sandraschi/gtfs-mcp" target="_blank">Sibling server: gtfs-mcp</a></li>
+                        <li><a href="https://github.com/sandraschi/mywienerlinien" target="_blank">Source on GitHub</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -221,6 +230,14 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; <span id="currentYear"></span> Wiener Linien Live Map. All rights reserved.</p>
+                <p class="footer-note">
+                    Vehicle markers on the map are <strong>schedule-interpolated</strong>:
+                    Wiener Linien publishes no live vehicle positions, so each marker
+                    is placed between the two scheduled stops of its trip at the
+                    current time. Live data from the OGD API covers incidents and
+                    blockages only. See the <a href="https://github.com/sandraschi/gtfs-mcp" target="_blank">gtfs-mcp</a>
+                    project for a general-purpose GTFS schedule server built on the same feed.
+                </p>
             </div>
         </footer>
     </div>

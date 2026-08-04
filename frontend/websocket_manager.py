@@ -192,7 +192,7 @@ class WebSocketManager:
                     aggregated.update({str(item).strip().upper() for item in lines_filter if item})
             requested_lines = sorted(aggregated) if aggregated else None
 
-        snapshot = collect_vehicle_data(lines=requested_lines)
+        snapshot = await asyncio.to_thread(collect_vehicle_data, lines=requested_lines)
         vehicles = snapshot["vehicles"]
         total_vehicles = len(vehicles)
         self._vehicle_snapshot_count = total_vehicles

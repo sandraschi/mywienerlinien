@@ -22,6 +22,30 @@ A comprehensive Vienna public transport application with **two complementary int
 
 Both interfaces share the same backend logic and data sources, providing a unified experience across web and AI platforms.
 
+## Related: gtfs-mcp
+
+This app is a consumer of Wiener Linien GTFS data and has a sibling server,
+**[gtfs-mcp](https://github.com/sandraschi/gtfs-mcp)** (FastMCP 3.4, ports
+10913/10912), which downloads, parses, and serves the same kind of GTFS
+schedule data with SQLite persistence and 7 MCP tools. The two repos are
+separate for historic reasons but share the Vienna feed:
+
+| | mywienerlinien | gtfs-mcp |
+|---|---|---|
+| Data store | PostgreSQL/PostGIS | SQLite |
+| Purpose | Live map + departures + MCP server | General GTFS schedule server + MCP tools |
+| Feed | Wiener Linien OGD GTFS zip | Any agency (Vienna is the default) |
+
+### Vehicle tracking — schedule-interpolated, not live
+
+Wiener Linien publishes **no live vehicle positions** (the OGD API covers
+incidents and blockages only). The map therefore shows *pseudo-live* vehicle
+markers: for each trip of the selected line, the marker is placed between the
+two scheduled stops that bracket the current time, linearly interpolated from
+the GTFS stop_times (6.1M rows for Vienna). Markers "move" as time advances
+and the next bracket is entered. Best with single lines at frequent headways
+(e.g. trams); multiple service variants of one line are capped per line.
+
 ---
 
 ## Quick Start
