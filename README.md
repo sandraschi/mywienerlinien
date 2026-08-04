@@ -40,19 +40,34 @@ If you don't have `just` installed:
 
 ##  Quick Start
 
-### Docker (Recommended - With Hot-Reload!)
+### Docker (Recommended)
 
 ```powershell
-# Start all services
+# Start all services (db + frontend + grafana + loki + promtail)
 docker compose up -d
 
 # Frontend: http://localhost:3079
 # Grafana: http://localhost:3140
+# PostgreSQL: localhost:5433
 
-# For development (instant code changes):
-# Edit files  Changes auto-reload in 1 second!
-# See DOCKER_DEV_GUIDE.md for details
+# Load / refresh the GTFS data (Wiener Linien feed) into PostGIS:
+docker compose run --rm -e GTFS_FORCE_REFRESH=1 gtfs-loader
+
+# Loader runs automatically when the feed is stale (GTFS_REFRESH_DAYS, default 365)
 ```
+
+The images are **self-contained** (frontend app, scripts, models, db init SQL
+and requirements are baked in - no host bind mounts). Persistent state lives
+in named volumes (`postgres_data`, `wienerlinien_data`, `gtfs_data`). The GTFS
+zip for the loader lives in the `gtfs_data` volume; `docker compose run
+--rm gtfs-loader` re-downloads it from the Wiener Linien OGD endpoint when
+forced.
+
+> **Note (Docker Desktop)**: bind mounts under the repo are avoided because
+> Docker Desktop on some machines cannot create new D: bind mounts
+> (`mkdir /run/desktop/mnt/host/d: file exists`). Run the app inside the
+> container; for code iteration use `.\run_dev.ps1` (native, connects to the
+> Docker DB on 5433).
 
 ### Native Development (Fastest Iteration)
 
