@@ -165,6 +165,9 @@ async function initializeMap() {
     // Initialize WebSocket connection
     initializeWebSocket();
 
+    // Scale vehicle markers with zoom (grow when zooming in, shrink when out)
+    map.on('zoomend', refreshVehicleMarkerSizes);
+
     // Load initial data
     loadInitialData();
 
@@ -1338,10 +1341,32 @@ function updateVehicleMarkers(vehicles) {
 
 // Create a vehicle marker
 function createVehicleMarker(vehicle) {
-    const icon = getVehicleIcon(vehicle.type, vehicle.line);
+    const icon = getVehicleIcon(vehicle.type, vehicle.line, vehicleMarkerSize(map.getZoom()));
     const marker = L.marker([vehicle.lat, vehicle.lng], { icon });
+    marker._vehicle = vehicle; // keep vehicle data for zoom-resize
     marker.bindPopup(buildVehiclePopup(vehicle));
     return marker;
+}
+
+// Vehicle marker sizing: markers scale with the map zoom instead of staying a
+// fixed pixel size (which felt inverted - tiny when zoomed in, huge when out).
+const VEHICLE_BASE_SIZE = 32;
+const VEHICLE_BASE_ZOOM = 14;
+const VEHICLE_MIN_SIZE = 16;
+const VEHICLE_MAX_SIZE = 96;
+
+function vehicleMarkerSize(zoom) {
+    const size = Math.round(VEHICLE_BASE_SIZE * Math.pow(2, zoom - VEHICLE_BASE_ZOOM));
+    return Math.max(VEHICLE_MIN_SIZE, Math.min(VEHICLE_MAX_SIZE, size));
+}
+
+function refreshVehicleMarkerSizes() {
+    const size = vehicleMarkerSize(map.getZoom());
+    vehicleMarkers.forEach((marker) => {
+        const vehicle = marker._vehicle;
+        if (!vehicle) return;
+        marker.setIcon(getVehicleIcon(vehicle.type, vehicle.line, size));
+    });
 }
 
 function buildVehiclePopup(vehicle) {
@@ -1358,11 +1383,11 @@ function buildVehiclePopup(vehicle) {
 }
 
 // Get vehicle icon based on type and line
-function getVehicleIcon(type, line) {
-    const iconSize = [32, 32];
-    const iconAnchor = [16, 16];
+function getVehicleIcon(type, line, size) {
+    const markerSize = size || 32;
+    const iconSize = [markerSize, markerSize];
+    const iconAnchor = [markerSize / 2, markerSize / 2];
 
-    let iconUrl;
     let color;
 
     switch (type.toLowerCase()) {
@@ -1383,10 +1408,10 @@ function getVehicleIcon(type, line) {
             color = '#999999';
     }
 
-    // Create custom icon with line number
+    // Custom icon with line number; size scales with the map zoom
     return L.divIcon({
         className: 'vehicle-marker',
-        html: `<div style="background-color: ${color}; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">${line}</div>`,
+        html: `<div style="background-color: ${color}; color: white; border-radius: 50%; width: ${markerSize}px; height: ${markerSize}px; display: flex; align-items: center; justify-content: center; font-size: ${Math.max(10, Math.round(markerSize * 0.44))}px; font-weight: bold; line-height: 1;">${line}</div>`,
         iconSize: iconSize,
         iconAnchor: iconAnchor
     });
