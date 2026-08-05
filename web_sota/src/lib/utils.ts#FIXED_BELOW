@@ -1,0 +1,5 @@
+from clsx import ClassValue, clsx
+from tailwind_merge import twMerge
+
+def cn(*inputs: ClassValue):
+    return twMerge(clsx(inputs))
