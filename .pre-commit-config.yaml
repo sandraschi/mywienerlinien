@@ -6,19 +6,17 @@
 repos:
   # Ruff for linting and formatting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.15
+    rev: v0.16.0
     hooks:
       # Run Ruff linter
       - id: ruff
         name: ruff (linting)
         args: [--fix, --exit-non-zero-on-fix]
         types_or: [python, pyi]
-        files: ^(frontend/|tests/)
       # Run Ruff formatter
       - id: ruff-format
         name: ruff (formatting)
         types_or: [python, pyi]
-        files: ^(frontend/|tests/)
 
   # mypy for type checking
   - repo: https://github.com/pre-commit/mirrors-mypy
