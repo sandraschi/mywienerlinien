@@ -13,7 +13,6 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -47,8 +46,8 @@ class UserReport:
     user_id: str
     report_type: ReportType
     severity: ReportSeverity
-    line: Optional[str]
-    station: Optional[str]
+    line: str | None
+    station: str | None
     description: str
     timestamp: datetime
     votes_helpful: int = 0
@@ -158,9 +157,9 @@ class SocialService:
         report_type: ReportType,
         severity: ReportSeverity,
         description: str,
-        line: Optional[str] = None,
-        station: Optional[str] = None,
-    ) -> Optional[UserReport]:
+        line: str | None = None,
+        station: str | None = None,
+    ) -> UserReport | None:
         """Submit a user report about transit conditions.
 
         Args:
@@ -218,9 +217,7 @@ class SocialService:
             logger.error(f"Error submitting report: {e}", exc_info=True)
             return None
 
-    def get_recent_reports(
-        self, line: Optional[str] = None, station: Optional[str] = None, hours: int = 2
-    ) -> list[dict]:
+    def get_recent_reports(self, line: str | None = None, station: str | None = None, hours: int = 2) -> list[dict]:
         """Get recent user reports.
 
         Args:
@@ -258,7 +255,7 @@ class SocialService:
 
     def submit_station_tip(
         self, user_id: str, station: str, tip_text: str, category: str = "general"
-    ) -> Optional[StationTip]:
+    ) -> StationTip | None:
         """Submit a helpful tip about a station.
 
         Args:
@@ -369,7 +366,7 @@ class SocialService:
             logger.error(f"Error voting: {e}", exc_info=True)
             return False
 
-    def get_line_community_rating(self, line: str) -> Optional[dict]:
+    def get_line_community_rating(self, line: str) -> dict | None:
         """Get community rating for a line.
 
         Args:
@@ -408,7 +405,7 @@ class SocialService:
 
 
 # Singleton
-_social_service: Optional[SocialService] = None
+_social_service: SocialService | None = None
 
 
 def get_social_service(db_manager) -> SocialService:

@@ -1,7 +1,6 @@
 """Traffic alerts tool for Vienna Transit MCP."""
 
-from datetime import datetime, timezone
-from typing import Optional
+from datetime import UTC, datetime
 
 import requests
 from fastmcp import FastMCP
@@ -18,9 +17,9 @@ class TrafficAlert(BaseModel):
     category: str = Field(..., description="Category: disruption, construction, event, info")
     affected_lines: list[str] = Field(default_factory=list, description="Affected transit lines")
     affected_stations: list[str] = Field(default_factory=list, description="Affected stations")
-    start_time: Optional[datetime] = Field(None, description="When alert started")
-    end_time: Optional[datetime] = Field(None, description="Expected end time")
-    url: Optional[str] = Field(None, description="Link for more information")
+    start_time: datetime | None = Field(None, description="When alert started")
+    end_time: datetime | None = Field(None, description="Expected end time")
+    url: str | None = Field(None, description="Link for more information")
 
 
 class TrafficAlertsResponse(BaseModel):
@@ -37,8 +36,8 @@ def register_traffic_alerts_tool(mcp: FastMCP) -> None:
 
     @mcp.tool()
     async def traffic_alerts(
-        line_filter: Optional[str] = None,
-        severity_filter: Optional[str] = None,
+        line_filter: str | None = None,
+        severity_filter: str | None = None,
     ) -> TrafficAlertsResponse:
         """Get current traffic disruptions and service alerts.
 
@@ -132,9 +131,7 @@ def register_traffic_alerts_tool(mcp: FastMCP) -> None:
                 time_info = info.get("time", {})
                 if time_info.get("start"):
                     try:
-                        start_time = datetime.fromisoformat(
-                            time_info["start"].replace("Z", "+00:00")
-                        )
+                        start_time = datetime.fromisoformat(time_info["start"].replace("Z", "+00:00"))
                     except (ValueError, TypeError):
                         pass
                 if time_info.get("end"):
@@ -162,7 +159,7 @@ def register_traffic_alerts_tool(mcp: FastMCP) -> None:
             return TrafficAlertsResponse(
                 alerts=[],
                 count=0,
-                timestamp=datetime.now(timezone.utc),
+                timestamp=datetime.now(UTC),
                 status=f"api_error: {e}",
             )
 
@@ -178,6 +175,6 @@ def register_traffic_alerts_tool(mcp: FastMCP) -> None:
         return TrafficAlertsResponse(
             alerts=alerts,
             count=len(alerts),
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
             status=status,
         )

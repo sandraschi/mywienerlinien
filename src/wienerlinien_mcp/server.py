@@ -48,8 +48,8 @@ from wienerlinien_mcp.tools.departures import register_departures_tool
 from wienerlinien_mcp.tools.help import register_help_tool
 from wienerlinien_mcp.tools.journey import register_journey_tool
 from wienerlinien_mcp.tools.nearby import register_nearby_stops_tool
-from wienerlinien_mcp.tools.server_status import register_server_status_tool
 from wienerlinien_mcp.tools.routes import register_routes_tool
+from wienerlinien_mcp.tools.server_status import register_server_status_tool
 from wienerlinien_mcp.tools.stations import register_station_search_tool
 from wienerlinien_mcp.tools.status import register_status_tool
 from wienerlinien_mcp.tools.timetable import register_stop_timetable_tool

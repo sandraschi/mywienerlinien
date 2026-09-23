@@ -7,7 +7,7 @@ and accessing city-specific transit information.
 """
 
 import logging
-from typing import Any, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -20,6 +20,7 @@ except ImportError:
 
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from database import db
+
     from wienerlinien_mcp.city_manager import get_city_manager
 
 logger = logging.getLogger(__name__)
@@ -35,9 +36,9 @@ class CityInfo(BaseModel):
     language: str = Field(..., description="Primary language code")
     enabled: bool = Field(..., description="Whether the city is active")
     data_loaded: bool = Field(..., description="Whether GTFS data is loaded")
-    map_center_lat: Optional[float] = Field(None, description="Map center latitude")
-    map_center_lng: Optional[float] = Field(None, description="Map center longitude")
-    map_zoom: Optional[int] = Field(None, description="Default map zoom level")
+    map_center_lat: float | None = Field(None, description="Map center latitude")
+    map_center_lng: float | None = Field(None, description="Map center longitude")
+    map_zoom: int | None = Field(None, description="Default map zoom level")
 
 
 class CityStatistics(BaseModel):
@@ -49,7 +50,7 @@ class CityStatistics(BaseModel):
     total_routes: int = Field(..., description="Total number of transit routes")
     total_trips: int = Field(..., description="Total number of scheduled trips")
     active_vehicles: int = Field(..., description="Currently active vehicles")
-    last_updated: Optional[str] = Field(None, description="Last data update timestamp")
+    last_updated: str | None = Field(None, description="Last data update timestamp")
 
 
 async def list_available_cities() -> list[CityInfo]:
@@ -94,7 +95,7 @@ async def list_available_cities() -> list[CityInfo]:
 
     except Exception as e:
         logger.error(f"Failed to list cities: {e}", exc_info=True)
-        raise Exception(f"Unable to retrieve city list: {str(e)}")
+        raise Exception(f"Unable to retrieve city list: {e!s}")
 
 
 async def switch_city(city_code: str) -> dict[str, Any]:
@@ -122,16 +123,12 @@ async def switch_city(city_code: str) -> dict[str, Any]:
         city_codes = [city.city_code for city in available_cities]
 
         if city_code not in city_codes:
-            raise ValueError(
-                f"City '{city_code}' not found. Available cities: {', '.join(city_codes)}"
-            )
+            raise ValueError(f"City '{city_code}' not found. Available cities: {', '.join(city_codes)}")
 
         # Check if city data is loaded
         city_info = next((c for c in available_cities if c.city_code == city_code), None)
         if not city_info.data_loaded:
-            logger.warning(
-                f"City '{city_code}' data not loaded yet - limited functionality available"
-            )
+            logger.warning(f"City '{city_code}' data not loaded yet - limited functionality available")
 
         # Perform the switch
         success = city_manager.switch_city(city_code)
@@ -151,9 +148,7 @@ async def switch_city(city_code: str) -> dict[str, Any]:
         }
 
         if not city_info.data_loaded:
-            result["warning"] = (
-                f"City '{city_code}' data not fully loaded. Some features may be limited."
-            )
+            result["warning"] = f"City '{city_code}' data not fully loaded. Some features may be limited."
 
         logger.info(f"Switched to city: {city_code}")
         return result
@@ -163,10 +158,10 @@ async def switch_city(city_code: str) -> dict[str, Any]:
         raise
     except Exception as e:
         logger.error(f"Failed to switch city: {e}", exc_info=True)
-        raise Exception(f"Unable to switch city: {str(e)}")
+        raise Exception(f"Unable to switch city: {e!s}")
 
 
-async def get_city_statistics(city_code: Optional[str] = None) -> CityStatistics:
+async def get_city_statistics(city_code: str | None = None) -> CityStatistics:
     """
     Get comprehensive statistics for a city's transit system.
 
@@ -235,9 +230,7 @@ async def get_city_statistics(city_code: Optional[str] = None) -> CityStatistics
             total_routes=routes_count.get("count", 0),
             total_trips=trips_count.get("count", 0),
             active_vehicles=vehicles_count.get("count", 0),
-            last_updated=last_update.get("last_update").isoformat()
-            if last_update.get("last_update")
-            else None,
+            last_updated=last_update.get("last_update").isoformat() if last_update.get("last_update") else None,
         )
 
         logger.info(f"Retrieved statistics for city: {city_code}")
@@ -248,7 +241,7 @@ async def get_city_statistics(city_code: Optional[str] = None) -> CityStatistics
         raise
     except Exception as e:
         logger.error(f"Failed to get city statistics: {e}", exc_info=True)
-        raise Exception(f"Unable to retrieve city statistics: {str(e)}")
+        raise Exception(f"Unable to retrieve city statistics: {e!s}")
 
 
 async def get_city_info(city_code: str) -> CityInfo:
@@ -284,7 +277,7 @@ async def get_city_info(city_code: str) -> CityInfo:
         raise
     except Exception as e:
         logger.error(f"Failed to get city info: {e}", exc_info=True)
-        raise Exception(f"Unable to retrieve city information: {str(e)}")
+        raise Exception(f"Unable to retrieve city information: {e!s}")
 
 
 # Tool registration function
@@ -320,7 +313,9 @@ def register_cities_tools(wienerlinien_mcp):
                 result += f"   📊 Data: {'Loaded' if city.data_loaded else 'Not loaded'}\n"
 
                 if city.map_center_lat and city.map_center_lng:
-                    result += f"   🗺️  Map: {city.map_center_lat:.4f}, {city.map_center_lng:.4f} (zoom: {city.map_zoom})\n"
+                    result += (
+                        f"   🗺️  Map: {city.map_center_lat:.4f}, {city.map_center_lng:.4f} (zoom: {city.map_zoom})\n"
+                    )
 
                 result += "\n"
 
@@ -329,7 +324,7 @@ def register_cities_tools(wienerlinien_mcp):
 
         except Exception as e:
             logger.error(f"List cities tool failed: {e}")
-            return f"Error retrieving city list: {str(e)}"
+            return f"Error retrieving city list: {e!s}"
 
     @wienerlinien_mcp.tool()
     async def switch_to_city(city_code: str) -> str:
@@ -362,13 +357,13 @@ def register_cities_tools(wienerlinien_mcp):
             return response
 
         except ValueError as e:
-            return f"❌ **Invalid City**: {str(e)}\n\nUse 'list_cities' to see available options."
+            return f"❌ **Invalid City**: {e!s}\n\nUse 'list_cities' to see available options."
         except Exception as e:
             logger.error(f"Switch city tool failed: {e}")
-            return f"❌ **Error**: Failed to switch city: {str(e)}"
+            return f"❌ **Error**: Failed to switch city: {e!s}"
 
     @wienerlinien_mcp.tool()
-    async def city_transit_stats(city_code: Optional[str] = None) -> str:
+    async def city_transit_stats(city_code: str | None = None) -> str:
         """
         Get comprehensive statistics for a city's transit system.
 
@@ -409,10 +404,10 @@ def register_cities_tools(wienerlinien_mcp):
             return result
 
         except ValueError as e:
-            return f"❌ **Invalid City**: {str(e)}\n\nUse 'list_cities' to see available options."
+            return f"❌ **Invalid City**: {e!s}\n\nUse 'list_cities' to see available options."
         except Exception as e:
             logger.error(f"City stats tool failed: {e}")
-            return f"❌ **Error**: Failed to retrieve statistics: {str(e)}"
+            return f"❌ **Error**: Failed to retrieve statistics: {e!s}"
 
     logger.info("Multi-city management tools registered")
     return [list_cities, switch_to_city, city_transit_stats]
