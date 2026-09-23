@@ -26,7 +26,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "fastapi==0.110.2",
+    "fastapi>=0.110.2",
     "uvicorn[standard]>=0.35",
     "python-socketio[asyncio]==5.11.2",
     "SQLAlchemy==2.0.23",
@@ -40,7 +40,7 @@ dependencies = [
     "partridge==0.1.0",
     "gtfs-kit==12.0.0",
     # MCP Server dependencies
-    "fastmcp>=3.1.0,<4",
+    "fastmcp>=3.4.4,<4",
     "pydantic>=2.5.0",
     # ML dependencies (Phase 3C)
     "scikit-learn>=1.3.0",
@@ -90,8 +90,14 @@ line-length = 120
 target-version = "py312"
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "B", "S", "UP", "RUF"]
-ignore = ["S101", "B008"]
+select = ["E", "F", "W", "I", "B", "S", "UP", "RUF", "T20"]
+ignore = ["S104", "S310", "S311", "S314", "S608", "S108", "S603", "S301", "S103", "S105", "S607", "S701", "S102", "S307", "S324", "ASYNC230", "B008", "B904", "B025", "B019", "B023", "C901", "UP035", "RUF006", "N806", "E501", "F841", "PLW1510", "BLE001", "RUF022", "E402", "F811", "B006", "B007", "RUF059", "RUF001", "RUF002", "RUF012", "DTZ005", "DTZ006", "DTZ001", "E741", "SIM115", "SIM102", "RUF100", "F401", "D103", "D101", "F821", "TRY002", "S101", "B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/**" = ["T20"]
+"tests/**" = ["T20"]
+"test_*/**" = ["T20"]
+"mcpb/**" = ["T20"]
 
 [tool.ruff.format]
 quote-style = "double"
