@@ -12,7 +12,7 @@ import math
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import List, Optional, Union
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ class TransitNode:
     stop_name: str
     lat: float
     lon: float
-    zone_id: Optional[str] = None
+    zone_id: str | None = None
     wheelchair_accessible: bool = False
 
 
@@ -53,8 +53,8 @@ class SearchNode:
     h_cost: float  # Heuristic cost to goal
     f_cost: float = field(init=False)  # Total cost (g + h)
     parent: Optional["SearchNode"] = None
-    edge_used: Optional[TransitEdge] = None
-    arrival_time: Optional[datetime] = None
+    edge_used: TransitEdge | None = None
+    arrival_time: datetime | None = None
 
     def __post_init__(self):
         self.f_cost = self.g_cost + self.h_cost
@@ -108,9 +108,7 @@ class TransitGraph:
             self._add_walking_connections()
 
         self.built = True
-        logger.info(
-            f"Graph built: {len(self.nodes)} nodes, {sum(len(e) for e in self.edges.values())} edges"
-        )
+        logger.info(f"Graph built: {len(self.nodes)} nodes, {sum(len(e) for e in self.edges.values())} edges")
 
     def _load_nodes(self):
         """Load all stops as graph nodes."""
@@ -181,9 +179,7 @@ class TransitGraph:
             results = self.db.execute_query(query)
             for row in results:
                 # Calculate distance
-                distance = self._haversine(
-                    row["from_lat"], row["from_lon"], row["to_lat"], row["to_lon"]
-                )
+                distance = self._haversine(row["from_lat"], row["from_lon"], row["to_lat"], row["to_lon"])
 
                 # Calculate duration based on vehicle type
                 vehicle_type = route_type_map.get(row["route_type"], "bus")
@@ -259,10 +255,7 @@ class TransitGraph:
         delta_phi = math.radians(lat2 - lat1)
         delta_lambda = math.radians(lon2 - lon1)
 
-        a = (
-            math.sin(delta_phi / 2) ** 2
-            + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
-        )
+        a = math.sin(delta_phi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
         return radius_earth * c
@@ -271,7 +264,7 @@ class TransitGraph:
         """Get all outgoing edges from a stop."""
         return self.edges.get(stop_id, [])
 
-    def get_node(self, stop_id: str) -> Optional[TransitNode]:
+    def get_node(self, stop_id: str) -> TransitNode | None:
         """Get node information for a stop."""
         return self.nodes.get(stop_id)
 
@@ -315,8 +308,8 @@ class AStarRouter:
         from_stop_id: str,
         to_stop_id: str,
         max_transfers: int = 3,
-        departure_time: Optional[datetime] = None,
-    ) -> Optional[list[TransitEdge]]:
+        departure_time: datetime | None = None,
+    ) -> list[TransitEdge] | None:
         """Find optimal path using A* algorithm.
 
         Args:
@@ -450,7 +443,7 @@ class AStarRouter:
         to_stop_id: str,
         num_routes: int = 3,
         max_transfers: int = 3,
-        departure_time: Optional[datetime] = None,
+        departure_time: datetime | None = None,
     ) -> list[list[TransitEdge]]:
         """Find multiple alternative routes between stops.
 
@@ -467,7 +460,7 @@ class AStarRouter:
         routes = []
         blocked_edges: set[tuple[str, str, str]] = set()
 
-        for attempt in range(num_routes):
+        for _attempt in range(num_routes):
             # Find path avoiding blocked edges
             path = self._find_path_with_blocked_edges(
                 from_stop_id, to_stop_id, blocked_edges, max_transfers, departure_time
@@ -493,8 +486,8 @@ class AStarRouter:
         to_stop_id: str,
         blocked_edges: set[tuple[str, str, str]],
         max_transfers: int,
-        departure_time: Optional[datetime],
-    ) -> Optional[list[TransitEdge]]:
+        departure_time: datetime | None,
+    ) -> list[TransitEdge] | None:
         """Find path while avoiding blocked edges."""
         # Similar to find_path but skip blocked edges
         if departure_time is None:

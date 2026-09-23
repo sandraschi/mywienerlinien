@@ -496,9 +496,7 @@ class HistoricalDataCollector:
             LIMIT 1
             """
 
-            results = self.db.execute_query(
-                query, {"line": line, "day_of_week": day_of_week, "hour": hour}
-            )
+            results = self.db.execute_query(query, {"line": line, "day_of_week": day_of_week, "hour": hour})
 
             if results:
                 row = results[0]
@@ -606,9 +604,7 @@ class HistoricalDataCollector:
             Path to exported file
         """
         if output_file is None:
-            output_file = (
-                self.storage_dir / f"training_data_{datetime.now().strftime('%Y%m%d')}.json"
-            )
+            output_file = self.storage_dir / f"training_data_{datetime.now().strftime('%Y%m%d')}.json"
 
         try:
             # Get comprehensive dataset

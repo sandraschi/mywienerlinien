@@ -7,7 +7,6 @@ Manages GTFS data, routing, and features across different cities.
 
 import logging
 from pathlib import Path
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +14,7 @@ logger = logging.getLogger(__name__)
 class CityManager:
     """Manages multi-city transit data and configurations."""
 
-    def __init__(self, db_manager, config_dir: Optional[Path] = None):
+    def __init__(self, db_manager, config_dir: Path | None = None):
         """Initialize city manager.
 
         Args:
@@ -100,9 +99,7 @@ class CityManager:
 
                 # Extract country from city name
                 country = (
-                    "Austria"
-                    if city_code in ["vienna", "graz", "linz", "salzburg", "innsbruck", "oebb"]
-                    else "Unknown"
+                    "Austria" if city_code in ["vienna", "graz", "linz", "salzburg", "innsbruck", "oebb"] else "Unknown"
                 )
 
                 params = {
@@ -205,9 +202,7 @@ class CityManager:
                         else None,
                         "map_zoom": row["map_zoom"],
                         "data_loaded": row["data_loaded"],
-                        "last_updated": row["gtfs_last_updated"].isoformat()
-                        if row["gtfs_last_updated"]
-                        else None,
+                        "last_updated": row["gtfs_last_updated"].isoformat() if row["gtfs_last_updated"] else None,
                     }
                 )
 
@@ -217,7 +212,7 @@ class CityManager:
             logger.error(f"Error getting cities: {e}", exc_info=True)
             return []
 
-    def get_city_info(self, city_code: Optional[str] = None) -> Optional[dict]:
+    def get_city_info(self, city_code: str | None = None) -> dict | None:
         """Get detailed information about a city.
 
         Args:
@@ -261,7 +256,7 @@ class CityManager:
             logger.error(f"Error marking city loaded: {e}", exc_info=True)
             return False
 
-    def get_city_statistics(self, city_code: Optional[str] = None) -> dict:
+    def get_city_statistics(self, city_code: str | None = None) -> dict:
         """Get statistics for a city.
 
         Args:
@@ -294,7 +289,7 @@ class CityManager:
 
 
 # Singleton
-_city_manager: Optional[CityManager] = None
+_city_manager: CityManager | None = None
 
 
 def get_city_manager(db_manager) -> CityManager:
