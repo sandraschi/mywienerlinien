@@ -1,0 +1,71 @@
+# MCPB ignore file - exclude from package (repo-root source; mcpb/pack.ps1 syncs this -> mcpb/.mcpbignore)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+ENV/
+.venv/
+*.egg-info/
+dist/
+build/
+.git/
+.gitignore
+*.log
+node_modules/
+**/node_modules/
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Exclude dependencies - they're installed by MCP client
+requirements.txt
+pyproject.toml
+
+# Exclude test files
+tests/
+test_*.py
+*_test.py
+
+# Backup files (plain + timestamped)
+*.bak
+*.bak.*
+
+# Local env / reports / data (never ship)
+.env
+reports/
+data/
+gtfs_data/
+*.sqlite3
+*.db*
+
+# Exclude Tauri/native build dirs
+native/target/
+native/gen/
+src-tauri/
+webapp/dist/
+
+# Exclude web app specific files (not needed for MCP server)
+web_sota/
+frontend/app.py
+frontend/static/
+frontend/templates/
+frontend/websocket_manager.py
+frontend/gtfs_manager.py
+frontend/gtfs_service.py
+frontend/disruption_alerts.py
+frontend/models/
+frontend/scripts/
+frontend/data/
+frontend/logs/
+frontend/db/
+frontend/Dockerfile
+frontend/docker-compose.yml
+frontend/README_Docker.md
+frontend/requirements-db.txt
+frontend/requirements-mcp.txt
+frontend/find_missing_coords.py
+frontend/test_*.py

@@ -33,6 +33,28 @@ audit-deps:
 run:
     uv run mywienerlinien
 
+# Serve the web_sota FastAPI backend (fleet-start UvicornTarget: server:app, port 11170)
+serve:
+    uv run uvicorn server:app --host 127.0.0.1 --port 11170 --app-dir web_sota/backend
+
+# Run the test suite
+test:
+    uv run pytest tests/ -q
+
+# Format + auto-fix (ruff)
+fmt:
+    uv run ruff check src/ --fix
+    uv run ruff format src/
+
+# First-time dev setup: sync deps + install pre-commit hooks
+bootstrap:
+    uv sync --extra dev
+    uv run pre-commit install
+
+# Build the Claude Desktop .mcpb bundle (wipe + fresh-copy src -> mcpb/src inside)
+mcpb-pack:
+    powershell.exe -NoProfile -File "{{justfile_directory()}}/mcpb/pack.ps1"
+
 # Clean build artifacts
 clean:
     @Get-ChildItem -Recurse -Filter "__pycache__" | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue

@@ -177,6 +177,14 @@ mcpb/dist/
 mcpb/build/
 dist/
 build/
+*.mcpb
+
+# Assess/audit reports (regenerable snapshots, not source)
+reports/
+
+# Timestamped backup dross (fleet batch-edit safety copies)
+*.bak-*
+*.tsbuildinfo
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
