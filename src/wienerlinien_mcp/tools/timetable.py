@@ -3,7 +3,6 @@
 import csv
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 from fastmcp import FastMCP
 from pydantic import BaseModel, Field
@@ -20,11 +19,7 @@ def _load_calendar_services(day_type: str) -> set[str]:
     """
     # Find the calendar.txt file
     gtfs_paths = [
-        Path(__file__).parent.parent.parent.parent
-        / "scripts"
-        / "gtfs_data"
-        / "extracted"
-        / "calendar.txt",
+        Path(__file__).parent.parent.parent.parent / "scripts" / "gtfs_data" / "extracted" / "calendar.txt",
         Path("scripts/gtfs_data/extracted/calendar.txt"),
         Path("D:/Dev/repos/mywienerlinien/scripts/gtfs_data/extracted/calendar.txt"),
     ]
@@ -90,15 +85,15 @@ class StopTimetableResponse(BaseModel):
 
     stop_name: str = Field(..., description="Stop name")
     stop_id: str = Field(..., description="Stop identifier")
-    line_filter: Optional[str] = Field(None, description="Line filter applied")
+    line_filter: str | None = Field(None, description="Line filter applied")
     day_type: str = Field(..., description="Day type: weekday, saturday, sunday")
     service_date: str = Field(..., description="Reference date for schedule")
     hours: list[TimetableHour] = Field(..., description="Departures by hour")
     total_departures: int = Field(..., description="Total departures in timetable")
-    first_departure: Optional[str] = Field(None, description="First departure time")
-    last_departure: Optional[str] = Field(None, description="Last departure time")
+    first_departure: str | None = Field(None, description="First departure time")
+    last_departure: str | None = Field(None, description="Last departure time")
     lines_serving: list[str] = Field(..., description="All lines serving this stop")
-    html: Optional[str] = Field(None, description="HTML formatted timetable")
+    html: str | None = Field(None, description="HTML formatted timetable")
 
 
 def _generate_html_timetable(response: "StopTimetableResponse") -> str:
@@ -257,11 +252,7 @@ def _generate_html_timetable(response: "StopTimetableResponse") -> str:
 """
     # Add line badges
     for line in sorted(response.lines_serving):
-        line_class = (
-            "U"
-            if line.startswith("U")
-            else ("tram" if line.isdigit() or line in ["D", "O"] else "bus")
-        )
+        line_class = "U" if line.startswith("U") else ("tram" if line.isdigit() or line in ["D", "O"] else "bus")
         html += f'        <span class="line-badge {line_class}">{line}</span>\n'
 
     html += """    </div>
@@ -302,7 +293,7 @@ def register_stop_timetable_tool(mcp: FastMCP) -> None:
     @mcp.tool()
     async def stop_timetable(
         stop: str,
-        line: Optional[str] = None,
+        line: str | None = None,
         day_type: str = "weekday",
         include_html: bool = True,
     ) -> StopTimetableResponse:
@@ -511,7 +502,7 @@ def register_stop_timetable_tool(mcp: FastMCP) -> None:
     @mcp.tool()
     async def get_timetable(
         station: str,
-        line: Optional[str] = None,
+        line: str | None = None,
         day_type: str = "weekday",
     ) -> StopTimetableResponse:
         """Get scheduled timetable for a station.

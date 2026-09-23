@@ -13,7 +13,6 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 
 import requests
 
@@ -66,7 +65,7 @@ class WeatherImpact:
     vehicle_type: str
     delay_factor: float  # Multiplier for normal delays
     recommended: bool
-    warning_message: Optional[str]
+    warning_message: str | None
 
 
 class WeatherService:
@@ -77,9 +76,7 @@ class WeatherService:
         WeatherCondition.RAIN: {
             "metro": WeatherImpact("metro", 1.0, True, None),
             "tram": WeatherImpact("tram", 1.3, True, "Slight delays possible due to wet tracks"),
-            "bus": WeatherImpact(
-                "bus", 1.5, False, "Traffic congestion likely - consider metro/tram"
-            ),
+            "bus": WeatherImpact("bus", 1.5, False, "Traffic congestion likely - consider metro/tram"),
         },
         WeatherCondition.HEAVY_RAIN: {
             "metro": WeatherImpact("metro", 1.0, True, None),
@@ -97,15 +94,13 @@ class WeatherService:
             "bus": WeatherImpact("bus", 3.0, False, "Dangerous conditions - use metro if possible"),
         },
         WeatherCondition.STORM: {
-            "metro": WeatherImpact(
-                "metro", 1.1, True, "Underground service preferred during storm"
-            ),
+            "metro": WeatherImpact("metro", 1.1, True, "Underground service preferred during storm"),
             "tram": WeatherImpact("tram", 2.5, False, "Storm may disrupt overhead lines"),
             "bus": WeatherImpact("bus", 2.0, False, "Poor visibility and conditions"),
         },
     }
 
-    def __init__(self, api_key: Optional[str] = None, cache_ttl: int = 600):
+    def __init__(self, api_key: str | None = None, cache_ttl: int = 600):
         """Initialize weather service.
 
         Args:
@@ -114,15 +109,13 @@ class WeatherService:
         """
         self.api_key = api_key
         self.cache_ttl = cache_ttl
-        self._cache: Optional[WeatherData] = None
-        self._cache_time: Optional[datetime] = None
+        self._cache: WeatherData | None = None
+        self._cache_time: datetime | None = None
 
         # OpenWeatherMap free tier endpoint
         self.api_base = "https://api.openweathermap.org/data/2.5/weather"
 
-    def get_current_weather(
-        self, city: str = "Vienna", use_cache: bool = True
-    ) -> Optional[WeatherData]:
+    def get_current_weather(self, city: str = "Vienna", use_cache: bool = True) -> WeatherData | None:
         """Get current weather for a city.
 
         Args:
@@ -150,7 +143,7 @@ class WeatherService:
             logger.error(f"Error fetching weather: {e}", exc_info=True)
             return self._cache  # Return stale cache if available
 
-    def _fetch_weather(self, city: str) -> Optional[WeatherData]:
+    def _fetch_weather(self, city: str) -> WeatherData | None:
         """Fetch weather from API."""
         if not self.api_key:
             # Return mock data for testing
@@ -244,7 +237,7 @@ class WeatherService:
             timestamp=datetime.now(),
         )
 
-    def get_transit_impact(self, weather: Optional[WeatherData] = None) -> dict[str, WeatherImpact]:
+    def get_transit_impact(self, weather: WeatherData | None = None) -> dict[str, WeatherImpact]:
         """Get weather impact on different transit types.
 
         Args:
@@ -268,7 +261,7 @@ class WeatherService:
         return self.IMPACT_MATRIX.get(weather.condition, {})
 
     def adjust_prediction_for_weather(
-        self, base_prediction: float, vehicle_type: str, weather: Optional[WeatherData] = None
+        self, base_prediction: float, vehicle_type: str, weather: WeatherData | None = None
     ) -> tuple[float, str]:
         """Adjust delay prediction based on weather.
 
@@ -303,7 +296,7 @@ class WeatherService:
 
         return adjusted, weather_note
 
-    def get_route_recommendations(self, weather: Optional[WeatherData] = None) -> list[str]:
+    def get_route_recommendations(self, weather: WeatherData | None = None) -> list[str]:
         """Get route recommendations based on weather.
 
         Args:
@@ -346,10 +339,10 @@ class WeatherService:
 
 
 # Singleton
-_weather_service: Optional[WeatherService] = None
+_weather_service: WeatherService | None = None
 
 
-def get_weather_service(api_key: Optional[str] = None) -> WeatherService:
+def get_weather_service(api_key: str | None = None) -> WeatherService:
     """Get or create weather service instance."""
     global _weather_service
     if _weather_service is None:

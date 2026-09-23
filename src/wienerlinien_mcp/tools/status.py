@@ -1,7 +1,6 @@
 """MCP tool for checking service status and disruptions."""
 
 import logging
-from typing import Optional
 
 from fastmcp import FastMCP
 
@@ -14,6 +13,7 @@ except ImportError:
 
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from disruption_alerts import disruption_monitor
+
     from wienerlinien_mcp.models.status import LineStatusResponse, ServiceStatus
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ def register_status_tool(mcp: FastMCP) -> None:
     """
 
     @mcp.tool()
-    async def line_status(line_name: Optional[str] = None) -> LineStatusResponse:
+    async def line_status(line_name: str | None = None) -> LineStatusResponse:
         """Check Vienna transit service status and disruptions.
 
         Retrieves current service status for Vienna's public transport network.
@@ -120,13 +120,13 @@ def register_status_tool(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error fetching line status: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to fetch line status: {str(e)}") from e
+            raise RuntimeError(f"Failed to fetch line status: {e!s}") from e
 
     @mcp.tool()
     async def get_disruptions(
-        line: Optional[str] = None,
-        station: Optional[str] = None,
-        severity: Optional[str] = None,
+        line: str | None = None,
+        station: str | None = None,
+        severity: str | None = None,
         max_results: int = 10,
     ) -> LineStatusResponse:
         """Get current service disruptions with advanced filtering.
@@ -174,7 +174,7 @@ def register_status_tool(mcp: FastMCP) -> None:
             )
         except Exception as e:
             logger.error(f"Error in get_disruptions: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to fetch disruptions: {str(e)}") from e
+            raise RuntimeError(f"Failed to fetch disruptions: {e!s}") from e
 
     @mcp.tool()
     async def get_service_status() -> LineStatusResponse:
