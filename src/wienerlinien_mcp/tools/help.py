@@ -1061,7 +1061,7 @@ Those countdown displays at every stop? They're actually
 
 ## What Seems Simple
 
-You see: `U4 Hütteldorf — 3 min`
+You see: `U4 Hütteldorf - 3 min`
 
 Behind that display:
 1. Satellite talking to tram

@@ -1,7 +1,6 @@
 """MCP tool for getting detailed information about transit routes."""
 
 import logging
-from typing import Optional
 
 from fastmcp import FastMCP
 from pydantic import BaseModel, Field
@@ -24,10 +23,8 @@ class RouteStop(BaseModel):
     name: str = Field(..., description="Stop name")
     latitude: float = Field(..., description="Stop latitude")
     longitude: float = Field(..., description="Stop longitude")
-    zone: Optional[str] = Field(None, description="Fare zone")
-    directions: list[str] = Field(
-        default_factory=list, description="Available directions from this stop"
-    )
+    zone: str | None = Field(None, description="Fare zone")
+    directions: list[str] = Field(default_factory=list, description="Available directions from this stop")
 
 
 class RouteSchedule(BaseModel):
@@ -179,4 +176,4 @@ def register_routes_tool(mcp: FastMCP) -> None:
             raise
         except Exception as e:
             logger.error(f"Error fetching route info: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to fetch route info for '{line}': {str(e)}") from e
+            raise RuntimeError(f"Failed to fetch route info for '{line}': {e!s}") from e

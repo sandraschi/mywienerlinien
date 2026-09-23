@@ -18,6 +18,7 @@ except ImportError:
 
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from database import db
+
     from wienerlinien_mcp.models.journey import JourneyPlan, JourneySegment
     from wienerlinien_mcp.routing_service import JourneyPlanner
     from wienerlinien_mcp.utils import find_station_by_name
@@ -51,9 +52,7 @@ def register_journey_tool(mcp: FastMCP) -> None:
     """
 
     @mcp.tool()
-    async def journey_planner(
-        from_station: str, to_station: str, departure_time: str | None = None
-    ) -> JourneyPlan:
+    async def journey_planner(from_station: str, to_station: str, departure_time: str | None = None) -> JourneyPlan:
         """Plan optimal journey between Vienna stations.
 
         Calculates the best route from an origin station to a destination
@@ -182,4 +181,4 @@ def register_journey_tool(mcp: FastMCP) -> None:
             raise
         except Exception as e:
             logger.error(f"Error planning journey: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to plan journey: {str(e)}") from e
+            raise RuntimeError(f"Failed to plan journey: {e!s}") from e

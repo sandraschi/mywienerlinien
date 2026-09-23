@@ -37,10 +37,7 @@ def _haversine_distance(lat1: float, lng1: float, lat2: float, lng2: float) -> f
     delta_phi = math.radians(lat2 - lat1)
     delta_lambda = math.radians(lng2 - lng1)
 
-    a = (
-        math.sin(delta_phi / 2) ** 2
-        + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
-    )
+    a = math.sin(delta_phi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
     return radius_earth * c
@@ -157,6 +154,4 @@ def register_nearby_stops_tool(mcp: FastMCP) -> None:
         Returns:
             NearbyStopsResponse containing stations near the location
         """
-        return await nearby_stops(
-            lat=latitude, lng=longitude, radius=int(radius_km * 1000), limit=max_results
-        )
+        return await nearby_stops(lat=latitude, lng=longitude, radius=int(radius_km * 1000), limit=max_results)
