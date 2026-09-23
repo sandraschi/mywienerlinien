@@ -1,0 +1,8 @@
+# mywienerlinien — llms.txt
+
+Vienna public-transport app: live map + departures (FastAPI) + MCP server (FastMCP) for Claude Desktop.
+Data: Wiener Linien OGD GTFS (PostgreSQL/PostGIS) + OGD realtime (incidents/blockages only — no live GPS;
+vehicle markers are schedule-interpolated).
+
+Full tool/endpoint/config reference: [llms-full.txt](llms-full.txt)
+Install: [INSTALL.md](INSTALL.md) — Changelog: [CHANGELOG.md](CHANGELOG.md)
