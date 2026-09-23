@@ -1,7 +1,6 @@
 """Pydantic models for journey planning MCP tools."""
 
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -55,4 +54,4 @@ class JourneyPlan(BaseModel):
     total_duration_minutes: int = Field(..., description="Total journey duration in minutes")
     segments: list[JourneySegment] = Field(..., description="Journey segments")
     transfers: int = Field(..., description="Number of transfers required")
-    estimated_cost: Optional[str] = Field(None, description="Estimated fare cost")
+    estimated_cost: str | None = Field(None, description="Estimated fare cost")
