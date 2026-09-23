@@ -88,7 +88,19 @@ logger = logging.getLogger(__name__)
 
 TEST_MODE = os.getenv("WIENER_LINIEN_TEST_MODE", "").strip() == "1"
 
-sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
+sio = socketio.AsyncServer(
+    async_mode="asgi",
+    cors_allowed_origins=[
+        "http://localhost:10896",
+        "http://127.0.0.1:10896",
+        "http://localhost:3079",
+        "http://localhost:3080",
+        "http://127.0.0.1:3080",
+        "tauri://localhost",
+        "http://tauri.localhost",
+        "https://tauri.localhost",
+    ],
+)
 websocket_manager = init_websocket_manager(sio)
 
 
@@ -114,8 +126,18 @@ fastapi_app = FastAPI(
 )
 fastapi_app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
+    allow_origins=[
+        "http://localhost:10896",
+        "http://127.0.0.1:10896",
+        "http://localhost:3079",
+        "http://localhost:3080",
+        "http://127.0.0.1:3080",
+        "tauri://localhost",
+        "http://tauri.localhost",
+        "https://tauri.localhost",
+    ],
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|100\.(6\d|[7-9]\d|1\d\d|2[0-6]\d)\.\d+\.\d+)(:\d+)?",
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
