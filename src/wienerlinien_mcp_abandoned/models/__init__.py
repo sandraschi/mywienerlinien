@@ -8,10 +8,10 @@ from .status import LineStatusResponse, ServiceStatus
 __all__ = [
     "Departure",
     "DepartureResponse",
-    "Station",
-    "StationSearchResponse",
     "JourneyPlan",
     "JourneySegment",
-    "ServiceStatus",
     "LineStatusResponse",
+    "ServiceStatus",
+    "Station",
+    "StationSearchResponse",
 ]
