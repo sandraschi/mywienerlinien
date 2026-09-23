@@ -1,11 +1,13 @@
 """Server status tool for Vienna Transit MCP."""
 
+import logging
 import time
-from datetime import datetime, timezone
-from typing import Optional
+from datetime import UTC, datetime
 
 from fastmcp import FastMCP
 from pydantic import BaseModel, Field
+
+logger = logging.getLogger(__name__)
 
 # Track server start time
 _server_start_time = time.time()
@@ -25,7 +27,7 @@ class ServerStatus(BaseModel):
     status: str = Field(..., description="Overall status: healthy, degraded, unhealthy")
     api_status: str = Field(..., description="Wiener Linien API: connected, timeout, unavailable")
     database_status: str = Field(..., description="PostgreSQL: connected, disconnected")
-    gtfs_data_age: Optional[str] = Field(None, description="Age of GTFS data")
+    gtfs_data_age: str | None = Field(None, description="Age of GTFS data")
     cache_stats: CacheStats = Field(..., description="Cache performance")
     version: str = Field(..., description="MCP server version")
     uptime_seconds: int = Field(..., description="Seconds since server start")
@@ -113,7 +115,7 @@ def register_server_status_tool(mcp: FastMCP) -> None:
                     age = datetime.now() - last_loaded
                     gtfs_age = f"{age.seconds // 3600}h {(age.seconds % 3600) // 60}m ago"
         except Exception:
-            pass
+            logger.exception("GTFS freshness probe failed; reporting unknown data age")
 
         # Check cache status
         cache_stats = CacheStats(
@@ -131,7 +133,7 @@ def register_server_status_tool(mcp: FastMCP) -> None:
                 routes_cached=status.get("routes_loaded", False),
             )
         except Exception:
-            pass
+            logger.exception("Cache status probe failed; reporting empty cache stats")
 
         # Calculate uptime
         uptime_secs = int(time.time() - _server_start_time)
@@ -141,9 +143,7 @@ def register_server_status_tool(mcp: FastMCP) -> None:
 
         # Count tools and resources
         tools_count = len(mcp._tool_manager._tools) if hasattr(mcp, "_tool_manager") else 0
-        resources_count = (
-            len(mcp._resource_manager._resources) if hasattr(mcp, "_resource_manager") else 0
-        )
+        resources_count = len(mcp._resource_manager._resources) if hasattr(mcp, "_resource_manager") else 0
 
         # Determine overall status
         if db_status == "connected" and api_status == "connected":
@@ -162,7 +162,7 @@ def register_server_status_tool(mcp: FastMCP) -> None:
             version="1.0.0",
             uptime_seconds=uptime_secs,
             uptime_human=uptime_human,
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
             tools_available=tools_count,
             resources_available=resources_count,
         )
