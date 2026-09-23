@@ -4,7 +4,6 @@ import logging
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 from fastmcp import FastMCP
 
@@ -24,9 +23,7 @@ def register_journey_tool(mcp: FastMCP) -> None:
     """Register the journey_planner tool with the MCP server."""
 
     @mcp.tool()
-    async def journey_planner(
-        from_station: str, to_station: str, departure_time: Optional[str] = None
-    ) -> JourneyPlan:
+    async def journey_planner(from_station: str, to_station: str, departure_time: str | None = None) -> JourneyPlan:
         """Plan optimal journey between Vienna stations.
 
         Args:
@@ -43,7 +40,7 @@ def register_journey_tool(mcp: FastMCP) -> None:
             if departure_time:
                 try:
                     dep_time = datetime.fromisoformat(departure_time.replace("Z", "+00:00"))
-                except:
+                except Exception:
                     dep_time = datetime.utcnow()
             else:
                 dep_time = datetime.utcnow()
@@ -83,4 +80,4 @@ def register_journey_tool(mcp: FastMCP) -> None:
             raise
         except Exception as e:
             logger.error(f"Error planning journey: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to plan journey: {str(e)}") from e
+            raise RuntimeError(f"Failed to plan journey: {e!s}") from e

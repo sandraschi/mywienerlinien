@@ -51,9 +51,7 @@ def register_station_search_tool(mcp: FastMCP) -> None:
                 if station_name_lower == query_lower:
                     matches.insert(0, station)
                 # Partial match
-                elif query_lower in station_name_lower or station_name_lower.startswith(
-                    query_lower[:3]
-                ):
+                elif query_lower in station_name_lower or station_name_lower.startswith(query_lower[:3]):
                     matches.append(station)
 
             # Convert to Station models
@@ -77,4 +75,4 @@ def register_station_search_tool(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error searching stations: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to search stations: {str(e)}") from e
+            raise RuntimeError(f"Failed to search stations: {e!s}") from e

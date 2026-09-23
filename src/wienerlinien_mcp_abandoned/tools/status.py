@@ -3,7 +3,6 @@
 import logging
 import sys
 from pathlib import Path
-from typing import Optional
 
 from fastmcp import FastMCP
 
@@ -24,7 +23,7 @@ def register_status_tool(mcp: FastMCP) -> None:
     """Register the line_status tool with the MCP server."""
 
     @mcp.tool()
-    async def line_status(line_name: Optional[str] = None) -> LineStatusResponse:
+    async def line_status(line_name: str | None = None) -> LineStatusResponse:
         """Check Vienna transit service status and disruptions.
 
         Args:
@@ -78,4 +77,4 @@ def register_status_tool(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error fetching line status: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to fetch line status: {str(e)}") from e
+            raise RuntimeError(f"Failed to fetch line status: {e!s}") from e
