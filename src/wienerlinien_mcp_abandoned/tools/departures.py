@@ -14,11 +14,11 @@ if str(_frontend_path) not in sys.path:
     sys.path.insert(0, str(_frontend_path))
 
 from data_loader import data_loader
-from vehicle_service import collect_vehicle_data
 from database import db
+from vehicle_service import collect_vehicle_data
+from wienerlinien_mcp.models.disruptions import Disruption, DisruptionResponse, DisruptionSummaryResponse
 
 from wienerlinien_mcp.models.departures import Departure, DepartureResponse, TimetableResponse
-from wienerlinien_mcp.models.disruptions import Disruption, DisruptionResponse, DisruptionSummaryResponse
 from wienerlinien_mcp.utils import find_station_by_name
 
 # Import disruption monitor
@@ -57,8 +57,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
                 suggestions = [
                     s.name
                     for s in stations
-                    if station.lower() in s.name.lower()
-                    or s.name.lower().startswith(station.lower()[:3])
+                    if station.lower() in s.name.lower() or s.name.lower().startswith(station.lower()[:3])
                 ][:5]
 
                 error_msg = f"Station '{station}' not found."
@@ -87,7 +86,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
                     if isinstance(timestamp, str):
                         try:
                             vehicle_time = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
-                        except:
+                        except Exception:
                             vehicle_time = now
                     else:
                         vehicle_time = timestamp
@@ -120,14 +119,11 @@ def register_departures_tool(mcp: FastMCP) -> None:
             raise
         except Exception as e:
             logger.error(f"Error fetching departures: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to fetch departures: {str(e)}") from e
+            raise RuntimeError(f"Failed to fetch departures: {e!s}") from e
 
     @mcp.tool()
     async def get_timetable(
-        station: str,
-        line: str = None,
-        start_time: str = None,
-        end_time: str = None
+        station: str, line: str | None = None, start_time: str | None = None, end_time: str | None = None
     ) -> TimetableResponse:
         """Get scheduled timetable for a station between specific times.
 
@@ -146,9 +142,9 @@ def register_departures_tool(mcp: FastMCP) -> None:
             if start_time:
                 try:
                     # Parse HH:MM format
-                    start_hour, start_minute = map(int, start_time.split(':'))
+                    start_hour, start_minute = map(int, start_time.split(":"))
                     start_seconds = start_hour * 3600 + start_minute * 60
-                except:
+                except Exception:
                     raise ValueError("start_time must be in HH:MM format (e.g., '06:00')")
             else:
                 # Use current time
@@ -159,9 +155,9 @@ def register_departures_tool(mcp: FastMCP) -> None:
             if end_time:
                 try:
                     # Parse HH:MM format
-                    end_hour, end_minute = map(int, end_time.split(':'))
+                    end_hour, end_minute = map(int, end_time.split(":"))
                     end_seconds = end_hour * 3600 + end_minute * 60
-                except:
+                except Exception:
                     raise ValueError("end_time must be in HH:MM format (e.g., '07:00')")
             else:
                 # Default to start_time + 1 hour
@@ -179,8 +175,8 @@ def register_departures_tool(mcp: FastMCP) -> None:
                 raise ValueError(f"Station '{station}' not found")
 
             # Build time range strings
-            start_time_str = f"{start_seconds//3600:02d}:{(start_seconds%3600)//60:02d}:{start_seconds%60:02d}"
-            end_time_str = f"{end_seconds//3600:02d}:{(end_seconds%3600)//60:02d}:{end_seconds%60:02d}"
+            start_time_str = f"{start_seconds // 3600:02d}:{(start_seconds % 3600) // 60:02d}:{start_seconds % 60:02d}"
+            end_time_str = f"{end_seconds // 3600:02d}:{(end_seconds % 3600) // 60:02d}:{end_seconds % 60:02d}"
 
             # Build query
             query = f"""
@@ -216,18 +212,16 @@ def register_departures_tool(mcp: FastMCP) -> None:
             # Group by line for better display
             timetable = {}
             for row in result:
-                line_name = row['line']
+                line_name = row["line"]
                 if line_name not in timetable:
-                    timetable[line_name] = {
-                        'line': line_name,
-                        'vehicle_type': row['vehicle_type'],
-                        'departures': []
-                    }
+                    timetable[line_name] = {"line": line_name, "vehicle_type": row["vehicle_type"], "departures": []}
 
-                timetable[line_name]['departures'].append({
-                    'time': str(row['departure_time'])[:5],  # HH:MM format
-                    'direction': row['direction']
-                })
+                timetable[line_name]["departures"].append(
+                    {
+                        "time": str(row["departure_time"])[:5],  # HH:MM format
+                        "direction": row["direction"],
+                    }
+                )
 
             # Convert to response format
             lines = list(timetable.values())
@@ -235,7 +229,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
             return TimetableResponse(
                 station=station_info["name"],
                 lines=lines,
-                time_window=f"{start_time or 'now'} to {end_time or f'{((start_seconds + 3600)//3600):02d}:{(((start_seconds + 3600)%3600)//60):02d}'}"
+                time_window=f"{start_time or 'now'} to {end_time or f'{((start_seconds + 3600) // 3600):02d}:{(((start_seconds + 3600) % 3600) // 60):02d}'}",
             )
 
         except ValueError as e:
@@ -243,14 +237,11 @@ def register_departures_tool(mcp: FastMCP) -> None:
             raise
         except Exception as e:
             logger.error(f"Error fetching timetable: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to fetch timetable: {str(e)}") from e
+            raise RuntimeError(f"Failed to fetch timetable: {e!s}") from e
 
     @mcp.tool()
     async def get_disruptions(
-        line: str = None,
-        station: str = None,
-        severity: str = None,
-        max_results: int = 10
+        line: str | None = None, station: str | None = None, severity: str | None = None, max_results: int = 10
     ) -> DisruptionResponse:
         """Get current service disruptions in Vienna's transit system.
 
@@ -279,6 +270,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
                 disruptions = disruption_monitor.get_disruptions_by_station(station)
             elif severity:
                 from disruption_alerts import DisruptionSeverity
+
                 try:
                     sev_enum = DisruptionSeverity(severity.lower())
                     disruptions = disruption_monitor.get_disruptions_by_severity(sev_enum)
@@ -290,21 +282,23 @@ def register_departures_tool(mcp: FastMCP) -> None:
             # Convert to Disruption models
             disruption_models = []
             for disruption in disruptions[:max_results]:
-                disruption_models.append(Disruption(
-                    id=disruption.id,
-                    title=disruption.title,
-                    description=disruption.description,
-                    line=disruption.line,
-                    type=disruption.type.value,
-                    severity=disruption.severity.value,
-                    status=disruption.status.value,
-                    affected_stations=disruption.affected_stations,
-                    affected_lines=disruption.affected_lines,
-                    start_time=disruption.start_time,
-                    end_time=disruption.end_time,
-                    created_at=disruption.created_at,
-                    updated_at=disruption.updated_at,
-                ))
+                disruption_models.append(
+                    Disruption(
+                        id=disruption.id,
+                        title=disruption.title,
+                        description=disruption.description,
+                        line=disruption.line,
+                        type=disruption.type.value,
+                        severity=disruption.severity.value,
+                        status=disruption.status.value,
+                        affected_stations=disruption.affected_stations,
+                        affected_lines=disruption.affected_lines,
+                        start_time=disruption.start_time,
+                        end_time=disruption.end_time,
+                        created_at=disruption.created_at,
+                        updated_at=disruption.updated_at,
+                    )
+                )
 
             return DisruptionResponse(
                 disruptions=disruption_models,
@@ -316,7 +310,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
             raise
         except Exception as e:
             logger.error(f"Error fetching disruptions: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to fetch disruptions: {str(e)}") from e
+            raise RuntimeError(f"Failed to fetch disruptions: {e!s}") from e
 
     @mcp.tool()
     async def get_service_status() -> DisruptionSummaryResponse:
@@ -341,14 +335,11 @@ def register_departures_tool(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error fetching service status: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to fetch service status: {str(e)}") from e
+            raise RuntimeError(f"Failed to fetch service status: {e!s}") from e
 
     @mcp.tool()
     async def find_nearby_stations(
-        latitude: float,
-        longitude: float,
-        radius_km: float = 1.0,
-        max_results: int = 10
+        latitude: float, longitude: float, radius_km: float = 1.0, max_results: int = 10
     ) -> dict:
         """Find transit stations near a specific location.
 
@@ -367,7 +358,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
             radius_km = max(0.1, min(5.0, radius_km))
 
             # Query for nearby stations
-            query = f"""
+            query = """
                 SELECT
                     s.stop_name,
                     s.stop_lat,
@@ -399,14 +390,16 @@ def register_departures_tool(mcp: FastMCP) -> None:
 
             stations = []
             for row in result:
-                stations.append({
-                    "name": row["stop_name"],
-                    "latitude": row["stop_lat"],
-                    "longitude": row["stop_lon"],
-                    "zone": row["zone_id"],
-                    "lines": row["lines"] or [],
-                    "distance_km": round(row["distance_km"], 2),
-                })
+                stations.append(
+                    {
+                        "name": row["stop_name"],
+                        "latitude": row["stop_lat"],
+                        "longitude": row["stop_lon"],
+                        "zone": row["zone_id"],
+                        "lines": row["lines"] or [],
+                        "distance_km": round(row["distance_km"], 2),
+                    }
+                )
 
             return {
                 "stations": stations,
@@ -417,7 +410,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
 
         except Exception as e:
             logger.error(f"Error finding nearby stations: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to find nearby stations: {str(e)}") from e
+            raise RuntimeError(f"Failed to find nearby stations: {e!s}") from e
 
     @mcp.tool()
     async def get_route_info(line: str) -> dict:
@@ -476,13 +469,15 @@ def register_departures_tool(mcp: FastMCP) -> None:
 
             stops = []
             for row in stops_result:
-                stops.append({
-                    "name": row["stop_name"],
-                    "latitude": row["stop_lat"],
-                    "longitude": row["stop_lon"],
-                    "zone": row["zone_id"],
-                    "directions": row["directions"] or [],
-                })
+                stops.append(
+                    {
+                        "name": row["stop_name"],
+                        "latitude": row["stop_lat"],
+                        "longitude": row["stop_lon"],
+                        "zone": row["zone_id"],
+                        "directions": row["directions"] or [],
+                    }
+                )
 
             # Get schedule info
             schedule_query = """
@@ -519,4 +514,4 @@ def register_departures_tool(mcp: FastMCP) -> None:
             raise
         except Exception as e:
             logger.error(f"Error fetching route info: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to fetch route info: {str(e)}") from e
+            raise RuntimeError(f"Failed to fetch route info: {e!s}") from e

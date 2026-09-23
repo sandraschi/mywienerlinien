@@ -7,7 +7,7 @@ from .status import register_status_tool
 
 __all__ = [
     "register_departures_tool",
+    "register_journey_tool",
     "register_station_search_tool",
     "register_status_tool",
-    "register_journey_tool",
 ]
