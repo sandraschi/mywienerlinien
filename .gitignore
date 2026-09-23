@@ -68,6 +68,10 @@ output/
 !README.md
 !docs/**/*.md
 !CHANGELOG.md
+!mcpb/assets/**/*.md
+!.github/**/*.md
+!.claude-plugin/**/*.md
+!hooks/**/*.md
 
 # GTFS data
 gtfs_data/

@@ -15,6 +15,7 @@ export default function Dashboard() {
                 <div>
                     <h1 className="text-3xl font-bold gradient-text tracking-tight uppercase">Live Departures</h1>
                     <p className="text-slate-500 mt-1">Real-time traffic data for Vienna (Wien-9-Alt).</p>
+                    <p className="mt-2 inline-block rounded border border-amber-600/60 bg-amber-950/40 px-2 py-0.5 text-xs font-bold tracking-widest text-amber-300 uppercase">Sample data — not live (MOCK until wired to /api)</p>
                 </div>
             </div>
 

@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "text",
+        "text": "## mywienerlinien — Vienna Transit MCP\nBefore starting work: query the MCP tools `next_departures` + `traffic_alerts` for the stop/line in question (never hardcode departures). Backend API: http://127.0.0.1:11170 (`GET /api/health`). Dashboard: web_sota/src (Vite 10896). At end of work: `uv run ruff check src/` clean and note DB migrations in CHANGELOG.md."
+      }
+    ]
+  }
+}
