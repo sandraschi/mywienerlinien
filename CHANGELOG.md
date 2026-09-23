@@ -2,6 +2,26 @@
 
 All notable changes to mywienerlinien are documented here.
 
+## [Unreleased] - 2026-09-23 (assfix)
+
+### Fixed
+
+- **CORS wide-open**: `allow_origins=["*"]` replaced with explicit origins + unconditional
+  Tailscale/LAN/Tauri regex in `frontend/app.py` and `web_sota/backend/server.py`.
+- **Deps**: FastMCP `>=3.1.0` bumped to `>=3.4.4,<4` (fleet floor); `fastapi` unpinned
+  (`==0.110.2` blocked starlette 1.x); `uv.lock` regenerated (fastmcp 3.4.7, fastapi 0.141.1).
+- **Ruff**: removed `S110`/`S112` from ignore (3 silent `except: pass` now log via
+  `logger.exception`); added `T20` print-ban + per-file-ignores for scripts/tests/mcpb.
+- **web_sota backend**: listens on registry port 11170 (was hardcoded 8000); added
+  `/api/health`, `/api/status`, `/api/skills`, `/api/capabilities`, `/api/v1/diagnostics`,
+  `/api/llm/discover|models|onboarding`, `POST /api/shutdown`; fixed 2 bare `except:`.
+- **justfile**: added `serve`, `test`, `fmt`, `bootstrap`, `mcpb-pack` recipes.
+- **CI**: `node-version` 20 -> 22.
+- **Docs/context**: new `llms.txt`, `llms-full.txt`, `.env.example`, `.mcpbignore` (root),
+  `.claude-plugin/plugin.json` + `hooks/hooks.json`, `.windsurfrules`, copilot instructions,
+  `## Session Context` in `.cursorrules`; `reports/` + `*.mcpb` gitignored.
+- **Dashboard**: hardcoded departures now badged SAMPLE DATA until wired to `/api`.
+
 ## [2.0.1] - 2026-08-04 (incidents pipeline)
 
 ### Fixed
