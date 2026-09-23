@@ -91,9 +91,7 @@ class RealTimeDelayService:
 
         try:
             # Collect vehicle data for all lines
-            vehicle_data = self.vehicle_service.collect_vehicle_data(
-                vehicle_type="all", lines=None, station=None
-            )
+            vehicle_data = self.vehicle_service.collect_vehicle_data(vehicle_type="all", lines=None, station=None)
 
             vehicles = vehicle_data.get("vehicles", [])
 
@@ -144,9 +142,7 @@ class RealTimeDelayService:
                         last_updated=datetime.now(),
                     )
 
-            return RealTimeUpdate(
-                line_delays=line_delays, disrupted_lines=disrupted_lines, timestamp=datetime.now()
-            )
+            return RealTimeUpdate(line_delays=line_delays, disrupted_lines=disrupted_lines, timestamp=datetime.now())
 
         except Exception as e:
             logger.error(f"Error processing vehicle data for delays: {e}", exc_info=True)
@@ -238,9 +234,7 @@ class RealTimeDelayService:
 
         return ranked
 
-    def _calculate_reliability_score(
-        self, route: "RouteOption", realtime_updates: RealTimeUpdate
-    ) -> float:
+    def _calculate_reliability_score(self, route: "RouteOption", realtime_updates: RealTimeUpdate) -> float:
         """Calculate reliability score for a route (0-100).
 
         Factors:

@@ -107,9 +107,7 @@ class DelayPredictionModel:
 
         return features
 
-    def train_model(
-        self, line: str, historical_data: list[dict], model_type: str = "random_forest"
-    ) -> bool:
+    def train_model(self, line: str, historical_data: list[dict], model_type: str = "random_forest") -> bool:
         """Train prediction model for a specific line.
 
         Args:
@@ -125,9 +123,7 @@ class DelayPredictionModel:
             return False
 
         if len(historical_data) < 100:
-            logger.warning(
-                f"Insufficient data for {line}: {len(historical_data)} records (need 100+)"
-            )
+            logger.warning(f"Insufficient data for {line}: {len(historical_data)} records (need 100+)")
             return False
 
         try:
@@ -161,13 +157,9 @@ class DelayPredictionModel:
 
             # Train model
             if model_type == "gradient_boosting":
-                model = GradientBoostingRegressor(
-                    n_estimators=100, max_depth=5, learning_rate=0.1, random_state=42
-                )
+                model = GradientBoostingRegressor(n_estimators=100, max_depth=5, learning_rate=0.1, random_state=42)
             else:  # random_forest
-                model = RandomForestRegressor(
-                    n_estimators=100, max_depth=10, random_state=42, n_jobs=-1
-                )
+                model = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=42, n_jobs=-1)
 
             model.fit(features_train_scaled, y_train)
 
@@ -175,9 +167,7 @@ class DelayPredictionModel:
             train_score = model.score(features_train_scaled, y_train)
             test_score = model.score(features_test_scaled, y_test)
 
-            logger.info(
-                f"Model trained for {line}: R² train={train_score:.3f}, test={test_score:.3f}"
-            )
+            logger.info(f"Model trained for {line}: R² train={train_score:.3f}, test={test_score:.3f}")
 
             # Store model and scaler
             self.models[line] = model
@@ -192,9 +182,7 @@ class DelayPredictionModel:
             logger.error(f"Error training model for {line}: {e}", exc_info=True)
             return False
 
-    def predict_delay(
-        self, line: str, target_time: datetime, use_fallback: bool = True
-    ) -> DelayPrediction | None:
+    def predict_delay(self, line: str, target_time: datetime, use_fallback: bool = True) -> DelayPrediction | None:
         """Predict delay for a line at a specific time.
 
         Args:
@@ -239,7 +227,7 @@ class DelayPredictionModel:
         # Get feature importances (if available)
         try:
             importances = model.feature_importances_
-            factors = {name: float(imp) for name, imp in zip(self.feature_names, importances)}
+            factors = {name: float(imp) for name, imp in zip(self.feature_names, importances, strict=False)}
         except Exception:
             factors = {}
 

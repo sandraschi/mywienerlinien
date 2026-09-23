@@ -96,14 +96,10 @@ class JourneyPlanner:
                 self.astar_router = AStarRouter(self.graph)
                 logger.info("A* routing enabled with graph pathfinding")
             except Exception as e:
-                logger.warning(
-                    f"Failed to build graph for A*: {e}. Falling back to simple routing."
-                )
+                logger.warning(f"Failed to build graph for A*: {e}. Falling back to simple routing.")
                 self.use_astar = False
 
-    def calculate_haversine_distance(
-        self, lat1: float, lon1: float, lat2: float, lon2: float
-    ) -> float:
+    def calculate_haversine_distance(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
         """Calculate distance between two points using haversine formula.
 
         Args:
@@ -121,10 +117,7 @@ class JourneyPlanner:
         delta_phi = math.radians(lat2 - lat1)
         delta_lambda = math.radians(lon2 - lon1)
 
-        a = (
-            math.sin(delta_phi / 2) ** 2
-            + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
-        )
+        a = math.sin(delta_phi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(delta_lambda / 2) ** 2
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
         return radius_earth * c
@@ -197,9 +190,7 @@ class JourneyPlanner:
         """
 
         try:
-            results = self.db.execute_query(
-                query, {"from_stop_id": from_stop_id, "to_stop_id": to_stop_id}
-            )
+            results = self.db.execute_query(query, {"from_stop_id": from_stop_id, "to_stop_id": to_stop_id})
 
             segments = []
             for row in results:
@@ -308,9 +299,7 @@ class JourneyPlanner:
         """
 
         try:
-            results = self.db.execute_query(
-                query, {"from_stop_id": from_stop_id, "to_stop_id": to_stop_id}
-            )
+            results = self.db.execute_query(query, {"from_stop_id": from_stop_id, "to_stop_id": to_stop_id})
 
             # Get origin and destination stop info
             origin_info = self._get_stop_info(from_stop_id)
@@ -332,18 +321,14 @@ class JourneyPlanner:
                     row["stop_lon"],
                 )
                 vehicle_type1 = self.ROUTE_TYPE_MAP.get(row["type1"], "bus")
-                duration1 = max(
-                    3, int((dist1 / 1000) / self.AVERAGE_SPEEDS.get(vehicle_type1, 20) * 60)
-                )
+                duration1 = max(3, int((dist1 / 1000) / self.AVERAGE_SPEEDS.get(vehicle_type1, 20) * 60))
 
                 # Calculate second leg
                 dist2 = self.calculate_haversine_distance(
                     row["stop_lat"], row["stop_lon"], dest_info["stop_lat"], dest_info["stop_lon"]
                 )
                 vehicle_type2 = self.ROUTE_TYPE_MAP.get(row["type2"], "bus")
-                duration2 = max(
-                    3, int((dist2 / 1000) / self.AVERAGE_SPEEDS.get(vehicle_type2, 20) * 60)
-                )
+                duration2 = max(3, int((dist2 / 1000) / self.AVERAGE_SPEEDS.get(vehicle_type2, 20) * 60))
 
                 # Create segments with transfer time
                 seg1_start = departure_time
@@ -422,9 +407,7 @@ class JourneyPlanner:
 
         # Phase 3B: Use A* pathfinding if available
         if self.use_astar and self.astar_router:
-            return self._plan_journey_astar(
-                from_stop_id, to_stop_id, departure_time, num_alternatives
-            )
+            return self._plan_journey_astar(from_stop_id, to_stop_id, departure_time, num_alternatives)
 
         # Phase 3A: Fallback to simple routing
         return self._plan_journey_simple(from_stop_id, to_stop_id, departure_time)
@@ -495,9 +478,7 @@ class JourneyPlanner:
 
                 # Count non-walking transfers
                 transfers = sum(
-                    1
-                    for i in range(len(path) - 1)
-                    if path[i].line != path[i + 1].line and not path[i + 1].is_walking
+                    1 for i in range(len(path) - 1) if path[i].line != path[i + 1].line and not path[i + 1].is_walking
                 )
 
                 total_duration = sum(seg.duration_minutes for seg in segments) + (
@@ -524,9 +505,7 @@ class JourneyPlanner:
             # Fallback to simple routing
             return self._plan_journey_simple(from_stop_id, to_stop_id, departure_time)
 
-    def _plan_journey_simple(
-        self, from_stop_id: str, to_stop_id: str, departure_time: datetime
-    ) -> list[RouteOption]:
+    def _plan_journey_simple(self, from_stop_id: str, to_stop_id: str, departure_time: datetime) -> list[RouteOption]:
         """Plan journey using simple routing (Phase 3A fallback).
 
         Args:
@@ -554,13 +533,10 @@ class JourneyPlanner:
             all_options.append(option)
 
         # Try routes with one transfer
-        transfer_routes = self.find_transfer_routes(
-            from_stop_id, to_stop_id, departure_time, max_transfers=1
-        )
+        transfer_routes = self.find_transfer_routes(from_stop_id, to_stop_id, departure_time, max_transfers=1)
         for segments in transfer_routes:
             total_duration = (
-                sum(seg.duration_minutes for seg in segments)
-                + (len(segments) - 1) * self.DEFAULT_TRANSFER_TIME
+                sum(seg.duration_minutes for seg in segments) + (len(segments) - 1) * self.DEFAULT_TRANSFER_TIME
             )
             total_distance = sum(seg.distance_meters or 0 for seg in segments)
 
