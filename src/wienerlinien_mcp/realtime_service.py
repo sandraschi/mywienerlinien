@@ -223,9 +223,7 @@ class RealTimeDelayService:
         if realtime_updates is None:
             realtime_updates = self.get_realtime_updates()
         if realtime_updates is None:
-            realtime_updates = RealTimeUpdate(
-                line_delays={}, disrupted_lines=[], timestamp=datetime.now()
-            )
+            realtime_updates = RealTimeUpdate(line_delays={}, disrupted_lines=[], timestamp=datetime.now())
 
         ranked = []
 
