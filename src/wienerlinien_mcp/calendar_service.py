@@ -10,7 +10,7 @@ Integrates with calendar systems (Outlook, Google Calendar) to:
 """
 
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ class Appointment:
     end_time: datetime
     timezone: str
     organizer: str | None = None
-    attendees: list[str] = None
+    attendees: list[str] = field(default_factory=list)
 
 
 @dataclass

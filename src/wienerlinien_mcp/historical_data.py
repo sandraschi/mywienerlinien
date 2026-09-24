@@ -11,6 +11,7 @@ import logging
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -372,7 +373,7 @@ class HistoricalDataCollector:
             WHERE timestamp > NOW() - INTERVAL ':days days'
             """
 
-            params = {"days": days}
+            params: dict[str, Any] = {"days": days}
 
             if line:
                 query += " AND line = :line"

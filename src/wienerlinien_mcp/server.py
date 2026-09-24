@@ -69,12 +69,12 @@ mcp = FastMCP(
     version="1.0.0",
 )
 
-# Note: Middleware support may vary by FastMCP version
-# Middleware registration commented out until FastMCP 2.13 middleware API is confirmed
-# from wienerlinien_mcp.middleware.logging import register_logging_middleware
-# from wienerlinien_mcp.middleware.error_handler import register_error_handler_middleware
-# register_error_handler_middleware(mcp)
-# register_logging_middleware(mcp)
+# FastMCP 3.4 middleware (logging + error handling)
+from wienerlinien_mcp.middleware.error_handler import register_error_handler_middleware
+from wienerlinien_mcp.middleware.logging import register_logging_middleware
+
+register_error_handler_middleware(mcp)
+register_logging_middleware(mcp)
 
 # Register prompts and resources (before tools for better discovery)
 # Store references to prevent garbage collection (FastMCP 2.12+ standard)
