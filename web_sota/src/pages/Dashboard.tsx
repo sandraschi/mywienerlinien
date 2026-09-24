@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { api } from "../common/api";
 import { useBackendStatus } from "../hooks/useBackendStatus";
 import { API_BASE } from "../lib/api";
+import { MAP_URL } from "../lib/config";
 import { useLlmStore } from "../store/llm";
 
 const ONBOARD_KEY = "wl_onboarded";
@@ -102,10 +103,18 @@ export default function Dashboard() {
 					</span>
 					<Link
 						to="/departures"
-						className="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-500"
+						className="rounded-lg bg-slate-700 px-4 py-2 font-semibold text-white hover:bg-slate-600"
 					>
 						View live departures
 					</Link>
+					<a
+						href={MAP_URL}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-500"
+					>
+						Open live map
+					</a>
 				</div>
 				{backend === "down" && (
 					<div className="mt-4 rounded-lg border border-red-800 bg-red-900/30 px-4 py-3 text-sm text-red-300">

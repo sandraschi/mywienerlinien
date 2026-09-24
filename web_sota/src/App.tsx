@@ -1,6 +1,7 @@
 import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 import FloatingChat from "./components/FloatingChat";
 import { useBackendStatus } from "./hooks/useBackendStatus";
+import { MAP_URL } from "./lib/config";
 import AppsPage from "./pages/AppsPage";
 import ChatPage from "./pages/ChatPage";
 import Dashboard from "./pages/Dashboard";
@@ -73,6 +74,14 @@ function Shell() {
 						</NavLink>
 					))}
 				</nav>
+				<a
+					href={MAP_URL}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="ml-auto text-sm text-slate-300 hover:text-blue-400 transition-colors"
+				>
+					Open Live Map
+				</a>
 			</header>
 
 			{/* Content */}
