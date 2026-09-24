@@ -1,0 +1,1172 @@
+[
+ {
+  "name": "1",
+  "long_name": "Prater, Hauptallee - Stefan-Fadinger-Platz",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "10",
+  "long_name": "Dornbach - Unter St. Veit, Hummelgasse",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "10A",
+  "long_name": "Heiligenstadt - Niederhofstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "11",
+  "long_name": "Otto-Probst-Platz - Kaiserebersdorf",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "11A",
+  "long_name": "Stadion - Heiligenstadt",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "11B",
+  "long_name": "Vorgartenstraße - Friedrich-Engels-Platz",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "11E",
+  "long_name": "Geiereckstraße - Enkplatz Schienenersatzverkehr gültig von 18.03. bis 18.04.2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "12",
+  "long_name": "Hillerstraße - Josefstädter Straße",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "12A",
+  "long_name": "Schmelz, Gablenzgasse - Eichenstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "13A",
+  "long_name": "Skodagasse - Hauptbahnhof",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "14A",
+  "long_name": "Neubaugasse - Reumannplatz",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "15A",
+  "long_name": "Meidling - Enkplatz/Grillgasse",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "16A",
+  "long_name": "Hetzendorf - Alaudagasse Baustellenfahrplan gültig von 13.12.2023 bis voraussichtlich Mai 2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "17A",
+  "long_name": "Inzerdorf, Birostraße - Oberlaa",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "18",
+  "long_name": "Burggasse-Stadthalle - Schlachthausgasse",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "18E",
+  "long_name": "Fasangasse - Fasangasse Schienenersatzverkehr gültig von 18.03. bis 06.07.2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "19A",
+  "long_name": "Alaudagasse - Alaudagasse",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "1A",
+  "long_name": "Stephansplatz - Schottentor",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "2",
+  "long_name": "Dornbach - Friedrich-Engels-Platz",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "20A",
+  "long_name": "Kaisermühlen-VIC - Neue Donau",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "20B",
+  "long_name": "Alte Donau - Neue Donau",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "22A",
+  "long_name": "Kagraner Platz - Aspernstraße Baustellenfahrplan",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "24A",
+  "long_name": "Kagraner Platz - Neueßling",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "25",
+  "long_name": "Aspern, Oberdorfstraße - Floridsdorf",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "25A",
+  "long_name": "Rennbahnweg - Süßenbrunner Platz",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "25B",
+  "long_name": "Süßenbrunner Platz - Gerasdorf Postamt",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "26",
+  "long_name": "Hausfeldstraße - Strebersdorf",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "26A",
+  "long_name": "Kagran - Groß-Enzersdorf Busbahnhof",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "27",
+  "long_name": "Aspern Nord - Strebersdorf,Edmund-Hawranek-Platz",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "27A",
+  "long_name": "Kagran - Hermann-Gebauer-Straße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "27B",
+  "long_name": "Kagran - Satzingerweg",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "28A",
+  "long_name": "Eipeldauer Straße - Breitenlee Schule",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "29A",
+  "long_name": "Floridsdorf - Großfeldsiedlung",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "29B",
+  "long_name": "Floridsdorf - Großfeldsiedlung",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "2A",
+  "long_name": "Schwedenplatz - Schwarzenbergplatz",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "30",
+  "long_name": "Floridsdorf - Stammersdorf",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "30A",
+  "long_name": "Neu Leopoldau - Freiheitsplatz",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "31",
+  "long_name": "Schottenring - Stammersdorf",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "31A",
+  "long_name": "Kagraner Platz - Jochbergengasse",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "32A",
+  "long_name": "Leopoldau - Strebersdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "33",
+  "long_name": "(Josefstädter Straße) Augasse - Friedrich-Engels-Platz",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "33A",
+  "long_name": "Mühlschüttel - Floridsdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "34A",
+  "long_name": "Floridsdorf - Schwarzlackenau (-Strebersdorf)",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "35A",
+  "long_name": "Spittelau - Salmannsdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "36A",
+  "long_name": "Jedlesee, Bellgasse - Carabelligasse",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "36B",
+  "long_name": "Jedlesee, Bellgasse - Leopoldau",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "37",
+  "long_name": "Schottentor - Hohe Warte",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "37A",
+  "long_name": "Brigittenauer Brücke - Dänenstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "38",
+  "long_name": "Schottentor - Grinzing",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "38A",
+  "long_name": "Heiligenstadt - Kahlenberg (-Leopoldsberg)",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "38B",
+  "long_name": "Nußdorf, Beethovengang - Nußdorf Friedhof - Heiligenstädter Friedhof",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "39A",
+  "long_name": "Heiligenstadt - Sievering",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "39B",
+  "long_name": "Karthäuserstraße - Sieveringer Friedhof",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "3A",
+  "long_name": "Schottenring - Stubentor",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "40",
+  "long_name": "Schottentor - Gersthof, Herbeckstraße",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "40A",
+  "long_name": "Schottentor - Döblinger Friedhof",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "41",
+  "long_name": "Schottentor - Pötzleinsdorf",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "41A",
+  "long_name": "Pötzleinsdorf - Neustifter Friedhof 3.Tor",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "42",
+  "long_name": "Schottentor - Antonigasse",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "42A",
+  "long_name": "Hernals - Schafberghöhe",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "43",
+  "long_name": "Schottentor - Neuwaldegg",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "43A",
+  "long_name": "Neuwaldegg - Cobenzl Parkplatz",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "43B",
+  "long_name": "Hütteldorf - Neustift, Agnesgasse",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "44",
+  "long_name": "Schottentor - Maroltingergasse",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "44A",
+  "long_name": "Hernals - Mitterberg",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "44B",
+  "long_name": "Dornbach - Predigtstuhl",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "45A",
+  "long_name": "Ottakring - Liebhartstal",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "46",
+  "long_name": "Ring/Volkstheater - Joachimsthalerplatz",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "46A",
+  "long_name": "Ottakring - Wilhelminenberg",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "46B",
+  "long_name": "Ottakring - Ottakringer Bad - Wilhelminenberg",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "47A",
+  "long_name": "Unter St. Veit - Klinik Penzing",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "47B",
+  "long_name": "Hütteldorf - Hüttelberg",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "48A",
+  "long_name": "Ring/Volkstheater - Klinik Penzing",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "49",
+  "long_name": "Ring/Volkstheater - Hütteldorf, Bujattigasse",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "49A",
+  "long_name": "Wolfersberg, Schöffelplatz - Hütteldorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "49B",
+  "long_name": "Vorderhainbach/Augustinerwaldgasse - Hinterhainbach",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "49E",
+  "long_name": "Linzer Str./Lützowgasse - Linzer Str./Lützowgasse",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "4A",
+  "long_name": "Karlsplatz - Wittelsbachstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "5",
+  "long_name": "Praterstern - Westbahnhof",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "50A",
+  "long_name": "Hütteldorf - Auhof",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "50B",
+  "long_name": "Hütteldorf - Auhof",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "51A",
+  "long_name": "Hietzing - Ottakringer Bad",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "52",
+  "long_name": "Westbahnhof - Baumgarten",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "52A",
+  "long_name": "Hütteldorf - Jägerwaldsiedlung",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "52B",
+  "long_name": "Hütteldorf - Siedlung Kordon ( -Feuerwache Am Steinhof)",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "53A",
+  "long_name": "Unter St. Veit, Verbindungsbahn - Hütteldorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "54A",
+  "long_name": "Ober St. Veit - Stock im Weg",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "54B",
+  "long_name": "Ober St. Veit - Stock im Weg",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "56A",
+  "long_name": "Hietzing - Atzgersdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "56B",
+  "long_name": "Hietzing - Lainzer Tor",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "57A",
+  "long_name": "Burgring - Anschützgasse",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "58A",
+  "long_name": "Hietzing - Atzgersdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "58B",
+  "long_name": "Hietzing - Atzgersdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "59A",
+  "long_name": "Oper/Karlsplatz - Bhf. Meidling",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "5A",
+  "long_name": "Nestroyplatz - Griegstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "5B",
+  "long_name": "Heiligenstadt - Praterstern",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "6",
+  "long_name": "Urban-Loritz-Platz - Geiereckstraße",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "60",
+  "long_name": "Westbahnhof - Rodaun",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "60A",
+  "long_name": "Alterlaa - Liesing",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "61A",
+  "long_name": "Liesing - Vösendorf-Siebenhirten",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "61B",
+  "long_name": "Liesing - Vösendorf-Siebenhirten",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "62",
+  "long_name": "Oper/Karlsplatz - Lainz, Wolkersbergenstraße",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "62A",
+  "long_name": "Meidling, Eichenstr. - Liesing",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "63A",
+  "long_name": "Gesundheitszentrum Süd - Am Rosenhügel",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "64A",
+  "long_name": "Atzgersdorf, Ziedlergasse - Liesing",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "64B",
+  "long_name": "Hetzendorf - Alterlaa",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "65A",
+  "long_name": "Reumannplatz - Wienerberg City",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "66A",
+  "long_name": "Reumannplatz - Liesing",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "67A",
+  "long_name": "Alaudagasse - Inzersdorf,Slamastraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "67B",
+  "long_name": "Alaudagasse - Alterlaa",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "68A",
+  "long_name": "Reumannplatz - Kurpark Nordosteingang",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "68B",
+  "long_name": "Reumannplatz - Oberlaa",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "69A",
+  "long_name": "Hauptbahnhof - Simmering",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "6E",
+  "long_name": "Westbahnhof - Eichenstraße Schienenersatzverkehr gültig von 07.07. bis 22.08.2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "70A",
+  "long_name": "Oberlaa - Kledering Bahnhof",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "71",
+  "long_name": "Schottenring - Kaiserebersdorf",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "71A",
+  "long_name": "Zentralfriedhof 3.Tor - Schwechat Bahnhof",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "71B",
+  "long_name": "Zentralfriedhof 3. Tor - Kaiserebersdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "71E",
+  "long_name": "Karlsplatz - St. Marx Schienenersatzverkehr gültig von 28.06. bis 31.08.2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "72A",
+  "long_name": "Gasometer - Hasenleiten",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "73A",
+  "long_name": "Simmering - Landwehrstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "73B",
+  "long_name": "Zentralfriedhof 3.Tor - Kaiserebersdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "74A",
+  "long_name": "Stubentor - St. Marx/Leberstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "76A",
+  "long_name": "Enkplatz/Grillgasse - Alberner Hafen",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "76B",
+  "long_name": "Enkplatz - Alberner Hafen",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "77A",
+  "long_name": "Rennweg - Lusthaus",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "79A",
+  "long_name": "Donaumarina - Kaiserebersdorf, Dreherstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "79B",
+  "long_name": "Donaumarina - Kaiserebersdorf, Dreherstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "7A",
+  "long_name": "Meidling Hauptstraße - Reumannplatz",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "7B",
+  "long_name": "Wienerberg City - Meidling",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "80A",
+  "long_name": "Praterstern - Neu Marx",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "82A",
+  "long_name": "Praterstern - Krieau",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "84A",
+  "long_name": "Aspernstraße - Seestadt Baustellenfahrplan gültig von 02.07. bis vsl. September 2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "85A",
+  "long_name": "Hausfeldstraße - Breitenlee, Rautenweg",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "86A",
+  "long_name": "Stadlau - Breitenleer St./Arnikaweg",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "87A",
+  "long_name": "Stadlau - Hermann-Gebauer-Straße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "88A",
+  "long_name": "Seestadt - Eßling, Stadtgrenze",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "88B",
+  "long_name": "Seestadt - Eßling, Wegmayersiedlung",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "89A",
+  "long_name": "Seestadt - Invalidensiedlung Baustellenfahrplan gültig von 02.07. bis vsl. September 2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "8A",
+  "long_name": "Meidling - Küniglberg/ORF-Zentrum",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "9",
+  "long_name": "Gersthof, Wallrißstraße - Westbahnhof",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "92A",
+  "long_name": "Kaisermühlen V.I.C. - Aspern, Zachgasse Winterfahrplan",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "92B",
+  "long_name": "Kaisermühlen V.I.C. - Ölhafen",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "93A",
+  "long_name": "Kagran - Aspernstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "94A",
+  "long_name": "Kagran - Stadlau",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "95A",
+  "long_name": "Großer Biberhaufen - Aspern Nord",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "95B",
+  "long_name": "Hirschstetten Ort - Hausfeldstraße Baustellenfahrplan gültig bis voraussichtlicht 2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "96A",
+  "long_name": "Schillwasserweg - Erzherzog-Karl-Straße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "97A",
+  "long_name": "Breitenlee Schule - Aspernstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "98A",
+  "long_name": "Hirschstetten Ort - Eßling, Schippanisiedlung",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "99A",
+  "long_name": "Sestadt - Eßling Schule Baustellenfahrplan gültig von 02.07. bis vsl. September 2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "99B",
+  "long_name": "Seestadt - Eßling Schule Baustellenfahrplan gültig von 02.07. bis vsl. September 2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "9A",
+  "long_name": "Meidling Hauptstraße - Bhf. Meidling",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "D",
+  "long_name": "Absberggasse - Nußdorf, Beethovengang",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "E1",
+  "long_name": "Reumannplatz - Quartier Belvedere Schienenersatzverkehr",
+  "type": "0",
+  "color": "555555"
+ },
+ {
+  "name": "E4",
+  "long_name": "Schottenring - Nußdorf, Beethovengang Schienenersatzverkehr",
+  "type": "0",
+  "color": "555555"
+ },
+ {
+  "name": "N17",
+  "long_name": "Himberger Straße - Unterlaa",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N20",
+  "long_name": "Kagraner Platz - Strebersdorf,Edmund-Hawranek-Platz",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N23",
+  "long_name": "Kagraner Platz - Hausfeldstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N24",
+  "long_name": "Neueßling - Kagraner Platz",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N25",
+  "long_name": "Schwedenplatz - Großfeldsiedlung",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N26",
+  "long_name": "Kagran - Eßling Schule",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N29",
+  "long_name": "Wittelsbachstraße - Floridsdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N30",
+  "long_name": "Floridsdorf - Neu Leopoldau",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N31",
+  "long_name": "Schwedenplatz - Stammersdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N35",
+  "long_name": "Spittelau - Salmannsdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N36",
+  "long_name": "Nußdorfer Straße - Nußdorf",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N38",
+  "long_name": "Schottentor - Grinzing",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N41",
+  "long_name": "Schottentor - Pötzleinsdorf",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N43",
+  "long_name": "Schottentor - Neuwaldegg",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N46",
+  "long_name": "Oper/Karlsplatz - Joachimsthalerplatz",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N49",
+  "long_name": "Oper/Karlsplatz - Hütteldorf, Bujattigasse",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N54",
+  "long_name": "Westbahnhof - Ober St. Veit Haltestellenverlegung bis Juni 2025",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N6",
+  "long_name": "Westbahnhof - Enkplatz, Grillgasse",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N60",
+  "long_name": "Oper/Karlsplatz - Rodaun",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N61",
+  "long_name": "Liesing - Kalksburg, Lodererweg",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N62",
+  "long_name": "Oper/Karlsplatz - Speising, Hermesstraße",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N64",
+  "long_name": "Alterlaa - Siebenhirten",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N65",
+  "long_name": "Reumannplatz - Liesing Baustellenfahrplan gültig von 13.12.2023 bis voraussichtlich Mai 2025",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N66",
+  "long_name": "Oper/Karlsplatz - Liesing",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N67",
+  "long_name": "Quellenplatz - Inzersdorf, Großmarkt",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N68",
+  "long_name": "Quellenplatz - Oberlaa",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N71",
+  "long_name": "Skodagasse - Kaiserebersdorf, Zinnergasse",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N75",
+  "long_name": "Oper/Karlsplatz - Gasometer",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N8",
+  "long_name": "Handelskai - Alterlaa",
+  "type": "3",
+  "color": "0A295D"
+ },
+ {
+  "name": "N81",
+  "long_name": "Praterstern - Praterbrücke",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N84",
+  "long_name": "Siegesplatz - Aspern Nord Baustellenfahrplan gültig von 02.07. bis vsl. September 2025",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N90",
+  "long_name": "Erzherzog-Karl-Straße - Kaisermühlen-VIC",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "N91",
+  "long_name": "Siegesplatz - Donaustadtbrücke",
+  "type": "3",
+  "color": "555555"
+ },
+ {
+  "name": "O",
+  "long_name": "Raxstraße, Rudolfshügelgasse - Bruno-Marek-Allee",
+  "type": "0",
+  "color": "C00808"
+ },
+ {
+  "name": "U1",
+  "long_name": "Oberlaa - Leopoldau",
+  "type": "1",
+  "color": "E3000F"
+ },
+ {
+  "name": "U2",
+  "long_name": "Seestadt - Schottentor",
+  "type": "1",
+  "color": "A862A4"
+ },
+ {
+  "name": "U3",
+  "long_name": "Ottakring - Simmering",
+  "type": "1",
+  "color": "EF7C00"
+ },
+ {
+  "name": "U4",
+  "long_name": "Hütteldorf - Heiligenstadt",
+  "type": "1",
+  "color": "319F49"
+ },
+ {
+  "name": "U6",
+  "long_name": "Siebenhirten - Floridsdorf",
+  "type": "1",
+  "color": "9D6830"
+ }
+]

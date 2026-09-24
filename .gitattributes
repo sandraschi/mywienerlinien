@@ -1,0 +1,4 @@
+# Fleet line-ending normalization: LF everywhere except binaries.
+* text=auto eol=lf
+*.ico binary
+*.png binary

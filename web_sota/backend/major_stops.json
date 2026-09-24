@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Stephansplatz",
+    "rbl": "2903",
+    "lat": 48.20928324,
+    "lon": 16.37252369,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Karlsplatz",
+    "rbl": "1490",
+    "lat": 48.20102722,
+    "lon": 16.36922687,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Schwedenplatz",
+    "rbl": "134",
+    "lat": 48.21185736,
+    "lon": 16.37749137,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Hauptbahnhof",
+    "rbl": "302",
+    "lat": 48.18612231,
+    "lon": 16.37471558,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Praterstern",
+    "rbl": "2100",
+    "lat": 48.21960887,
+    "lon": 16.39293341,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Westbahnhof",
+    "rbl": "1531",
+    "lat": 48.196758,
+    "lon": 16.33938484,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Schottentor",
+    "rbl": "1325",
+    "lat": 48.21336585,
+    "lon": 16.362759,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Volkstheater",
+    "rbl": "1375",
+    "lat": 48.20481713,
+    "lon": 16.35714453,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Spittelau",
+    "rbl": "121",
+    "lat": 48.23318765,
+    "lon": 16.35771047,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Oper",
+    "rbl": "13",
+    "lat": 48.22425323,
+    "lon": 16.34902376,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Meidling",
+    "rbl": "1716",
+    "lat": 48.17350753,
+    "lon": 16.33147068,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  },
+  {
+    "name": "Floridsdorf",
+    "rbl": "1120",
+    "lat": 48.26170392,
+    "lon": 16.40011095,
+    "source": "data/busstations.md+tramstations.md RBL, API-acknowledged (messageCode 1); coords scripts/gtfs_data/stops.txt"
+  }
+]
