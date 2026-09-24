@@ -7,8 +7,9 @@ and accessing city-specific transit information.
 """
 
 import logging
-from typing import Any
+from typing import Annotated, Any
 
+from fastmcp.tools.tool import ToolAnnotations
 from pydantic import BaseModel, Field
 
 try:
@@ -284,16 +285,23 @@ async def get_city_info(city_code: str) -> CityInfo:
 def register_cities_tools(wienerlinien_mcp):
     """Register multi-city management tools with the MCP server."""
 
-    @wienerlinien_mcp.tool()
+    @wienerlinien_mcp.tool(
+        annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True)
+    )
     async def list_cities() -> str:
-        """
-        List all available transit cities and their status.
+        """List all available transit cities and their status.
 
         Shows all configured cities with their operational status,
         data loading state, and basic configuration information.
 
-        Returns:
-            Formatted string listing all available cities with details
+        ## Return Format
+        Formatted string listing all available cities with details
+        (name, code, enabled status, country, timezone, data-loaded state,
+        map center when known). Error case returns a string starting
+        with "Error retrieving city list: ...".
+
+        ## Examples
+        list_cities()
         """
         try:
             cities = await list_available_cities()
@@ -326,20 +334,26 @@ def register_cities_tools(wienerlinien_mcp):
             logger.error(f"List cities tool failed: {e}")
             return f"Error retrieving city list: {e!s}"
 
-    @wienerlinien_mcp.tool()
-    async def switch_to_city(city_code: str) -> str:
-        """
-        Switch the active city for all transit operations.
+    @wienerlinien_mcp.tool(
+        annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True)
+    )
+    async def switch_to_city(
+        city_code: Annotated[str, Field(description="City code to switch to (e.g. vienna, graz). Use list_cities for options.")],
+    ) -> str:
+        """Switch the active city for all transit operations.
 
         Changes which city's transit system is used for departures, routing,
         and other transit queries. The city must be available and preferably
         have its data loaded.
 
-        Args:
-            city_code: City code to switch to (e.g., 'vienna', 'graz')
+        ## Return Format
+        Formatted confirmation string with the new city name, data status,
+        country, and timezone. Invalid city returns a string starting with
+        "Invalid City". Failures return a string starting with "Error".
 
-        Returns:
-            Confirmation message with city switch details
+        ## Examples
+        switch_to_city(city_code="vienna")
+        switch_to_city(city_code="graz")
         """
         try:
             result = await switch_city(city_code)
@@ -362,19 +376,26 @@ def register_cities_tools(wienerlinien_mcp):
             logger.error(f"Switch city tool failed: {e}")
             return f"❌ **Error**: Failed to switch city: {e!s}"
 
-    @wienerlinien_mcp.tool()
-    async def city_transit_stats(city_code: str | None = None) -> str:
-        """
-        Get comprehensive statistics for a city's transit system.
+    @wienerlinien_mcp.tool(
+        annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True)
+    )
+    async def city_transit_stats(
+        city_code: Annotated[str | None, Field(description="City code to report on (e.g. vienna). Omit for the current city.")] = None,
+    ) -> str:
+        """Get comprehensive statistics for a city's transit system.
 
         Shows detailed metrics including number of stops, routes, trips,
         and currently active vehicles.
 
-        Args:
-            city_code: City to get statistics for (defaults to current city)
+        ## Return Format
+        Formatted statistics string (city name, city code, total stops,
+        routes, scheduled trips, active vehicles, last-updated timestamp,
+        plus derived insights). Invalid city returns a string starting
+        with "Invalid City". Failures return a string starting with "Error".
 
-        Returns:
-            Formatted statistics report for the city
+        ## Examples
+        city_transit_stats()
+        city_transit_stats(city_code="vienna")
         """
         try:
             stats = await get_city_statistics(city_code)

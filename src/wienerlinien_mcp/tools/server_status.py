@@ -5,6 +5,7 @@ import time
 from datetime import UTC, datetime
 
 from fastmcp import FastMCP
+from fastmcp.tools.tool import ToolAnnotations
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -40,7 +41,9 @@ class ServerStatus(BaseModel):
 def register_server_status_tool(mcp: FastMCP) -> None:
     """Register the server_status tool with the MCP server."""
 
-    @mcp.tool()
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
     async def server_status() -> ServerStatus:
         """Check Vienna Transit MCP server health and status.
 
@@ -48,23 +51,11 @@ def register_server_status_tool(mcp: FastMCP) -> None:
         database status, data freshness, and performance metrics. Use this to
         diagnose issues or verify the server is working correctly.
 
-        Returns:
-            ServerStatus: Detailed health information including:
-                - status: Overall health (healthy, degraded, unhealthy)
-                - api_status: Wiener Linien API connectivity
-                - database_status: PostgreSQL connection status
-                - gtfs_data_age: When GTFS data was last updated
-                - cache_stats: What data is currently cached
-                - version: Server version number
-                - uptime_seconds: Time since server started
-                - uptime_human: Human-readable uptime
-                - tools_available: Number of registered tools
-                - resources_available: Number of registered resources
+        ## Return Format
+        {"status": "healthy|degraded|unhealthy", "api_status": "connected|timeout|unavailable|error", "database_status": "connected|disconnected", "gtfs_data_age": str | None, "cache_stats": {"stations_cached": bool, "lines_cached": bool, "routes_cached": bool}, "version": str, "uptime_seconds": int, "uptime_human": str, "timestamp": datetime, "tools_available": int, "resources_available": int}
 
-        Example:
-            >>> status = await server_status()
-            >>> print(f"Server is {status.status}")
-            Server is healthy
+        ## Examples
+        server_status()
         """
         issues = []
 
@@ -112,7 +103,9 @@ def register_server_status_tool(mcp: FastMCP) -> None:
                 if last_loaded:
                     if isinstance(last_loaded, str):
                         last_loaded = datetime.fromisoformat(last_loaded)
-                    age = datetime.now() - last_loaded
+                    if last_loaded.tzinfo is None:
+                        last_loaded = last_loaded.replace(tzinfo=UTC)
+                    age = datetime.now(UTC) - last_loaded
                     gtfs_age = f"{age.seconds // 3600}h {(age.seconds % 3600) // 60}m ago"
         except Exception:
             logger.exception("GTFS freshness probe failed; reporting unknown data age")
@@ -141,9 +134,10 @@ def register_server_status_tool(mcp: FastMCP) -> None:
         minutes, seconds = divmod(remainder, 60)
         uptime_human = f"{hours}h {minutes}m {seconds}s"
 
-        # Count tools and resources
-        tools_count = len(mcp._tool_manager._tools) if hasattr(mcp, "_tool_manager") else 0
-        resources_count = len(mcp._resource_manager._resources) if hasattr(mcp, "_resource_manager") else 0
+        # Count tools and resources via FastMCP 3.x internals (getattr-guarded:
+        # the manager attributes were removed in 3.4, the registries remain).
+        tools_count = len(getattr(mcp, "_tools", None) or {})
+        resources_count = len(getattr(mcp, "_resources", None) or {})
 
         # Determine overall status
         if db_status == "connected" and api_status == "connected":

@@ -1,9 +1,11 @@
 """Traffic alerts tool for Vienna Transit MCP."""
 
 from datetime import UTC, datetime
+from typing import Annotated
 
 import requests
 from fastmcp import FastMCP
+from fastmcp.tools.tool import ToolAnnotations
 from pydantic import BaseModel, Field
 
 
@@ -34,10 +36,12 @@ class TrafficAlertsResponse(BaseModel):
 def register_traffic_alerts_tool(mcp: FastMCP) -> None:
     """Register the traffic_alerts tool with the MCP server."""
 
-    @mcp.tool()
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
     async def traffic_alerts(
-        line_filter: str | None = None,
-        severity_filter: str | None = None,
+        line_filter: Annotated[str | None, Field(description="Line to filter by (e.g. U1, D, 13A). Omit for all lines.")] = None,
+        severity_filter: Annotated[str | None, Field(description="Severity filter: low, medium, high. Omit for all severities.")] = None,
     ) -> TrafficAlertsResponse:
         """Get current traffic disruptions and service alerts.
 
@@ -45,22 +49,13 @@ def register_traffic_alerts_tool(mcp: FastMCP) -> None:
         special events, and other issues affecting Vienna public transport.
         Results can be filtered by line or severity.
 
-        Args:
-            line_filter: Optional line to filter by (e.g., "U1", "D", "13A")
-            severity_filter: Optional severity filter: "low", "medium", "high"
+        ## Return Format
+        {"alerts": [{"id": str, "title": str, "description": str, "severity": "low|medium|high", "category": "disruption|construction|event|info", "affected_lines": list[str], "affected_stations": list[str], "start_time": datetime | None, "end_time": datetime | None, "url": str | None}], "count": int, "timestamp": datetime, "status": "normal|disrupted|major_issues|api_error: ..."}
 
-        Returns:
-            TrafficAlertsResponse containing:
-                - alerts: List of current alerts
-                - count: Number of alerts
-                - timestamp: When data was fetched
-                - status: Overall system status (normal, disrupted, major_issues)
-
-        Example:
-            >>> alerts = await traffic_alerts()
-            >>> print(f"{alerts.count} active alerts")
-            >>> for alert in alerts.alerts:
-            ...     print(f"[{alert.severity}] {alert.title}")
+        ## Examples
+        traffic_alerts()
+        traffic_alerts(line_filter="U1")
+        traffic_alerts(severity_filter="high")
         """
         alerts = []
 

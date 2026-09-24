@@ -1,8 +1,10 @@
 """Nearby stops tool for Vienna Transit MCP."""
 
 import math
+from typing import Annotated
 
 from fastmcp import FastMCP
+from fastmcp.tools.tool import ToolAnnotations
 from pydantic import BaseModel, Field
 
 
@@ -46,12 +48,14 @@ def _haversine_distance(lat1: float, lng1: float, lat2: float, lng2: float) -> f
 def register_nearby_stops_tool(mcp: FastMCP) -> None:
     """Register the nearby_stops tool with the MCP server."""
 
-    @mcp.tool()
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
     async def nearby_stops(
-        lat: float,
-        lng: float,
-        radius: int = 500,
-        limit: int = 10,
+        lat: Annotated[float, Field(description="Search center latitude (e.g. 48.2082 for Vienna center). Must be within 48.1-48.35.")],
+        lng: Annotated[float, Field(description="Search center longitude (e.g. 16.3738 for Vienna center). Must be within 16.1-16.6.")],
+        radius: Annotated[int, Field(description="Search radius in meters, 50-2000.", ge=50, le=2000)] = 500,
+        limit: Annotated[int, Field(description="Maximum stops to return, 1-50.", ge=1, le=50)] = 10,
     ) -> NearbyStopsResponse:
         """Find transit stops near a location.
 
@@ -59,29 +63,13 @@ def register_nearby_stops_tool(mcp: FastMCP) -> None:
         specified radius of the given coordinates. Results are sorted by
         distance from closest to farthest.
 
-        Args:
-            lat: Latitude of search center (e.g., 48.2082 for Vienna center)
-            lng: Longitude of search center (e.g., 16.3738 for Vienna center)
-            radius: Search radius in meters (default 500, max 2000)
-            limit: Maximum stops to return (default 10, max 50)
+        ## Return Format
+        {"lat": float, "lng": float, "radius_meters": int, "stops": [{"name": str, "rbl": str | None, "type": "metro|tram|bus", "distance_meters": int, "lat": float, "lng": float, "lines": list[str]}], "count": int}
 
-        Returns:
-            NearbyStopsResponse containing:
-                - lat/lng: Search coordinates used
-                - radius_meters: Search radius used
-                - stops: List of nearby stops with distance
-                - count: Number of stops found
-
-        Raises:
-            ValueError: If coordinates are outside Vienna area
-
-        Example:
-            >>> result = await nearby_stops(48.2082, 16.3738, radius=300)
-            >>> for stop in result.stops[:3]:
-            ...     print(f"{stop.name}: {stop.distance_meters}m")
-            Stephansplatz: 50m
-            Stephansplatz: 65m
-            Graben: 180m
+        ## Examples
+        nearby_stops(lat=48.2082, lng=16.3738)
+        nearby_stops(lat=48.2082, lng=16.3738, radius=300)
+        nearby_stops(lat=48.2082, lng=16.3738, radius=1000, limit=5)
         """
         # Validate coordinates (rough Vienna bounding box)
         if not (48.1 <= lat <= 48.35 and 16.1 <= lng <= 16.6):
@@ -134,24 +122,25 @@ def register_nearby_stops_tool(mcp: FastMCP) -> None:
             count=len(nearby),
         )
 
-    @mcp.tool()
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
     async def find_nearby_stations(
-        latitude: float,
-        longitude: float,
-        radius_km: float = 1.0,
-        max_results: int = 10,
+        latitude: Annotated[float, Field(description="Location latitude (e.g. 48.2082 for Vienna center).")],
+        longitude: Annotated[float, Field(description="Location longitude (e.g. 16.3738 for Vienna center).")],
+        radius_km: Annotated[float, Field(description="Search radius in kilometers.", ge=0.05, le=2.0)] = 1.0,
+        max_results: Annotated[int, Field(description="Maximum stations to return.", ge=1, le=50)] = 10,
     ) -> NearbyStopsResponse:
         """Find transit stations near a specific location.
 
-        Alias for nearby_stops to maintain compatibility with legacy clients.
+        Legacy-compatible alias for nearby_stops using kilometers for the
+        radius. Converts the radius to meters and delegates to nearby_stops.
 
-        Args:
-            latitude: Latitude of the location
-            longitude: Longitude of the location
-            radius_km: Search radius in kilometers (default: 1.0)
-            max_results: Maximum stations to return (default: 10)
+        ## Return Format
+        {"lat": float, "lng": float, "radius_meters": int, "stops": [{"name": str, "rbl": str | None, "type": "metro|tram|bus", "distance_meters": int, "lat": float, "lng": float, "lines": list[str]}], "count": int}
 
-        Returns:
-            NearbyStopsResponse containing stations near the location
+        ## Examples
+        find_nearby_stations(latitude=48.2082, longitude=16.3738)
+        find_nearby_stations(latitude=48.2082, longitude=16.3738, radius_km=0.5, max_results=5)
         """
         return await nearby_stops(lat=latitude, lng=longitude, radius=int(radius_km * 1000), limit=max_results)

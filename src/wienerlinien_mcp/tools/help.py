@@ -1,49 +1,36 @@
 """Help tool for Vienna Transit MCP."""
 
+from typing import Annotated
+
 from fastmcp import FastMCP
+from fastmcp.tools.tool import ToolAnnotations
+from pydantic import Field
 
 
 def register_help_tool(mcp: FastMCP) -> None:
     """Register the help tool with the MCP server."""
 
-    @mcp.tool()
-    async def help(topic: str = "overview") -> str:
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
+    async def help(
+        topic: Annotated[str, Field(description="Help topic: overview, departures, stations, journey, timetable, alerts, status, examples, vienna, wienerlinien, history, gtfs, data, displays, architecture.")] = "overview",
+    ) -> str:
         """Get help on using Vienna Transit MCP.
 
         Provides documentation, usage examples, educational content about
         Vienna's public transport system, and technical details about the
-        underlying data systems.
+        underlying data systems. Unknown topics return the topic list.
 
-        Args:
-            topic: Help topic to display. Available topics:
+        ## Return Format
+        Formatted Markdown help text for the requested topic. Unknown topic
+        returns the help-topics index listing tool usage, Vienna transit
+        info, and technical deep-dive topics.
 
-                **Tool Usage:**
-                - overview: Available tools and getting started (default)
-                - departures: How to check real-time departures
-                - stations: Finding and searching for stations
-                - journey: Trip planning between locations
-                - timetable: Stop timetable and schedule info
-                - alerts: Traffic disruptions and service changes
-                - status: Server health and data freshness
-                - examples: Common usage examples
-
-                **Vienna Transit Info:**
-                - vienna: Vienna's public transport network overview
-                - wienerlinien: About Wiener Linien (the company)
-                - history: History of Vienna public transport
-
-                **Technical Deep Dives:**
-                - gtfs: The GTFS data standard explained
-                - data: Why millions of data points are necessary
-                - displays: The miracle of real-time station displays
-                - architecture: How this MCP server works
-
-        Returns:
-            Formatted help text for the requested topic.
-
-        Example:
-            >>> await help("history")
-            # Vienna Public Transport History...
+        ## Examples
+        help()
+        help(topic="departures")
+        help(topic="history")
         """
         topics = {
             # Tool usage
