@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const SECTIONS = [
 	{
 		title: "Getting started",
-		body: "Start the stack (docker compose up -d for the map and database, just serve for this dashboard backend on 11170). Open this dashboard and check the backend dot in the header. Full walkthrough: docs/ONBOARDING.md in the repo.",
+		body: "Database: docker compose up -d db (postgres on 5433, named volume). Map: just map (native, port 10722). Dashboard backend: just serve (port 11170). Open this dashboard and check the backend dot in the header. Full walkthrough: docs/ONBOARDING.md in the repo.",
 	},
 	{
 		title: "Where does the data come from?",
