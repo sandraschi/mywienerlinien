@@ -1,104 +1,1092 @@
-{
-  "examples": [
-    {
-      "title": "Check Airport Departures",
-      "description": "Find next trains from Vienna Airport to city center",
-      "tools": ["next_departures", "journey_planner"],
-      "steps": [
-        "Find airport station details",
-        "Check next departures to city center",
-        "Plan complete journey with transfers"
-      ]
-    },
-    {
-      "title": "Plan City Center Route",
-      "description": "Navigate between major Vienna attractions",
-      "tools": ["station_search", "journey_planner"],
-      "steps": [
-        "Locate Stephansdom station",
-        "Find Karlsplatz interchange",
-        "Plan walking route between nearby stops"
-      ]
-    },
-    {
-      "title": "Check Service Disruptions",
-      "description": "Monitor transit service status and delays",
-      "tools": ["line_status"],
-      "steps": [
-        "Check overall service status",
-        "Identify affected lines",
-        "Find alternative routes"
-      ]
-    },
-    {
-      "title": "Night Travel Planning",
-      "description": "Plan travel during night hours with limited service",
-      "tools": ["next_departures", "line_status"],
-      "steps": [
-        "Check night service availability",
-        "Find operating lines and schedules",
-        "Plan route with night buses/trams"
-      ]
-    }
-  ],
-  "quick_commands": [
-    {
-      "command": "Next train from Westbahnhof",
-      "tools": ["next_departures"],
-      "description": "Check departures from main western station"
-    },
-    {
-      "command": "How to get to Stephansdom",
-      "tools": ["journey_planner"],
-      "description": "Plan route to city center cathedral"
-    },
-    {
-      "command": "Is U1 running normally?",
-      "tools": ["line_status"],
-      "description": "Check metro line status"
-    },
-    {
-      "command": "Find nearest station to Karlsplatz",
-      "tools": ["station_search"],
-      "description": "Locate transit stops near major square"
-    }
-  ],
-  "workflows": {
-    "commuter": [
-      "Check daily route status",
-      "Monitor for service changes",
-      "Plan alternative routes for disruptions",
-      "Track favorite station departures"
-    ],
-    "tourist": [
-      "Learn major station locations",
-      "Understand line colors and numbers",
-      "Plan multi-attraction itineraries",
-      "Check accessibility features"
-    ],
-    "night_travel": [
-      "Identify night service routes",
-      "Check operating hours",
-      "Plan return journeys",
-      "Monitor service reliability"
+[
+  {
+    "title": "Assistant orientation tour",
+    "description": "New user asks what the assistant can do; help overview chapter answers",
+    "tools": ["help"],
+    "steps": [
+      "Call help with topic overview",
+      "Summarize the twelve tools plus routes info",
+      "Suggest a first station_search for the home stop"
     ]
   },
-  "station_categories": {
-    "airports": ["Flughafen Wien", "Flughafen Wien Bahnhof"],
-    "train_stations": ["Westbahnhof", "Südbahnhof", "Franz-Josefs-Bahnhof", "Wien Meidling"],
-    "city_center": ["Stephansplatz", "Karlsplatz", "Schottentor", "Stubentor"],
-    "university": ["Universität Wien", "TU Wien", "Wirtschaftsuniversität"],
-    "shopping": ["Mariahilfer Straße", "Kärntner Straße", "Naschmarkt"],
-    "attractions": ["Schönbrunn", "Belvedere", "Prater", "Naschmarkt"]
+  {
+    "title": "Learn live departure boards",
+    "description": "User wants to understand countdowns, delays, and vehicle types",
+    "tools": ["help"],
+    "steps": [
+      "Call help with topic departures",
+      "Explain countdown_minutes and delay_minutes",
+      "Run a live next_departures demo at Stephansplatz"
+    ]
   },
-  "line_types": {
-    "u_bahn": ["U1", "U2", "U3", "U4", "U6"],
-    "trams": ["1", "2", "6", "18", "31", "38", "43", "44", "46", "49", "52", "60", "62", "65", "66", "67", "68", "71", "74", "80", "82", "84", "D", "E2", "O"],
-    "buses": ["2A", "3A", "4A", "7A", "8A", "9A", "13A", "14A", "37A", "38A", "40A", "42A", "44A", "48A", "49A", "50A", "51A", "52A", "53A", "54A", "55A", "56A", "57A", "59A", "60A", "62A", "63A", "66A", "67A", "68A", "69A", "70A", "71A", "72A", "74A", "75A", "76A", "77A", "78A", "79A", "80A", "81A", "82A", "83A", "84A", "85A", "87A", "88A", "89A", "90A", "91A", "92A", "93A", "94A", "95A", "96A", "97A", "98A", "99A"],
-    "night_lines": ["N6", "N8", "N25", "N31", "N35", "N38", "N41", "N43", "N46", "N49", "N54", "N60", "N62", "N66", "N68", "N71", "N75", "N81", "N82", "N84", "N85", "N87", "N88", "N89", "N90", "N91", "N95", "N96", "N97", "N98", "N99"]
+  {
+    "title": "Learn trip planning",
+    "description": "User asks how journey planning works before trusting an itinerary",
+    "tools": ["help"],
+    "steps": [
+      "Call help with topic journey",
+      "Explain A-star multi-transfer routing over GTFS",
+      "Plan a sample Westbahnhof to Stephansplatz trip"
+    ]
+  },
+  {
+    "title": "Learn timetable use",
+    "description": "User wants schedules and frequencies rather than live boards",
+    "tools": ["help"],
+    "steps": [
+      "Call help with topic timetable",
+      "Explain scheduled versus live data",
+      "Show a stop_timetable example for Karlsplatz"
+    ]
+  },
+  {
+    "title": "Learn disruption alerts",
+    "description": "User asks where closure information comes from",
+    "tools": ["help"],
+    "steps": [
+      "Call help with topic alerts",
+      "Explain trafficInfoList and newsList feeds",
+      "Run traffic_alerts to show current published notices"
+    ]
+  },
+  {
+    "title": "Learn the Vienna network",
+    "description": "Tourist wants a network overview before sightseeing",
+    "tools": ["help"],
+    "steps": [
+      "Call help with topic vienna",
+      "Summarize U-Bahn, tram, bus, S-Bahn, night lines",
+      "Follow with routes info for the U1 and U4 corridors"
+    ]
+  },
+  {
+    "title": "About Wiener Linien",
+    "description": "User asks who operates Vienna transit",
+    "tools": ["help"],
+    "steps": [
+      "Call help with topic wienerlinien",
+      "Summarize the operator and data feeds",
+      "Give the hotline +43 1 7909 100 for urgent issues"
+    ]
+  },
+  {
+    "title": "GTFS technical explainer",
+    "description": "Developer asks why the app needs millions of data points",
+    "tools": ["help"],
+    "steps": [
+      "Call help with topics gtfs and data",
+      "Explain stops, routes, trips, and stop times",
+      "Link GTFS freshness to server_status last_updated"
+    ]
+  },
+  {
+    "title": "Morning data freshness check",
+    "description": "Commuter verifies feeds are healthy before leaving home",
+    "tools": ["server_status"],
+    "steps": [
+      "Call server_status for uptime and last refresh",
+      "Confirm live feeds reachable",
+      "Proceed to next_departures only if fresh"
+    ]
+  },
+  {
+    "title": "Stale times reported",
+    "description": "User says nothing is leaving although board shows departures",
+    "tools": ["server_status", "stop_timetable"],
+    "steps": [
+      "Call server_status immediately and quote last_updated",
+      "Admit staleness openly if data is old",
+      "Fall back to stop_timetable scheduled times labeled scheduled-only"
+    ]
+  },
+  {
+    "title": "Pre-airport verification",
+    "description": "High-stakes airport run needs confirmed fresh data",
+    "tools": ["server_status", "journey_planner", "traffic_alerts"],
+    "steps": [
+      "Call server_status to confirm feed health",
+      "Plan Hauptbahnhof to Flughafen Wien Bahnhof",
+      "Cross-check traffic_alerts for the airport corridor"
+    ]
+  },
+  {
+    "title": "Outage triage",
+    "description": "Multiple tools failing; determine whether the backend is down",
+    "tools": ["server_status"],
+    "steps": [
+      "Call server_status and read error signals",
+      "Tell the user plainly what is broken",
+      "Offer scheduled-only answers plus on-site display advice"
+    ]
+  },
+  {
+    "title": "Post-error health check",
+    "description": "A departure query raised a transport error mid-session",
+    "tools": ["server_status", "next_departures"],
+    "steps": [
+      "Call server_status to isolate feed versus query fault",
+      "Retry next_departures once if server is healthy",
+      "Explain the outcome with the fresh timestamp"
+    ]
+  },
+  {
+    "title": "Data completeness audit",
+    "description": "Analyst asks whether GTFS data looks complete today",
+    "tools": ["server_status", "city_transit_stats"],
+    "steps": [
+      "Call server_status for refresh timestamps",
+      "Call city_transit_stats for stop, route, and trip totals",
+      "Judge completeness from counts plus last_updated"
+    ]
+  },
+  {
+    "title": "Version and uptime question",
+    "description": "User asks what version is running and how long it has been up",
+    "tools": ["server_status"],
+    "steps": [
+      "Call server_status",
+      "Report version and uptime in plain words",
+      "Note any recent restart that could explain fresh caches"
+    ]
+  },
+  {
+    "title": "Scheduled fallback trigger",
+    "description": "Live feed down; switch the session to timetable mode",
+    "tools": ["server_status", "stop_timetable"],
+    "steps": [
+      "Confirm outage via server_status",
+      "Announce scheduled-only mode with timestamp",
+      "Answer remaining questions from stop_timetable with buffer advice"
+    ]
+  },
+  {
+    "title": "Which cities are supported",
+    "description": "New user asks for the full city list",
+    "tools": ["list_cities"],
+    "steps": [
+      "Call list_cities",
+      "Present each city with country and status",
+      "Confirm Vienna remains the default context"
+    ]
+  },
+  {
+    "title": "Non-Vienna place lookup",
+    "description": "Station search fails and the place may be in another city",
+    "tools": ["list_cities", "station_search"],
+    "steps": [
+      "Call list_cities to see candidate cities",
+      "Ask the user which city they mean",
+      "Re-run station_search after any switch"
+    ]
+  },
+  {
+    "title": "Compare supported cities",
+    "description": "User wants to know how the cities differ in coverage",
+    "tools": ["list_cities", "city_transit_stats"],
+    "steps": [
+      "Call list_cities for the roster",
+      "Call city_transit_stats per enabled city",
+      "Compare stops, routes, trips, and vehicles with timestamps"
+    ]
+  },
+  {
+    "title": "Disabled city request",
+    "description": "User names a city that is configured but not enabled",
+    "tools": ["list_cities"],
+    "steps": [
+      "Call list_cities and read the enabled flag",
+      "Explain the city has no loaded data",
+      "Offer the enabled alternatives"
+    ]
+  },
+  {
+    "title": "First-run onboarding",
+    "description": "Onboard a user who may travel in two cities",
+    "tools": ["list_cities", "help"],
+    "steps": [
+      "Call list_cities to ground the city choice",
+      "Call help overview for tool orientation",
+      "Record the home city and home station for the session"
+    ]
+  },
+  {
+    "title": "Tourist multi-city curiosity",
+    "description": "Visitor asks whether the assistant works outside Vienna",
+    "tools": ["list_cities", "city_transit_stats"],
+    "steps": [
+      "Call list_cities for coverage",
+      "Show city_transit_stats for Vienna as the anchor",
+      "Explain per-city planning with switch_to_city"
+    ]
+  },
+  {
+    "title": "Pre-switch validation",
+    "description": "Check a city is usable before switching context",
+    "tools": ["list_cities", "switch_to_city"],
+    "steps": [
+      "Call list_cities and verify enabled with data_loaded true",
+      "Call switch_to_city with the lowercase code",
+      "Confirm the switch before re-running queries"
+    ]
+  },
+  {
+    "title": "City coverage question",
+    "description": "User asks if a specific town is covered",
+    "tools": ["list_cities"],
+    "steps": [
+      "Call list_cities",
+      "Search the roster for the town by name or country",
+      "Answer covered or not covered with the closest alternative"
+    ]
+  },
+  {
+    "title": "Switch away from Vienna",
+    "description": "Traveler leaves Vienna and needs the other city context",
+    "tools": ["list_cities", "switch_to_city", "station_search"],
+    "steps": [
+      "Verify the target city via list_cities",
+      "Call switch_to_city with the lowercase code",
+      "Re-resolve station names in the new city"
+    ]
+  },
+  {
+    "title": "Return home to Vienna",
+    "description": "Switch the session back to Vienna after another city",
+    "tools": ["switch_to_city", "station_search"],
+    "steps": [
+      "Call switch_to_city with vienna",
+      "Confirm Vienna context in one sentence",
+      "Re-run the pending Vienna query from scratch"
+    ]
+  },
+  {
+    "title": "Re-resolve names after switch",
+    "description": "Same station name exists in both cities; disambiguate",
+    "tools": ["switch_to_city", "station_search"],
+    "steps": [
+      "Confirm the active city after switching",
+      "Call station_search for the name in the new city",
+      "Verify the RBL and country context before departures"
+    ]
+  },
+  {
+    "title": "Failed switch to disabled city",
+    "description": "switch_to_city reports the city is unavailable",
+    "tools": ["switch_to_city", "list_cities"],
+    "steps": [
+      "Relay the failure reason exactly",
+      "Call list_cities for enabled alternatives",
+      "Offer to proceed in Vienna instead"
+    ]
+  },
+  {
+    "title": "Wrong-city results fix",
+    "description": "Results look like the wrong city for the place named",
+    "tools": ["list_cities", "switch_to_city", "next_departures"],
+    "steps": [
+      "State the currently active city",
+      "Switch to the intended city with confirmation",
+      "Re-run station_search and next_departures cleanly"
+    ]
+  },
+  {
+    "title": "Explicit switch confirmation flow",
+    "description": "Demonstrate the list, switch, confirm, re-resolve pattern",
+    "tools": ["list_cities", "switch_to_city", "station_search"],
+    "steps": [
+      "List cities and pick the target",
+      "Switch and confirm in one sentence",
+      "Re-resolve stations before any live query"
+    ]
+  },
+  {
+    "title": "Tourist city hop",
+    "description": "Visitor splits a trip across two supported cities",
+    "tools": ["list_cities", "switch_to_city", "journey_planner"],
+    "steps": [
+      "Plan the Vienna leg first with journey_planner",
+      "Switch city with explicit confirmation",
+      "Plan the second-city leg separately"
+    ]
+  },
+  {
+    "title": "Commuter city change",
+    "description": "Commuter moved cities and resets home station",
+    "tools": ["switch_to_city", "station_search", "next_departures"],
+    "steps": [
+      "Switch to the new city",
+      "Resolve the new home station",
+      "Set up the new morning departures check"
+    ]
+  },
+  {
+    "title": "How big is the Vienna network",
+    "description": "User asks for network size in stops and routes",
+    "tools": ["city_transit_stats"],
+    "steps": [
+      "Call city_transit_stats for Vienna",
+      "Quote stops, routes, and scheduled trips",
+      "Include the last_updated timestamp"
+    ]
+  },
+  {
+    "title": "Vehicles running right now",
+    "description": "User asks how many vehicles are active",
+    "tools": ["city_transit_stats"],
+    "steps": [
+      "Call city_transit_stats",
+      "Report active vehicles with timestamp",
+      "Note this is schedule-derived fleet state, not GPS"
+    ]
+  },
+  {
+    "title": "Data completeness sanity check",
+    "description": "Before deep analysis, verify the dataset looks whole",
+    "tools": ["city_transit_stats", "server_status"],
+    "steps": [
+      "Check totals in city_transit_stats",
+      "Check refresh time in server_status",
+      "Proceed only if counts and timestamps look sane"
+    ]
+  },
+  {
+    "title": "Compare two cities",
+    "description": "User compares Vienna against another supported city",
+    "tools": ["city_transit_stats"],
+    "steps": [
+      "Call city_transit_stats for each city",
+      "Compare stops, routes, trips, vehicles",
+      "Label every number with its last_updated value"
+    ]
+  },
+  {
+    "title": "Freshness for planning",
+    "description": "User planning tomorrow asks how fresh stats are",
+    "tools": ["city_transit_stats"],
+    "steps": [
+      "Call city_transit_stats",
+      "Quote last_updated explicitly",
+      "Advise re-checking live data on the travel day"
+    ]
+  },
+  {
+    "title": "Night coverage sizing",
+    "description": "User asks whether the night network is substantial",
+    "tools": ["city_transit_stats", "stop_timetable", "routes"],
+    "steps": [
+      "Read network totals from city_transit_stats",
+      "Check night boundaries via stop_timetable",
+      "List N-line coverage from routes info"
+    ]
+  },
+  {
+    "title": "Tourist curiosity stats",
+    "description": "Visitor asks fun facts about system size",
+    "tools": ["city_transit_stats", "help"],
+    "steps": [
+      "Quote stops and routes from city_transit_stats",
+      "Add network color from help vienna chapter",
+      "Offer a sightseeing itinerary next"
+    ]
+  },
+  {
+    "title": "Capacity planning question",
+    "description": "Event organizer asks about corridor capacity",
+    "tools": ["city_transit_stats", "traffic_alerts"],
+    "steps": [
+      "Read trip totals from city_transit_stats",
+      "Check traffic_alerts for event-day changes",
+      "Recommend buffer and interchange choices"
+    ]
+  },
+  {
+    "title": "Exact station match",
+    "description": "Resolve Stephansplatz exactly before a departures call",
+    "tools": ["station_search", "next_departures"],
+    "steps": [
+      "Call station_search Stephansplatz",
+      "Record the official name and RBL code",
+      "Call next_departures with the confirmed name"
+    ]
+  },
+  {
+    "title": "Partial name Stephans",
+    "description": "Fuzzy match on a prefix typed quickly on mobile",
+    "tools": ["station_search"],
+    "steps": [
+      "Call station_search Stephans",
+      "Present Stephansplatz and sibling matches with RBL codes",
+      "Ask the user to pick before departures"
+    ]
+  },
+  {
+    "title": "Next train from Westbahnhof",
+    "description": "Check departures from main western station",
+    "tools": ["station_search", "next_departures"],
+    "steps": [
+      "Resolve Westbahnhof via station_search",
+      "Call next_departures with max_results 8",
+      "Report lines, destinations, and countdowns"
+    ]
+  },
+  {
+    "title": "HBF abbreviation resolution",
+    "description": "User types HBF meaning Hauptbahnhof; verify, do not assume",
+    "tools": ["station_search", "next_departures"],
+    "steps": [
+      "Call station_search HBF",
+      "Confirm Hauptbahnhof explicitly with the user",
+      "Call next_departures only after confirmation"
+    ]
+  },
+  {
+    "title": "How to get to Stephansdom",
+    "description": "Plan route to city center cathedral",
+    "tools": ["station_search", "journey_planner"],
+    "steps": [
+      "Resolve Stephansplatz via station_search",
+      "Resolve the origin station",
+      "Call journey_planner and render numbered legs"
+    ]
+  },
+  {
+    "title": "English Central Station query",
+    "description": "English speaker searches Central Station for Hauptbahnhof",
+    "tools": ["station_search"],
+    "steps": [
+      "Call station_search Central Station",
+      "Confirm the Hauptbahnhof match with RBL",
+      "Offer departures or journey planning onward"
+    ]
+  },
+  {
+    "title": "Airport station resolution",
+    "description": "Resolve Flughafen Wien Bahnhof for a flight day",
+    "tools": ["station_search", "journey_planner"],
+    "steps": [
+      "Call station_search Flughafen Wien",
+      "Confirm the airport rail station identity",
+      "Plan the full itinerary with disruption cross-check"
+    ]
+  },
+  {
+    "title": "Unknown station with suggestions",
+    "description": "User types Stephansdome; offer close matches instead of forcing",
+    "tools": ["station_search"],
+    "steps": [
+      "Call station_search Stephansdome",
+      "Collect suggested names from the result or error payload",
+      "Present Stephansplatz plus nearby alternatives and wait"
+    ]
+  },
+  {
+    "title": "Ambiguous Karlsplatz bays",
+    "description": "Karlsplatz interchange matches multiple bays and directions",
+    "tools": ["station_search"],
+    "steps": [
+      "Call station_search Karlsplatz",
+      "List candidates with RBL codes and line hints",
+      "Ask for the direction bay before departures"
+    ]
+  },
+  {
+    "title": "Find nearest station to Karlsplatz",
+    "description": "Locate transit stops near major square",
+    "tools": ["station_search", "nearby_stops"],
+    "steps": [
+      "Anchor Karlsplatz via station_search",
+      "Offer nearby_stops with coordinates for precision",
+      "List the closest stops with walking context"
+    ]
+  },
+  {
+    "title": "Schoenbrunn tourist anchor",
+    "description": "Resolve the palace area stop for a sightseeing plan",
+    "tools": ["station_search", "journey_planner"],
+    "steps": [
+      "Call station_search for the Schoenbrunn area stop",
+      "Confirm the exact stop and RBL",
+      "Plan the itinerary from the hotel station"
+    ]
+  },
+  {
+    "title": "Schwedenplatz evening check",
+    "description": "Evening departures at the Danube canal interchange",
+    "tools": ["station_search", "next_departures"],
+    "steps": [
+      "Resolve Schwedenplatz and note U1 and U4 lines",
+      "Call next_departures with max_results 5",
+      "Flag any delay_minutes reported"
+    ]
+  },
+  {
+    "title": "Hotel near Naschmarkt",
+    "description": "Closest station to a hotel by the Naschmarkt",
+    "tools": ["station_search", "nearby_stops"],
+    "steps": [
+      "Anchor Naschmarkt via station_search",
+      "Ask for coordinates or street address",
+      "Call nearby_stops with a stated radius and sort by distance"
+    ]
+  },
+  {
+    "title": "GPS fix at Stephansdom",
+    "description": "Standing at the cathedral with phone coordinates",
+    "tools": ["nearby_stops"],
+    "steps": [
+      "Take latitude and longitude from the user",
+      "Call nearby_stops with a small radius",
+      "Return the top three stops with walking context"
+    ]
+  },
+  {
+    "title": "Belvedere tram access",
+    "description": "Which tram stops serve Belvedere palace",
+    "tools": ["nearby_stops", "routes"],
+    "steps": [
+      "Query nearby_stops around the palace coordinates",
+      "Add D and O tram corridor context from routes info",
+      "Recommend the stop with the shortest walk"
+    ]
+  },
+  {
+    "title": "Prater evening access",
+    "description": "Closest stops for a Prater and Ferris wheel visit",
+    "tools": ["station_search", "nearby_stops", "next_departures"],
+    "steps": [
+      "Resolve Praterstern via station_search",
+      "List nearby stops for the park entrances",
+      "Check next_departures for the trip home"
+    ]
+  },
+  {
+    "title": "Address-based stop query",
+    "description": "User gives a street address instead of coordinates",
+    "tools": ["station_search", "nearby_stops"],
+    "steps": [
+      "Anchor the nearest landmark via station_search",
+      "Request coordinates for precision",
+      "Call nearby_stops once coordinates arrive"
+    ]
+  },
+  {
+    "title": "Radius choice explained",
+    "description": "User asks why only three stops were returned",
+    "tools": ["nearby_stops"],
+    "steps": [
+      "State the radius used in the previous call",
+      "Re-run nearby_stops with a wider radius",
+      "Compare both result sets transparently"
+    ]
+  },
+  {
+    "title": "Coordinates outside the city",
+    "description": "Edge case: GPS point falls outside the active city",
+    "tools": ["nearby_stops", "list_cities"],
+    "steps": [
+      "Report that no stops fall inside the radius",
+      "State the active city explicitly",
+      "Offer list_cities and switch_to_city paths"
+    ]
+  },
+  {
+    "title": "Interchange walk planning",
+    "description": "Walking between nearby bays at a big interchange",
+    "tools": ["nearby_stops", "station_search"],
+    "steps": [
+      "List nearby bays with distances",
+      "Confirm RBL codes for each bay",
+      "Advise the 5 to 10 minute transfer buffer"
+    ]
+  },
+  {
+    "title": "Stephansplatz quick glance",
+    "description": "Three next departures at the cathedral interchange",
+    "tools": ["next_departures"],
+    "steps": [
+      "Call next_departures Stephansplatz with max_results 3",
+      "Report line, destination, and countdown per row",
+      "Name the matched station and RBL code"
+    ]
+  },
+  {
+    "title": "Westbahnhof wide board",
+    "description": "Eight departures at a major rail station",
+    "tools": ["next_departures"],
+    "steps": [
+      "Call next_departures Westbahnhof with max_results 8",
+      "Group by U3, U6, and tram rows",
+      "Highlight delays where delay_minutes is set"
+    ]
+  },
+  {
+    "title": "Karlsplatz U4 line filter",
+    "description": "Only U4 departures at a multi-line interchange",
+    "tools": ["station_search", "next_departures"],
+    "steps": [
+      "Resolve Karlsplatz and its RBL",
+      "Over-fetch with max_results 10",
+      "Present only U4 rows toward Huetteldorf and Heiligenstadt"
+    ]
+  },
+  {
+    "title": "Hauptbahnhof connection guard",
+    "description": "Live board before a long-distance train connection",
+    "tools": ["next_departures", "traffic_alerts"],
+    "steps": [
+      "Call next_departures Hauptbahnhof with max_results 8",
+      "Cross-check traffic_alerts for the U1 corridor",
+      "Advise when to leave for the connection"
+    ]
+  },
+  {
+    "title": "Night N-line board",
+    "description": "Late-night departures filtered to nightbus lines",
+    "tools": ["next_departures", "stop_timetable"],
+    "steps": [
+      "Call next_departures with max_results 10 for coverage",
+      "Filter to nightbus vehicle_type rows",
+      "Confirm the night boundary with stop_timetable"
+    ]
+  },
+  {
+    "title": "Check Airport Departures",
+    "description": "Find next trains from Vienna Airport to city center",
+    "tools": ["station_search", "next_departures", "journey_planner"],
+    "steps": [
+      "Resolve Flughafen Wien Bahnhof via station_search",
+      "Check next departures to city center",
+      "Plan complete journey with transfers"
+    ]
+  },
+  {
+    "title": "Floridsdorf commute start",
+    "description": "Morning departures at the northern U6 terminus",
+    "tools": ["next_departures", "line_status"],
+    "steps": [
+      "Call next_departures Floridsdorf with max_results 5",
+      "Check line_status U6 in the same turn",
+      "Report board plus any U6 caveat"
+    ]
+  },
+  {
+    "title": "Max results bound respected",
+    "description": "User asks for 20 departures; clamp to the 1 to 10 range",
+    "tools": ["next_departures"],
+    "steps": [
+      "Clamp max_results to 10 with a one-line note",
+      "Call next_departures with the clamped value",
+      "Offer a timetable follow-up for deeper horizons"
+    ]
+  },
+  {
+    "title": "Is U1 running normally",
+    "description": "Check metro line status",
+    "tools": ["line_status", "traffic_alerts"],
+    "steps": [
+      "Call line_status U1",
+      "Call traffic_alerts for the narrative record",
+      "Fuse into affected section plus workaround offer"
+    ]
+  },
+  {
+    "title": "Weekend U4 works",
+    "description": "Planned construction closure on the green line",
+    "tools": ["line_status", "traffic_alerts", "journey_planner"],
+    "steps": [
+      "Call line_status U4 and traffic_alerts together",
+      "State the closed section and published reason",
+      "Offer a journey_planner reroute around the closure"
+    ]
+  },
+  {
+    "title": "Elevator outage notice",
+    "description": "Step-free access check at Karlsplatz before traveling",
+    "tools": ["line_status", "traffic_alerts"],
+    "steps": [
+      "Check line_status for elevator scope",
+      "Check traffic_alerts for newsList outage notices",
+      "Relay scope and suggest an accessible alternative"
+    ]
+  },
+  {
+    "title": "Check Service Disruptions",
+    "description": "Monitor transit service status and delays",
+    "tools": ["line_status", "traffic_alerts"],
+    "steps": [
+      "Check overall service status",
+      "Identify affected lines",
+      "Find alternative routes"
+    ]
+  },
+  {
+    "title": "Event-day detours",
+    "description": "Marathon or stadium event reshapes city center service",
+    "tools": ["traffic_alerts", "journey_planner"],
+    "steps": [
+      "Read event notices from traffic_alerts",
+      "Name detoured lines and sections",
+      "Plan around the event with journey_planner"
+    ]
+  },
+  {
+    "title": "Airport corridor reliability",
+    "description": "Disruption check before an airport itinerary",
+    "tools": ["traffic_alerts", "line_status"],
+    "steps": [
+      "Scan traffic_alerts for the S-Bahn corridor",
+      "Confirm with line_status for the relevant lines",
+      "Attach the verdict to the journey plan"
+    ]
+  },
+  {
+    "title": "Strike rumor verification",
+    "description": "User heard about a strike; verify against published feeds",
+    "tools": ["traffic_alerts", "line_status", "server_status"],
+    "steps": [
+      "Check traffic_alerts and newsList for official notices",
+      "Confirm per-line state with line_status",
+      "Distinguish published fact from rumor explicitly"
+    ]
+  },
+  {
+    "title": "No alerts published",
+    "description": "Quiet network; phrase the negative result honestly",
+    "tools": ["traffic_alerts", "line_status"],
+    "steps": [
+      "Confirm empty alerts plus normal line states",
+      "Say no alerts currently published, not guaranteed perfect",
+      "Proceed with the travel answer"
+    ]
+  },
+  {
+    "title": "U1 verdict standalone",
+    "description": "Quick per-line status for the red line",
+    "tools": ["line_status"],
+    "steps": [
+      "Call line_status U1",
+      "Report state in one line",
+      "Offer alerts detail on request"
+    ]
+  },
+  {
+    "title": "U6 end-to-end check",
+    "description": "Brown line Floridsdorf to Siebenhirten status",
+    "tools": ["line_status", "traffic_alerts"],
+    "steps": [
+      "Call line_status U6",
+      "Scan traffic_alerts for U6 records",
+      "Report verdict plus any section note"
+    ]
+  },
+  {
+    "title": "Tram D corridor status",
+    "description": "Ring tram status before a Ring sightseeing loop",
+    "tools": ["line_status", "routes"],
+    "steps": [
+      "Call line_status D",
+      "Confirm the corridor from routes info",
+      "Suggest the loop or an alternative"
+    ]
+  },
+  {
+    "title": "Night bus N60 status",
+    "description": "Late-trip check on a specific night line",
+    "tools": ["line_status", "stop_timetable"],
+    "steps": [
+      "Call line_status N60",
+      "Confirm night frequency via stop_timetable",
+      "Advise the boarding time and fallback"
+    ]
+  },
+  {
+    "title": "Full network morning briefing",
+    "description": "Commuter wants every line summarized at a glance",
+    "tools": ["line_status", "traffic_alerts"],
+    "steps": [
+      "Call line_status with no arguments",
+      "Add traffic_alerts headlines",
+      "Flag only the lines needing attention"
+    ]
+  },
+  {
+    "title": "Elevator status via line query",
+    "description": "Accessibility check routed through status tooling",
+    "tools": ["line_status", "traffic_alerts"],
+    "steps": [
+      "Try line_status for elevator scope",
+      "Fall back to traffic_alerts news wording",
+      "Recommend a step-free interchange"
+    ]
+  },
+  {
+    "title": "Post-alert confirmation",
+    "description": "Re-check a line after works were supposed to end",
+    "tools": ["line_status", "traffic_alerts"],
+    "steps": [
+      "Call line_status for the current verdict",
+      "Verify the works notice is gone from alerts",
+      "Confirm normal service or extended works"
+    ]
+  },
+  {
+    "title": "Event night at Huetteldorf",
+    "description": "Stadium traffic on the U4 west corridor",
+    "tools": ["line_status", "traffic_alerts", "next_departures"],
+    "steps": [
+      "Check U4 status and event notices",
+      "Check live Huetteldorf departures",
+      "Advise early arrival and extra buffer"
+    ]
+  },
+  {
+    "title": "Sunday first U1 from Leopoldau",
+    "description": "First-service lookup on a Sunday morning",
+    "tools": ["stop_timetable"],
+    "steps": [
+      "Call stop_timetable for Leopoldau with U1 scope",
+      "Quote the first Sunday departure as scheduled",
+      "Offer live confirmation on the day via next_departures"
+    ]
+  },
+  {
+    "title": "Tram D evening frequency",
+    "description": "How often the D runs at the stop in the evening",
+    "tools": ["stop_timetable"],
+    "steps": [
+      "Call stop_timetable with D line scope",
+      "Summarize evening headways as scheduled",
+      "Note weekend differences where published"
+    ]
+  },
+  {
+    "title": "Last train from Heiligenstadt",
+    "description": "Last-service lookup for the trip home",
+    "tools": ["stop_timetable", "next_departures"],
+    "steps": [
+      "Call stop_timetable for the last U4 service",
+      "Confirm live with next_departures near the time",
+      "Warn about the night gap after 00:30"
+    ]
+  },
+  {
+    "title": "N66 night boundary check",
+    "description": "Does the N66 serve the stop after 00:30",
+    "tools": ["stop_timetable"],
+    "steps": [
+      "Call stop_timetable with night scope",
+      "State the regular-to-night boundary explicitly",
+      "Quote N66 times as scheduled"
+    ]
+  },
+  {
+    "title": "Early flight S-Bahn options",
+    "description": "First airport-corridor services for a 6am flight",
+    "tools": ["stop_timetable", "journey_planner"],
+    "steps": [
+      "Check first S-Bahn times via stop_timetable",
+      "Build the full itinerary with journey_planner",
+      "Recommend the service with check-in buffer"
+    ]
+  },
+  {
+    "title": "Holiday schedule question",
+    "description": "Public holiday frequencies differ from weekdays",
+    "tools": ["stop_timetable", "traffic_alerts"],
+    "steps": [
+      "Call stop_timetable for the holiday scope",
+      "Check traffic_alerts for holiday notices",
+      "Never quote weekday memory for holidays"
+    ]
+  },
+  {
+    "title": "Night gap explanation",
+    "description": "User asks why nothing runs at 3am on a weekday",
+    "tools": ["stop_timetable", "routes"],
+    "steps": [
+      "Explain the 00:30 to 05:00 limited night network",
+      "List applicable N-lines from routes info",
+      "Show the next N departure via timetable"
+    ]
+  },
+  {
+    "title": "Live versus scheduled labeling",
+    "description": "Teach the difference using one stop as example",
+    "tools": ["stop_timetable", "next_departures"],
+    "steps": [
+      "Pull stop_timetable scheduled rows",
+      "Pull next_departures live rows",
+      "Label each side and explain delay_minutes"
+    ]
+  },
+  {
+    "title": "Plan City Center Route",
+    "description": "Navigate between major Vienna attractions",
+    "tools": ["station_search", "journey_planner"],
+    "steps": [
+      "Locate Stephansdom station",
+      "Find Karlsplatz interchange",
+      "Plan walking route between nearby stops"
+    ]
+  },
+  {
+    "title": "Westbahnhof to Stephansplatz",
+    "description": "Classic west-to-center tourist hop",
+    "tools": ["station_search", "journey_planner", "next_departures"],
+    "steps": [
+      "Resolve both stations with station_search",
+      "Call journey_planner and render legs",
+      "Confirm live boarding with next_departures"
+    ]
+  },
+  {
+    "title": "Hauptbahnhof to airport",
+    "description": "Main station to Flughafen Wien Bahnhof with reliability check",
+    "tools": ["journey_planner", "traffic_alerts", "line_status"],
+    "steps": [
+      "Resolve Hauptbahnhof and Flughafen Wien Bahnhof",
+      "Plan the S-Bahn corridor itinerary",
+      "Attach the disruption verdict and buffer advice"
+    ]
+  },
+  {
+    "title": "Schoenbrunn to Praterstern",
+    "description": "Multi-transfer palace-to-Prater sightseeing day",
+    "tools": ["station_search", "journey_planner"],
+    "steps": [
+      "Resolve the Schoenbrunn area stop and Praterstern",
+      "Call journey_planner for the cross-city route",
+      "Render each leg with transfer stations named"
+    ]
+  },
+  {
+    "title": "Floridsdorf to Siebenhirten direct",
+    "description": "Fewest-transfer request satisfied by the U6 straight through",
+    "tools": ["journey_planner", "next_departures"],
+    "steps": [
+      "Call journey_planner with fewest-transfer preference",
+      "Present the direct U6 brown line ride",
+      "Add the live Floridsdorf countdown"
+    ]
+  },
+  {
+    "title": "Ottakring to Simmering direct",
+    "description": "Orange line end to end on the U3",
+    "tools": ["journey_planner"],
+    "steps": [
+      "Resolve Ottakring and Simmering",
+      "Present the direct U3 itinerary",
+      "Note no transfer is required"
+    ]
+  },
+  {
+    "title": "Night Travel Planning",
+    "description": "Plan travel during night hours with limited service",
+    "tools": ["station_search", "stop_timetable", "journey_planner", "next_departures"],
+    "steps": [
+      "Check night service availability",
+      "Find operating lines and schedules",
+      "Plan route with night buses and trams"
+    ]
+  },
+  {
+    "title": "Karlsplatz to Grinzing connection",
+    "description": "U4 north plus connecting tram or bus leg",
+    "tools": ["journey_planner", "station_search"],
+    "steps": [
+      "Resolve Karlsplatz and the Grinzing area stop",
+      "Plan U4 to Heiligenstadt plus connection",
+      "Name the transfer point and buffer"
+    ]
+  },
+  {
+    "title": "Planner failure partial answer",
+    "description": "Edge case: route cannot compute, still help the user",
+    "tools": ["journey_planner", "station_search", "traffic_alerts", "next_departures"],
+    "steps": [
+      "Verify both endpoints independently",
+      "Check alerts for a severed corridor",
+      "Give origin departures plus corridor guidance labeled partial"
+    ]
+  },
+  {
+    "title": "Where does the U2 go",
+    "description": "Purple line corridor from Karlsplatz to Seestadt",
+    "tools": ["routes"],
+    "steps": [
+      "Read the U2 corridor from routes info",
+      "Confirm current termini",
+      "Offer a journey using the U2"
+    ]
+  },
+  {
+    "title": "Tram D corridor guide",
+    "description": "Nussdorfer Strasse to Oper sightseeing corridor",
+    "tools": ["routes"],
+    "steps": [
+      "Describe the D corridor stops",
+      "Highlight Ring and opera quarter access",
+      "Offer live D departures on request"
+    ]
+  },
+  {
+    "title": "Night lines catalog",
+    "description": "Full N-prefix night bus list for late planning",
+    "tools": ["routes", "stop_timetable"],
+    "steps": [
+      "List N-lines from routes info",
+      "Explain the 00:30 to 05:00 window",
+      "Check a specific N-line timetable on request"
+    ]
+  },
+  {
+    "title": "A-buses versus N-buses",
+    "description": "Explain city bus numbering logic to a newcomer",
+    "tools": ["routes", "help"],
+    "steps": [
+      "Explain A-suffix daytime city buses like 13A",
+      "Explain N-prefix night buses like N60",
+      "Show live examples for each"
+    ]
+  },
+  {
+    "title": "S-Bahn airport connections",
+    "description": "How the airport rail corridor works",
+    "tools": ["routes", "journey_planner"],
+    "steps": [
+      "Explain the corridor from routes info",
+      "Name Flughafen Wien Bahnhof as the rail stop",
+      "Plan the user trip with journey_planner"
+    ]
+  },
+  {
+    "title": "No U5 explanation",
+    "description": "User asks for U5; explain and reroute",
+    "tools": ["routes", "journey_planner"],
+    "steps": [
+      "State there is no U5 in regular service",
+      "Name the operating lines covering the corridor",
+      "Plan with journey_planner on real lines"
+    ]
+  },
+  {
+    "title": "Interchange master guide",
+    "description": "Karlsplatz, Stephansplatz, Praterstern roles compared",
+    "tools": ["routes", "station_search"],
+    "steps": [
+      "Summarize each interchange from routes info",
+      "Confirm RBL bays via station_search",
+      "Recommend the interchange per trip type"
+    ]
+  },
+  {
+    "title": "Fares reference pointer",
+    "description": "User asks about tickets; point to reference, not memory",
+    "tools": ["routes", "help"],
+    "steps": [
+      "Point to fares reference and help topics",
+      "Decline to quote prices from memory",
+      "Return to trip planning help"
+    ]
   }
-}
-
-
-
-
+]
