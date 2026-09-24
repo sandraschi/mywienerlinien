@@ -1,8 +1,10 @@
 """MCP tool for getting detailed information about transit routes."""
 
 import logging
+from typing import Annotated
 
 from fastmcp import FastMCP
+from fastmcp.tools.tool import ToolAnnotations
 from pydantic import BaseModel, Field
 
 try:
@@ -51,18 +53,24 @@ class RouteInfoResponse(BaseModel):
 def register_routes_tool(mcp: FastMCP) -> None:
     """Register the get_route_info tool with the MCP server."""
 
-    @mcp.tool()
-    async def get_route_info(line: str) -> RouteInfoResponse:
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
+    async def get_route_info(
+        line: Annotated[str, Field(description="Route/line identifier (e.g. U4, 5, 68A). Case-insensitive, fuzzy match on miss.")],
+    ) -> RouteInfoResponse:
         """Get detailed information about a specific transit route/line.
 
         Retrieves the full list of stops, vehicle type, route colors, and
         service span (first/last service) for a given line.
 
-        Args:
-            line: Route/line identifier (e.g., "U4", "5", "68A")
+        ## Return Format
+        {"line": str, "name": str, "type": "Metro|Tram|Bus|Rail|Other", "color": str, "text_color": str, "stops": [{"name": str, "latitude": float, "longitude": float, "zone": str | None, "directions": list[str]}], "total_stops": int, "schedule": {"first_departure": str, "last_arrival": str, "total_trips": int}}
 
-        Returns:
-            RouteInfoResponse with detailed route information
+        ## Examples
+        get_route_info(line="U4")
+        get_route_info(line="D")
+        get_route_info(line="13A")
         """
         try:
             line_upper = line.upper().strip()

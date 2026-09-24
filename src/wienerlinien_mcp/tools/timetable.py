@@ -3,8 +3,10 @@
 import csv
 from datetime import datetime
 from pathlib import Path
+from typing import Annotated
 
 from fastmcp import FastMCP
+from fastmcp.tools.tool import ToolAnnotations
 from pydantic import BaseModel, Field
 
 
@@ -290,12 +292,14 @@ def _generate_html_timetable(response: "StopTimetableResponse") -> str:
 def register_stop_timetable_tool(mcp: FastMCP) -> None:
     """Register the stop_timetable tool with the MCP server."""
 
-    @mcp.tool()
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
     async def stop_timetable(
-        stop: str,
-        line: str | None = None,
-        day_type: str = "weekday",
-        include_html: bool = True,
+        stop: Annotated[str, Field(description="Stop name with fuzzy matching. Examples: Karlsplatz, Stephansplatz.")],
+        line: Annotated[str | None, Field(description="Line filter (e.g. U4, 13A). Omit for all lines.")] = None,
+        day_type: Annotated[str, Field(description="Schedule type: weekday, saturday, sunday. Invalid values fall back to weekday.")] = "weekday",
+        include_html: Annotated[bool, Field(description="Include HTML formatted timetable for display.")] = True,
     ) -> StopTimetableResponse:
         """Get the full daily timetable for a stop.
 
@@ -303,26 +307,13 @@ def register_stop_timetable_tool(mcp: FastMCP) -> None:
         Useful for understanding service patterns, first/last trains, and
         frequency at different times.
 
-        Args:
-            stop: Stop name to get timetable for (fuzzy matching supported)
-            line: Optional line filter (e.g., "U4", "13A"). Default shows all lines.
-            day_type: Schedule type - "weekday", "saturday", or "sunday"
-            include_html: Include HTML formatted timetable for display (default True)
+        ## Return Format
+        {"stop_name": str, "stop_id": str, "line_filter": str | None, "day_type": "weekday|saturday|sunday", "service_date": str, "hours": [{"hour": int, "hour_label": str, "departures": [{"time": str, "line": str, "direction": str, "trip_id": str}], "count": int}], "total_departures": int, "first_departure": str | None, "last_departure": str | None, "lines_serving": list[str], "html": str | None}
 
-        Returns:
-            StopTimetableResponse containing:
-                - stop_name: Resolved stop name
-                - day_type: Schedule type used
-                - hours: Departures grouped by hour (0-23)
-                - total_departures: Total count
-                - first_departure/last_departure: Service span
-                - lines_serving: All lines at this stop
-                - html: Formatted HTML timetable (if include_html=True)
-
-        Example:
-            >>> timetable = await stop_timetable("Karlsplatz", line="U4")
-            >>> print(f"U4 at Karlsplatz: {timetable.total_departures} departures")
-            >>> print(f"First: {timetable.first_departure}, Last: {timetable.last_departure}")
+        ## Examples
+        stop_timetable(stop="Karlsplatz")
+        stop_timetable(stop="Karlsplatz", line="U4")
+        stop_timetable(stop="Karlsplatz", line="U4", day_type="sunday", include_html=False)
         """
         try:
             from database import db
@@ -499,22 +490,24 @@ def register_stop_timetable_tool(mcp: FastMCP) -> None:
 
         return response
 
-    @mcp.tool()
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
     async def get_timetable(
-        station: str,
-        line: str | None = None,
-        day_type: str = "weekday",
+        station: Annotated[str, Field(description="Station name with fuzzy matching. Examples: Karlsplatz, Stephansplatz.")],
+        line: Annotated[str | None, Field(description="Line filter (e.g. U4, 5, 68A). Omit for all lines.")] = None,
+        day_type: Annotated[str, Field(description="Schedule type: weekday, saturday, sunday.")] = "weekday",
     ) -> StopTimetableResponse:
         """Get scheduled timetable for a station.
 
-        Alias for stop_timetable to maintain compatibility with legacy clients.
+        Legacy-compatible alias for stop_timetable with HTML output included.
+        Delegates to stop_timetable using the station name as the stop.
 
-        Args:
-            station: Station name (supports German/English, partial matching)
-            line: Optional line filter (e.g., "U4", "5", "68A")
-            day_type: Schedule type - "weekday", "saturday", or "sunday"
+        ## Return Format
+        {"stop_name": str, "stop_id": str, "line_filter": str | None, "day_type": "weekday|saturday|sunday", "service_date": str, "hours": [{"hour": int, "hour_label": str, "departures": [{"time": str, "line": str, "direction": str, "trip_id": str}], "count": int}], "total_departures": int, "first_departure": str | None, "last_departure": str | None, "lines_serving": list[str], "html": str | None}
 
-        Returns:
-            StopTimetableResponse with detailed timetable information
+        ## Examples
+        get_timetable(station="Karlsplatz")
+        get_timetable(station="Karlsplatz", line="U4", day_type="sunday")
         """
         return await stop_timetable(stop=station, line=line, day_type=day_type)

@@ -1,8 +1,11 @@
 """MCP tool for checking service status and disruptions."""
 
 import logging
+from typing import Annotated
 
 from fastmcp import FastMCP
+from fastmcp.tools.tool import ToolAnnotations
+from pydantic import Field
 
 try:
     from ...disruption_alerts import disruption_monitor
@@ -30,51 +33,26 @@ def register_status_tool(mcp: FastMCP) -> None:
         mcp: FastMCP server instance to register the tool with
     """
 
-    @mcp.tool()
-    async def line_status(line_name: str | None = None) -> LineStatusResponse:
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
+    async def line_status(
+        line_name: Annotated[str | None, Field(description="Line filter (e.g. U1, D, 13A, N25). Omit for system-wide status.")] = None,
+    ) -> LineStatusResponse:
         """Check Vienna transit service status and disruptions.
 
         Retrieves current service status for Vienna's public transport network.
         Can check system-wide status or filter by a specific line. Returns
         information about disruptions, delays, service changes, and affected
-        stations.
+        stations. With no active disruptions, returns an operational status.
 
-        If no disruptions are active, returns an "operational" status indicating
-        normal service. When disruptions exist, provides detailed information
-        including severity, affected stations, and expected duration.
+        ## Return Format
+        {"line_filter": str | None, "statuses": [{"line": str | None, "status": "operational|disrupted|delayed", "severity": "low|medium|high", "title": str, "description": str, "affected_stations": list[str], "start_time": datetime | None, "end_time": datetime | None}], "timestamp": datetime}
 
-        Args:
-            line_name (str, optional): Line name filter. If provided, returns status
-                only for that line. Examples: "U1" (metro), "D" (tram), "13A" (bus),
-                "N25" (night bus). If None or not provided, returns system-wide
-                status for all lines.
-
-        Returns:
-            LineStatusResponse: Response containing:
-                - line_filter (str, optional): The line name filter used (None if
-                    system-wide)
-                - statuses (List[ServiceStatus]): List of ServiceStatus objects with:
-                    * line (str, optional): Line name (None for system-wide status)
-                    * status (str): Current status (operational, disrupted, delayed)
-                    * severity (str): Severity level (low, medium, high)
-                    * title (str): Brief status title
-                    * description (str): Detailed description of the status
-                    * affected_stations (List[str]): List of affected station names
-                    * start_time (datetime, optional): When the disruption started
-                    * end_time (datetime, optional): Expected resolution time
-                - timestamp (datetime): Response generation timestamp
-
-        Raises:
-            RuntimeError: If status cannot be retrieved or processed.
-
-        Example:
-            >>> # Check system-wide status
-            >>> status = await line_status()
-            >>> print(f"System status: {status.statuses[0].status}")
-
-            >>> # Check specific line
-            >>> u1_status = await line_status("U1")
-            >>> print(f"U1 status: {u1_status.statuses[0].title}")
+        ## Examples
+        line_status()
+        line_status(line_name="U1")
+        line_status(line_name="D")
         """
         try:
             # Get disruptions from monitor
@@ -122,23 +100,28 @@ def register_status_tool(mcp: FastMCP) -> None:
             logger.error(f"Error fetching line status: {e}", exc_info=True)
             raise RuntimeError(f"Failed to fetch line status: {e!s}") from e
 
-    @mcp.tool()
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
     async def get_disruptions(
-        line: str | None = None,
-        station: str | None = None,
-        severity: str | None = None,
-        max_results: int = 10,
+        line: Annotated[str | None, Field(description="Line filter (e.g. U4). Omit for all lines.")] = None,
+        station: Annotated[str | None, Field(description="Station filter (e.g. Karlsplatz). Omit for all stations.")] = None,
+        severity: Annotated[str | None, Field(description="Severity filter: low, medium, high, critical. Omit for all severities.")] = None,
+        max_results: Annotated[int, Field(description="Maximum disruptions to return.", ge=1, le=50)] = 10,
     ) -> LineStatusResponse:
         """Get current service disruptions with advanced filtering.
 
-        Args:
-            line: Optional line filter (e.g., "U4")
-            station: Optional station filter (e.g., "Karlsplatz")
-            severity: Optional severity filter (low, medium, high, critical)
-            max_results: Maximum disruptions to return (default: 10)
+        Filters active disruptions by line, station, and severity, capped
+        at max_results. Line filter takes precedence over station filter;
+        with neither, returns system-wide disruptions.
 
-        Returns:
-            LineStatusResponse with filtered disruptions
+        ## Return Format
+        {"line_filter": str, "statuses": [{"line": str | None, "status": str, "severity": "low|medium|high|critical", "title": str, "description": str, "affected_stations": list[str], "start_time": datetime | None, "end_time": datetime | None}], "timestamp": datetime}
+
+        ## Examples
+        get_disruptions()
+        get_disruptions(line="U4")
+        get_disruptions(severity="high", max_results=5)
         """
         try:
             # Get disruptions from monitor
@@ -176,11 +159,19 @@ def register_status_tool(mcp: FastMCP) -> None:
             logger.error(f"Error in get_disruptions: {e}", exc_info=True)
             raise RuntimeError(f"Failed to fetch disruptions: {e!s}") from e
 
-    @mcp.tool()
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
     async def get_service_status() -> LineStatusResponse:
         """Get system-wide service status summary.
 
-        Returns:
-            Overview of current service status across the entire network.
+        Returns an overview of current service status across the entire
+        network by delegating to line_status with no filter.
+
+        ## Return Format
+        {"line_filter": str | None, "statuses": [{"line": str | None, "status": "operational|disrupted|delayed", "severity": "low|medium|high", "title": str, "description": str, "affected_stations": list[str], "start_time": datetime | None, "end_time": datetime | None}], "timestamp": datetime}
+
+        ## Examples
+        get_service_status()
         """
         return await line_status()

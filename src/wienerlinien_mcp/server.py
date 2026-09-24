@@ -43,6 +43,7 @@ except Exception as e:
 from wienerlinien_mcp.prompts import register_prompts
 from wienerlinien_mcp.resources import register_resources
 from wienerlinien_mcp.tools.alerts import register_traffic_alerts_tool
+from wienerlinien_mcp.tools.cards import register_cards
 from wienerlinien_mcp.tools.cities import register_cities_tools
 from wienerlinien_mcp.tools.departures import register_departures_tool
 from wienerlinien_mcp.tools.help import register_help_tool
@@ -50,6 +51,7 @@ from wienerlinien_mcp.tools.journey import register_journey_tool
 from wienerlinien_mcp.tools.nearby import register_nearby_stops_tool
 from wienerlinien_mcp.tools.routes import register_routes_tool
 from wienerlinien_mcp.tools.server_status import register_server_status_tool
+from wienerlinien_mcp.tools.shutdown import register_shutdown_tool
 from wienerlinien_mcp.tools.stations import register_station_search_tool
 from wienerlinien_mcp.tools.status import register_status_tool
 from wienerlinien_mcp.tools.timetable import register_stop_timetable_tool
@@ -82,6 +84,8 @@ _resource_refs = register_resources(mcp)
 # Register tools - Essential
 register_help_tool(mcp)
 register_server_status_tool(mcp)
+register_shutdown_tool(mcp)
+register_cards(mcp)
 
 # Register tools - Multi-City Management (Phase 6)
 register_cities_tools(mcp)

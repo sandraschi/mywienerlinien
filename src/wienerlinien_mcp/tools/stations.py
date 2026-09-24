@@ -1,8 +1,11 @@
 """MCP tool for searching stations."""
 
 import logging
+from typing import Annotated
 
 from fastmcp import FastMCP
+from fastmcp.tools.tool import ToolAnnotations
+from pydantic import Field
 
 try:
     from ...data_loader import data_loader
@@ -30,46 +33,28 @@ def register_station_search_tool(mcp: FastMCP) -> None:
         mcp: FastMCP server instance to register the tool with
     """
 
-    @mcp.tool()
-    async def station_search(query: str, limit: int = 10) -> StationSearchResponse:
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
+    async def station_search(
+        query: Annotated[str, Field(description="Search query: full name, partial name, or abbreviation. Examples: Stephans, Hauptbahnhof, HBF. Case-insensitive.")],
+        limit: Annotated[int, Field(description="Maximum results to return, 1-20.", ge=1, le=20)] = 10,
+    ) -> StationSearchResponse:
         """Find Vienna transit stations by name or location.
 
         Searches Vienna's public transport network for stations matching the
         query string. Supports partial matching, so users can search with
         incomplete station names. Results are prioritized by exact matches
-        first, then partial matches.
+        first, then partial matches. Case-insensitive, works with German
+        and English names plus common abbreviations.
 
-        The search is case-insensitive and works with both German and English
-        station names. Common abbreviations are also supported (e.g., "HBF"
-        for "Hauptbahnhof").
+        ## Return Format
+        {"query": str, "results": [{"name": str, "rbl": str | None, "type": "metro|tram|bus", "zone": str | None, "lat": float | None, "lng": float | None}], "count": int}
 
-        Args:
-            query (str): Search query string. Can be a full station name, partial
-                name, or abbreviation. Examples: "Stephans", "Hauptbahnhof",
-                "Schweden", "HBF", "Stephansplatz".
-            limit (int): Maximum number of results to return. Must be between 1
-                and 20. Default is 10. Higher limits provide more options but
-                may include less relevant matches.
-
-        Returns:
-            StationSearchResponse: Response containing:
-                - query (str): The original search query
-                - results (List[Station]): List of Station objects with:
-                    * name (str): Full station name
-                    * rbl (str, optional): RBL code (Vienna-specific station identifier)
-                    * type (str): Station type (metro, tram, bus)
-                    * zone (str, optional): Fare zone (typically "100" for most of Vienna)
-                    * lat (float, optional): Latitude coordinate
-                    * lng (float, optional): Longitude coordinate
-                - count (int): Number of results returned
-
-        Raises:
-            RuntimeError: If search fails or data cannot be loaded.
-
-        Example:
-            >>> result = await station_search("Stephans", limit=5)
-            >>> print(f"Found {result.count} stations matching '{result.query}'")
-            Found 2 stations matching 'Stephans'
+        ## Examples
+        station_search(query="Stephans")
+        station_search(query="Hauptbahnhof", limit=5)
+        station_search(query="HBF")
         """
         try:
             # Validate limit
