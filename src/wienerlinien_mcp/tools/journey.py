@@ -7,11 +7,12 @@ from datetime import datetime
 from typing import Annotated
 
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import Field
 
 try:
-    from ...database import db
+    from database import db
+
     from ..models.journey import JourneyPlan, JourneySegment
     from ..routing_service import JourneyPlanner
     from ..utils import find_station_by_name
@@ -76,13 +77,18 @@ def register_journey_tool(mcp: FastMCP) -> None:
         mcp: FastMCP server instance to register the tool with
     """
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def journey_planner(
-        from_station: Annotated[str, Field(description="Origin station name, full or partial. Examples: Stephansplatz, Hauptbahnhof, Stephans.")],
-        to_station: Annotated[str, Field(description="Destination station name, full or partial. Examples: Praterstern, Karlsplatz.")],
-        departure_time: Annotated[str | None, Field(description="Departure time in ISO 8601 (e.g. 2025-01-15T14:30:00Z). Omit for now.")] = None,
+        from_station: Annotated[
+            str,
+            Field(description="Origin station name, full or partial. Examples: Stephansplatz, Hauptbahnhof, Stephans."),
+        ],
+        to_station: Annotated[
+            str, Field(description="Destination station name, full or partial. Examples: Praterstern, Karlsplatz.")
+        ],
+        departure_time: Annotated[
+            str | None, Field(description="Departure time in ISO 8601 (e.g. 2025-01-15T14:30:00Z). Omit for now.")
+        ] = None,
     ) -> JourneyPlan:
         """Plan optimal journey between Vienna stations.
 
@@ -120,9 +126,7 @@ def register_journey_tool(mcp: FastMCP) -> None:
 
             # Use GTFS-based routing service (graph is keyed by GTFS stop_id)
             planner = get_journey_planner()
-            route_options = planner.plan_journey(
-                _resolve_stop_id(from_info), _resolve_stop_id(to_info), dep_time
-            )
+            route_options = planner.plan_journey(_resolve_stop_id(from_info), _resolve_stop_id(to_info), dep_time)
 
             if not route_options:
                 # Fallback if no routes found

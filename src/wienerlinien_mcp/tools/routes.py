@@ -4,16 +4,18 @@ import logging
 from typing import Annotated
 
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import BaseModel, Field
 
 try:
-    from ..database import db
+    from database import db
 except ImportError:
     import sys
     from pathlib import Path
 
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent / "frontend"))
+    sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
     from database import db
 
 logger = logging.getLogger(__name__)
@@ -53,11 +55,11 @@ class RouteInfoResponse(BaseModel):
 def register_routes_tool(mcp: FastMCP) -> None:
     """Register the get_route_info tool with the MCP server."""
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def get_route_info(
-        line: Annotated[str, Field(description="Route/line identifier (e.g. U4, 5, 68A). Case-insensitive, fuzzy match on miss.")],
+        line: Annotated[
+            str, Field(description="Route/line identifier (e.g. U4, 5, 68A). Case-insensitive, fuzzy match on miss.")
+        ],
     ) -> RouteInfoResponse:
         """Get detailed information about a specific transit route/line.
 
@@ -91,11 +93,11 @@ def register_routes_tool(mcp: FastMCP) -> None:
                     r.route_color,
                     r.route_text_color
                 FROM routes r
-                WHERE UPPER(r.route_short_name) = ?
+                WHERE UPPER(r.route_short_name) = :line
             """
 
-            # Use ? for sqlite parameter placeholder (assuming sqlite based on db.py)
-            route_result = db.execute_query(route_query, (line_upper,))
+            # Postgres named parameters (db.execute_query uses sqlalchemy text())
+            route_result = db.execute_query(route_query, {"line": line_upper})
             if not route_result:
                 # Try partial match if exact match fails
                 route_query_fuzzy = """
@@ -105,10 +107,10 @@ def register_routes_tool(mcp: FastMCP) -> None:
                                 ELSE 'Other' END as vehicle_type,
                            r.route_color, r.route_text_color
                     FROM routes r
-                    WHERE UPPER(r.route_short_name) LIKE ?
+                    WHERE UPPER(r.route_short_name) LIKE :line
                     LIMIT 1
                 """
-                route_result = db.execute_query(route_query_fuzzy, (f"%{line_upper}%",))
+                route_result = db.execute_query(route_query_fuzzy, {"line": f"%{line_upper}%"})
 
             if not route_result:
                 raise ValueError(f"Route '{line}' not found")
@@ -124,17 +126,17 @@ def register_routes_tool(mcp: FastMCP) -> None:
                     s.stop_lat,
                     s.stop_lon,
                     s.zone_id,
-                    GROUP_CONCAT(DISTINCT t.trip_headsign) as directions_str
+                    STRING_AGG(DISTINCT t.trip_headsign, ',') as directions_str
                 FROM routes r
                 JOIN trips t ON r.route_id = t.route_id
                 JOIN stop_times st ON t.trip_id = st.trip_id
                 JOIN stops s ON st.stop_id = s.stop_id
-                WHERE r.route_short_name = ?
+                WHERE r.route_short_name = :line
                 GROUP BY s.stop_name
                 ORDER BY MIN(st.stop_sequence)
             """
 
-            stops_result = db.execute_query(stops_query, (canonical_line,))
+            stops_result = db.execute_query(stops_query, {"line": canonical_line})
 
             stops = []
             for row in stops_result:
@@ -158,10 +160,10 @@ def register_routes_tool(mcp: FastMCP) -> None:
                 FROM routes r
                 JOIN trips t ON r.route_id = t.route_id
                 JOIN stop_times st ON t.trip_id = st.trip_id
-                WHERE r.route_short_name = ?
+                WHERE r.route_short_name = :line
             """
 
-            schedule_result = db.execute_query(schedule_query, (canonical_line,))
+            schedule_result = db.execute_query(schedule_query, {"line": canonical_line})
             schedule_row = schedule_result[0] if schedule_result else {}
 
             return RouteInfoResponse(

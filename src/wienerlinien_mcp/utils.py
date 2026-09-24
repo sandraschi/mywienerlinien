@@ -1,7 +1,7 @@
 """Shared utilities for MCP server tools."""
 
 try:
-    from ..data_loader import data_loader
+    from data_loader import data_loader
 except ImportError:
     import sys
     from pathlib import Path

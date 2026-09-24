@@ -9,12 +9,13 @@ and accessing city-specific transit information.
 import logging
 from typing import Annotated, Any
 
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import BaseModel, Field
 
 try:
+    from database import db
+
     from ..city_manager import get_city_manager
-    from ..database import db
 except ImportError:
     import sys
     from pathlib import Path
@@ -25,6 +26,19 @@ except ImportError:
     from wienerlinien_mcp.city_manager import get_city_manager
 
 logger = logging.getLogger(__name__)
+
+
+def _isoformat_or_none(value) -> str | None:
+    """ISO-format a datetime, tolerating None and plain strings."""
+    if value is None:
+        return None
+    if isinstance(value, str):
+        return value
+    isoformat = getattr(value, "isoformat", None)
+    if callable(isoformat):
+        formatted = isoformat()
+        return formatted if isinstance(formatted, str) else str(formatted)
+    return str(value)
 
 
 class CityInfo(BaseModel):
@@ -69,27 +83,26 @@ async def list_available_cities() -> list[CityInfo]:
     """
     try:
         city_manager = get_city_manager(db)
-        cities_data = city_manager.list_cities()
+        cities_data = city_manager.get_available_cities()
 
         cities = []
-        for city_code, config in cities_data.items():
-            # Get additional info from database
-            city_info = city_manager.get_city_info(city_code)
-            if city_info:
-                cities.append(
-                    CityInfo(
-                        city_code=city_code,
-                        city_name=city_info.get("name", config.get("name", city_code.title())),
-                        country=city_info.get("country", config.get("country", "Unknown")),
-                        timezone=city_info.get("timezone", config.get("timezone", "Europe/Vienna")),
-                        language=city_info.get("language", config.get("language", "de")),
-                        enabled=city_info.get("enabled", True),
-                        data_loaded=city_info.get("data_loaded", False),
-                        map_center_lat=city_info.get("map_center_lat"),
-                        map_center_lng=city_info.get("map_center_lng"),
-                        map_zoom=city_info.get("map_zoom", 12),
-                    )
+        for entry in cities_data:
+            code = str(entry.get("code", ""))
+            center = entry.get("map_center") or {}
+            cities.append(
+                CityInfo(
+                    city_code=code,
+                    city_name=str(entry.get("name", code.title())),
+                    country=str(entry.get("country", "Unknown")),
+                    timezone=str(entry.get("timezone", "Europe/Vienna")),
+                    language=str(entry.get("language", "de")),
+                    enabled=True,
+                    data_loaded=bool(entry.get("data_loaded", False)),
+                    map_center_lat=center.get("lat"),
+                    map_center_lng=center.get("lng"),
+                    map_zoom=entry.get("map_zoom", 12),
                 )
+            )
 
         logger.info(f"Retrieved information for {len(cities)} cities")
         return cities
@@ -128,6 +141,8 @@ async def switch_city(city_code: str) -> dict[str, Any]:
 
         # Check if city data is loaded
         city_info = next((c for c in available_cities if c.city_code == city_code), None)
+        if city_info is None:
+            raise ValueError(f"City '{city_code}' not found.")
         if not city_info.data_loaded:
             logger.warning(f"City '{city_code}' data not loaded yet - limited functionality available")
 
@@ -198,9 +213,16 @@ async def get_city_statistics(city_code: str | None = None) -> CityStatistics:
         # For now, returns Vienna statistics since that's the only loaded city
 
         try:
-            stops_count = db.execute_query("SELECT COUNT(*) as count FROM stops", fetch_one=True)
-            routes_count = db.execute_query("SELECT COUNT(*) as count FROM routes", fetch_one=True)
-            trips_count = db.execute_query("SELECT COUNT(*) as count FROM trips", fetch_one=True)
+
+            def _one(sql: str) -> dict:
+                rows = db.execute_query(sql)
+                if isinstance(rows, dict):
+                    return rows
+                return rows[0] if rows else {}
+
+            stops_count = _one("SELECT COUNT(*) as count FROM stops")
+            routes_count = _one("SELECT COUNT(*) as count FROM routes")
+            trips_count = _one("SELECT COUNT(*) as count FROM trips")
 
             # Get active vehicles count (rough estimate from recent snapshots)
             vehicles_query = """
@@ -208,12 +230,10 @@ async def get_city_statistics(city_code: str | None = None) -> CityStatistics:
             FROM vehicle_snapshots
             WHERE timestamp > NOW() - INTERVAL '1 hour'
             """
-            vehicles_count = db.execute_query(vehicles_query, fetch_one=True)
+            vehicles_count = _one(vehicles_query)
 
             # Get last update timestamp
-            last_update = db.execute_query(
-                "SELECT MAX(timestamp) as last_update FROM vehicle_snapshots", fetch_one=True
-            )
+            last_update = _one("SELECT MAX(timestamp) as last_update FROM vehicle_snapshots")
 
         except Exception as db_error:
             logger.warning(f"Database query failed, using fallback values: {db_error}")
@@ -231,7 +251,7 @@ async def get_city_statistics(city_code: str | None = None) -> CityStatistics:
             total_routes=routes_count.get("count", 0),
             total_trips=trips_count.get("count", 0),
             active_vehicles=vehicles_count.get("count", 0),
-            last_updated=last_update.get("last_update").isoformat() if last_update.get("last_update") else None,
+            last_updated=_isoformat_or_none(last_update.get("last_update")),
         )
 
         logger.info(f"Retrieved statistics for city: {city_code}")
@@ -285,9 +305,7 @@ async def get_city_info(city_code: str) -> CityInfo:
 def register_cities_tools(wienerlinien_mcp):
     """Register multi-city management tools with the MCP server."""
 
-    @wienerlinien_mcp.tool(
-        annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True)
-    )
+    @wienerlinien_mcp.tool(annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True))
     async def list_cities() -> str:
         """List all available transit cities and their status.
 
@@ -334,11 +352,11 @@ def register_cities_tools(wienerlinien_mcp):
             logger.error(f"List cities tool failed: {e}")
             return f"Error retrieving city list: {e!s}"
 
-    @wienerlinien_mcp.tool(
-        annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True)
-    )
+    @wienerlinien_mcp.tool(annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True))
     async def switch_to_city(
-        city_code: Annotated[str, Field(description="City code to switch to (e.g. vienna, graz). Use list_cities for options.")],
+        city_code: Annotated[
+            str, Field(description="City code to switch to (e.g. vienna, graz). Use list_cities for options.")
+        ],
     ) -> str:
         """Switch the active city for all transit operations.
 
@@ -376,11 +394,11 @@ def register_cities_tools(wienerlinien_mcp):
             logger.error(f"Switch city tool failed: {e}")
             return f"❌ **Error**: Failed to switch city: {e!s}"
 
-    @wienerlinien_mcp.tool(
-        annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True)
-    )
+    @wienerlinien_mcp.tool(annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True))
     async def city_transit_stats(
-        city_code: Annotated[str | None, Field(description="City code to report on (e.g. vienna). Omit for the current city.")] = None,
+        city_code: Annotated[
+            str | None, Field(description="City code to report on (e.g. vienna). Omit for the current city.")
+        ] = None,
     ) -> str:
         """Get comprehensive statistics for a city's transit system.
 

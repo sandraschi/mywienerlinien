@@ -5,12 +5,13 @@ from datetime import UTC, datetime
 from typing import Annotated
 
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import Field
 
 try:
-    from ...data_loader import data_loader
-    from ...vehicle_service import collect_vehicle_data
+    from data_loader import data_loader
+    from vehicle_service import collect_vehicle_data
+
     from ..models.departures import Departure, DepartureResponse
     from ..utils import find_station_by_name
 except ImportError:
@@ -38,11 +39,14 @@ def register_departures_tool(mcp: FastMCP) -> None:
         mcp: FastMCP server instance to register the tool with
     """
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def next_departures(
-        station: Annotated[str, Field(description="Station name with fuzzy matching. Examples: Stephansplatz, Hauptbahnhof, Stephans (partial), HBF (abbreviation).")],
+        station: Annotated[
+            str,
+            Field(
+                description="Station name with fuzzy matching. Examples: Stephansplatz, Hauptbahnhof, Stephans (partial), HBF (abbreviation)."
+            ),
+        ],
         max_results: Annotated[int, Field(description="Maximum departures to return, 1-10.", ge=1, le=10)] = 5,
     ) -> DepartureResponse:
         """Get next departures from a Vienna transit station.
