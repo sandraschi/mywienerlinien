@@ -21,39 +21,51 @@ Linien publishes none; map markers are schedule-interpolated between stops.
 
 ## Prerequisites outside this repo
 
-- Docker Desktop (Windows) - hosts PostGIS on 5433, Grafana, Loki, and the GTFS loader. Required even for native dev because the DB lives in Docker.
+- Docker Desktop (Windows) - hosts PostGIS on 5433, Grafana, Loki, and the
+  GTFS loader. Required even for native dev because the DB lives in Docker.
 - Python 3.12+ and `uv` - for the native backend, dashboard dev, and the MCP server.
 - Node + npm - for the Vite dashboard (`web_sota/src/`).
 - `just` (via `winget install Casey.Just`) - runs the repo recipes (`just bootstrap`, `just serve`).
-- A local LLM (Ollama on :11434 or LM Studio on :1234) - optional, only for the dashboard chat proxy. Transit tools work without it.
+- A local LLM (Ollama on :11434 or LM Studio on :1234) - optional, only for
+  the dashboard chat proxy. Transit tools work without it.
 - No Wiener Linien account, no API token, no signup.
 
 ## First-timer setup steps
 
 1. Clone and enter the repo:
+
    ```powershell
    git clone https://github.com/sandraschi/mywienerlinien
    cd mywienerlinien
    ```
+
 2. Copy the env template and check the ports:
+
    ```powershell
    Copy-Item .env.example .env
    # Confirm WEB_PORT=11170 and DATABASE_URL points at localhost:5433
    ```
+
 3. Start the database and install deps:
+
    ```powershell
    docker compose up -d db
    just bootstrap
    ```
+
 4. Load GTFS data (first run takes 15-30 min, leave it alone):
+
    ```powershell
    docker compose run --rm -e GTFS_FORCE_REFRESH=1 gtfs-loader
    ```
+
 5. Start the backend + dashboard:
+
    ```powershell
    just serve
    # Backend: http://127.0.0.1:11170/api/health
    ```
+
 6. Optional native hot-reload dashboard: `.\run_dev.ps1` (port 3080).
 7. Optional MCP in Claude Desktop: add server `vienna-transit` with command
    `uv`, args `--directory D:/Dev/repos/mywienerlinien run vienna-transit-mcp`,
@@ -87,14 +99,17 @@ Linien publishes none; map markers are schedule-interpolated between stops.
 ## Sanity check
 
 - Backend liveness:
+
   ```powershell
   curl http://127.0.0.1:11170/api/health
   # expect: {"status":"ok"}
   ```
+
 - Status with version and uptime: `GET 127.0.0.1:11170/api/status` returns
   `service: mywienerlinien-webapi`, `version: 2.0.1`.
-- Map loads at `http://localhost:3079` (Docker) or `:3080` (native) with
-  departures visible for a known stop (e.g. Stephansplatz).
+- Map loads natively at `http://localhost:10722/` (`just map` or
+  `.\start-map.ps1`; needs postgres on 5433 via `docker compose up -d db`)
+  with departures visible for a known stop (e.g. Stephansplatz).
 - MCP probe: run `help` (or `server_status`) in Claude Desktop; a live DB
   reports success, a missing DB reports it explicitly instead of fake data.
 
