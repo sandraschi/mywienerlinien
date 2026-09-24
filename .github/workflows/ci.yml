@@ -25,6 +25,9 @@ jobs:
       - name: Ruff format check
         run: uv run ruff format src/ --check
 
+      - name: Pyright typecheck
+        run: uv run pyright src/
+
   test:
     name: Pytest (strict)
     runs-on: windows-latest

@@ -18,17 +18,27 @@ repos:
         name: ruff (formatting)
         types_or: [python, pyi]
 
-  # mypy for type checking
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
+  # Biome for the web_sota dashboard (local hook, no network at commit time)
+  - repo: local
     hooks:
-      - id: mypy
-        name: mypy (type checking)
-        additional_dependencies: [types-all]
-        args: [--ignore-missing-imports, --show-error-codes]
-        types: [python]
-        files: ^frontend/mcp_server/
-        exclude: ^frontend/mcp_server/(__pycache__|.*\.pyc)
+      - id: biome-check
+        name: biome (webapp lint+format)
+        entry: powershell.exe -NoProfile -File scripts/pre-commit-biome.ps1
+        language: system
+        files: ^web_sota/
+        pass_filenames: false
+
+  # pyright for type checking (local venv - fleet standard; replaces mypy,
+  # whose types-all env no longer installs: types-pkg-resources is gone)
+  - repo: local
+    hooks:
+      - id: pyright
+        name: pyright (type checking)
+        entry: uv run pyright src/
+        language: system
+        types_or: [python, pyi]
+        pass_filenames: false
+        always_run: true
 
   # General file checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -80,4 +90,3 @@ repos:
         name: Markdown linting
         args: [--fix]
         exclude: ^(CHANGELOG\.md|.*\.md\.example)$
-
