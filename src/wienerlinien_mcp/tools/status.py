@@ -4,11 +4,12 @@ import logging
 from typing import Annotated
 
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import Field
 
 try:
-    from ...disruption_alerts import disruption_monitor
+    from disruption_alerts import disruption_monitor
+
     from ..models.status import LineStatusResponse, ServiceStatus
 except ImportError:
     import sys
@@ -33,11 +34,11 @@ def register_status_tool(mcp: FastMCP) -> None:
         mcp: FastMCP server instance to register the tool with
     """
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def line_status(
-        line_name: Annotated[str | None, Field(description="Line filter (e.g. U1, D, 13A, N25). Omit for system-wide status.")] = None,
+        line_name: Annotated[
+            str | None, Field(description="Line filter (e.g. U1, D, 13A, N25). Omit for system-wide status.")
+        ] = None,
     ) -> LineStatusResponse:
         """Check Vienna transit service status and disruptions.
 
@@ -100,13 +101,15 @@ def register_status_tool(mcp: FastMCP) -> None:
             logger.error(f"Error fetching line status: {e}", exc_info=True)
             raise RuntimeError(f"Failed to fetch line status: {e!s}") from e
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def get_disruptions(
         line: Annotated[str | None, Field(description="Line filter (e.g. U4). Omit for all lines.")] = None,
-        station: Annotated[str | None, Field(description="Station filter (e.g. Karlsplatz). Omit for all stations.")] = None,
-        severity: Annotated[str | None, Field(description="Severity filter: low, medium, high, critical. Omit for all severities.")] = None,
+        station: Annotated[
+            str | None, Field(description="Station filter (e.g. Karlsplatz). Omit for all stations.")
+        ] = None,
+        severity: Annotated[
+            str | None, Field(description="Severity filter: low, medium, high, critical. Omit for all severities.")
+        ] = None,
         max_results: Annotated[int, Field(description="Maximum disruptions to return.", ge=1, le=50)] = 10,
     ) -> LineStatusResponse:
         """Get current service disruptions with advanced filtering.
@@ -159,9 +162,7 @@ def register_status_tool(mcp: FastMCP) -> None:
             logger.error(f"Error in get_disruptions: {e}", exc_info=True)
             raise RuntimeError(f"Failed to fetch disruptions: {e!s}") from e
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def get_service_status() -> LineStatusResponse:
         """Get system-wide service status summary.
 

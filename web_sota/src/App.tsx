@@ -10,6 +10,7 @@ import HelpPage from "./pages/HelpPage";
 import InboxPage from "./pages/InboxPage";
 import LinesPage from "./pages/LinesPage";
 import Logging from "./pages/Logging";
+import AppsPage from "./pages/AppsPage";
 import SettingsPage from "./pages/SettingsPage";
 import SkillsPage from "./pages/SkillsPage";
 import ToolsPage from "./pages/ToolsPage";
@@ -23,6 +24,7 @@ const NAV = [
 	{ to: "/chat", label: "Chat" },
 	{ to: "/tools", label: "Tools" },
 	{ to: "/skills", label: "Skills" },
+	{ to: "/apps", label: "Apps" },
 	{ to: "/logs", label: "Logs" },
 	{ to: "/settings", label: "Settings" },
 	{ to: "/help", label: "Help" },
@@ -93,6 +95,7 @@ function Shell() {
 					<Route path="/chat" element={<ChatPage />} />
 					<Route path="/tools" element={<ToolsPage />} />
 					<Route path="/skills" element={<SkillsPage />} />
+					<Route path="/apps" element={<AppsPage />} />
 					<Route path="/logs" element={<Logging />} />
 					<Route path="/settings" element={<SettingsPage />} />
 					<Route path="/help" element={<HelpPage />} />

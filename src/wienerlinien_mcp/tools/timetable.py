@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Annotated
 
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import BaseModel, Field
 
 
@@ -292,13 +292,13 @@ def _generate_html_timetable(response: "StopTimetableResponse") -> str:
 def register_stop_timetable_tool(mcp: FastMCP) -> None:
     """Register the stop_timetable tool with the MCP server."""
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def stop_timetable(
         stop: Annotated[str, Field(description="Stop name with fuzzy matching. Examples: Karlsplatz, Stephansplatz.")],
         line: Annotated[str | None, Field(description="Line filter (e.g. U4, 13A). Omit for all lines.")] = None,
-        day_type: Annotated[str, Field(description="Schedule type: weekday, saturday, sunday. Invalid values fall back to weekday.")] = "weekday",
+        day_type: Annotated[
+            str, Field(description="Schedule type: weekday, saturday, sunday. Invalid values fall back to weekday.")
+        ] = "weekday",
         include_html: Annotated[bool, Field(description="Include HTML formatted timetable for display.")] = True,
     ) -> StopTimetableResponse:
         """Get the full daily timetable for a stop.
@@ -490,11 +490,11 @@ def register_stop_timetable_tool(mcp: FastMCP) -> None:
 
         return response
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def get_timetable(
-        station: Annotated[str, Field(description="Station name with fuzzy matching. Examples: Karlsplatz, Stephansplatz.")],
+        station: Annotated[
+            str, Field(description="Station name with fuzzy matching. Examples: Karlsplatz, Stephansplatz.")
+        ],
         line: Annotated[str | None, Field(description="Line filter (e.g. U4, 5, 68A). Omit for all lines.")] = None,
         day_type: Annotated[str, Field(description="Schedule type: weekday, saturday, sunday.")] = "weekday",
     ) -> StopTimetableResponse:

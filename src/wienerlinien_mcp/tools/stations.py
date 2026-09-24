@@ -4,11 +4,12 @@ import logging
 from typing import Annotated
 
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import Field
 
 try:
-    from ...data_loader import data_loader
+    from data_loader import data_loader
+
     from ..models.stations import Station, StationSearchResponse
 except ImportError:
     import sys
@@ -33,11 +34,14 @@ def register_station_search_tool(mcp: FastMCP) -> None:
         mcp: FastMCP server instance to register the tool with
     """
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def station_search(
-        query: Annotated[str, Field(description="Search query: full name, partial name, or abbreviation. Examples: Stephans, Hauptbahnhof, HBF. Case-insensitive.")],
+        query: Annotated[
+            str,
+            Field(
+                description="Search query: full name, partial name, or abbreviation. Examples: Stephans, Hauptbahnhof, HBF. Case-insensitive."
+            ),
+        ],
         limit: Annotated[int, Field(description="Maximum results to return, 1-20.", ge=1, le=20)] = 10,
     ) -> StationSearchResponse:
         """Find Vienna transit stations by name or location.

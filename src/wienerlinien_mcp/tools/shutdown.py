@@ -1,7 +1,7 @@
 """Self-termination tool for the Vienna Transit MCP server."""
 
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import BaseModel, Field
 
 
@@ -15,11 +15,7 @@ class ShutdownResponse(BaseModel):
 def register_shutdown_tool(mcp: FastMCP) -> None:
     """Register the server_shutdown tool with the MCP server."""
 
-    @mcp.tool(
-        annotations=ToolAnnotations(
-            destructiveHint=True, idempotentHint=False, openWorldHint=False
-        )
-    )
+    @mcp.tool(annotations=ToolAnnotations(destructiveHint=True, idempotentHint=False, openWorldHint=False))
     async def server_shutdown() -> ShutdownResponse:
         """Request an orderly server shutdown.
 
