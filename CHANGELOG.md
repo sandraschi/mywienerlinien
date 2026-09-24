@@ -2,6 +2,36 @@
 
 All notable changes to mywienerlinien are documented here.
 
+## [Unreleased] - 2026-09-24 (assfix deferred)
+
+### Fixed
+
+- **Tests green (86/86)**: pytest collection fixed (`pythonpath`, declared
+  psycopg2/socketio doubles); `tests/mcp_server` retargeted from the legacy
+  `frontend/mcp_server` tree to live `src/wienerlinien_mcp`; tool tests use the
+  public `Client` API (the old `_tools` introspection passed vacuously).
+- **Real bugs found by the new tests**: prompts returned `list[dict]` (FastMCP 3.4
+  rejects it - now `str`); naive/aware datetime crash in departures; journey
+  planner `KeyError 'id'` (RBL-to-GTFS stop-id resolver added); cities stats
+  always-zero (`fetch_one` kwarg never existed); server_status always
+  "disconnected" (raw SQL string); routes used SQLite `?`/`GROUP_CONCAT` on
+  Postgres (named params + `STRING_AGG`); cities manager API mismatch
+  (`list_cities()` never existed); legacy server import crash.
+- **Pyright clean (62 -> 0)**: canonical `mcp.types.ToolAnnotations` import,
+  FastMCP 3.4 middleware classes (enabled in server), dead beyond-top-level
+  imports removed, service type hardening; abandoned tree excluded.
+- **Webapp**: 12 pages (dashboard hero, departures, disruptions, lines, inbox,
+  chat, tools, skills, apps, logs, settings, help) on live OGD data
+  (departures/disruptions/news) + GTFS reference snapshots; Zustand LLM store;
+  Tauri listen + HTTP fallback; biome + tsc green; production build verified.
+- **CI**: windows runners, uv, strict pytest, frontend gates, pyright gate,
+  actionlint clean; pre-commit with Biome + pyright local hooks (hook installed).
+- **Plus**: `glama.json`, Prefab cards, shutdown tool/endpoint, skills dir,
+  session injection (cursor/windsurf/copilot/opencode/antigravity),
+  webhook receiver (fail-closed), `start.ps1` rewrite + delegating `start.bat`,
+  renovate, `.gitattributes`, `llms.txt`/`llms-full.txt`, `docs/` stack,
+  MCPB 3-4-100 prompts (system 4068w, user 4059w, 109 examples).
+
 ## [Unreleased] - 2026-09-23 (assfix)
 
 ### Fixed
