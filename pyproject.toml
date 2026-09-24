@@ -29,7 +29,7 @@ dependencies = [
     "fastapi>=0.110.2",
     "uvicorn[standard]>=0.35",
     "python-socketio[asyncio]==5.11.2",
-    "SQLAlchemy==2.0.23",
+    "SQLAlchemy>=2.0.36",
     "asyncpg>=0.29.0",
     "requests==2.31.0",
     "python-dotenv>=1.1.0",
@@ -41,6 +41,7 @@ dependencies = [
     "gtfs-kit==12.0.0",
     # MCP Server dependencies
     "fastmcp>=3.4.4,<4",
+    "prefab-ui>=0.14.0",
     "pydantic>=2.5.0",
     # ML dependencies (Phase 3C)
     "scikit-learn>=1.3.0",
@@ -80,6 +81,7 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
