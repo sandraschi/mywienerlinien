@@ -45,7 +45,7 @@ def register_prompts(mcp: FastMCP) -> list:
     prompt_refs = []
 
     @mcp.prompt()
-    def vienna_transit_guide() -> list[dict[str, Any]]:
+    def vienna_transit_guide() -> str:
         """Guide for using Vienna public transport tools.
 
         This prompt helps AI assistants understand Vienna's transit system and
@@ -116,12 +116,12 @@ Use `line_status` to:
 - Most stations have multiple platforms - check platform info when available
 - Zone 100 covers most of Vienna - fare is typically €2.40 for single trip
 """
-        return [{"role": "user", "content": content}]
+        return content
 
     prompt_refs.append(vienna_transit_guide)
 
     @mcp.prompt()
-    def departure_checking_prompt() -> list[dict[str, Any]]:
+    def departure_checking_prompt() -> str:
         """Prompt for checking departures effectively.
 
         Helps AI assistants understand how to check departures and interpret
@@ -160,12 +160,12 @@ Use `line_status` to:
 - "Is there a tram coming soon to Schwedenplatz?"
 - "What buses leave from [station] in the next 10 minutes?"
 """
-        return [{"role": "user", "content": content}]
+        return content
 
     prompt_refs.append(departure_checking_prompt)
 
     @mcp.prompt()
-    def journey_planning_prompt() -> list[dict[str, Any]]:
+    def journey_planning_prompt() -> str:
         """Prompt for journey planning assistance.
 
         Guides AI assistants on helping users plan trips between stations,
@@ -208,12 +208,12 @@ Use `line_status` to:
 - "Plan a trip from Hauptbahnhof to Schönbrunn"
 - "I need to be at [location] by [time], when should I leave?"
 """
-        return [{"role": "user", "content": content}]
+        return content
 
     prompt_refs.append(journey_planning_prompt)
 
     @mcp.prompt()
-    def natural_language_transit_assistant() -> list[dict[str, Any]]:
+    def natural_language_transit_assistant() -> str:
         """Natural language templates for common transit queries.
 
         Phase 3A Enhancement: Helps AI assistants understand and respond to
@@ -341,12 +341,12 @@ Assistant:
 
 Remember: Be helpful, conversational, and proactive!
 """
-        return [{"role": "user", "content": content}]
+        return content
 
     prompt_refs.append(natural_language_transit_assistant)
 
     @mcp.prompt()
-    def ai_smart_routing_helper() -> list[dict[str, Any]]:
+    def ai_smart_routing_helper() -> str:
         """AI-powered smart routing assistance.
 
         Phase 3A Enhancement: Helps AI assistants provide intelligent routing
@@ -509,7 +509,7 @@ I'd recommend option 1 unless you prefer a leisurely ride!"
 
 Remember: Be smart, be contextual, be helpful!
 """
-        return [{"role": "user", "content": content}]
+        return content
 
     prompt_refs.append(ai_smart_routing_helper)
 

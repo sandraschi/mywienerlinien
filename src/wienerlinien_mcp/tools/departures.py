@@ -1,9 +1,12 @@
 """MCP tool for getting next departures from stations."""
 
 import logging
-from datetime import datetime
+from datetime import UTC, datetime
+from typing import Annotated
 
 from fastmcp import FastMCP
+from fastmcp.tools.tool import ToolAnnotations
+from pydantic import Field
 
 try:
     from ...data_loader import data_loader
@@ -35,48 +38,27 @@ def register_departures_tool(mcp: FastMCP) -> None:
         mcp: FastMCP server instance to register the tool with
     """
 
-    @mcp.tool()
-    async def next_departures(station: str, max_results: int = 5) -> DepartureResponse:
+    @mcp.tool(
+        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
+    )
+    async def next_departures(
+        station: Annotated[str, Field(description="Station name with fuzzy matching. Examples: Stephansplatz, Hauptbahnhof, Stephans (partial), HBF (abbreviation).")],
+        max_results: Annotated[int, Field(description="Maximum departures to return, 1-10.", ge=1, le=10)] = 5,
+    ) -> DepartureResponse:
         """Get next departures from a Vienna transit station.
 
         Retrieves real-time departure information for the specified station, including
         metro (U-Bahn), tram, bus, and night bus services. Results are sorted by
         departure time and include countdown timers, delays, and vehicle types.
+        Supports fuzzy station name matching, so partial names work well.
 
-        The tool supports fuzzy station name matching, so partial names work well.
-        For example, "Stephans" will match "Stephansplatz" and "Stephansdom".
+        ## Return Format
+        {"station_name": str, "station_rbl": str | None, "departures": [{"line": str, "destination": str, "departure_time": datetime, "countdown_minutes": int, "delay_minutes": int | None, "platform": str | None, "vehicle_type": "metro|tram|bus|nightbus"}], "timestamp": datetime}
 
-        Args:
-            station (str): Station name (supports German/English, partial matching).
-                Examples: "Stephansplatz", "Schwedenplatz", "Hauptbahnhof",
-                "Stephans" (partial match), "HBF" (common abbreviation).
-            max_results (int): Maximum departures to return. Must be between 1 and 10.
-                Default is 5. Higher values provide more options but may include
-                departures further in the future.
-
-        Returns:
-            DepartureResponse: Response containing:
-                - station_name (str): Full name of the matched station
-                - station_rbl (str, optional): RBL code (Vienna-specific station identifier)
-                - departures (List[Departure]): List of Departure objects with:
-                    * line (str): Line identifier (e.g., "U1", "D", "13A", "N25")
-                    * destination (str): Next station or final destination
-                    * departure_time (datetime): Scheduled departure datetime (UTC)
-                    * countdown_minutes (int): Minutes until departure
-                    * delay_minutes (int, optional): Delay in minutes (None if on time)
-                    * platform (str, optional): Platform/track number (if available)
-                    * vehicle_type (str): Type of vehicle (metro, tram, bus, nightbus)
-                - timestamp (datetime): Response generation timestamp
-
-        Raises:
-            ValueError: If station name cannot be found or matched. Includes
-                suggestions for similar station names.
-            RuntimeError: If API request fails or data cannot be processed.
-
-        Example:
-            >>> result = await next_departures("Stephansplatz", max_results=3)
-            >>> print(f"Next {len(result.departures)} departures from {result.station_name}")
-            Next 3 departures from Stephansplatz
+        ## Examples
+        next_departures(station="Stephansplatz")
+        next_departures(station="Hauptbahnhof", max_results=10)
+        next_departures(station="Schweden", max_results=3)
         """
         try:
             # Validate max_results
@@ -110,7 +92,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
 
             # Convert to Departure models
             departures = []
-            now = datetime.utcnow()
+            now = datetime.now(UTC)
 
             for vehicle in vehicles[:max_results]:
                 # Calculate countdown

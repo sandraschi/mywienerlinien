@@ -6,7 +6,8 @@ from datetime import datetime
 from unittest.mock import Mock, patch
 
 import pytest
-from mcp_server.models.status import LineStatusResponse
+from fastmcp import Client, FastMCP
+from fastmcp.exceptions import ToolError
 
 
 @pytest.mark.asyncio
@@ -18,22 +19,18 @@ async def test_line_status_system_wide():
     with patch("mcp_server.tools.status.disruption_monitor") as mock_monitor:
         mock_monitor.get_active_disruptions = Mock(return_value=mock_disruptions)
 
-        from fastmcp import FastMCP
         from mcp_server.tools.status import register_status_tool
 
         test_mcp = FastMCP(name="test", version="1.0.0")
         register_status_tool(test_mcp)
 
-        if hasattr(test_mcp, "_tools") and "line_status" in test_mcp._tools:
-            tool_func = test_mcp._tools["line_status"]
-            result = await tool_func(line_name=None)
+        async with Client(test_mcp) as client:
+            result = await client.call_tool("line_status", {})
+            data = result.structured_content
 
-            assert isinstance(result, LineStatusResponse)
-            assert result.line_filter is None
-            assert len(result.statuses) > 0
-            assert result.statuses[0].status == "operational"
-        else:
-            assert test_mcp is not None
+            assert data["line_filter"] is None
+            assert len(data["statuses"]) > 0
+            assert data["statuses"][0]["status"] == "operational"
 
 
 @pytest.mark.asyncio
@@ -45,21 +42,17 @@ async def test_line_status_specific_line():
     with patch("mcp_server.tools.status.disruption_monitor") as mock_monitor:
         mock_monitor.get_disruptions_by_line = Mock(return_value=mock_disruptions)
 
-        from fastmcp import FastMCP
         from mcp_server.tools.status import register_status_tool
 
         test_mcp = FastMCP(name="test", version="1.0.0")
         register_status_tool(test_mcp)
 
-        if hasattr(test_mcp, "_tools") and "line_status" in test_mcp._tools:
-            tool_func = test_mcp._tools["line_status"]
-            result = await tool_func(line_name="U1")
+        async with Client(test_mcp) as client:
+            result = await client.call_tool("line_status", {"line_name": "U1"})
+            data = result.structured_content
 
-            assert isinstance(result, LineStatusResponse)
-            assert result.line_filter == "U1"
-            assert len(result.statuses) > 0
-        else:
-            assert test_mcp is not None
+            assert data["line_filter"] == "U1"
+            assert len(data["statuses"]) > 0
 
 
 @pytest.mark.asyncio
@@ -70,19 +63,16 @@ async def test_line_status_operational():
     with patch("mcp_server.tools.status.disruption_monitor") as mock_monitor:
         mock_monitor.get_active_disruptions = Mock(return_value=mock_disruptions)
 
-        from fastmcp import FastMCP
         from mcp_server.tools.status import register_status_tool
 
         test_mcp = FastMCP(name="test", version="1.0.0")
         register_status_tool(test_mcp)
 
-        if hasattr(test_mcp, "_tools") and "line_status" in test_mcp._tools:
-            tool_func = test_mcp._tools["line_status"]
-            result = await tool_func(line_name=None)
+        async with Client(test_mcp) as client:
+            result = await client.call_tool("line_status", {})
+            data = result.structured_content
 
-            assert any(status.status == "operational" for status in result.statuses)
-        else:
-            assert test_mcp is not None
+            assert any(status["status"] == "operational" for status in data["statuses"])
 
 
 @pytest.mark.asyncio
@@ -104,24 +94,21 @@ async def test_line_status_with_disruptions():
     with patch("mcp_server.tools.status.disruption_monitor") as mock_monitor:
         mock_monitor.get_active_disruptions = Mock(return_value=mock_disruptions)
 
-        from fastmcp import FastMCP
         from mcp_server.tools.status import register_status_tool
 
         test_mcp = FastMCP(name="test", version="1.0.0")
         register_status_tool(test_mcp)
 
-        if hasattr(test_mcp, "_tools") and "line_status" in test_mcp._tools:
-            tool_func = test_mcp._tools["line_status"]
-            result = await tool_func(line_name=None)
+        async with Client(test_mcp) as client:
+            result = await client.call_tool("line_status", {})
+            data = result.structured_content
 
-            assert len(result.statuses) > 0
-            assert any(status.status == "disrupted" for status in result.statuses)
-            disrupted_status = next(s for s in result.statuses if s.status == "disrupted")
-            assert disrupted_status.line == "U1"
-            assert disrupted_status.severity == "high"
-            assert len(disrupted_status.affected_stations) == 2
-        else:
-            assert test_mcp is not None
+            assert len(data["statuses"]) > 0
+            assert any(status["status"] == "disrupted" for status in data["statuses"])
+            disrupted_status = next(s for s in data["statuses"] if s["status"] == "disrupted")
+            assert disrupted_status["line"] == "U1"
+            assert disrupted_status["severity"] == "high"
+            assert len(disrupted_status["affected_stations"]) == 2
 
 
 @pytest.mark.asyncio
@@ -130,15 +117,11 @@ async def test_line_status_error_handling():
     with patch("mcp_server.tools.status.disruption_monitor") as mock_monitor:
         mock_monitor.get_active_disruptions = Mock(side_effect=Exception("Monitor error"))
 
-        from fastmcp import FastMCP
         from mcp_server.tools.status import register_status_tool
 
         test_mcp = FastMCP(name="test", version="1.0.0")
         register_status_tool(test_mcp)
 
-        if hasattr(test_mcp, "_tools") and "line_status" in test_mcp._tools:
-            tool_func = test_mcp._tools["line_status"]
-            with pytest.raises(RuntimeError, match="Failed to fetch"):
-                await tool_func(line_name=None)
-        else:
-            assert test_mcp is not None
+        async with Client(test_mcp) as client:
+            with pytest.raises(ToolError, match="Failed to fetch"):
+                await client.call_tool("line_status", {})
