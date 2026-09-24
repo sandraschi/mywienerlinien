@@ -73,6 +73,7 @@ output/
 !.claude-plugin/**/*.md
 !hooks/**/*.md
 !skills/**/*.md
+!.opencode/**/*.md
 
 # GTFS data
 gtfs_data/
