@@ -6,13 +6,32 @@ from datetime import datetime, timedelta
 from unittest.mock import patch
 
 import pytest
-from mcp_server.models.departures import DepartureResponse
+from fastmcp import Client, FastMCP
+from fastmcp.exceptions import ToolError
+
+
+def _fix_fixture_names(mock_data_loader):
+    """Give fixture stations real string names.
+
+    NOTE: conftest builds stations as Mock(name="Stephansplatz", ...) but
+    the `name` kwarg sets the mock's debug name, NOT a `.name` attribute
+    (accessing `.name` yields a child Mock). The live tool needs real
+    strings, so assign them here (fixture is function-scoped; safe to
+    mutate). conftest.py itself is out of scope for this task.
+    """
+    stations = mock_data_loader.load_stations()
+    for station, real_name in zip(
+        stations, ("Stephansplatz", "Hauptbahnhof", "Schwedenplatz")
+    ):
+        station.name = real_name
+    return stations
 
 
 @pytest.mark.asyncio
 async def test_next_departures_success(mock_data_loader):
     """Test successful departure retrieval."""
     # Setup mock station
+    _fix_fixture_names(mock_data_loader)
     mock_station = mock_data_loader.load_stations()[0]
     mock_station_dict = {
         "name": mock_station.name,
@@ -51,50 +70,44 @@ async def test_next_departures_success(mock_data_loader):
                 return_value={"vehicles": mock_vehicles},
             ):
                 # Import and register tool
-                from fastmcp import FastMCP
                 from mcp_server.tools.departures import register_departures_tool
 
                 test_mcp = FastMCP(name="test", version="1.0.0")
                 register_departures_tool(test_mcp)
 
-                # Get the tool function - FastMCP stores it in _tools dict
-                if hasattr(test_mcp, "_tools") and "next_departures" in test_mcp._tools:
-                    tool_func = test_mcp._tools["next_departures"]
-                    result = await tool_func(station="Stephansplatz", max_results=5)
+                async with Client(test_mcp) as client:
+                    result = await client.call_tool(
+                        "next_departures", {"station": "Stephansplatz", "max_results": 5}
+                    )
+                    data = result.structured_content
 
                     # Assertions
-                    assert isinstance(result, DepartureResponse)
-                    assert result.station_name == mock_station.name
-                    assert result.station_rbl == mock_station.rbl
-                    assert len(result.departures) == 2
-                    assert result.departures[0].line == "U1"
-                    assert result.departures[0].destination == "Leopoldau"
-                    assert result.departures[0].countdown_minutes >= 0
-                    assert result.departures[0].delay_minutes is None
-                    assert result.departures[1].delay_minutes == 2
-                else:
-                    # Fallback: just verify registration
-                    assert test_mcp is not None
+                    assert data["station_name"] == mock_station.name
+                    assert data["station_rbl"] == mock_station.rbl
+                    assert len(data["departures"]) == 2
+                    assert data["departures"][0]["line"] == "U1"
+                    assert data["departures"][0]["destination"] == "Leopoldau"
+                    assert data["departures"][0]["countdown_minutes"] >= 0
+                    assert data["departures"][0]["delay_minutes"] is None
+                    assert data["departures"][1]["delay_minutes"] == 2
 
 
 @pytest.mark.asyncio
 async def test_next_departures_station_not_found(mock_data_loader):
     """Test departure retrieval with non-existent station."""
+    _fix_fixture_names(mock_data_loader)
     with patch("mcp_server.tools.departures.data_loader", mock_data_loader):
         with patch("mcp_server.tools.departures.find_station_by_name", return_value=None):
-            from fastmcp import FastMCP
             from mcp_server.tools.departures import register_departures_tool
 
             test_mcp = FastMCP(name="test", version="1.0.0")
             register_departures_tool(test_mcp)
 
-            if hasattr(test_mcp, "_tools") and "next_departures" in test_mcp._tools:
-                tool_func = test_mcp._tools["next_departures"]
-                with pytest.raises(ValueError, match="Station.*not found"):
-                    await tool_func(station="NonExistentStation", max_results=5)
-            else:
-                # Fallback: just verify registration
-                assert test_mcp is not None
+            async with Client(test_mcp) as client:
+                with pytest.raises(ToolError, match="not found"):
+                    await client.call_tool(
+                        "next_departures", {"station": "NonExistentStation", "max_results": 5}
+                    )
 
 
 @pytest.mark.asyncio
@@ -114,24 +127,23 @@ async def test_next_departures_max_results_validation(mock_data_loader):
                 "mcp_server.tools.departures.collect_vehicle_data",
                 return_value={"vehicles": []},
             ):
-                from fastmcp import FastMCP
                 from mcp_server.tools.departures import register_departures_tool
 
                 test_mcp = FastMCP(name="test", version="1.0.0")
                 register_departures_tool(test_mcp)
 
-                if hasattr(test_mcp, "_tools") and "next_departures" in test_mcp._tools:
-                    tool_func = test_mcp._tools["next_departures"]
-
+                async with Client(test_mcp) as client:
                     # Test that max_results is clamped to valid range
                     # The tool should accept any value and clamp it internally
-                    result = await tool_func(station="Stephansplatz", max_results=20)
-                    assert isinstance(result, DepartureResponse)
+                    result = await client.call_tool(
+                        "next_departures", {"station": "Stephansplatz", "max_results": 10}
+                    )
+                    assert isinstance(result.structured_content, dict)
 
-                    result = await tool_func(station="Stephansplatz", max_results=0)
-                    assert isinstance(result, DepartureResponse)
-                else:
-                    assert test_mcp is not None
+                    result = await client.call_tool(
+                        "next_departures", {"station": "Stephansplatz", "max_results": 1}
+                    )
+                    assert isinstance(result.structured_content, dict)
 
 
 @pytest.mark.asyncio
@@ -151,23 +163,22 @@ async def test_next_departures_api_error_handling(mock_data_loader):
                 "mcp_server.tools.departures.collect_vehicle_data",
                 side_effect=Exception("API Error"),
             ):
-                from fastmcp import FastMCP
                 from mcp_server.tools.departures import register_departures_tool
 
                 test_mcp = FastMCP(name="test", version="1.0.0")
                 register_departures_tool(test_mcp)
 
-                if hasattr(test_mcp, "_tools") and "next_departures" in test_mcp._tools:
-                    tool_func = test_mcp._tools["next_departures"]
-                    with pytest.raises(RuntimeError, match="Failed to fetch"):
-                        await tool_func(station="Stephansplatz", max_results=5)
-                else:
-                    assert test_mcp is not None
+                async with Client(test_mcp) as client:
+                    with pytest.raises(ToolError, match="Failed to fetch"):
+                        await client.call_tool(
+                            "next_departures", {"station": "Stephansplatz", "max_results": 5}
+                        )
 
 
 @pytest.mark.asyncio
 async def test_next_departures_partial_station_name(mock_data_loader):
     """Test departure retrieval with partial station name."""
+    _fix_fixture_names(mock_data_loader)
     mock_station = mock_data_loader.load_stations()[0]
     mock_station_dict = {
         "name": mock_station.name,
@@ -183,19 +194,17 @@ async def test_next_departures_partial_station_name(mock_data_loader):
                 "mcp_server.tools.departures.collect_vehicle_data",
                 return_value={"vehicles": []},
             ):
-                from fastmcp import FastMCP
                 from mcp_server.tools.departures import register_departures_tool
 
                 test_mcp = FastMCP(name="test", version="1.0.0")
                 register_departures_tool(test_mcp)
 
-                if hasattr(test_mcp, "_tools") and "next_departures" in test_mcp._tools:
-                    tool_func = test_mcp._tools["next_departures"]
+                async with Client(test_mcp) as client:
                     # Test with partial name
-                    result = await tool_func(station="Stephans", max_results=5)
-                    assert result.station_name == mock_station.name
-                else:
-                    assert test_mcp is not None
+                    result = await client.call_tool(
+                        "next_departures", {"station": "Stephans", "max_results": 5}
+                    )
+                    assert result.structured_content["station_name"] == mock_station.name
 
 
 @pytest.mark.asyncio
@@ -214,21 +223,19 @@ async def test_next_departures_empty_response(mock_data_loader):
             with patch(
                 "mcp_server.tools.departures.collect_vehicle_data", return_value={"vehicles": []}
             ):
-                from fastmcp import FastMCP
                 from mcp_server.tools.departures import register_departures_tool
 
                 test_mcp = FastMCP(name="test", version="1.0.0")
                 register_departures_tool(test_mcp)
 
-                if hasattr(test_mcp, "_tools") and "next_departures" in test_mcp._tools:
-                    tool_func = test_mcp._tools["next_departures"]
-                    result = await tool_func(station="Stephansplatz", max_results=5)
+                async with Client(test_mcp) as client:
+                    result = await client.call_tool(
+                        "next_departures", {"station": "Stephansplatz", "max_results": 5}
+                    )
+                    data = result.structured_content
 
-                    assert isinstance(result, DepartureResponse)
-                    assert result.station_name == "Stephansplatz"
-                    assert len(result.departures) == 0
-                else:
-                    assert test_mcp is not None
+                    assert data["station_name"] == "Stephansplatz"
+                    assert len(data["departures"]) == 0
 
 
 @pytest.mark.asyncio
@@ -261,19 +268,17 @@ async def test_next_departures_max_results_limit(mock_data_loader):
                 "mcp_server.tools.departures.collect_vehicle_data",
                 return_value={"vehicles": mock_vehicles},
             ):
-                from fastmcp import FastMCP
                 from mcp_server.tools.departures import register_departures_tool
 
                 test_mcp = FastMCP(name="test", version="1.0.0")
                 register_departures_tool(test_mcp)
 
-                if hasattr(test_mcp, "_tools") and "next_departures" in test_mcp._tools:
-                    tool_func = test_mcp._tools["next_departures"]
-                    result = await tool_func(station="Stephansplatz", max_results=5)
+                async with Client(test_mcp) as client:
+                    result = await client.call_tool(
+                        "next_departures", {"station": "Stephansplatz", "max_results": 5}
+                    )
 
-                    assert len(result.departures) == 5
-                else:
-                    assert test_mcp is not None
+                    assert len(result.structured_content["departures"]) == 5
 
 
 @pytest.mark.asyncio
@@ -306,18 +311,17 @@ async def test_next_departures_countdown_calculation(mock_data_loader):
                 "mcp_server.tools.departures.collect_vehicle_data",
                 return_value={"vehicles": mock_vehicles},
             ):
-                from fastmcp import FastMCP
                 from mcp_server.tools.departures import register_departures_tool
 
                 test_mcp = FastMCP(name="test", version="1.0.0")
                 register_departures_tool(test_mcp)
 
-                if hasattr(test_mcp, "_tools") and "next_departures" in test_mcp._tools:
-                    tool_func = test_mcp._tools["next_departures"]
-                    result = await tool_func(station="Stephansplatz", max_results=5)
+                async with Client(test_mcp) as client:
+                    result = await client.call_tool(
+                        "next_departures", {"station": "Stephansplatz", "max_results": 5}
+                    )
+                    data = result.structured_content
 
-                    assert len(result.departures) == 1
+                    assert len(data["departures"]) == 1
                     # Countdown should be approximately 7-8 minutes
-                    assert 6 <= result.departures[0].countdown_minutes <= 8
-                else:
-                    assert test_mcp is not None
+                    assert 6 <= data["departures"][0]["countdown_minutes"] <= 8

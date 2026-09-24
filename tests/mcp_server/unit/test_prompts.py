@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from fastmcp import Client
+
 from mcp_server.prompts import register_prompts
 
 
@@ -15,68 +17,42 @@ def test_prompts_registration(mock_mcp_server):
     assert "journey_planning_prompt" in [p.__name__ for p in prompt_refs]
 
 
-def test_vienna_transit_guide_prompt(mock_mcp_server):
+async def _prompt_blob(client: Client, needle: str) -> str:
+    """Fetch the first prompt whose name contains needle; return messages as text."""
+    prompts = await client.list_prompts()
+    names = [p.name for p in prompts]
+    match = next((n for n in names if needle in n), None)
+    assert match is not None, f"no prompt matching {needle!r} in {names}"
+    result = await client.get_prompt(match)
+    assert result.messages
+    return str(result.messages)
+
+
+async def test_vienna_transit_guide_prompt(mock_mcp_server):
     """Test vienna_transit_guide prompt content."""
     register_prompts(mock_mcp_server)
 
-    # Get the prompt function
-    prompt_func = None
-    for name, func in mock_mcp_server._prompts.items():
-        if "vienna_transit_guide" in name:
-            prompt_func = func
-            break
+    async with Client(mock_mcp_server) as client:
+        blob = await _prompt_blob(client, "vienna_transit_guide")
 
-    assert prompt_func is not None
-
-    # Execute
-    result = prompt_func()
-
-    # Assert
-    assert isinstance(result, list)
-    assert len(result) > 0
-    assert result[0]["role"] == "user"
-    assert "Vienna" in result[0]["content"]
+    assert "Vienna" in blob
 
 
-def test_departure_checking_prompt(mock_mcp_server):
+async def test_departure_checking_prompt(mock_mcp_server):
     """Test departure_checking_prompt content."""
     register_prompts(mock_mcp_server)
 
-    # Get the prompt function
-    prompt_func = None
-    for name, func in mock_mcp_server._prompts.items():
-        if "departure_checking" in name:
-            prompt_func = func
-            break
+    async with Client(mock_mcp_server) as client:
+        blob = await _prompt_blob(client, "departure_checking")
 
-    assert prompt_func is not None
-
-    # Execute
-    result = prompt_func()
-
-    # Assert
-    assert isinstance(result, list)
-    assert result[0]["role"] == "user"
-    assert "departure" in result[0]["content"].lower()
+    assert "departure" in blob.lower()
 
 
-def test_journey_planning_prompt(mock_mcp_server):
+async def test_journey_planning_prompt(mock_mcp_server):
     """Test journey_planning_prompt content."""
     register_prompts(mock_mcp_server)
 
-    # Get the prompt function
-    prompt_func = None
-    for name, func in mock_mcp_server._prompts.items():
-        if "journey_planning" in name:
-            prompt_func = func
-            break
+    async with Client(mock_mcp_server) as client:
+        blob = await _prompt_blob(client, "journey_planning")
 
-    assert prompt_func is not None
-
-    # Execute
-    result = prompt_func()
-
-    # Assert
-    assert isinstance(result, list)
-    assert result[0]["role"] == "user"
-    assert "journey" in result[0]["content"].lower() or "planning" in result[0]["content"].lower()
+    assert "journey" in blob.lower() or "planning" in blob.lower()
