@@ -3,18 +3,21 @@
 from typing import Annotated
 
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import Field
 
 
 def register_help_tool(mcp: FastMCP) -> None:
     """Register the help tool with the MCP server."""
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def help(
-        topic: Annotated[str, Field(description="Help topic: overview, departures, stations, journey, timetable, alerts, status, examples, vienna, wienerlinien, history, gtfs, data, displays, architecture.")] = "overview",
+        topic: Annotated[
+            str,
+            Field(
+                description="Help topic: overview, departures, stations, journey, timetable, alerts, status, examples, vienna, wienerlinien, history, gtfs, data, displays, architecture."
+            ),
+        ] = "overview",
     ) -> str:
         """Get help on using Vienna Transit MCP.
 

@@ -5,7 +5,7 @@ from typing import Annotated
 
 import requests
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import BaseModel, Field
 
 
@@ -36,12 +36,14 @@ class TrafficAlertsResponse(BaseModel):
 def register_traffic_alerts_tool(mcp: FastMCP) -> None:
     """Register the traffic_alerts tool with the MCP server."""
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def traffic_alerts(
-        line_filter: Annotated[str | None, Field(description="Line to filter by (e.g. U1, D, 13A). Omit for all lines.")] = None,
-        severity_filter: Annotated[str | None, Field(description="Severity filter: low, medium, high. Omit for all severities.")] = None,
+        line_filter: Annotated[
+            str | None, Field(description="Line to filter by (e.g. U1, D, 13A). Omit for all lines.")
+        ] = None,
+        severity_filter: Annotated[
+            str | None, Field(description="Severity filter: low, medium, high. Omit for all severities.")
+        ] = None,
     ) -> TrafficAlertsResponse:
         """Get current traffic disruptions and service alerts.
 

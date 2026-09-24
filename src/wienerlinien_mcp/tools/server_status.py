@@ -5,7 +5,7 @@ import time
 from datetime import UTC, datetime
 
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -41,9 +41,7 @@ class ServerStatus(BaseModel):
 def register_server_status_tool(mcp: FastMCP) -> None:
     """Register the server_status tool with the MCP server."""
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def server_status() -> ServerStatus:
         """Check Vienna Transit MCP server health and status.
 
@@ -63,11 +61,12 @@ def register_server_status_tool(mcp: FastMCP) -> None:
         db_status = "disconnected"
         try:
             from database import db
+            from sqlalchemy import text
 
             if db.engine is not None:
                 # Try a simple query
                 with db.get_session() as session:
-                    session.execute("SELECT 1")
+                    session.execute(text("SELECT 1"))
                 db_status = "connected"
         except Exception as e:
             issues.append(f"Database: {e}")

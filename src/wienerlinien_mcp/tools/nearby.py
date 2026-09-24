@@ -4,7 +4,7 @@ import math
 from typing import Annotated
 
 from fastmcp import FastMCP
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from pydantic import BaseModel, Field
 
 
@@ -48,12 +48,16 @@ def _haversine_distance(lat1: float, lng1: float, lat2: float, lng2: float) -> f
 def register_nearby_stops_tool(mcp: FastMCP) -> None:
     """Register the nearby_stops tool with the MCP server."""
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def nearby_stops(
-        lat: Annotated[float, Field(description="Search center latitude (e.g. 48.2082 for Vienna center). Must be within 48.1-48.35.")],
-        lng: Annotated[float, Field(description="Search center longitude (e.g. 16.3738 for Vienna center). Must be within 16.1-16.6.")],
+        lat: Annotated[
+            float,
+            Field(description="Search center latitude (e.g. 48.2082 for Vienna center). Must be within 48.1-48.35."),
+        ],
+        lng: Annotated[
+            float,
+            Field(description="Search center longitude (e.g. 16.3738 for Vienna center). Must be within 16.1-16.6."),
+        ],
         radius: Annotated[int, Field(description="Search radius in meters, 50-2000.", ge=50, le=2000)] = 500,
         limit: Annotated[int, Field(description="Maximum stops to return, 1-50.", ge=1, le=50)] = 10,
     ) -> NearbyStopsResponse:
@@ -122,9 +126,7 @@ def register_nearby_stops_tool(mcp: FastMCP) -> None:
             count=len(nearby),
         )
 
-    @mcp.tool(
-        annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True)
-    )
+    @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=True))
     async def find_nearby_stations(
         latitude: Annotated[float, Field(description="Location latitude (e.g. 48.2082 for Vienna center).")],
         longitude: Annotated[float, Field(description="Location longitude (e.g. 16.3738 for Vienna center).")],

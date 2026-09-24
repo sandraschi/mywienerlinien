@@ -13,7 +13,7 @@ from typing import Annotated
 
 from fastmcp import FastMCP
 from fastmcp.tools import ToolResult
-from fastmcp.tools.tool import ToolAnnotations
+from mcp.types import ToolAnnotations
 from prefab_ui.app import PrefabApp
 from prefab_ui.components import Card, CardContent, CardHeader, Text
 from pydantic import Field
