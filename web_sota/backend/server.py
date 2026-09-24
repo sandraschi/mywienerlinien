@@ -7,6 +7,7 @@ LLM provider proxy (/api/llm/*), and the activity-log API.
 """
 
 import asyncio
+import hmac
 import json
 import os
 import platform
@@ -18,7 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 import httpx
@@ -315,6 +316,39 @@ async def news():
               "description": str(p.get("description", ""))} for p in pois]
     return {"pois": items, "count": len(items),
             "timestamp": datetime.now(timezone.utc).isoformat()}
+
+
+@app.post("/api/webhooks/inbound")
+async def webhooks_inbound(request: Request):
+    """Inbound webhook receiver (fail-closed).
+
+    Callers send JSON with an ``X-Webhook-Secret`` header matching the
+    ``WEBHOOK_SECRET`` env var. Accepted events are appended to the activity
+    log and visible on the Logs page. Without a configured secret the endpoint
+    answers 503 (no unauthenticated intake).
+    """
+    secret = os.getenv("WEBHOOK_SECRET", "")
+    if not secret:
+        return JSONResponse(
+            status_code=503,
+            content={"success": False, "message": "WEBHOOK_SECRET not configured."},
+        )
+    provided = request.headers.get("x-webhook-secret", "")
+    if not hmac.compare_digest(provided, secret):
+        return JSONResponse(
+            status_code=403,
+            content={"success": False, "message": "Invalid webhook secret."},
+        )
+    try:
+        payload = await request.json()
+    except Exception:
+        return JSONResponse(
+            status_code=400,
+            content={"success": False, "message": "Body must be JSON."},
+        )
+    event = str(payload.get("event", "webhook"))
+    activity_log.info("webhook", f"{event}: {str(payload.get('message', ''))[:200]}")
+    return {"success": True, "message": f"Event '{event}' recorded."}
 
 
 @app.get("/api/fleet/apps")

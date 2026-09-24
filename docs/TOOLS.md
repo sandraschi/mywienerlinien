@@ -3,7 +3,7 @@
 MCP surface (`src/wienerlinien_mcp/server.py`, transport stdio, server name
 `vienna-transit`) plus the `web_sota` REST API (`web_sota/backend/server.py`).
 
-## MCP tools (12)
+## MCP tools (20)
 
 Registered in `server.py` via `register_*` helpers. All return structured
 dicts with `success` plus domain fields.
@@ -22,6 +22,10 @@ dicts with `success` plus domain fields.
 | 10 | `line_status` | `tools/status.py` | Status of one line or the whole network (plus status variants) | `line` (optional; empty = system-wide) |
 | 11 | `stop_timetable` | `tools/timetable.py` | Full schedule for a stop (plus per-line timetable variant) | `station`, `date` (optional), `line` (optional) |
 | 12 | `journey_planner` | `tools/journey.py` | A* route with transfers over the GTFS graph | `origin`, `destination`, `departure_time` (optional) |
+| 13 | `server_shutdown` | `tools/shutdown.py` | Orderly shutdown acknowledgement | none |
+| 14 | `show_server_status_card` | `tools/cards.py` | Prefab UI status card (`app=True`) | none |
+| 15 | `show_departures_card` | `tools/cards.py` | Prefab UI departures card (`app=True`) | `station`, `max_results` |
+| 16-20 | status/timetable variants | `tools/status.py`, `tools/timetable.py`, `tools/nearby.py`, `tools/routes.py` | `get_disruptions`, `get_service_status`, `get_timetable`, `find_nearby_stations`, `get_route_info` | per-tool |
 
 Related helper surface in `tools/routes.py` (`routes` info) feeds the
 journey planner and line status tools; it is not a separate 13th tool.
@@ -72,7 +76,14 @@ Base: `http://127.0.0.1:11170`. Fleet-standard plus LLM proxy plus log buffer.
 | GET | `/api/llm/providers` | Live probe of Ollama `:11434` and LM Studio `:1234`, with model lists |
 | GET | `/api/llm/models` | Model map per provider derived from the probe above |
 | GET | `/api/llm/onboarding` | Starter facts (no live vehicle positions, OGD per-stop departures) + recommended path |
-| POST | `/api/llm/chat` | Backend LLM proxy; body `{"provider", "model", "prompt"}`; keys never leave the server |
+| POST | `/api/chat/stream` | SSE chat stream proxy (OpenAI-style chunks + `[DONE]`), falls back to one chunk on provider error |
+| GET | `/api/departures?rbl=` | Live departures for one stop via the OGD monitor API (no key) |
+| GET | `/api/disruptions` | Live disruptions via OGD trafficInfoList (no key) |
+| GET | `/api/news` | Live network news/POIs via OGD newsList (no key) |
+| GET | `/api/stops/major` | Curated major-stop table: verified RBLs + GTFS coords (reference snapshot) |
+| GET | `/api/lines` | Line catalog from the GTFS feed (reference snapshot, 195 Vienna routes) |
+| GET | `/api/fleet/apps` | Fleet Apps Hub registry consumed by the Apps page |
+| POST | `/api/webhooks/inbound` | Inbound webhook receiver (fail-closed): JSON body + `X-Webhook-Secret` header matching `WEBHOOK_SECRET`; events land in the activity log |
 | GET | `/api/logs` | Activity ring buffer entries (via `routes/logging.py` router) |
 | GET | `/api/logs/stats` | Log counts by level/source |
 | GET | `/api/logs/export` | Download logs |
