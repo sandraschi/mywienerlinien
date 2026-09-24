@@ -99,7 +99,8 @@ register_journey_tool(mcp)
 
 logger.info("Vienna Transit MCP Server initialized with FastMCP 2.13")
 logger.info(
-    f"Registered {len(mcp._tool_manager._tools)} tools, {len(mcp._resource_manager._resources)} resources, {len(mcp._prompt_manager._prompts)} prompts"
+    f"Registered {len(getattr(mcp, '_tools', None) or {})} tools, "
+    f"{len(getattr(mcp, '_resources', None) or {})} resources"
 )
 
 # Export for FastMCP CLI
