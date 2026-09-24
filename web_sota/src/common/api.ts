@@ -1,82 +1,120 @@
-// All API calls proxy through Vite to the live map backend on port 3079
-const BASE = '/api'
+// Typed client for the web_sota FastAPI backend (port 11170).
+// Live OGD data: departures/disruptions. Reference snapshots: major stops, lines.
+import { API_BASE } from "../lib/api";
 
 export interface Departure {
-  id: string
-  line: string
-  type: string
-  countdown: number
-  towards: string
-  next_station: string
-  delay: number
-  interpolated?: boolean
+	line: string;
+	destination: string;
+	countdown: number | null;
+	time_planned?: string | null;
+	time_real?: string | null;
+	platform?: string | null;
+	stop?: string | null;
 }
 
 export interface Alert {
-  id: string
-  title: string
-  description: string
-  description_html?: string
-  lines: string[]
-  severity?: string
-  status?: string
-  start_time?: string
-  end_time?: string
-  priority?: string
+	id: string;
+	title: string;
+	description: string;
+	reason?: string;
+	lines: string[];
+	severity?: string;
+	status?: string;
+	start_time?: string;
+	end_time?: string;
 }
 
 export interface Station {
-  name: string
-  rbl: string
-  lat: number
-  lng: number
-  type: string
+	name: string;
+	rbl: string;
+	lat?: number;
+	lon?: number;
 }
 
 export interface LineInfo {
-  name: string
-  type: string
-  color: string
-  description?: string
+	name: string;
+	type: string;
+	color: string;
+	description?: string;
 }
 
 async function get<T>(path: string): Promise<T> {
-  const r = await fetch(`${BASE}${path}`)
-  if (!r.ok) throw new Error(`${r.status} ${r.statusText}`)
-  return r.json()
+	const r = await fetch(`${API_BASE}${path}`);
+	if (!r.ok) {
+		let detail = `${r.status} ${r.statusText}`;
+		try {
+			const body = await r.json();
+			if (body?.error) detail += ` - ${body.error}`;
+		} catch {
+			/* non-JSON error body */
+		}
+		throw new Error(detail);
+	}
+	return r.json();
 }
+
+let majorCache: Station[] | null = null;
 
 export const api = {
-  /** Departures at a stop by RBL */
-  arrivals: (rbl: string) =>
-    get<{ vehicles: Departure[] }>(`/arrivals?rbl=${encodeURIComponent(rbl)}`),
+	/** Live departures for one stop (RBL) via the OGD monitor API. */
+	departures: (rbl: string) =>
+		get<{ rbl: string; departures: Departure[]; count: number }>(
+			`/api/departures?rbl=${encodeURIComponent(rbl)}`,
+		),
 
-  /** All stops nearby lat/lon */
-  nearbyStops: (lat: number, lng: number, limit = 5) =>
-    get<{ stops: Station[] }>(`/stops/nearby?lat=${lat}&lon=${lng}&limit=${limit}`),
+	/** Curated major-stop table (verified RBLs + GTFS coords). */
+	majorStops: async (): Promise<Station[]> => {
+		if (!majorCache) {
+			const d = await get<{ stops: Station[] }>("/api/stops/major");
+			majorCache = d.stops ?? [];
+		}
+		return majorCache;
+	},
 
-  /** Traffic disruptions */
-  trafficInfo: () =>
-    get<{ alerts: Alert[]; count: number; timestamp: string }>('/traffic-info'),
+	/** Live service disruptions via OGD trafficInfoList. */
+	trafficInfo: () =>
+		get<{ alerts: Alert[]; count: number; timestamp: string }>(
+			"/api/disruptions",
+		),
 
-  /** All lines catalog */
-  lines: () =>
-    get<{ lines: LineInfo[] }>('/lines'),
+	/** Line catalog (GTFS reference snapshot). */
+	lines: async (): Promise<{ lines: LineInfo[] }> => {
+		const d = await get<{
+			lines: Array<{
+				name: string;
+				long_name: string;
+				type: string;
+				color: string;
+			}>;
+		}>("/api/lines");
+		return {
+			lines: (d.lines ?? []).map((l) => ({
+				name: l.name,
+				type: l.type,
+				color: l.color,
+				description: l.long_name,
+			})),
+		};
+	},
 
-  /** Stations list */
-  stations: () =>
-    get<{ stations: Station[] }>('/stations'),
+	/** Name search over the major-stop table (client-side filter). */
+	searchStations: async (query: string): Promise<Station[]> => {
+		const stations = await api.majorStops();
+		const q = query.toLowerCase();
+		return stations
+			.filter((s) => s.name.toLowerCase().includes(q))
+			.slice(0, 12);
+	},
 
-  /** Nearby stops by free-text search (uses backend station list) */
-  searchStations: async (query: string): Promise<Station[]> => {
-    const { stations } = await get<{ stations: Station[] }>('/stations')
-    const q = query.toLowerCase()
-    return stations
-      .filter(s => s.name.toLowerCase().includes(q))
-      .slice(0, 12)
-  },
+	/** Backend liveness. */
+	health: () => get<{ status: string }>("/api/health"),
 
-  /** Health */
-  health: () =>
-    get<{ status: string; database?: string }>('/health'),
-}
+	/** Backend status (uptime, version). */
+	status: () =>
+		get<{
+			status: string;
+			service: string;
+			version: string;
+			uptime_seconds: number;
+		}>("/api/status"),
+};

@@ -1,1 +1,2 @@
-export const API_BASE = "http://127.0.0.1:11170";
+// Back-compat re-export: single source of truth lives in ./config.
+export { API_BASE } from "./config";
