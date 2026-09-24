@@ -13,44 +13,42 @@ def mock_city_manager():
     """Create a mock city manager with sample data."""
     manager = MagicMock()
 
-    # Mock cities data (keys mirror the real CityManager.get_city_info
-    # shape: "name" for display name, plus the config fields).
-    mock_cities = {
-        "vienna": {
-            "city_code": "vienna",
+    # Mock cities data in the REAL CityManager.get_available_cities shape
+    # (list of dicts: code/name/country/timezone/language/map_center/map_zoom).
+    mock_city_list = [
+        {
+            "code": "vienna",
             "name": "Vienna",
-            "city_name": "Vienna",
             "country": "Austria",
             "timezone": "Europe/Vienna",
             "language": "de",
-            "gtfs_url": "https://example.com/gtfs.zip",
-            "map_center_lat": 48.2082,
-            "map_center_lng": 16.3738,
+            "map_center": {"lat": 48.2082, "lng": 16.3738},
             "map_zoom": 12,
-            "enabled": True,
             "data_loaded": True,
+            "last_updated": None,
         },
-        "graz": {
-            "city_code": "graz",
+        {
+            "code": "graz",
             "name": "Graz",
-            "city_name": "Graz",
             "country": "Austria",
             "timezone": "Europe/Vienna",
             "language": "de",
-            "gtfs_url": "https://example.com/graz-gtfs.zip",
-            "map_center_lat": 47.0667,
-            "map_center_lng": 15.4333,
+            "map_center": {"lat": 47.0667, "lng": 15.4333},
             "map_zoom": 13,
-            "enabled": True,
             "data_loaded": False,
-        }
-    }
+            "last_updated": None,
+        },
+    ]
 
     # Mock methods
-    manager.list_cities = Mock(return_value=mock_cities)
+    manager.get_available_cities = Mock(return_value=mock_city_list)
     manager.current_city = "vienna"
     manager.switch_city = Mock(return_value=True)
-    manager.get_city_info = Mock(side_effect=lambda city_code: mock_cities.get(city_code))
+    manager.get_city_info = Mock(
+        side_effect=lambda city_code: next(
+            (c for c in mock_city_list if c["code"] == city_code), None
+        )
+    )
 
     # Mock statistics
     mock_stats = {
@@ -120,7 +118,7 @@ async def test_list_cities_success(mock_city_manager, mock_db):
 @pytest.mark.asyncio
 async def test_list_cities_empty(mock_city_manager, mock_db):
     """Test listing cities when no cities are available."""
-    mock_city_manager.list_cities = Mock(return_value={})
+    mock_city_manager.get_available_cities = Mock(return_value=[])
 
     from mcp_server.tools.cities import register_cities_tools
 

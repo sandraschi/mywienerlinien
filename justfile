@@ -51,6 +51,18 @@ bootstrap:
     uv sync --extra dev
     uv run pre-commit install
 
+# All gates green: lint + format-check + tests + webapp typecheck + webapp lint
+gates-green:
+    uv run ruff check src/
+    uv run ruff format src/ --check
+    uv run pytest tests/ -q
+    powershell.exe -NoProfile -Command "npm run check --prefix '{{justfile_directory()}}/web_sota'"
+    powershell.exe -NoProfile -Command "npm run biome:ci --prefix '{{justfile_directory()}}/web_sota'"
+
+# CUA browser smoke test for the webapp (pre-Tauri walk)
+cua-webapp-test:
+    powershell.exe -NoProfile -File "{{justfile_directory()}}/scripts/just/cua-webapp-test.ps1"
+
 # Build the Claude Desktop .mcpb bundle (wipe + fresh-copy src -> mcpb/src inside)
 mcpb-pack:
     powershell.exe -NoProfile -File "{{justfile_directory()}}/mcpb/pack.ps1"
