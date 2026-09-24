@@ -19,7 +19,7 @@ const SECTIONS = [
 	},
 	{
 		title: "Troubleshooting",
-		body: "Backend dot red? The API on 127.0.0.1:11170 is not running - start it with just serve. Empty departures? The OGD API may be rate-limiting; wait 60 seconds. Map links dead? The Docker stack (port 3079) is not running.",
+		body: "Backend dot red? The API on 127.0.0.1:11170 is not running - start it with just serve. Empty departures? The OGD API may be rate-limiting; wait 60 seconds.",
 	},
 ];
 

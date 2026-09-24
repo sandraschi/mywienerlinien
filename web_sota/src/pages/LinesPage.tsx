@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { api, type LineInfo } from "../common/api";
-import { MAP_URL } from "../lib/config";
 
 const TYPE_ORDER = ["metro", "tram", "nightbus", "bus", "rail", "unknown"];
 const TYPE_LABELS: Record<string, string> = {
@@ -73,8 +72,7 @@ export default function LinesPage() {
 					/>
 				</div>
 				<p className="mt-1 text-sm text-slate-300">
-					Vienna line catalog (GTFS reference snapshot). Badges open the stop on
-					the live map.
+					Vienna line catalog (GTFS reference snapshot).
 				</p>
 			</div>
 
@@ -112,22 +110,19 @@ export default function LinesPage() {
 										? l.color
 										: `#${l.color ?? "555"}`;
 									return (
-										<a
+										<span
 											key={l.name}
-											href={`${MAP_URL}/line/${l.name}`}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-700 hover:border-gray-500 bg-gray-800 hover:bg-gray-750 transition-colors group"
+											className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-700 bg-gray-800"
 											title={l.description ?? l.name}
 										>
 											<span
 												className="w-3 h-3 rounded-full flex-shrink-0"
 												style={{ backgroundColor: color }}
 											/>
-											<span className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors">
+											<span className="text-sm font-semibold text-white">
 												{l.name}
 											</span>
-										</a>
+										</span>
 									);
 								})}
 						</div>
