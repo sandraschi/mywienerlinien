@@ -2,9 +2,32 @@
 
 from __future__ import annotations
 
+from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
+import pytest
+
 from mcp_server.utils import find_station_by_name
+
+
+@pytest.fixture
+def mock_data_loader():
+    """Local loader with real attribute values (shadows the shared Mock-based one).
+
+    `Mock(name="...")` sets the mock's name, not a `.name` attribute, so the
+    shared fixture's stations are unusable for attribute-style access here.
+    """
+    stations = [
+        SimpleNamespace(name="Stephansplatz", rbl="1234", type="metro",
+                        zone="100", lat=48.2085, lng=16.3731),
+        SimpleNamespace(name="Hauptbahnhof", rbl="5678", type="metro",
+                        zone="100", lat=48.1847, lng=16.3786),
+        SimpleNamespace(name="Schwedenplatz", rbl="9012", type="metro",
+                        zone="100", lat=48.2119, lng=16.3778),
+    ]
+    loader = Mock()
+    loader.load_stations = Mock(return_value=stations)
+    return loader
 
 
 def test_find_station_by_name_exact_match(mock_data_loader):

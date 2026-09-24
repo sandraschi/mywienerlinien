@@ -70,13 +70,12 @@ async def test_prompts_and_resources_access():
     """Test that prompts and resources can be accessed."""
     from mcp_server.server import _prompt_refs, _resource_refs
 
-    # Test prompts
+    # Test prompts (FastMCP 3.4 contract: prompt functions return str)
     assert len(_prompt_refs) == 5
     for prompt_ref in _prompt_refs:
         result = prompt_ref()
-        assert isinstance(result, list)
+        assert isinstance(result, str)
         assert len(result) > 0
-        assert result[0]["role"] == "user"
 
     # Test resources
     assert len(_resource_refs) == 5

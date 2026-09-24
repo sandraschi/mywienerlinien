@@ -1,115 +1,107 @@
-"""Tests for vehicle data caching and throttling logic."""
+"""Tests for vehicle snapshot caching and filtering logic.
+
+Covers the schedule-interpolated snapshot architecture in
+``frontend.vehicle_service``: per-key snapshots, TTL refresh, and
+post-snapshot type/line filtering. The schedule DB layer is stubbed via
+``_schedule_pseudo_vehicles`` so no database is required.
+"""
 
 from __future__ import annotations
-
-import types
 
 import pytest
 
 from frontend import vehicle_service
-from tests.utils import build_api_response, make_station_list
 
 
 @pytest.fixture(autouse=True)
-def reset_cache(app_module, monkeypatch):
-    """Ensure each test starts with a clean cache and consistent fixtures."""
-
-    monkeypatch.setattr(vehicle_service, "data_loader", app_module.data_loader)
-    monkeypatch.setattr(vehicle_service.data_loader, "load_stations", lambda: make_station_list())
-    monkeypatch.setattr(
-        vehicle_service, "db", types.SimpleNamespace(get_line_stations=lambda line: [])
-    )
-    monkeypatch.setattr(vehicle_service, "_vehicle_snapshot_cache", {})
+def reset_cache():
+    """Ensure each test starts with a clean snapshot cache."""
     vehicle_service.clear_vehicle_cache()
     yield
     vehicle_service.clear_vehicle_cache()
 
 
-def test_collect_vehicle_data_uses_cache(app_module, monkeypatch):
-    """Subsequent calls within 30 seconds reuse cached API data."""
+def _canned(line: str = "U1", vtype: str = "metro") -> list[dict]:
+    return [
+        {
+            "line": line,
+            "type": vtype,
+            "next_station": "Stephansplatz",
+            "countdown": 3,
+            "timestamp": "2025-01-15T14:30:00Z",
+        }
+    ]
 
-    call_counter = {"count": 0}
 
-    def fake_fetch(rbl: str):
-        call_counter["count"] += 1
-        return build_api_response(f"U1-{rbl}", "ptSubway")
+def _patch_schedule(monkeypatch, fake):
+    monkeypatch.setattr(vehicle_service, "_schedule_pseudo_vehicles", fake)
 
-    monkeypatch.setattr(vehicle_service, "fetch_vehicle_data", fake_fetch)
 
+def test_collect_vehicle_data_uses_cache(monkeypatch):
+    """Subsequent calls within the TTL reuse the cached snapshot."""
+    calls = {"count": 0}
+
+    def fake_schedule(line_name: str):
+        calls["count"] += 1
+        return _canned()
+
+    _patch_schedule(monkeypatch, fake_schedule)
+
+    expected_calls = len(vehicle_service.DEFAULT_PSEUDO_LINES)
     first = vehicle_service.collect_vehicle_data()
-    assert call_counter["count"] == 5
+    assert calls["count"] == expected_calls
     assert first["vehicles"]
 
     second = vehicle_service.collect_vehicle_data()
-    assert call_counter["count"] == 5, "API should not be called within cache TTL"
+    assert calls["count"] == expected_calls, "snapshot should be reused within TTL"
     assert second["vehicles"] == first["vehicles"]
 
 
-def test_collect_vehicle_data_filters_by_type(app_module, monkeypatch):
-    """Vehicle type filtering is applied after caching."""
+def test_collect_vehicle_data_filters_by_type(monkeypatch):
+    """Vehicle type filtering is applied after the snapshot."""
+    def fake_schedule(line_name: str):
+        idx = vehicle_service.DEFAULT_PSEUDO_LINES.index(line_name)
+        vtype = "bus" if idx % 2 == 0 else "tram"
+        return _canned(vtype=vtype)
 
-    def fake_fetch(rbl: str):
-        line_type = "ptBus" if int(rbl) % 2 == 0 else "ptTram"
-        return build_api_response("Line", line_type)
-
-    monkeypatch.setattr(vehicle_service, "fetch_vehicle_data", fake_fetch)
+    _patch_schedule(monkeypatch, fake_schedule)
 
     result = vehicle_service.collect_vehicle_data(vehicle_type="bus")
     assert result["vehicles"]
     assert all(vehicle["type"] == "bus" for vehicle in result["vehicles"])
 
 
-def test_collect_vehicle_data_filters_by_lines(app_module, monkeypatch):
-    """Filtering by multiple lines should include only requested lines."""
+def test_collect_vehicle_data_filters_by_lines(monkeypatch):
+    """Filtering by multiple lines includes only requested lines."""
+    def fake_schedule(line_name: str):
+        return _canned(line=line_name.upper())
 
-    mapping = {
-        "1000": ("U1", "ptSubway"),
-        "1001": ("U2", "ptSubway"),
-        "1002": ("11A", "ptBus"),
-        "1003": ("U1", "ptSubway"),
-        "1004": ("11A", "ptBus"),
-    }
+    _patch_schedule(monkeypatch, fake_schedule)
 
-    def fake_fetch(rbl: str):
-        line_name, line_type = mapping.get(rbl, ("U3", "ptSubway"))
-        return build_api_response(line_name, line_type)
-
-    monkeypatch.setattr(vehicle_service, "fetch_vehicle_data", fake_fetch)
-    monkeypatch.setattr(
-        vehicle_service,
-        "db",
-        types.SimpleNamespace(
-            get_line_stations=lambda name: [
-                {"rbl": code}
-                for code, (line, _type) in mapping.items()
-                if line.upper() == name.upper()
-            ]
-        ),
-    )
-
-    result = vehicle_service.collect_vehicle_data(lines=["u1", "U2"])
+    wanted = [vehicle_service.DEFAULT_PSEUDO_LINES[0].upper(),
+              vehicle_service.DEFAULT_PSEUDO_LINES[1].upper()]
+    result = vehicle_service.collect_vehicle_data(lines=wanted)
     assert result["vehicles"]
-    assert {vehicle["line"] for vehicle in result["vehicles"]} == {"U1", "U2"}
+    assert {vehicle["line"] for vehicle in result["vehicles"]} == set(wanted)
 
 
-def test_collect_vehicle_data_refreshes_after_ttl(app_module, monkeypatch):
-    """Cache entries older than the TTL trigger new API calls."""
+def test_collect_vehicle_data_refreshes_after_ttl(monkeypatch):
+    """Snapshots older than the TTL trigger a new schedule pass."""
+    calls = {"count": 0}
 
-    call_counter = {"count": 0}
+    def fake_schedule(line_name: str):
+        calls["count"] += 1
+        return _canned()
 
-    def fake_fetch(rbl: str):
-        call_counter["count"] += 1
-        return build_api_response("U2", "ptSubway")
+    _patch_schedule(monkeypatch, fake_schedule)
 
-    monkeypatch.setattr(vehicle_service, "fetch_vehicle_data", fake_fetch)
-
-    # First call populates cache.
+    expected_calls = len(vehicle_service.DEFAULT_PSEUDO_LINES)
     vehicle_service.collect_vehicle_data()
-    assert call_counter["count"] == 5
+    assert calls["count"] == expected_calls
 
     cache_key = vehicle_service.vehicle_cache_key(None, None)
     cached_entry = vehicle_service._vehicle_snapshot_cache[cache_key]
     cached_entry["fetched_at"] -= vehicle_service.VEHICLE_CACHE_TTL + 1
 
     vehicle_service.collect_vehicle_data()
-    assert call_counter["count"] == 10, "Expired cache should trigger new API calls"
+    assert calls["count"] == 2 * expected_calls, "expired snapshot must refresh"
