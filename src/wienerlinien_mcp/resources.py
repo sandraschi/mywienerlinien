@@ -22,7 +22,7 @@ AI assistants through the MCP protocol using their URIs.
 from fastmcp import FastMCP
 
 try:
-    from ...data_loader import data_loader
+    from data_loader import data_loader
 except ImportError:
     import sys
     from pathlib import Path

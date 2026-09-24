@@ -13,6 +13,7 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -235,7 +236,7 @@ class SocialService:
             WHERE timestamp > NOW() - INTERVAL ':hours hours'
             """
 
-            params = {"hours": hours}
+            params: dict[str, Any] = {"hours": hours}
 
             if line:
                 query += " AND line = :line"

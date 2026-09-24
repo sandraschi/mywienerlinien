@@ -38,7 +38,7 @@ class DelayPrediction:
     line: str
     predicted_delay_minutes: float
     confidence: float  # 0-1
-    factors: dict[str, float]  # Contributing factors
+    factors: dict[str, Any]  # Contributing factors (numeric or descriptive)
     timestamp: datetime
 
 
@@ -122,6 +122,10 @@ class DelayPredictionModel:
             logger.warning("ML libraries not available")
             return False
 
+        assert np is not None
+        assert train_test_split is not None
+        assert StandardScaler is not None
+
         if len(historical_data) < 100:
             logger.warning(f"Insufficient data for {line}: {len(historical_data)} records (need 100+)")
             return False
@@ -156,6 +160,8 @@ class DelayPredictionModel:
             features_test_scaled = scaler.transform(features_test)
 
             # Train model
+            assert GradientBoostingRegressor is not None
+            assert RandomForestRegressor is not None
             if model_type == "gradient_boosting":
                 model = GradientBoostingRegressor(n_estimators=100, max_depth=5, learning_rate=0.1, random_state=42)
             else:  # random_forest
@@ -213,6 +219,7 @@ class DelayPredictionModel:
 
     def _predict_ml(self, line: str, target_time: datetime) -> DelayPrediction:
         """Make ML-based prediction."""
+        assert np is not None, "ML libraries not available"
         model = self.models[line]
         scaler = self.scalers[line]
 

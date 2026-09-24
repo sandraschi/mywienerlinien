@@ -427,6 +427,8 @@ class JourneyPlanner:
             List of route options
         """
         try:
+            if self.astar_router is None:
+                raise RuntimeError("A* router not initialized")
             # Find multiple alternative routes using A*
             paths = self.astar_router.find_multiple_routes(
                 from_stop_id,
@@ -447,7 +449,8 @@ class JourneyPlanner:
                 current_time = departure_time
 
                 for edge in path:
-                    # Get stop names from graph
+                    # Get stop names from graph (graph always exists when A* runs)
+                    assert self.graph is not None
                     from_node = self.graph.get_node(edge.from_stop_id)
                     to_node = self.graph.get_node(edge.to_stop_id)
 
