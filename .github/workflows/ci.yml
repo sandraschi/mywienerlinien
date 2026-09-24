@@ -2,131 +2,100 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   lint:
-    name: Lint and Format Check
-    runs-on: ubuntu-latest
+    name: Ruff lint + format
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install ruff mypy
-          pip install -r frontend/requirements.txt
-      
-      - name: Run Ruff linting
-        run: |
-          ruff check frontend/mcp_server/ frontend/data_loader.py frontend/database.py frontend/vehicle_service.py
-      
-      - name: Check formatting with Ruff
-        run: |
-          ruff format --check frontend/mcp_server/ frontend/data_loader.py frontend/database.py frontend/vehicle_service.py
-      
-      - name: Type check with mypy
-        run: |
-          mypy frontend/mcp_server/ --ignore-missing-imports || true
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Sync dependencies
+        run: uv sync --extra dev
+
+      - name: Ruff check
+        run: uv run ruff check src/
+
+      - name: Ruff format check
+        run: uv run ruff format src/ --check
 
   test:
-    name: Run Tests
-    runs-on: ubuntu-latest
+    name: Pytest (strict)
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r frontend/requirements.txt
-          pip install pytest pytest-asyncio pytest-cov
-      
-      - name: Run tests
-        run: |
-          pytest tests/ -v --cov=frontend --cov-report=xml --cov-report=term || true
-      
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage.xml
-          fail_ci_if_error: false
 
-  build-mcpb:
-    name: Build MCPB Package
-    runs-on: ubuntu-latest
-    needs: [lint, test]
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Sync dependencies
+        run: uv sync --extra dev
+
+      - name: Run tests
+        run: uv run pytest tests/ -q
+
+  frontend:
+    name: Webapp typecheck + lint
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: web_sota
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-      
-      - name: Install MCPB CLI
-        run: |
-          npm install -g @anthropic-ai/mcpb
-      
-      - name: Copy source files to mcpb
-        run: |
-          mkdir -p mcpb/frontend
-          cp -r frontend/mcp_server mcpb/frontend/
-          cp frontend/data_loader.py mcpb/frontend/
-          cp frontend/database.py mcpb/frontend/
-          cp frontend/vehicle_service.py mcpb/frontend/
-      
-      - name: Build MCPB package
-        run: |
-          mkdir -p dist
-          mcpb pack mcpb dist/vienna-transit-mcp-v1.0.0.mcpb
-      
-      - name: Validate package
-        run: |
-          mcpb validate dist/vienna-transit-mcp-v1.0.0.mcpb || true
-      
-      - name: Upload package artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: mcpb-package
-          path: dist/vienna-transit-mcp-v1.0.0.mcpb
-          retention-days: 30
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web_sota/package-lock.json
 
-  verify-server:
-    name: Verify MCP Server
-    runs-on: ubuntu-latest
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run check
+
+      - name: Biome gate
+        run: npm run biome:ci
+
+      - name: Production build
+        run: npm run build
+
+  mcpb-verify:
+    name: MCPB pollution check
+    runs-on: windows-latest
+    needs: [lint, test]
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r frontend/requirements.txt
-      
-      - name: Verify server imports
-        run: |
-          python -c "import sys; sys.path.insert(0, 'frontend'); from mcp_server.server import mcp; print('MCP server verified')"
-      
-      - name: Check tools registration
-        run: |
-          python -c "import sys; sys.path.insert(0, 'frontend'); from mcp_server.server import mcp, _prompt_refs, _resource_refs; print(f'Tools: {len(mcp._tools)}, Prompts: {len(_prompt_refs)}, Resources: {len(_resource_refs)}')"
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Sync dependencies
+        run: uv sync --extra dev
+
+      - name: No build dross under mcpb/
+        run: uv run python mcpb/verify_pack.py pollution mcpb
+
+  verify-server:
+    name: Verify MCP server imports
+    runs-on: windows-latest
+    needs: [lint]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Sync dependencies
+        run: uv sync --extra dev
+
+      - name: Import live server and count tools
+        run: uv run python scripts/verify_server.py
