@@ -11,6 +11,11 @@ import os
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime
+from pathlib import Path
+
+# Absolute log path: a bare filename lands in the host's cwd (BUG-063)
+LOG_DIR = Path(os.environ.get("LOCALAPPDATA") or Path.home()) / "mywienerlinien" / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 # Set up logging
 logging.basicConfig(
@@ -18,7 +23,7 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler("gtfs_analysis.log", mode="w", encoding="utf-8"),
+        logging.FileHandler(LOG_DIR / "gtfs_analysis.log", mode="w", encoding="utf-8"),
     ],
 )
 logger = logging.getLogger(__name__)
@@ -52,9 +57,7 @@ class Stop:
     stop_name: str
     lat: float
     lon: float
-    routes: dict[str, set[int]] = field(
-        default_factory=lambda: defaultdict(set)
-    )  # route_id -> set of direction_ids
+    routes: dict[str, set[int]] = field(default_factory=lambda: defaultdict(set))  # route_id -> set of direction_ids
 
 
 @dataclass
@@ -67,9 +70,7 @@ class Route:
     route_type: str  # Using the GTFS route_type code
     route_color: str = ""
     route_text_color: str = ""
-    directions: dict[int, dict] = field(
-        default_factory=dict
-    )  # direction_id -> {trip_id, stop_sequence: [stops]}
+    directions: dict[int, dict] = field(default_factory=dict)  # direction_id -> {trip_id, stop_sequence: [stops]}
 
 
 def load_stops(gtfs_dir: str) -> dict[str, Stop]:
@@ -187,9 +188,7 @@ def load_trips(gtfs_dir: str, routes: dict[str, Route]) -> dict[str, dict]:
         return {}
 
 
-def process_stop_times(
-    gtfs_dir: str, stops: dict[str, Stop], routes: dict[str, Route], trips: dict[str, dict]
-) -> None:
+def process_stop_times(gtfs_dir: str, stops: dict[str, Stop], routes: dict[str, Route], trips: dict[str, dict]) -> None:
     """Process stop_times.txt to build stop sequences for each trip."""
     stop_times_file = os.path.join(gtfs_dir, "stop_times.txt")
 
@@ -214,9 +213,7 @@ def process_stop_times(
                     processed_rows += 1
                     if processed_rows % 100000 == 0:
                         progress = (processed_rows / total_rows) * 100
-                        logger.info(
-                            f"Progress: {progress:.1f}% ({processed_rows}/{total_rows} rows)"
-                        )
+                        logger.info(f"Progress: {progress:.1f}% ({processed_rows}/{total_rows} rows)")
 
                     trip_id = row["trip_id"].strip()
                     if trip_id not in trips:
@@ -299,9 +296,7 @@ def generate_route_markdown(routes: dict[str, Route], route_type: str, output_di
 
     # Debug: Log all routes and their types
     for route_id, route in routes.items():
-        logger.debug(
-            f"Route ID: {route_id}, Type: {route.route_type}, Name: {route.route_short_name}"
-        )
+        logger.debug(f"Route ID: {route_id}, Type: {route.route_type}, Name: {route.route_short_name}")
 
     # Filter routes by type and log the results
     filtered_routes = [r for r in routes.values() if r.route_type == route_type]
@@ -329,9 +324,7 @@ def generate_route_markdown(routes: dict[str, Route], route_type: str, output_di
         )
     except Exception as e:
         logger.error(f"Error sorting routes: {e}")
-        logger.error(
-            f"Problematic route data: {[(r.route_short_name, r.route_id) for r in filtered_routes]}"
-        )
+        logger.error(f"Problematic route data: {[(r.route_short_name, r.route_id) for r in filtered_routes]}")
         sorted_routes = filtered_routes  # Use unsorted if sorting fails
 
     # Map route type to display name
@@ -427,9 +420,7 @@ def generate_station_markdown(stops: dict[str, Stop], route_type: str, output_di
                 f.write("- **Served by routes**: ")
                 route_list = []
                 for route_id, directions in stop.routes.items():
-                    route_info = (
-                        f"{route_id} (Directions: {', '.join(map(str, sorted(directions)))})"
-                    )
+                    route_info = f"{route_id} (Directions: {', '.join(map(str, sorted(directions)))})"
                     route_list.append(route_info)
                 f.write(", ".join(route_list) + "\n")
 
@@ -445,7 +436,7 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     # Set up file handler for logging
-    file_handler = logging.FileHandler("gtfs_analysis.log", mode="w", encoding="utf-8")
+    file_handler = logging.FileHandler(LOG_DIR / "gtfs_analysis.log", mode="w", encoding="utf-8")
     file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
     logger.addHandler(file_handler)
 
