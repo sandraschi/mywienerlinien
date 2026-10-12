@@ -1,5 +1,6 @@
 """Traffic alerts tool for Vienna Transit MCP."""
 
+import asyncio
 from datetime import UTC, datetime
 from typing import Annotated
 
@@ -64,7 +65,7 @@ def register_traffic_alerts_tool(mcp: FastMCP) -> None:
         try:
             # Fetch from Wiener Linien traffic info API
             url = "https://www.wienerlinien.at/ogd_realtime/trafficInfoList"
-            resp = requests.get(url, timeout=10)
+            resp = await asyncio.to_thread(requests.get, url, timeout=10)
             resp.raise_for_status()
             data = resp.json()
 

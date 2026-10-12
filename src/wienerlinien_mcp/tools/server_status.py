@@ -1,5 +1,6 @@
 """Server status tool for Vienna Transit MCP."""
 
+import asyncio
 import logging
 import time
 from datetime import UTC, datetime
@@ -76,7 +77,8 @@ def register_server_status_tool(mcp: FastMCP) -> None:
         try:
             import requests
 
-            resp = requests.get(
+            resp = await asyncio.to_thread(
+                requests.get,
                 "https://www.wienerlinien.at/ogd_realtime/monitor?rbl=252",
                 timeout=5,
             )
