@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
+import subprocess
 from contextlib import asynccontextmanager
 from dataclasses import asdict
 from datetime import datetime, timedelta
@@ -18,7 +19,6 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
-import subprocess
 
 try:
     from .api.analytics import router as analytics_router
@@ -199,9 +199,7 @@ async def community_dashboard_page(request: Request) -> HTMLResponse:
 
 @fastapi_app.get("/line/{line_name}", response_class=HTMLResponse)
 async def read_line_info(request: Request, line_name: str) -> HTMLResponse:
-    return TEMPLATES.TemplateResponse(
-        "line_info.html", {"request": request, "line_name": line_name}
-    )
+    return TEMPLATES.TemplateResponse("line_info.html", {"request": request, "line_name": line_name})
 
 
 @fastapi_app.get("/api/vehicles")
@@ -323,9 +321,7 @@ async def get_line_route(line_name: str) -> JSONResponse:
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error(
-            "Error fetching route for line %s: %s", normalized_name, exc, exc_info=True
-        )
+        logger.error("Error fetching route for line %s: %s", normalized_name, exc, exc_info=True)
         raise HTTPException(status_code=500, detail="Failed to fetch route data")
 
 
@@ -366,11 +362,7 @@ async def get_arrivals(request: Request) -> JSONResponse:
 
         lines = None
         if lines_param:
-            lines = [
-                piece.strip().upper()
-                for piece in lines_param.split(",")
-                if piece.strip()
-            ]
+            lines = [piece.strip().upper() for piece in lines_param.split(",") if piece.strip()]
 
         if not rbl and not lines:
             raise HTTPException(status_code=400, detail="Provide rbl or lines")
@@ -406,7 +398,7 @@ async def get_traffic_info() -> JSONResponse:
 
         # Fetch from Wiener Linien API
         url = "https://www.wienerlinien.at/ogd_realtime/trafficInfoList"
-        response = requests.get(url, timeout=10)
+        response = await asyncio.to_thread(requests.get, url, timeout=10)
         response.raise_for_status()
 
         data = response.json()
@@ -423,7 +415,7 @@ async def get_traffic_info() -> JSONResponse:
                 refs = item.get("references") or {}
                 # Collect related line names
                 related_lines = []
-                for line_ref in (refs.get("lines") or []):
+                for line_ref in refs.get("lines") or []:
                     name = line_ref.get("name") or line_ref.get("shortName") or ""
                     if name:
                         related_lines.append(name)
@@ -519,9 +511,7 @@ async def get_stops_nearby(request: Request) -> JSONResponse:
                 )
 
         enriched.sort(key=lambda x: x["distance_m"])
-        return JSONResponse(
-            {"stops": enriched[:limit], "origin": {"lat": lat, "lon": lon}}
-        )
+        return JSONResponse({"stops": enriched[:limit], "origin": {"lat": lat, "lon": lon}})
     except HTTPException:
         raise
     except Exception as exc:
@@ -583,9 +573,7 @@ async def get_disruptions(request: Request) -> JSONResponse:
         elif severity_filter:
             from disruption_alerts import DisruptionSeverity
 
-            disruptions = disruption_monitor.get_disruptions_by_severity(
-                DisruptionSeverity(severity_filter)
-            )
+            disruptions = disruption_monitor.get_disruptions_by_severity(DisruptionSeverity(severity_filter))
         else:
             disruptions = disruption_monitor.get_active_disruptions()
 
@@ -601,9 +589,7 @@ async def get_disruptions(request: Request) -> JSONResponse:
                 "affected_stations": disruption.affected_stations,
                 "affected_lines": disruption.affected_lines,
                 "start_time": disruption.start_time.isoformat(),
-                "end_time": disruption.end_time.isoformat()
-                if disruption.end_time
-                else None,
+                "end_time": disruption.end_time.isoformat() if disruption.end_time else None,
                 "created_at": disruption.created_at.isoformat(),
                 "updated_at": disruption.updated_at.isoformat(),
             }
@@ -640,17 +626,13 @@ async def get_system_status() -> JSONResponse:
             }
         )
         status = {
-            "websocket_clients": ws_manager.get_connected_clients_count()
-            if ws_manager
-            else 0,
+            "websocket_clients": ws_manager.get_connected_clients_count() if ws_manager else 0,
             "active_disruptions": len(active_disruptions),
             "vehicle_count": ws_manager.get_vehicle_count() if ws_manager else 0,
             "vehicle_total": ws_manager.get_vehicle_total_count() if ws_manager else 0,
             "filters": filter_summary,
             "data_cache_status": data_loader.get_cache_status(),
-            "last_api_check": disruption_monitor.last_check.isoformat()
-            if disruption_monitor.last_check
-            else None,
+            "last_api_check": disruption_monitor.last_check.isoformat() if disruption_monitor.last_check else None,
             "timestamp": datetime.utcnow().isoformat(),
         }
         return JSONResponse(status)
@@ -674,9 +656,7 @@ async def launch_app(request: LaunchRequest):
     """Launch another MCP app via its start.ps1 script."""
     path = Path(request.repo_path)
     if not path.exists():
-        raise HTTPException(
-            status_code=404, detail=f"Path {request.repo_path} does not exist"
-        )
+        raise HTTPException(status_code=404, detail=f"Path {request.repo_path} does not exist")
 
     # Security check
     allowed_base = Path("D:/Dev/repos")
@@ -717,26 +697,17 @@ async def get_status_summary() -> JSONResponse:
     try:
         vehicle_summary = get_vehicle_summary()
         disruption_summary = disruption_monitor.get_disruption_summary()
-        heartbeat_path = Path(
-            os.getenv("GTFS_HEARTBEAT_PATH", "/app/data/gtfs_loader_heartbeat.json")
-        )
+        heartbeat_path = Path(os.getenv("GTFS_HEARTBEAT_PATH", "/app/data/gtfs_loader_heartbeat.json"))
         heartbeat_info = None
         if heartbeat_path.exists():
             heartbeat_info = {
                 "path": str(heartbeat_path),
-                "updated_at": datetime.utcfromtimestamp(
-                    heartbeat_path.stat().st_mtime
-                ).isoformat()
-                + "Z",
+                "updated_at": datetime.utcfromtimestamp(heartbeat_path.stat().st_mtime).isoformat() + "Z",
             }
         # Read last GTFS refresh marker
         try:
             marker_path = LOGS_DIR / "gtfs_last_success.txt"
-            last_gtfs_refresh = (
-                marker_path.read_text(encoding="utf-8").strip()
-                if marker_path.exists()
-                else None
-            )
+            last_gtfs_refresh = marker_path.read_text(encoding="utf-8").strip() if marker_path.exists() else None
         except Exception:
             last_gtfs_refresh = None
         payload = {
@@ -861,9 +832,7 @@ async def add_favorite(request: Request) -> JSONResponse:
         station_name = data.get("station_name")
 
         if not station_id or not station_name:
-            raise HTTPException(
-                status_code=400, detail="station_id and station_name are required"
-            )
+            raise HTTPException(status_code=400, detail="station_id and station_name are required")
 
         return JSONResponse(
             {
@@ -914,25 +883,17 @@ async def plan_journey(request: Request) -> JSONResponse:
         from_station = request.query_params.get("from")
         to_station = request.query_params.get("to")
         departure_time_str = request.query_params.get("time")
-        alternatives = min(
-            5, max(1, int(request.query_params.get("alternatives", "3")))
-        )
-        include_delays = (
-            request.query_params.get("include_delays", "true").lower() != "false"
-        )
+        alternatives = min(5, max(1, int(request.query_params.get("alternatives", "3"))))
+        include_delays = request.query_params.get("include_delays", "true").lower() != "false"
 
         if not from_station or not to_station:
-            raise HTTPException(
-                status_code=400, detail="Both 'from' and 'to' parameters are required"
-            )
+            raise HTTPException(status_code=400, detail="Both 'from' and 'to' parameters are required")
 
         # Parse departure time
         if departure_time_str:
             try:
-                departure_time = datetime.fromisoformat(
-                    departure_time_str.replace("Z", "+00:00")
-                )
-            except:
+                departure_time = datetime.fromisoformat(departure_time_str.replace("Z", "+00:00"))
+            except Exception:
                 departure_time = datetime.now()
         else:
             departure_time = datetime.now()
@@ -949,13 +910,9 @@ async def plan_journey(request: Request) -> JSONResponse:
         to_info = find_station_by_name(to_station)
 
         if not from_info:
-            raise HTTPException(
-                status_code=404, detail=f"Origin station '{from_station}' not found"
-            )
+            raise HTTPException(status_code=404, detail=f"Origin station '{from_station}' not found")
         if not to_info:
-            raise HTTPException(
-                status_code=404, detail=f"Destination station '{to_station}' not found"
-            )
+            raise HTTPException(status_code=404, detail=f"Destination station '{to_station}' not found")
 
         # Get journey planner (lazy loaded with A* support)
         from wienerlinien_mcp.tools.journey import get_journey_planner
@@ -971,14 +928,13 @@ async def plan_journey(request: Request) -> JSONResponse:
         )
 
         if not route_options:
-            raise HTTPException(
-                status_code=404, detail="No routes found between these stations"
-            )
+            raise HTTPException(status_code=404, detail="No routes found between these stations")
 
         # Adjust for real-time delays if requested
         if include_delays:
             try:
                 import vehicle_service
+
                 from wienerlinien_mcp.realtime_service import get_realtime_service
 
                 realtime_svc = get_realtime_service(vehicle_service)
@@ -987,20 +943,14 @@ async def plan_journey(request: Request) -> JSONResponse:
                 # Adjust each route for delays
                 adjusted_routes = []
                 for route in route_options:
-                    adjusted = realtime_svc.adjust_route_for_delays(
-                        route, realtime_updates
-                    )
+                    adjusted = realtime_svc.adjust_route_for_delays(route, realtime_updates)
                     adjusted_routes.append(adjusted)
 
                 # Re-rank by reliability
-                ranked = realtime_svc.rank_routes_by_reliability(
-                    adjusted_routes, realtime_updates
-                )
+                ranked = realtime_svc.rank_routes_by_reliability(adjusted_routes, realtime_updates)
                 route_options = [route for route, score in ranked]
 
-                logger.info(
-                    f"Applied real-time delay adjustments to {len(route_options)} routes"
-                )
+                logger.info(f"Applied real-time delay adjustments to {len(route_options)} routes")
             except Exception as e:
                 logger.warning(f"Could not apply delay adjustments: {e}")
 
@@ -1018,9 +968,7 @@ async def plan_journey(request: Request) -> JSONResponse:
                         "arrival_time": seg.arrival_time.isoformat(),
                         "duration_minutes": seg.duration_minutes,
                         "vehicle_type": seg.vehicle_type,
-                        "distance_meters": round(seg.distance_meters)
-                        if seg.distance_meters
-                        else None,
+                        "distance_meters": round(seg.distance_meters) if seg.distance_meters else None,
                         "is_walking": seg.line == "WALK",
                     }
                 )
@@ -1054,9 +1002,7 @@ async def plan_journey(request: Request) -> JSONResponse:
         raise
     except Exception as exc:
         logger.error("Error planning journey: %s", exc, exc_info=True)
-        raise HTTPException(
-            status_code=500, detail=f"Journey planning failed: {str(exc)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Journey planning failed: {exc!s}")
 
 
 def initialize_app() -> None:
@@ -1081,9 +1027,7 @@ def initialize_app() -> None:
             gtfs_manager.ensure_data_ready()
         except Exception as exc:  # pragma: no cover - startup critical
             if dev_mode:
-                logger.warning(
-                    "GTFS bootstrap failed (continuing in dev mode): %s", exc
-                )
+                logger.warning("GTFS bootstrap failed (continuing in dev mode): %s", exc)
                 # Don't raise in dev mode - allow app to start without GTFS data
             else:
                 logger.error("GTFS bootstrap failed: %s", exc, exc_info=True)
@@ -1105,9 +1049,7 @@ def initialize_app() -> None:
         clear_vehicle_cache()
     except Exception as exc:
         if dev_mode:
-            logger.warning(
-                "Vehicle cache clear failed (continuing in dev mode): %s", exc
-            )
+            logger.warning("Vehicle cache clear failed (continuing in dev mode): %s", exc)
         else:
             raise
 
@@ -1118,9 +1060,7 @@ if dev_mode:
     app = fastapi_app
     logger.info("Running in development mode without Socket.IO")
 else:
-    socket_app = socketio.ASGIApp(
-        sio, other_asgi_app=fastapi_app, socketio_path="/ws/socket.io"
-    )
+    socket_app = socketio.ASGIApp(sio, other_asgi_app=fastapi_app, socketio_path="/ws/socket.io")
     app = socket_app
 
 

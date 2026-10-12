@@ -1,7 +1,9 @@
 """Server status tool for Vienna Transit MCP."""
 
+import asyncio
 import time
-from datetime import datetime, timezone
+from contextlib import suppress
+from datetime import UTC, datetime, timezone
 from typing import Optional
 
 from fastmcp import FastMCP
@@ -25,7 +27,7 @@ class ServerStatus(BaseModel):
     status: str = Field(..., description="Overall status: healthy, degraded, unhealthy")
     api_status: str = Field(..., description="Wiener Linien API: connected, timeout, unavailable")
     database_status: str = Field(..., description="PostgreSQL: connected, disconnected")
-    gtfs_data_age: Optional[str] = Field(None, description="Age of GTFS data")
+    gtfs_data_age: str | None = Field(None, description="Age of GTFS data")
     cache_stats: CacheStats = Field(..., description="Cache performance")
     version: str = Field(..., description="MCP server version")
     uptime_seconds: int = Field(..., description="Seconds since server start")
@@ -84,7 +86,8 @@ def register_server_status_tool(mcp: FastMCP) -> None:
         try:
             import requests
 
-            resp = requests.get(
+            resp = await asyncio.to_thread(
+                requests.get,
                 "https://www.wienerlinien.at/ogd_realtime/monitor?rbl=252",
                 timeout=5,
             )
@@ -101,7 +104,7 @@ def register_server_status_tool(mcp: FastMCP) -> None:
 
         # Check data freshness
         gtfs_age = None
-        try:
+        with suppress(Exception):
             from data_loader import data_loader
 
             cache_status = data_loader.get_cache_status()
@@ -112,8 +115,6 @@ def register_server_status_tool(mcp: FastMCP) -> None:
                         last_loaded = datetime.fromisoformat(last_loaded)
                     age = datetime.now() - last_loaded
                     gtfs_age = f"{age.seconds // 3600}h {(age.seconds % 3600) // 60}m ago"
-        except Exception:
-            pass
 
         # Check cache status
         cache_stats = CacheStats(
@@ -121,7 +122,7 @@ def register_server_status_tool(mcp: FastMCP) -> None:
             lines_cached=False,
             routes_cached=False,
         )
-        try:
+        with suppress(Exception):
             from data_loader import data_loader
 
             status = data_loader.get_cache_status()
@@ -130,8 +131,6 @@ def register_server_status_tool(mcp: FastMCP) -> None:
                 lines_cached=status.get("lines_loaded", False),
                 routes_cached=status.get("routes_loaded", False),
             )
-        except Exception:
-            pass
 
         # Calculate uptime
         uptime_secs = int(time.time() - _server_start_time)
@@ -141,9 +140,7 @@ def register_server_status_tool(mcp: FastMCP) -> None:
 
         # Count tools and resources
         tools_count = len(mcp._tool_manager._tools) if hasattr(mcp, "_tool_manager") else 0
-        resources_count = (
-            len(mcp._resource_manager._resources) if hasattr(mcp, "_resource_manager") else 0
-        )
+        resources_count = len(mcp._resource_manager._resources) if hasattr(mcp, "_resource_manager") else 0
 
         # Determine overall status
         if db_status == "connected" and api_status == "connected":
@@ -162,7 +159,7 @@ def register_server_status_tool(mcp: FastMCP) -> None:
             version="1.0.0",
             uptime_seconds=uptime_secs,
             uptime_human=uptime_human,
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
             tools_available=tools_count,
             resources_available=resources_count,
         )
