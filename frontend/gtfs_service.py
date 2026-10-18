@@ -3,12 +3,97 @@ GTFS Service for handling GTFS data processing.
 """
 
 import csv
+import json
 import logging
 import os
+import re
 from dataclasses import dataclass
 from datetime import date, datetime
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
+
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+
+# City ids are used as directory names under cities/ — keep the alphabet tight
+# so resolve_data_city can never escape into a traversal.
+_CITY_ID_RE = re.compile(r"[a-z0-9][a-z0-9_-]*")
+
+
+def extracted_dir() -> Path:
+    """Legacy Vienna feed directory (the live reader's historic home)."""
+    return _REPO_ROOT / "scripts" / "gtfs_data" / "extracted"
+
+
+def data_cities_root() -> Path:
+    """Root of per-city gtfs-mcp exports (override via MYWIENERLINIEN_GTFS_CITIES)."""
+    override = os.environ.get("MYWIENERLINIEN_GTFS_CITIES", "").strip()
+    if override:
+        return Path(override).expanduser()
+    return _REPO_ROOT / "scripts" / "gtfs_data" / "cities"
+
+
+def _read_manifest(city_dir: Path) -> dict:
+    try:
+        return json.loads((city_dir / "manifest.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def resolve_data_city(city_id: str) -> Path | None:
+    """Feed-data directory for a city id, or None when unavailable.
+
+    ``vienna`` is the legacy ``extracted/`` checkout; every other city lives in
+    ``cities/<id>/`` with a ``manifest.json`` (the gtfs-mcp export contract).
+    """
+    cid = (city_id or "").strip().lower()
+    if not cid or _CITY_ID_RE.fullmatch(cid) is None:
+        return None
+    if cid == "vienna":
+        cand = extracted_dir()
+        if (cand / "calendar.txt").exists() or (cand / "stops.txt").exists():
+            return cand
+        return None
+    cand = data_cities_root() / cid
+    if (cand / "manifest.json").is_file():
+        return cand
+    return None
+
+
+def list_data_cities() -> list[dict]:
+    """Cities with locally available feed data (for the city switcher UI).
+
+    Vienna first when its legacy checkout has data, then every cities/<id>/
+    carrying a manifest.json, enriched with that manifest's counts/export time.
+    An index.json (written by gtfs-mcp exports) is honoured when present but a
+    manifest on disk is sufficient — never trust the index alone.
+    """
+    found: list[dict] = []
+    vienna = resolve_data_city("vienna")
+    if vienna is not None:
+        found.append({"id": "vienna", "dir": str(vienna), "source": "extracted-legacy"})
+    root = data_cities_root()
+    try:
+        names = sorted(p.name for p in root.iterdir() if p.is_dir())
+    except OSError:
+        names = []
+    for name in names:
+        if name == "vienna":
+            continue
+        city_dir = resolve_data_city(name)
+        if city_dir is None:
+            continue
+        manifest = _read_manifest(city_dir)
+        found.append(
+            {
+                "id": name,
+                "dir": str(city_dir),
+                "source": "gtfs-mcp-export",
+                "exported_at": manifest.get("exported_at"),
+                "counts": manifest.get("counts", {}),
+            }
+        )
+    return found
 
 
 @dataclass
@@ -53,9 +138,7 @@ class GTFSService:
         self._load_calendar()
         self._load_trips()
         self._loaded = True
-        logger.info(
-            f"GTFS data loaded: {len(self.calendar_entries)} calendar entries, {len(self.trips)} trips"
-        )
+        logger.info(f"GTFS data loaded: {len(self.calendar_entries)} calendar entries, {len(self.trips)} trips")
 
     def _load_calendar(self) -> None:
         """Load calendar.txt data."""
@@ -140,22 +223,18 @@ class GTFSService:
 
         return active_services
 
-    def get_trips_for_route(
-        self, route_id: str, date_filter: date | None = None
-    ) -> list[GTFSTrip]:
+    def get_trips_for_route(self, route_id: str, date_filter: date | None = None) -> list[GTFSTrip]:
         """Get all trips for a specific route, optionally filtered by date."""
         if not self._loaded:
             self.load_data()
 
         if date_filter:
             active_services = self.get_active_services(date_filter)
-            return [
-                t for t in self.trips if t.route_id == route_id and t.service_id in active_services
-            ]
+            return [t for t in self.trips if t.route_id == route_id and t.service_id in active_services]
 
         return [t for t in self.trips if t.route_id == route_id]
 
-    def get_trip_schedule(self, trip_id: str) -> list[Dict]:
+    def get_trip_schedule(self, trip_id: str) -> list[dict]:
         """Get the schedule for a specific trip."""
         if not self._loaded:
             self.load_data()

@@ -69,6 +69,18 @@ except ImportError:
         return None
 
 
+try:
+    from frontend.gtfs_service import resolve_data_city
+except ImportError:
+    try:
+        from gtfs_service import resolve_data_city  # type: ignore
+    except ImportError:
+
+        def resolve_data_city(city_id: str):  # type: ignore
+            """Fallback when gtfs_service is unavailable: no city reports data."""
+            return None
+
+
 BASE_DIR = Path(__file__).parent
 TEMPLATES = Jinja2Templates(directory=BASE_DIR / "templates")
 STATIC_DIR = BASE_DIR / "static"
@@ -731,11 +743,21 @@ async def get_cities() -> JSONResponse:
         for city_key, city_config in cities_dict.items():
             city_data = {
                 "key": city_key,
+                "code": city_key,
                 "name": city_config.name,
                 "description": city_config.description,
                 "timezone": city_config.timezone,
                 "language": city_config.language,
             }
+            # Data availability for the city switcher UI (✓/○ + "Data pending"
+            # badge): legacy extracted/ checkout or a gtfs-mcp cities/ export.
+            data_dir = resolve_data_city(city_key)
+            city_data["data_loaded"] = data_dir is not None
+            city_data["data_source"] = (
+                "extracted-legacy"
+                if city_key == "vienna" and data_dir is not None
+                else ("gtfs-mcp-export" if data_dir is not None else "none")
+            )
             if city_config.map_center:
                 city_data["map_center"] = {
                     "lat": city_config.map_center[0],
@@ -765,6 +787,14 @@ async def get_city_info(city_key: str) -> JSONResponse:
             "language": city_config.language,
             "enable_rbl_mapping": city_config.enable_rbl_mapping,
         }
+        data_dir = resolve_data_city(city_key)
+        city_data["code"] = city_key
+        city_data["data_loaded"] = data_dir is not None
+        city_data["data_source"] = (
+            "extracted-legacy"
+            if city_key == "vienna" and data_dir is not None
+            else ("gtfs-mcp-export" if data_dir is not None else "none")
+        )
         if city_config.map_center:
             city_data["map_center"] = {
                 "lat": city_config.map_center[0],
