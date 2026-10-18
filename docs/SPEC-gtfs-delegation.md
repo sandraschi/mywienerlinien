@@ -1,6 +1,6 @@
 # SPEC: GTFS delegation to gtfs-mcp + SQLite + rename to publictransport-mcp
 
-- Status: Phase 1 in progress (2026-10-17; gtfs-mcp snapshot + shapes live, read migration open)
+- Status: Phase 2 in progress (2026-10-18; GTFS reads on snapshot, app tables still Postgres)
 - Owner: Sandra Schipal
 - Scope: `mywienerlinien` + `gtfs-mcp` (read-only changes to gtfs-mcp in Phase 1)
 - Out of scope for tonight: Phase 0 (map verification on the current stack) is
