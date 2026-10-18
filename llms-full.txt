@@ -4,7 +4,7 @@
 
 Dual-interface Vienna transit app. Web dashboard (Vite, port 10896) + FastAPI backend (port 11170,
 `web_sota/backend/server.py`, fleet-start UvicornTarget `server:app`) + Docker stack (map on 3079,
-PostGIS on 5433, Grafana on 3140) + MCP server (`src/wienerlinien_mcp/server.py`, stdio for Claude Desktop).
+Grafana on 3140, no database container) + MCP server (`src/wienerlinien_mcp/server.py`, stdio for Claude Desktop).
 
 ## MCP tools (12, FastMCP, stdio)
 
@@ -19,7 +19,8 @@ Prompts (5): see `src/wienerlinien_mcp/prompts.py`. Resources (5): `vienna-trans
 `.../stations/major`, `.../lines/metro`, `.../operating-hours`, `.../fares`.
 
 Claude Desktop config: command `python`, args `["-m", "frontend.mcp_server.server"]`,
-env `PYTHONPATH=D:/Dev/repos/mywienerlinien`, `DATABASE_URL=postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien`.
+env `PYTHONPATH=D:/Dev/repos/mywienerlinien`, `APP_DB_PATH=<repo>/data/app.db`,
+`GTFS_SNAPSHOT_PATH=<gtfs-mcp>/data/snapshots/vienna.db`.
 
 ## REST endpoints
 
@@ -38,13 +39,17 @@ env `PYTHONPATH=D:/Dev/repos/mywienerlinien`, `DATABASE_URL=postgresql://wienerl
 
 ## Config vars
 
-`DATABASE_URL` (Postgres), `APP_ENV`, `WEB_PORT` (default 11170), `FRONTEND_PORTS` (default 10896,3079,3080),
+`DATABASE_URL` (retired — Postgres removed; a set value only warns),
+`APP_DB_PATH` (default `./data/app.db`),
+`GTFS_SNAPSHOT_PATH` (default sibling gtfs-mcp snapshot), `APP_ENV`,
+`WEB_PORT` (default 11170), `FRONTEND_PORTS` (default 10896,3079,3080),
 `OPENWEATHER_API_KEY`, `GTFS_FORCE_REFRESH`, `GTFS_REFRESH_DAYS` (default 365), `GTFS_ZIP_PATH`,
 `GTFS_METADATA_DIR`, `GRAFANA_PASSWORD`, `WIENER_LINIEN_TEST_MODE`. Template: `.env.example`.
 
 ## Ports (registry: mcp-central-docs/operations/WEBAPP_PORTS.md)
 
-Backend 11170, webapp dashboard 10896, Docker map 3079 (container 3080), PostGIS 5433, Loki 3193, Grafana 3140.
+Backend 11170, webapp dashboard 10896, Docker map 3079 (container 3080), Loki 3193, Grafana 3140.
+State: local SQLite (`data/app.db` WAL + gtfs-mcp snapshot file) — no database container.
 
 ## Key files
 

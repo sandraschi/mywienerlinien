@@ -2,6 +2,33 @@
 
 All notable changes to mywienerlinien are documented here.
 
+## [Unreleased] - 2026-10-18 (full-SQLite cutover, SPEC Phase 2)
+
+### Changed
+- **Postgres removed**: GTFS static reads run on the gtfs-mcp snapshot
+  (`GTFS_SNAPSHOT_PATH`, sibling default); app tables on local `data/app.db`
+  (WAL, auto-created). `db` compose service deleted (volume kept, not read);
+  `asyncpg`/`psycopg2-binary` dropped; no database container required.
+- **Dialect port**: `DISTINCT ON` to window query, `array_agg` to
+  `group_concat` (list-normalized), `EXTRACT` to `strftime`, `NOW()` to
+  `datetime('now')`, bound `INTERVAL` to `datetime()` concat; `STDDEV` /
+  `PERCENTILE_CONT` computed in Python; Postgres `ANY(array)` to dynamic IN.
+- **Writes actually persist**: `execute_query` commits DML/DDL (previously
+  rolled back silently) and tolerates row-less results.
+- **Timestamps**: storage dataclasses serialize with space separator so
+  lexicographic comparison with `datetime('now')` is correct (the `T`
+  variant compared greater than everything — windows never expired).
+- **Analytics resurrected**: dead `..wienerlinien_mcp` imports fixed to
+  `..mcp_server` (reliability/patterns/predictions endpoints).
+- **City switcher gets truth**: `/api/cities` reports `data_loaded` /
+  `data_source` from legacy `extracted/` + gtfs-mcp `cities/` exports.
+- **Docs de-dockered**: CONFIGURATION/ONBOARDING/TOOLS/llms no longer
+  reference PostGIS or 5433.
+
+### Data note
+- Historical rows were NOT migrated (postgres_data volume retained).
+  Recreate API keys/favorites; analytics history restarts empty.
+
 ## [Unreleased] - 2026-09-24 (assfix deferred)
 
 ### Fixed

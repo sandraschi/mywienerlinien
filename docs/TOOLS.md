@@ -123,8 +123,19 @@ Nearby discovery:
 
 ## Transport and error contract
 
-- MCP transport is stdio: the server speaks JSON-RPC over stdout, so it must run as a plain host process (`uv run vienna-transit-mcp`), never inside `docker compose`.
-- Every tool returns a dict with at least `success` (bool) and `message` (str). Failures carry the reason in `message` (e.g. unknown station, DB unreachable) rather than raising through the transport.
-- Tools that need the DB (`station_search`, `journey_planner`, `stop_timetable`, city tools) report DB-unreachable explicitly when PostGIS on 5433 is down. They never synthesize transit data.
-- Tools that need the live OGD API (`next_departures`, `traffic_alerts`, `line_status`) honor `WIENER_LINIEN_TEST_MODE`: when set, they return labeled test doubles for offline runs.
-- REST follows the same honesty rule: `/api/health` and `/api/status` reflect the backend process only; they do not imply the DB or GTFS import is healthy. Use `server_status` (MCP) or row-count checks for that.
+- MCP transport is stdio: the server speaks JSON-RPC over stdout, so it must
+  run as a plain host process (`uv run vienna-transit-mcp`), never inside
+  `docker compose`.
+- Every tool returns a dict with at least `success` (bool) and `message`
+  (str). Failures carry the reason in `message` (e.g. unknown station, DB
+  unreachable) rather than raising through the transport.
+- Tools that need the DB (`station_search`, `journey_planner`,
+  `stop_timetable`, city tools) report DB-unreachable explicitly when the
+  SQLite files are missing (`GTFS_SNAPSHOT_PATH` for schedule data,
+  `APP_DB_PATH` auto-created for app tables). They never synthesize data.
+- Tools that need the live OGD API (`next_departures`, `traffic_alerts`,
+  `line_status`) honor `WIENER_LINIEN_TEST_MODE`: when set, they return
+  labeled test doubles for offline runs.
+- REST follows the same honesty rule: `/api/health` and `/api/status` reflect
+  the backend process only; they do not imply the DB or GTFS import is
+  healthy. Use `server_status` (MCP) or row-count checks for that.

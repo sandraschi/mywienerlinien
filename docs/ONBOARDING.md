@@ -15,14 +15,15 @@ Linien publishes none; map markers are schedule-interpolated between stops.
 |----------|--------|
 | Do I need an account? | No for transit data. Wiener Linien OGD API (monitor, trafficInfoList, newsList) needs no key since 2024. Optional: OpenWeatherMap key only if you want Phase 5 weather features. |
 | Free tier? | Yes. Transit data is free and unlimited under fair use (query needed stops only, 15 s minimum interval). OpenWeatherMap has its own free tier if you add a key. |
-| Credit card required? | No. Neither Wiener Linien nor the local stack (Docker, PostGIS, Grafana) needs a card. |
-| Ongoing cost? | Free. Local Docker resource usage only (disk for the GTFS import, RAM for Postgres). |
+| Credit card required? | No. Neither Wiener Linien nor the local stack (Docker, Grafana) needs a card. |
+| Ongoing cost? | Free. Local disk for the SQLite files (snapshot + app.db). |
 | Who bills? | Nobody for the default setup. OpenWeatherMap bills only if you exceed their free tier on a key you added yourself. |
 
 ## Prerequisites outside this repo
 
-- Docker Desktop (Windows) - hosts PostGIS on 5433, Grafana, Loki, and the
-  GTFS loader. Required even for native dev because the DB lives in Docker.
+- Docker Desktop (Windows) - hosts Grafana, Loki, and the map frontend.
+  No database container: app tables live in `data/app.db` (auto-created, WAL),
+  schedule data in the gtfs-mcp snapshot file (see GTFS step below).
 - Python 3.12+ and `uv` - for the native backend, dashboard dev, and the MCP server.
 - Node + npm - for the Vite dashboard (`web_sota/src/`).
 - `just` (via `winget install Casey.Just`) - runs the repo recipes (`just bootstrap`, `just serve`).
@@ -43,21 +44,20 @@ Linien publishes none; map markers are schedule-interpolated between stops.
 
    ```powershell
    Copy-Item .env.example .env
-   # Confirm WEB_PORT=11170 and DATABASE_URL points at localhost:5433
+   # Defaults work: APP_DB_PATH=./data/app.db, snapshot auto-found next to gtfs-mcp
    ```
 
-3. Start the database and install deps:
+3. Install deps (no database to start — `data/app.db` is created on first boot):
 
    ```powershell
-   docker compose up -d db
    just bootstrap
    ```
 
-4. Load GTFS data (first run takes 15-30 min, leave it alone):
-
-   ```powershell
-   docker compose run --rm -e GTFS_FORCE_REFRESH=1 gtfs-loader
-   ```
+4. GTFS schedule data comes from the gtfs-mcp snapshot, not an import.
+   Either check out gtfs-mcp next to this repo and add the Vienna feed there
+   (`add_feed` writes `<data_dir>/snapshots/vienna.db` automatically), or set
+   `GTFS_SNAPSHOT_PATH` to an existing snapshot file. Without it the map
+   renders honestly empty lists.
 
 5. Start the backend + dashboard:
 
@@ -69,7 +69,8 @@ Linien publishes none; map markers are schedule-interpolated between stops.
 6. Optional native hot-reload dashboard: `.\run_dev.ps1` (port 3080).
 7. Optional MCP in Claude Desktop: add server `vienna-transit` with command
    `uv`, args `--directory D:/Dev/repos/mywienerlinien run vienna-transit-mcp`,
-   env `DATABASE_URL=postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien`.
+   env `APP_DB_PATH=D:/Dev/repos/mywienerlinien/data/app.db` (+ optional
+   `GTFS_SNAPSHOT_PATH` pointing at the gtfs-mcp snapshot for schedule tools).
    See `INSTALL.md` for the JSON snippet.
 
 ## Pitfalls
@@ -81,15 +82,12 @@ Linien publishes none; map markers are schedule-interpolated between stops.
   `volumes: ./...` entries to fix a path problem; you will re-trigger the bug.
 - MCP server runs natively, not in Docker: stdio transport needs direct
   process communication. Do not `dockerize` the MCP entry; run
-  `uv run vienna-transit-mcp` on the host with `DATABASE_URL` pointed at the
-  Docker DB on 5433.
-- GTFS first import takes 15-30 min: ~10M stop_times rows. An interrupted
-  import leaves a half-loaded schema that looks healthy but returns empty
-  journeys. Re-run with `GTFS_FORCE_REFRESH=1` rather than debugging partial
-  data. See `docs/TROUBLESHOOTING.md` section 3.
-- Port confusion 5432 vs 5433: local Postgres defaults to 5432; this repo's
-  Docker PostGIS is on 5433. A `connection refused` almost always means the
-  URL points at the wrong one or Docker Desktop is not running.
+  `uv run vienna-transit-mcp` on the host with `APP_DB_PATH` pointed at the
+  repo `data/` dir (default already does this).
+- GTFS data comes from the snapshot file, not an import: a missing/empty map
+  means `GTFS_SNAPSHOT_PATH` resolves nowhere (see step 4). An interrupted
+  snapshot *write* is harmless — gtfs-mcp builds to `.tmp` + atomic replace,
+  so readers never see half a feed. See `docs/TROUBLESHOOTING.md` section 3.
 - No live vehicle GPS exists: if you expected moving-bus dots from real
   telemetry, reset expectations. The map interpolates scheduled positions;
   only departures and incidents are live.
@@ -108,14 +106,14 @@ Linien publishes none; map markers are schedule-interpolated between stops.
 - Status with version and uptime: `GET 127.0.0.1:11170/api/status` returns
   `service: mywienerlinien-webapi`, `version: 2.0.1`.
 - Map loads natively at `http://localhost:10722/` (`just map` or
-  `.\start-map.ps1`; needs postgres on 5433 via `docker compose up -d db`)
+  `.\start-map.ps1`; needs the gtfs-mcp snapshot, step 4)
   with departures visible for a known stop (e.g. Stephansplatz).
 - MCP probe: run `help` (or `server_status`) in Claude Desktop; a live DB
   reports success, a missing DB reports it explicitly instead of fake data.
 
 ## Declared doubles
 
-- Without Docker running (no DB on 5433), departures, journeys, timetables,
+- Without the snapshot file, departures, journeys, timetables,
   and station search return explicit not-configured / DB-unreachable errors.
   Nothing fabricates transit data.
 - `WIENER_LINIEN_TEST_MODE=1` stubs realtime OGD calls for offline tests;
