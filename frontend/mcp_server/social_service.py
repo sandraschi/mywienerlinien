@@ -47,8 +47,8 @@ class UserReport:
     user_id: str
     report_type: ReportType
     severity: ReportSeverity
-    line: Optional[str]
-    station: Optional[str]
+    line: str | None
+    station: str | None
     description: str
     timestamp: datetime
     votes_helpful: int = 0
@@ -87,7 +87,7 @@ class SocialService:
             # User reports table
             self.db.execute_query("""
             CREATE TABLE IF NOT EXISTS user_reports (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 report_id VARCHAR(100) UNIQUE,
                 user_id VARCHAR(100),
                 report_type VARCHAR(50),
@@ -106,7 +106,7 @@ class SocialService:
             # Station tips table
             self.db.execute_query("""
             CREATE TABLE IF NOT EXISTS station_tips (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 tip_id VARCHAR(100) UNIQUE,
                 user_id VARCHAR(100),
                 station VARCHAR(200),
@@ -121,7 +121,7 @@ class SocialService:
             # Line ratings table
             self.db.execute_query("""
             CREATE TABLE IF NOT EXISTS line_ratings (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id VARCHAR(100),
                 line VARCHAR(10),
                 rating INTEGER CHECK (rating >= 1 AND rating <= 5),
@@ -135,7 +135,7 @@ class SocialService:
             # Station photos table
             self.db.execute_query("""
             CREATE TABLE IF NOT EXISTS station_photos (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 photo_id VARCHAR(100) UNIQUE,
                 user_id VARCHAR(100),
                 station VARCHAR(200),
@@ -158,9 +158,9 @@ class SocialService:
         report_type: ReportType,
         severity: ReportSeverity,
         description: str,
-        line: Optional[str] = None,
-        station: Optional[str] = None,
-    ) -> Optional[UserReport]:
+        line: str | None = None,
+        station: str | None = None,
+    ) -> UserReport | None:
         """Submit a user report about transit conditions.
 
         Args:
@@ -218,9 +218,7 @@ class SocialService:
             logger.error(f"Error submitting report: {e}", exc_info=True)
             return None
 
-    def get_recent_reports(
-        self, line: Optional[str] = None, station: Optional[str] = None, hours: int = 2
-    ) -> list[dict]:
+    def get_recent_reports(self, line: str | None = None, station: str | None = None, hours: int = 2) -> list[dict]:
         """Get recent user reports.
 
         Args:
@@ -235,7 +233,7 @@ class SocialService:
             query = """
             SELECT *
             FROM user_reports
-            WHERE timestamp > NOW() - INTERVAL ':hours hours'
+            WHERE timestamp > datetime('now', '-' || :hours || ' hours')
             """
 
             params = {"hours": hours}
@@ -258,7 +256,7 @@ class SocialService:
 
     def submit_station_tip(
         self, user_id: str, station: str, tip_text: str, category: str = "general"
-    ) -> Optional[StationTip]:
+    ) -> StationTip | None:
         """Submit a helpful tip about a station.
 
         Args:
@@ -369,7 +367,7 @@ class SocialService:
             logger.error(f"Error voting: {e}", exc_info=True)
             return False
 
-    def get_line_community_rating(self, line: str) -> Optional[dict]:
+    def get_line_community_rating(self, line: str) -> dict | None:
         """Get community rating for a line.
 
         Args:
@@ -383,7 +381,6 @@ class SocialService:
             SELECT
                 COUNT(*) as total_ratings,
                 AVG(rating) as average_rating,
-                STDDEV(rating) as stddev,
                 MAX(rating) as max_rating,
                 MIN(rating) as min_rating
             FROM line_ratings
@@ -393,11 +390,20 @@ class SocialService:
             results = self.db.execute_query(query, {"line": line})
 
             if results and results[0]["total_ratings"] > 0:
+                # STDDEV is Postgres-only: compute in Python (tiny result set).
+                import statistics
+
+                ratings = [
+                    r["rating"]
+                    for r in self.db.execute_query("SELECT rating FROM line_ratings WHERE line = :line", {"line": line})
+                    if r["rating"] is not None
+                ]
+                stddev = statistics.stdev(ratings) if len(ratings) >= 2 else 0
                 return {
                     "line": line,
                     "average_rating": float(results[0]["average_rating"]),
                     "total_ratings": results[0]["total_ratings"],
-                    "stddev": float(results[0]["stddev"]) if results[0]["stddev"] else 0,
+                    "stddev": stddev,
                 }
 
             return None
@@ -408,7 +414,7 @@ class SocialService:
 
 
 # Singleton
-_social_service: Optional[SocialService] = None
+_social_service: SocialService | None = None
 
 
 def get_social_service(db_manager) -> SocialService:

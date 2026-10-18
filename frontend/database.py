@@ -17,9 +17,10 @@ from typing import Any, Dict, List, Optional
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.pool import QueuePool
 
 logger = logging.getLogger(__name__)
+
+APP_DB_FILENAME = "app.db"
 
 
 def resolve_snapshot_path(feed_id: str = "vienna") -> Path | None:
@@ -87,7 +88,7 @@ class DatabaseManager:
         self._default_color = "#3f51b5"
 
     def init_app(self, app):
-        """Initialize the database connection using Flask app configuration."""
+        """Initialize the app database (SQLite file, created on first run)."""
         # Always initialize database, even in development mode
         # dev_mode = os.getenv("APP_ENV", "").lower() in ("development", "dev")
         # if dev_mode:
@@ -97,29 +98,26 @@ class DatabaseManager:
         if self.engine is not None:
             return
 
-        # Get database URL from environment or use default
-        db_url = os.getenv("DATABASE_URL", "postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien")
+        # App database is SQLite (full-SQLite cutover): APP_DB_PATH env, else
+        # <repo>/data/app.db, created on first run in WAL mode. GTFS static
+        # reads use the snapshot engine, not this one. The legacy
+        # DATABASE_URL/Postgres path is gone; a set DATABASE_URL only warns.
+        if os.getenv("DATABASE_URL"):
+            logger.warning(
+                "DATABASE_URL is set but Postgres support was removed (full-SQLite cutover); using APP_DB_PATH instead."
+            )
 
-        # Configure the SQLAlchemy engine with connection pooling
-        self.engine = create_engine(
-            db_url,
-            poolclass=QueuePool,
-            pool_size=5,
-            max_overflow=10,
-            pool_timeout=30,
-            pool_recycle=1800,  # Recycle connections after 30 minutes
-            pool_pre_ping=True,  # Enable connection liveness checks
-            connect_args={
-                "connect_timeout": 10,
-                "keepalives": 1,
-                "keepalives_idle": 30,
-                "keepalives_interval": 10,
-                "keepalives_count": 5,
-            },
-        )
+        default_path = Path(__file__).resolve().parents[1] / "data" / APP_DB_FILENAME
+        db_file = Path(os.getenv("APP_DB_PATH", str(default_path))).expanduser()
+        db_file.parent.mkdir(parents=True, exist_ok=True)
+
+        self.engine = create_engine(f"sqlite:///{db_file}", connect_args={"check_same_thread": False})
 
         # Create a scoped session factory
         self.session_factory = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=self.engine))
+
+        with self.engine.connect() as conn:
+            conn.execute(text("PRAGMA journal_mode=WAL"))
 
         # Test the connection
         self._test_connection()
@@ -200,7 +198,13 @@ class DatabaseManager:
         session = self.get_session()
         try:
             result = session.execute(text(query), params or {})
-            return [dict(row._mapping) for row in result]
+            # DDL and plain DML return no rows (iterating them raises
+            # ResourceClosedError): commit the write and return [].
+            # Committing unconditionally is harmless for SELECTs and keeps
+            # INSERT ... RETURNING actually persisted (it returns rows!).
+            rows = [dict(row._mapping) for row in result] if result.returns_rows else []
+            session.commit()
+            return rows
         except SQLAlchemyError as e:
             logger.error(f"Error executing query: {e!s}")
             session.rollback()
@@ -653,7 +657,7 @@ db = DatabaseManager()
 
 
 def init_db(app):
-    """Initialize the database with the Flask app."""
+    """Initialize the app database (SQLite file, created on first run)."""
     db.init_app(app)
 
     # Register teardown handler

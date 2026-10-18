@@ -27,7 +27,7 @@ class Appointment:
     start_time: datetime
     end_time: datetime
     timezone: str
-    organizer: Optional[str] = None
+    organizer: str | None = None
     attendees: list[str] = None
 
 
@@ -70,7 +70,7 @@ class CalendarIntegrationService:
             # Appointments table
             self.db.execute_query("""
             CREATE TABLE IF NOT EXISTS calendar_appointments (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 event_id VARCHAR(200) UNIQUE,
                 user_id VARCHAR(100),
                 title VARCHAR(500),
@@ -89,7 +89,7 @@ class CalendarIntegrationService:
             # Travel reminders table
             self.db.execute_query("""
             CREATE TABLE IF NOT EXISTS travel_reminders (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 event_id VARCHAR(200),
                 reminder_time TIMESTAMP,
                 reminder_type VARCHAR(50),
@@ -110,7 +110,7 @@ class CalendarIntegrationService:
         appointment: Appointment,
         origin_station: str,
         buffer_minutes: int = DEFAULT_BUFFER_MINUTES,
-    ) -> Optional[TravelPlan]:
+    ) -> TravelPlan | None:
         """Calculate complete travel plan for an appointment.
 
         Args:
@@ -137,9 +137,7 @@ class CalendarIntegrationService:
             to_info = find_station_by_name(destination_station)
 
             if not from_info or not to_info:
-                logger.warning(
-                    f"Could not find stations: {origin_station} or {destination_station}"
-                )
+                logger.warning(f"Could not find stations: {origin_station} or {destination_station}")
                 return None
 
             # Get route options
@@ -187,9 +185,7 @@ class CalendarIntegrationService:
                 reminder_times=reminders,
             )
 
-            logger.info(
-                f"Travel plan created for {appointment.title}: depart {departure_time.strftime('%H:%M')}"
-            )
+            logger.info(f"Travel plan created for {appointment.title}: depart {departure_time.strftime('%H:%M')}")
 
             return travel_plan
 
@@ -208,9 +204,7 @@ class CalendarIntegrationService:
         """
         try:
             for reminder_time in travel_plan.reminder_times:
-                offset_minutes = int(
-                    (travel_plan.departure_time - reminder_time).total_seconds() / 60
-                )
+                offset_minutes = int((travel_plan.departure_time - reminder_time).total_seconds() / 60)
 
                 message = (
                     f"🚇 Departure reminder for {travel_plan.appointment.title}\n"
@@ -251,8 +245,8 @@ class CalendarIntegrationService:
             SELECT *
             FROM travel_reminders
             WHERE sent = FALSE
-                AND reminder_time <= NOW()
-                AND reminder_time > NOW() - INTERVAL '5 minutes'
+                AND reminder_time <= datetime('now')
+                AND reminder_time > datetime('now', '-5 minutes')
             ORDER BY reminder_time
             """
 
@@ -264,7 +258,7 @@ class CalendarIntegrationService:
 
 
 # Singleton
-_calendar_service: Optional[CalendarIntegrationService] = None
+_calendar_service: CalendarIntegrationService | None = None
 
 
 def get_calendar_service(db_manager, journey_planner) -> CalendarIntegrationService:

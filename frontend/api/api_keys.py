@@ -23,10 +23,10 @@ class APIKey:
     name: str
     created_by: str
     created_at: datetime
-    expires_at: Optional[datetime]
+    expires_at: datetime | None
     rate_limit: int  # Requests per minute
     enabled: bool
-    last_used: Optional[datetime]
+    last_used: datetime | None
     usage_count: int
 
 
@@ -48,7 +48,7 @@ class APIKeyManager:
             # API keys table
             self.db.execute_query("""
             CREATE TABLE IF NOT EXISTS api_keys (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 key_id VARCHAR(100) UNIQUE NOT NULL,
                 key_hash VARCHAR(64) NOT NULL,
                 key_prefix VARCHAR(10) NOT NULL,
@@ -59,14 +59,14 @@ class APIKeyManager:
                 rate_limit INTEGER DEFAULT 60,
                 enabled BOOLEAN DEFAULT TRUE,
                 last_used TIMESTAMP,
-                usage_count BIGINT DEFAULT 0
+                usage_count INTEGER DEFAULT 0
             )
             """)
 
             # API usage logs
             self.db.execute_query("""
             CREATE TABLE IF NOT EXISTS api_usage_logs (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 key_id VARCHAR(100),
                 endpoint VARCHAR(200),
                 method VARCHAR(10),
@@ -91,7 +91,7 @@ class APIKeyManager:
             logger.error(f"Error creating API key tables: {e}", exc_info=True)
 
     def generate_api_key(
-        self, name: str, created_by: str, rate_limit: int = 60, expires_days: Optional[int] = None
+        self, name: str, created_by: str, rate_limit: int = 60, expires_days: int | None = None
     ) -> tuple[str, APIKey]:
         """Generate a new API key.
 
@@ -164,7 +164,7 @@ class APIKeyManager:
             logger.error(f"Error generating API key: {e}", exc_info=True)
             raise
 
-    def verify_api_key(self, api_key: str) -> Optional[APIKey]:
+    def verify_api_key(self, api_key: str) -> APIKey | None:
         """Verify and retrieve API key information.
 
         Args:
@@ -182,7 +182,7 @@ class APIKeyManager:
             SELECT * FROM api_keys
             WHERE key_hash = :key_hash
                 AND enabled = TRUE
-                AND (expires_at IS NULL OR expires_at > NOW())
+                AND (expires_at IS NULL OR expires_at > datetime('now'))
             """
 
             results = self.db.execute_query(query, {"key_hash": key_hash})
@@ -196,7 +196,7 @@ class APIKeyManager:
             self.db.execute_query(
                 """
             UPDATE api_keys
-            SET last_used = NOW(),
+            SET last_used = datetime('now'),
                 usage_count = usage_count + 1
             WHERE key_id = :key_id
             """,
@@ -247,9 +247,7 @@ class APIKeyManager:
             logger.error(f"Error revoking API key: {e}", exc_info=True)
             return False
 
-    def log_api_request(
-        self, key_id: str, endpoint: str, method: str, status_code: int, response_time_ms: int
-    ):
+    def log_api_request(self, key_id: str, endpoint: str, method: str, status_code: int, response_time_ms: int):
         """Log API request for analytics.
 
         Args:
@@ -264,7 +262,7 @@ class APIKeyManager:
                 """
             INSERT INTO api_usage_logs
             (key_id, endpoint, method, status_code, response_time_ms, timestamp)
-            VALUES (:key_id, :endpoint, :method, :status_code, :response_time_ms, NOW())
+            VALUES (:key_id, :endpoint, :method, :status_code, :response_time_ms, datetime('now'))
             """,
                 {
                     "key_id": key_id,
@@ -298,7 +296,7 @@ class APIKeyManager:
                 COUNT(DISTINCT endpoint) as endpoints_used
             FROM api_usage_logs
             WHERE key_id = :key_id
-                AND timestamp > NOW() - INTERVAL ':days days'
+                AND timestamp > datetime('now', '-' || :days || ' days')
             """
 
             results = self.db.execute_query(query, {"key_id": key_id, "days": days})
@@ -323,7 +321,7 @@ class APIKeyManager:
 
 
 # Singleton
-_api_key_manager: Optional[APIKeyManager] = None
+_api_key_manager: APIKeyManager | None = None
 
 
 def get_api_key_manager(db_manager) -> APIKeyManager:

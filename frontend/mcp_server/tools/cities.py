@@ -205,7 +205,7 @@ async def get_city_statistics(city_code: str | None = None) -> CityStatistics:
             vehicles_query = """
             SELECT COUNT(DISTINCT vehicle_id) as count
             FROM vehicle_snapshots
-            WHERE timestamp > NOW() - INTERVAL '1 hour'
+            WHERE timestamp > datetime('now', '-1 hour')
             """
             vehicles_count = db.execute_query(vehicles_query, fetch_one=True)
 

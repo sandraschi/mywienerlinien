@@ -94,7 +94,7 @@ class SmartNotificationService:
             self.db.execute_query(
                 """
             CREATE TABLE IF NOT EXISTS notifications (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 notification_id VARCHAR(100) UNIQUE,
                 notification_type VARCHAR(50),
                 priority INTEGER,
@@ -243,7 +243,7 @@ class SmartNotificationService:
             (notification_id, notification_type, priority, title, message,
              line, station, action_url, created_at, expires_at, sent, sent_at)
             VALUES (:notification_id, :notification_type, :priority, :title, :message,
-                    :line, :station, :action_url, :created_at, :expires_at, TRUE, NOW())
+                    :line, :station, :action_url, :created_at, :expires_at, TRUE, datetime('now'))
             ON CONFLICT (notification_id) DO NOTHING
             """
 
@@ -285,15 +285,17 @@ class SmartNotificationService:
             query = """
             SELECT *
             FROM notifications
-            WHERE (expires_at IS NULL OR expires_at > NOW())
-                AND created_at > NOW() - INTERVAL '2 hours'
+            WHERE (expires_at IS NULL OR expires_at > datetime('now'))
+                AND created_at > datetime('now', '-2 hours')
             """
 
             params = {}
 
             if user_favorites:
-                query += " AND (line = ANY(:favorites) OR station = ANY(:favorites))"
-                params["favorites"] = user_favorites
+                # Postgres ANY(array) has no SQLite form: expand to IN.
+                placeholders = ", ".join(f":fav{i}" for i in range(len(user_favorites)))
+                query += f" AND (line IN ({placeholders}) OR station IN ({placeholders}))"
+                params.update({f"fav{i}": v for i, v in enumerate(user_favorites)})
 
             query += " ORDER BY priority DESC, created_at DESC LIMIT 20"
 

@@ -32,7 +32,9 @@ class VehicleSnapshot:
     def to_dict(self) -> dict:
         """Convert to dictionary for storage."""
         data = asdict(self)
-        data["timestamp"] = self.timestamp.isoformat()
+        # Space separator (not ISO "T"): SQLite compares timestamps
+        # lexicographically, so stored values must sort like datetime('now').
+        data["timestamp"] = self.timestamp.isoformat(sep=" ")
         return data
 
 
@@ -56,9 +58,9 @@ class JourneyRecord:
     def to_dict(self) -> dict:
         """Convert to dictionary for storage."""
         data = asdict(self)
-        data["departure_time"] = self.departure_time.isoformat()
-        data["arrival_time"] = self.arrival_time.isoformat() if self.arrival_time else None
-        data["timestamp"] = self.timestamp.isoformat()
+        data["departure_time"] = self.departure_time.isoformat(sep=" ")
+        data["arrival_time"] = self.arrival_time.isoformat(sep=" ") if self.arrival_time else None
+        data["timestamp"] = self.timestamp.isoformat(sep=" ")
         return data
 
 
@@ -78,7 +80,7 @@ class DelayPattern:
     def to_dict(self) -> dict:
         """Convert to dictionary for storage."""
         data = asdict(self)
-        data["last_updated"] = self.last_updated.isoformat()
+        data["last_updated"] = self.last_updated.isoformat(sep=" ")
         return data
 
 
@@ -110,7 +112,7 @@ class HistoricalDataCollector:
             self.db.execute_query(
                 """
             CREATE TABLE IF NOT EXISTS historical_vehicles (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 vehicle_id VARCHAR(100),
                 line VARCHAR(10),
                 station VARCHAR(200),
@@ -144,7 +146,7 @@ class HistoricalDataCollector:
             self.db.execute_query(
                 """
             CREATE TABLE IF NOT EXISTS historical_journeys (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 journey_id VARCHAR(100) UNIQUE,
                 from_station_id VARCHAR(50),
                 to_station_id VARCHAR(50),
@@ -173,7 +175,7 @@ class HistoricalDataCollector:
             self.db.execute_query(
                 """
             CREATE TABLE IF NOT EXISTS delay_patterns (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 line VARCHAR(10),
                 day_of_week INTEGER,
                 hour INTEGER,
@@ -366,10 +368,10 @@ class HistoricalDataCollector:
                 station,
                 delay_minutes,
                 timestamp,
-                EXTRACT(DOW FROM timestamp) as day_of_week,
-                EXTRACT(HOUR FROM timestamp) as hour
+                CAST(strftime('%w', timestamp) AS INTEGER) as day_of_week,
+                CAST(strftime('%H', timestamp) AS INTEGER) as hour
             FROM historical_vehicles
-            WHERE timestamp > NOW() - INTERVAL ':days days'
+            WHERE timestamp > datetime('now', '-' || :days || ' days')
             """
 
             params = {"days": days}
@@ -399,14 +401,14 @@ class HistoricalDataCollector:
             query = """
             SELECT
                 line,
-                EXTRACT(DOW FROM timestamp)::INTEGER as day_of_week,
-                EXTRACT(HOUR FROM timestamp)::INTEGER as hour,
+                CAST(strftime('%w', timestamp) AS INTEGER) as day_of_week,
+                CAST(strftime('%H', timestamp) AS INTEGER) as hour,
                 AVG(delay_minutes) as avg_delay,
                 MAX(delay_minutes) as max_delay,
                 COUNT(*) as sample_count,
                 100 - (AVG(delay_minutes) * 5) as reliability_score
             FROM historical_vehicles
-            WHERE timestamp > NOW() - INTERVAL '30 days'
+            WHERE timestamp > datetime('now', '-30 days')
                 AND delay_minutes IS NOT NULL
             """
 
@@ -496,9 +498,7 @@ class HistoricalDataCollector:
             LIMIT 1
             """
 
-            results = self.db.execute_query(
-                query, {"line": line, "day_of_week": day_of_week, "hour": hour}
-            )
+            results = self.db.execute_query(query, {"line": line, "day_of_week": day_of_week, "hour": hour})
 
             if results:
                 row = results[0]
@@ -534,13 +534,10 @@ class HistoricalDataCollector:
                 line,
                 COUNT(*) as total_samples,
                 AVG(delay_minutes) as avg_delay,
-                STDDEV(delay_minutes) as stddev_delay,
                 MAX(delay_minutes) as max_delay,
-                PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY delay_minutes) as median_delay,
-                PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY delay_minutes) as p95_delay,
                 100 - (AVG(delay_minutes) * 5) as reliability_score
             FROM historical_vehicles
-            WHERE timestamp > NOW() - INTERVAL ':days days'
+            WHERE timestamp > datetime('now', '-' || :days || ' days')
                 AND delay_minutes IS NOT NULL
             GROUP BY line
             ORDER BY reliability_score DESC
@@ -548,15 +545,40 @@ class HistoricalDataCollector:
 
             results = self.db.execute_query(query, {"days": days})
 
+            # Median/p95/stddev have no SQLite aggregate (PERCENTILE_CONT,
+            # STDDEV are Postgres-only): compute in Python over the window.
+            # Import here to keep module import light (matches file style).
+            import statistics
+
+            value_rows = self.db.execute_query(
+                """
+            SELECT line, delay_minutes
+            FROM historical_vehicles
+            WHERE timestamp > datetime('now', '-' || :days || ' days')
+                AND delay_minutes IS NOT NULL
+            """,
+                {"days": days},
+            )
+            by_line: dict[str, list[float]] = {}
+            for vrow in value_rows:
+                try:
+                    by_line.setdefault(vrow["line"], []).append(float(vrow["delay_minutes"]))
+                except (TypeError, ValueError):
+                    continue
+
             stats = {}
             for row in results:
+                vals = sorted(by_line.get(row["line"], []))
+                median = statistics.median(vals) if vals else 0
+                p95 = statistics.quantiles(vals, n=100)[94] if len(vals) >= 2 else (vals[0] if vals else 0)
+                stddev = statistics.stdev(vals) if len(vals) >= 2 else 0
                 stats[row["line"]] = {
                     "total_samples": row["total_samples"],
                     "average_delay": float(row["avg_delay"]),
-                    "stddev_delay": float(row["stddev_delay"]) if row["stddev_delay"] else 0,
+                    "stddev_delay": stddev,
                     "max_delay": float(row["max_delay"]),
-                    "median_delay": float(row["median_delay"]),
-                    "p95_delay": float(row["p95_delay"]),
+                    "median_delay": median,
+                    "p95_delay": p95,
                     "reliability_score": max(0, min(100, float(row["reliability_score"]))),
                 }
 
@@ -577,7 +599,7 @@ class HistoricalDataCollector:
             self.db.execute_query(
                 """
             DELETE FROM historical_vehicles
-            WHERE timestamp < NOW() - INTERVAL ':days days'
+            WHERE timestamp < datetime('now', '-' || :days || ' days')
             """,
                 {"days": days_to_keep},
             )
@@ -586,7 +608,7 @@ class HistoricalDataCollector:
             self.db.execute_query(
                 """
             DELETE FROM historical_journeys
-            WHERE timestamp < NOW() - INTERVAL ':days days'
+            WHERE timestamp < datetime('now', '-' || :days || ' days')
             """,
                 {"days": days_to_keep},
             )
@@ -606,9 +628,7 @@ class HistoricalDataCollector:
             Path to exported file
         """
         if output_file is None:
-            output_file = (
-                self.storage_dir / f"training_data_{datetime.now().strftime('%Y%m%d')}.json"
-            )
+            output_file = self.storage_dir / f"training_data_{datetime.now().strftime('%Y%m%d')}.json"
 
         try:
             # Get comprehensive dataset

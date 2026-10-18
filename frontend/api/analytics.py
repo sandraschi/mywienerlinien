@@ -19,7 +19,7 @@ router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 @router.get("/line-reliability")
 async def get_line_reliability(
     days: int = Query(30, ge=1, le=365, description="Days to analyze"),
-    lines: Optional[str] = Query(None, description="Comma-separated line filter"),
+    lines: str | None = Query(None, description="Comma-separated line filter"),
 ) -> JSONResponse:
     """Get reliability statistics for transit lines.
 
@@ -32,7 +32,7 @@ async def get_line_reliability(
     """
     try:
         from ..database import db
-        from ..wienerlinien_mcp.historical_data import get_historical_collector
+        from ..mcp_server.historical_data import get_historical_collector
 
         collector = get_historical_collector(db)
         stats = collector.get_line_reliability_stats(days=days)
@@ -58,7 +58,7 @@ async def get_line_reliability(
 
 @router.get("/delay-patterns")
 async def get_delay_patterns(
-    line: Optional[str] = Query(None, description="Line filter"),
+    line: str | None = Query(None, description="Line filter"),
 ) -> JSONResponse:
     """Get identified delay patterns.
 
@@ -70,7 +70,7 @@ async def get_delay_patterns(
     """
     try:
         from ..database import db
-        from ..wienerlinien_mcp.historical_data import get_historical_collector
+        from ..mcp_server.historical_data import get_historical_collector
 
         collector = get_historical_collector(db)
         patterns = collector.analyze_delay_patterns(line=line)
@@ -93,7 +93,7 @@ async def get_delay_patterns(
 
 @router.get("/predictions/{line}")
 async def get_line_prediction(
-    line: str, target_time: Optional[str] = Query(None, description="ISO format target time")
+    line: str, target_time: str | None = Query(None, description="ISO format target time")
 ) -> JSONResponse:
     """Get ML prediction for line delay.
 
@@ -105,7 +105,7 @@ async def get_line_prediction(
         Delay prediction with confidence
     """
     try:
-        from ..wienerlinien_mcp.prediction_service import get_prediction_service
+        from ..mcp_server.prediction_service import get_prediction_service
 
         predictor = get_prediction_service()
 
@@ -160,13 +160,13 @@ async def get_delay_heatmap(
 
         query = """
         SELECT
-            EXTRACT(DOW FROM timestamp)::INTEGER as day_of_week,
-            EXTRACT(HOUR FROM timestamp)::INTEGER as hour,
+            CAST(strftime('%w', timestamp) AS INTEGER) as day_of_week,
+            CAST(strftime('%H', timestamp) AS INTEGER) as hour,
             AVG(delay_minutes) as avg_delay,
             COUNT(*) as sample_count
         FROM historical_vehicles
         WHERE line = :line
-            AND timestamp > NOW() - INTERVAL ':days days'
+            AND timestamp > datetime('now', '-' || :days || ' days')
             AND delay_minutes IS NOT NULL
         GROUP BY day_of_week, hour
         ORDER BY day_of_week, hour
@@ -208,8 +208,8 @@ async def get_analytics_summary() -> JSONResponse:
     """
     try:
         from ..database import db
-        from ..wienerlinien_mcp.historical_data import get_historical_collector
-        from ..wienerlinien_mcp.prediction_service import ML_AVAILABLE, get_prediction_service
+        from ..mcp_server.historical_data import get_historical_collector
+        from ..mcp_server.prediction_service import ML_AVAILABLE, get_prediction_service
 
         collector = get_historical_collector(db)
         predictor = get_prediction_service()
@@ -243,14 +243,10 @@ async def get_analytics_summary() -> JSONResponse:
                 },
                 "reliability": {
                     "lines_analyzed": len(reliability_stats),
-                    "most_reliable": max(
-                        reliability_stats.items(), key=lambda x: x[1]["reliability_score"]
-                    )[0]
+                    "most_reliable": max(reliability_stats.items(), key=lambda x: x[1]["reliability_score"])[0]
                     if reliability_stats
                     else None,
-                    "least_reliable": min(
-                        reliability_stats.items(), key=lambda x: x[1]["reliability_score"]
-                    )[0]
+                    "least_reliable": min(reliability_stats.items(), key=lambda x: x[1]["reliability_score"])[0]
                     if reliability_stats
                     else None,
                 },
