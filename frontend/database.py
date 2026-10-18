@@ -1,14 +1,17 @@
 """
-Database module for handling PostgreSQL operations.
+Database module: PostgreSQL for app tables, SQLite snapshot for GTFS static data.
 
-This module provides a database session factory and common database operations
-for the Wiener Linien application.
+GTFS schedule reads (routes, stops, shapes, ...) run against the normalized
+snapshot gtfs-mcp writes (<gtfs-mcp data_dir>/snapshots/<feed>.db, SPEC
+delegation Phase 1) — no Postgres required for the map. App tables (vehicles,
+api keys, notifications, ...) stay on PostgreSQL until the app.db migration.
 """
 
 # Configure logging
 import logging
 import os
 from decimal import Decimal
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from sqlalchemy import create_engine, text
@@ -17,6 +20,29 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.pool import QueuePool
 
 logger = logging.getLogger(__name__)
+
+
+def resolve_snapshot_path(feed_id: str = "vienna") -> Path | None:
+    """Locate the gtfs-mcp snapshot file (read-only for us, gtfs-mcp is sole writer).
+
+    Precedence: explicit GTFS_SNAPSHOT_PATH env (read fresh, test-friendly),
+    else a `gtfs-mcp` sibling of this repo carrying data/snapshots/<feed>.db,
+    else None (callers refuse with guidance instead of failing obscurely).
+    """
+    explicit = os.environ.get("GTFS_SNAPSHOT_PATH", "").strip()
+    if explicit:
+        cand = Path(explicit).expanduser()
+        return cand if cand.is_file() else None
+    sibling = Path(__file__).resolve().parents[2] / "gtfs-mcp" / "data" / "snapshots" / f"{feed_id}.db"
+    return sibling if sibling.is_file() else None
+
+
+def _as_int(value):
+    """Best-effort int for group_concat fragments (keeps the raw value if garbage)."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return value
 
 
 ROUTE_TYPE_NAMES = {
@@ -43,7 +69,7 @@ class DatabaseManager:
 
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super(DatabaseManager, cls).__new__(cls)
+            cls._instance = super().__new__(cls)
             cls._instance._initialized = False
         return cls._instance
 
@@ -54,6 +80,10 @@ class DatabaseManager:
         self._initialized = True
         self.engine = None
         self.session_factory = None
+        # GTFS snapshot connection (SQLite, read-only for us). Initialized
+        # separately via init_snapshot: map reads must not require Postgres.
+        self.snapshot_engine = None
+        self.snapshot_factory = None
         self._default_color = "#3f51b5"
 
     def init_app(self, app):
@@ -68,9 +98,7 @@ class DatabaseManager:
             return
 
         # Get database URL from environment or use default
-        db_url = os.getenv(
-            "DATABASE_URL", "postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien"
-        )
+        db_url = os.getenv("DATABASE_URL", "postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien")
 
         # Configure the SQLAlchemy engine with connection pooling
         self.engine = create_engine(
@@ -91,9 +119,7 @@ class DatabaseManager:
         )
 
         # Create a scoped session factory
-        self.session_factory = scoped_session(
-            sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
-        )
+        self.session_factory = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=self.engine))
 
         # Test the connection
         self._test_connection()
@@ -105,7 +131,7 @@ class DatabaseManager:
                 conn.execute(text("SELECT 1"))
             logger.info("Successfully connected to the database")
         except Exception as e:
-            logger.error(f"Failed to connect to the database: {str(e)}")
+            logger.error(f"Failed to connect to the database: {e!s}")
             raise
 
     def get_session(self):
@@ -114,12 +140,53 @@ class DatabaseManager:
             raise RuntimeError("Database not initialized. Call init_app first.")
         return self.session_factory()
 
+    def init_snapshot(self, snapshot_path=None):
+        """Connect GTFS static reads to a gtfs-mcp snapshot SQLite file.
+
+        Resolves via resolve_snapshot_path() (GTFS_SNAPSHOT_PATH env, else the
+        gtfs-mcp sibling checkout). Idempotent; raises RuntimeError with
+        guidance when no snapshot file exists.
+        """
+        if self.snapshot_engine is not None:
+            return
+        path = Path(snapshot_path).expanduser() if snapshot_path else resolve_snapshot_path()
+        if path is None or not path.is_file():
+            raise RuntimeError(
+                "GTFS snapshot not found. Export a feed from gtfs-mcp (it writes "
+                "<data_dir>/snapshots/<feed>.db) or set GTFS_SNAPSHOT_PATH to the file."
+            )
+        self.snapshot_engine = create_engine(f"sqlite:///{path}", connect_args={"check_same_thread": False})
+        self.snapshot_factory = scoped_session(
+            sessionmaker(autocommit=False, autoflush=False, bind=self.snapshot_engine)
+        )
+        logger.info(f"GTFS snapshot connected: {path}")
+
+    def execute_snapshot_query(self, query: str, params: dict | None = None, fetch_one: bool = False) -> Any:
+        """Run a read against the GTFS snapshot (same shape as execute_query).
+
+        fetch_one=True returns the first row dict (or None) instead of a list —
+        the shared-manager callers already pass this kwarg.
+        """
+        if not self.snapshot_factory:
+            raise RuntimeError("Snapshot database not initialized. Call init_snapshot first.")
+        session = self.snapshot_factory()
+        try:
+            result = session.execute(text(query), params or {})
+            rows = [dict(row._mapping) for row in result]
+            return rows[0] if fetch_one and rows else (None if fetch_one else rows)
+        except SQLAlchemyError as e:
+            logger.error(f"Error executing snapshot query: {e!s}")
+            session.rollback()
+            raise
+        finally:
+            self.snapshot_factory.remove()
+
     def close_session(self, exception=None):
         """Close the current database session."""
         if self.session_factory:
             self.session_factory.remove()
 
-    def execute_query(self, query: str, params: Optional[Dict] = None) -> List[Dict]:
+    def execute_query(self, query: str, params: dict | None = None) -> list[dict]:
         """
         Execute a raw SQL query and return the results as a list of dictionaries.
 
@@ -135,14 +202,14 @@ class DatabaseManager:
             result = session.execute(text(query), params or {})
             return [dict(row._mapping) for row in result]
         except SQLAlchemyError as e:
-            logger.error(f"Error executing query: {str(e)}")
+            logger.error(f"Error executing query: {e!s}")
             session.rollback()
             raise
         finally:
             self.close_session()
 
     @staticmethod
-    def _to_float(value: Any) -> Optional[float]:
+    def _to_float(value: Any) -> float | None:
         if value is None:
             return None
         if isinstance(value, (float, int)):
@@ -154,7 +221,7 @@ class DatabaseManager:
         except (TypeError, ValueError):
             return None
 
-    def _normalize_color(self, color: Optional[str]) -> str:
+    def _normalize_color(self, color: str | None) -> str:
         if not color:
             return self._default_color
         value = color.strip()
@@ -171,7 +238,7 @@ class DatabaseManager:
             value = value[:7]
         return value.upper()
 
-    def get_vehicles(self, line_number: Optional[str] = None) -> List[Dict]:
+    def get_vehicles(self, line_number: str | None = None) -> list[dict]:
         """
         Get vehicle positions from the database.
 
@@ -182,7 +249,7 @@ class DatabaseManager:
             List of vehicle positions
         """
         query = """
-        SELECT 
+        SELECT
             v.vehicle_id,
             v.line_number,
             v.direction,
@@ -191,7 +258,7 @@ class DatabaseManager:
             v.last_update,
             v.delay,
             v.vehicle_type
-        FROM 
+        FROM
             vehicles v
         """
 
@@ -202,7 +269,7 @@ class DatabaseManager:
 
         return self.execute_query(query, {"line_number": line_number})
 
-    def get_routes(self) -> List[Dict]:
+    def get_routes(self) -> list[dict]:
         """
         Get all routes from the database.
 
@@ -210,7 +277,7 @@ class DatabaseManager:
             List of routes with their details
         """
         query = """
-        SELECT 
+        SELECT
             r.route_id,
             r.route_short_name,
             r.route_long_name,
@@ -220,26 +287,26 @@ class DatabaseManager:
             a.agency_name,
             COUNT(DISTINCT t.trip_id) as trip_count,
             COUNT(DISTINCT st.stop_id) as stop_count
-        FROM 
+        FROM
             routes r
-        LEFT JOIN 
+        LEFT JOIN
             agencies a ON r.agency_id = a.agency_id
-        LEFT JOIN 
+        LEFT JOIN
             trips t ON r.route_id = t.route_id
-        LEFT JOIN 
+        LEFT JOIN
             stop_times st ON t.trip_id = st.trip_id
-        GROUP BY 
+        GROUP BY
             r.route_id, a.agency_name
-        ORDER BY 
+        ORDER BY
             r.route_type, r.route_short_name
         """
 
-        return self.execute_query(query)
+        return self.execute_snapshot_query(query)
 
-    def get_line_overview(self, line_name: str) -> Optional[Dict]:
+    def get_line_overview(self, line_name: str) -> dict | None:
         """Return high-level information about a specific line."""
         query = """
-        SELECT 
+        SELECT
             r.route_id,
             r.route_short_name,
             r.route_long_name,
@@ -248,21 +315,21 @@ class DatabaseManager:
             r.route_text_color,
             COUNT(DISTINCT t.trip_id) AS trip_count,
             COUNT(DISTINCT st.stop_id) AS stop_count
-        FROM 
+        FROM
             routes r
-        LEFT JOIN 
+        LEFT JOIN
             trips t ON t.route_id = r.route_id
-        LEFT JOIN 
+        LEFT JOIN
             stop_times st ON st.trip_id = t.trip_id
-        WHERE 
+        WHERE
             LOWER(r.route_short_name) = LOWER(:line_name)
-        GROUP BY 
+        GROUP BY
             r.route_id
-        ORDER BY 
+        ORDER BY
             stop_count DESC
         """
 
-        rows = self.execute_query(query, {"line_name": line_name})
+        rows = self.execute_snapshot_query(query, {"line_name": line_name})
         if not rows:
             return None
 
@@ -290,22 +357,22 @@ class DatabaseManager:
             "variants": variants,
         }
 
-    def get_line_route_data(self, line_name: str) -> Optional[Dict]:
+    def get_line_route_data(self, line_name: str) -> dict | None:
         """Return route geometry (segments) for a given line."""
-        routes = self.execute_query(
+        routes = self.execute_snapshot_query(
             """
-            SELECT 
+            SELECT
                 r.route_id,
                 r.route_short_name,
                 r.route_long_name,
                 r.route_type,
                 r.route_color,
                 r.route_text_color
-            FROM 
+            FROM
                 routes r
-            WHERE 
+            WHERE
                 LOWER(r.route_short_name) = LOWER(:line_name)
-            ORDER BY 
+            ORDER BY
                 r.route_id
             """,
             {"line_name": line_name},
@@ -314,33 +381,41 @@ class DatabaseManager:
         if not routes:
             return None
 
-        segments: List[Dict[str, Any]] = []
+        segments: list[dict[str, Any]] = []
         for route in routes:
-            shapes = self.execute_query(
+            # DISTINCT ON is Postgres-only: window + filter is portable SQLite.
+            # NULL directions sort last to match NULLS LAST semantics.
+            shapes = self.execute_snapshot_query(
                 """
-                SELECT DISTINCT ON (shape_id)
-                    shape_id,
-                    direction_id
-                FROM trips
-                WHERE route_id = :route_id AND shape_id IS NOT NULL
-                ORDER BY shape_id, direction_id NULLS LAST, trip_id
+                SELECT shape_id, direction_id FROM (
+                    SELECT
+                        shape_id,
+                        direction_id,
+                        ROW_NUMBER() OVER (
+                            PARTITION BY shape_id
+                            ORDER BY direction_id IS NULL, direction_id, trip_id
+                        ) AS rn
+                    FROM trips
+                    WHERE route_id = :route_id AND shape_id IS NOT NULL
+                )
+                WHERE rn = 1
                 LIMIT 4
                 """,
                 {"route_id": route["route_id"]},
             )
 
             for shape in shapes:
-                points = self.execute_query(
+                points = self.execute_snapshot_query(
                     """
-                    SELECT 
+                    SELECT
                         shape_pt_lat,
                         shape_pt_lon,
                         shape_pt_sequence
-                    FROM 
+                    FROM
                         shapes
-                    WHERE 
+                    WHERE
                         shape_id = :shape_id
-                    ORDER BY 
+                    ORDER BY
                         shape_pt_sequence
                     """,
                     {"shape_id": shape["shape_id"]},
@@ -371,9 +446,7 @@ class DatabaseManager:
         overview = self.get_line_overview(line_name)
         type_code = overview["route_type"] if overview else routes[0].get("route_type")
         type_name = (
-            overview["route_type_name"]
-            if overview
-            else ROUTE_TYPE_NAMES.get(routes[0].get("route_type"), "Unknown")
+            overview["route_type_name"] if overview else ROUTE_TYPE_NAMES.get(routes[0].get("route_type"), "Unknown")
         )
 
         return {
@@ -382,9 +455,7 @@ class DatabaseManager:
             "type": type_name,
             "type_code": type_code,
             "type_name": type_name,
-            "color": overview["color"]
-            if overview
-            else self._normalize_color(routes[0].get("route_color")),
+            "color": overview["color"] if overview else self._normalize_color(routes[0].get("route_color")),
             "text_color": overview["text_color"]
             if overview
             else self._normalize_color(routes[0].get("route_text_color")),
@@ -393,7 +464,7 @@ class DatabaseManager:
             "overview": overview,
         }
 
-    def get_line_stations(self, line_name: str) -> List[Dict]:
+    def get_line_stations(self, line_name: str) -> list[dict]:
         """Return ordered stations for the given line."""
         query = """
         WITH matched_routes AS (
@@ -428,8 +499,8 @@ class DatabaseManager:
         ORDER BY stop_sequence
         """
 
-        rows = self.execute_query(query, {"line_name": line_name})
-        stations: List[Dict[str, Any]] = []
+        rows = self.execute_snapshot_query(query, {"line_name": line_name})
+        stations: list[dict[str, Any]] = []
         for row in rows:
             stations.append(
                 {
@@ -438,17 +509,13 @@ class DatabaseManager:
                     "rbl": row["stop_code"],
                     "lat": self._to_float(row["stop_lat"]),
                     "lng": self._to_float(row["stop_lon"]),
-                    "sequence": int(row["stop_sequence"])
-                    if row.get("stop_sequence") is not None
-                    else None,
-                    "direction": int(row["direction_id"])
-                    if row.get("direction_id") is not None
-                    else None,
+                    "sequence": int(row["stop_sequence"]) if row.get("stop_sequence") is not None else None,
+                    "direction": int(row["direction_id"]) if row.get("direction_id") is not None else None,
                 }
             )
         return stations
 
-    def get_stations(self) -> List[Dict]:
+    def get_stations(self) -> list[dict]:
         """
         Get all stations from the database.
 
@@ -456,11 +523,11 @@ class DatabaseManager:
             List of stations with their details
         """
         query = """
-        SELECT 
+        SELECT
             s.stop_id as id,
             s.stop_name as name,
             s.stop_code as rbl,
-            CASE 
+            CASE
                 WHEN s.location_type = 1 THEN 'station'
                 WHEN s.wheelchair_boarding = 1 THEN 'accessible'
                 ELSE 'stop'
@@ -468,17 +535,17 @@ class DatabaseManager:
             s.zone_id as zone,
             s.stop_lat as lat,
             s.stop_lon as lng
-        FROM 
+        FROM
             stops s
-        WHERE 
+        WHERE
             s.location_type = 1 OR s.parent_station IS NULL OR s.parent_station = ''
-        ORDER BY 
+        ORDER BY
             s.stop_name
         """
 
-        return self.execute_query(query)
+        return self.execute_snapshot_query(query)
 
-    def get_stops(self, route_id: Optional[str] = None) -> List[Dict]:
+    def get_stops(self, route_id: str | None = None) -> list[dict]:
         """
         Get stops from the database, optionally filtered by route.
 
@@ -497,15 +564,15 @@ class DatabaseManager:
             s.wheelchair_boarding,
             s.location_type,
             s.parent_station,
-            array_agg(DISTINCT r.route_short_name) as route_numbers,
-            array_agg(DISTINCT r.route_type) as route_types
-        FROM 
+            group_concat(DISTINCT r.route_short_name) as route_numbers,
+            group_concat(DISTINCT r.route_type) as route_types
+        FROM
             stops s
-        LEFT JOIN 
+        LEFT JOIN
             stop_times st ON s.stop_id = st.stop_id
-        LEFT JOIN 
+        LEFT JOIN
             trips t ON st.trip_id = t.trip_id
-        LEFT JOIN 
+        LEFT JOIN
             routes r ON t.route_id = r.route_id
         """
 
@@ -515,16 +582,23 @@ class DatabaseManager:
             params["route_id"] = route_id
 
         query += """
-        GROUP BY 
-            s.stop_id, s.stop_name, s.stop_lat, s.stop_lon, 
+        GROUP BY
+            s.stop_id, s.stop_name, s.stop_lat, s.stop_lon,
             s.wheelchair_boarding, s.location_type, s.parent_station
-        ORDER BY 
+        ORDER BY
             s.stop_name
         """
 
-        return self.execute_query(query, params)
+        rows = self.execute_snapshot_query(query, params)
+        # Engine-independent shape: Postgres array_agg returns lists, SQLite
+        # group_concat returns comma strings — normalize to lists here so
+        # callers never see the difference.
+        for row in rows:
+            row["route_numbers"] = [v for v in str(row.get("route_numbers") or "").split(",") if v]
+            row["route_types"] = [_as_int(v) for v in str(row.get("route_types") or "").split(",") if v]
+        return rows
 
-    def get_route_stops(self, route_id: str, direction_id: Optional[int] = None) -> List[Dict]:
+    def get_route_stops(self, route_id: str, direction_id: int | None = None) -> list[dict]:
         """
         Get all stops for a specific route and optional direction.
 
@@ -541,22 +615,22 @@ class DatabaseManager:
             FROM trips t
             WHERE t.route_id = :route_id
         )
-        SELECT 
+        SELECT
             s.stop_id,
             s.stop_name,
             s.stop_lat as latitude,
             s.stop_lon as longitude,
             st.stop_sequence,
             t.direction_id
-        FROM 
+        FROM
             stops s
-        JOIN 
+        JOIN
             stop_times st ON s.stop_id = st.stop_id
-        JOIN 
+        JOIN
             route_trips rt ON st.trip_id = rt.trip_id
-        JOIN 
+        JOIN
             trips t ON st.trip_id = t.trip_id
-        WHERE 
+        WHERE
             t.route_id = :route_id
         """
 
@@ -567,11 +641,11 @@ class DatabaseManager:
             params["direction_id"] = direction_id
 
         query += """
-        ORDER BY 
+        ORDER BY
             t.direction_id, st.stop_sequence
         """
 
-        return self.execute_query(query, params)
+        return self.execute_snapshot_query(query, params)
 
 
 # Create a singleton instance

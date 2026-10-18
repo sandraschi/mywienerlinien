@@ -1052,6 +1052,17 @@ def initialize_app() -> None:
         if not dev_mode:
             raise
 
+    # GTFS static reads come from the gtfs-mcp snapshot (no Postgres needed
+    # for the map). Same tolerance as the database above: hard fail only
+    # outside dev/test, where the snapshot is a launch prerequisite.
+    try:
+        db.init_snapshot()
+        logger.info("GTFS snapshot connected successfully")
+    except Exception as exc:
+        logger.error("GTFS snapshot init failed: %s", exc, exc_info=True)
+        if not dev_mode:
+            raise
+
     if not TEST_MODE:
         try:
             gtfs_manager.ensure_data_ready()
