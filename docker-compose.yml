@@ -10,29 +10,9 @@ volumes:
   gtfs_data: {}
 
 services:
-  # Database
-  db:
-    build:
-      context: ./db
-      dockerfile: Dockerfile
-    image: wienerlinien-db:local
-    container_name: wienerlinien-db
-    environment:
-      POSTGRES_USER: wienerlinien
-      POSTGRES_PASSWORD: wienerlinien
-      POSTGRES_DB: wienerlinien
-      PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
-    networks:
-      - wienerlinien-network
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U wienerlinien -d wienerlinien" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # NOTE: the PostgreSQL/PostGIS `db` service was removed in the full-SQLite
+  # cutover (app tables live in data/app.db, GTFS reads in the gtfs-mcp
+  # snapshot). postgres_data volume is kept so no historical data is lost.
 
   # GTFS Data Loader
   # DISABLED: Loader runs only when explicitly requested via GTFS_FORCE_REFRESH=1
@@ -45,7 +25,6 @@ services:
     image: wienerlinien-frontend:latest
     container_name: wienerlinien-gtfs-loader
     environment:
-      - DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
       - PGPASSWORD=wienerlinien
       - GTFS_LOG_DIR=/app/logs
       - GTFS_REFRESH_DAYS=${GTFS_REFRESH_DAYS:-365}
@@ -57,9 +36,6 @@ services:
       - wienerlinien_data:/app/data
     networks:
       - wienerlinien-network
-    depends_on:
-      db:
-        condition: service_healthy
     profiles:
       - loader
     command: >
@@ -76,7 +52,6 @@ services:
     image: wienerlinien-frontend:latest
     container_name: wienerlinien-frontend
     environment:
-      - DATABASE_URL=postgresql://wienerlinien:wienerlinien@db:5432/wienerlinien
       - APP_ENV=development
       - PYTHONPATH=/app
     volumes:
@@ -86,9 +61,6 @@ services:
       - "3079:3080"
     networks:
       - wienerlinien-network
-    depends_on:
-      db:
-        condition: service_healthy
     command: >
       sh -c "uvicorn app:app --host 0.0.0.0 --port 3080"
     restart: unless-stopped

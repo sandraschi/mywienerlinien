@@ -80,11 +80,15 @@ def snap_db(tmp_path):
     )
     con.commit()
     con.close()
-    assert db.snapshot_engine is None, "snapshot engine leaked from another test"
-    db.init_snapshot(path)
-    yield db
+    saved = (db.snapshot_engine, db.snapshot_factory)
     db.snapshot_engine = None
     db.snapshot_factory = None
+    assert db.snapshot_engine is None
+    db.init_snapshot(path)
+    yield db
+    if db.snapshot_engine is not None:
+        db.snapshot_engine.dispose()
+    db.snapshot_engine, db.snapshot_factory = saved
 
 
 def test_resolve_snapshot_path_prefers_env(tmp_path, monkeypatch):
@@ -100,10 +104,16 @@ def test_resolve_snapshot_path_missing_file_is_none(tmp_path, monkeypatch):
 
 
 def test_init_snapshot_refuses_without_file(tmp_path, monkeypatch):
-    monkeypatch.setenv("GTFS_SNAPSHOT_PATH", str(tmp_path / "nope.db"))
-    with pytest.raises(RuntimeError, match="GTFS snapshot not found"):
-        db.init_snapshot()
-    assert db.snapshot_engine is None
+    saved = (db.snapshot_engine, db.snapshot_factory)
+    db.snapshot_engine = None
+    db.snapshot_factory = None
+    try:
+        monkeypatch.setenv("GTFS_SNAPSHOT_PATH", str(tmp_path / "nope.db"))
+        with pytest.raises(RuntimeError, match="GTFS snapshot not found"):
+            db.init_snapshot()
+        assert db.snapshot_engine is None
+    finally:
+        db.snapshot_engine, db.snapshot_factory = saved
 
 
 def test_get_routes(snap_db):

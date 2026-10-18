@@ -317,7 +317,10 @@ async def public_prediction(line: str, api_key: str = Depends(verify_api_key)) -
         Delay prediction
     """
     try:
-        from wienerlinien_mcp.prediction_service import get_prediction_service
+        try:
+            from frontend.mcp_server.prediction_service import get_prediction_service
+        except ImportError:
+            from wienerlinien_mcp.prediction_service import get_prediction_service  # type: ignore
 
         predictor = get_prediction_service()
         prediction = predictor.predict_delay(line, datetime.now(), use_fallback=True)
