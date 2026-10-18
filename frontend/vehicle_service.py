@@ -40,6 +40,7 @@ def _now_local() -> datetime:
     """Current wall-clock time in the feed's local timezone."""
     return datetime.now(_VIENNA_TZ)
 
+
 VEHICLE_CACHE_TTL = 60  # seconds
 MAX_RBLS_PER_LINE = 30  # enough to cover a full line
 # Lines shown by default (no line filter): schedule-interpolated pseudo
@@ -60,6 +61,7 @@ _WL_BASE = "http://www.wienerlinien.at/ogd_realtime"
 # Low-level API helpers
 # ---------------------------------------------------------------------------
 
+
 def _get(url: str, params: dict | None = None, timeout: int = 6) -> dict | None:
     """GET with basic error handling. Returns parsed JSON or None."""
     try:
@@ -73,14 +75,12 @@ def _get(url: str, params: dict | None = None, timeout: int = 6) -> dict | None:
 
 def fetch_vehicle_data(rbl_number: str) -> dict[str, Any] | None:
     """Fetch departure monitor for one stop by RBL number (backward-compat)."""
-    return _get(f"{_WL_BASE}/monitor", params={"rbl": rbl_number,
-                                                "activateTrafficInfo": "stoerungkurz"})
+    return _get(f"{_WL_BASE}/monitor", params={"rbl": rbl_number, "activateTrafficInfo": "stoerungkurz"})
 
 
 def fetch_stop_departures(stop_id: str | int) -> dict[str, Any] | None:
     """Fetch departure monitor using the current V1.4 stopId parameter."""
-    return _get(f"{_WL_BASE}/monitor", params={"stopId": str(stop_id),
-                                                "activateTrafficInfo": "stoerungkurz"})
+    return _get(f"{_WL_BASE}/monitor", params={"stopId": str(stop_id), "activateTrafficInfo": "stoerungkurz"})
 
 
 def fetch_traffic_info() -> dict[str, Any] | None:
@@ -94,6 +94,7 @@ def fetch_news() -> dict[str, Any] | None:
 # ---------------------------------------------------------------------------
 # Cache helpers
 # ---------------------------------------------------------------------------
+
 
 def vehicle_cache_key(station: str | None, lines: Iterable[str] | None) -> str:
     if station:
@@ -113,6 +114,7 @@ def clear_vehicle_cache() -> None:
 # ---------------------------------------------------------------------------
 # Schedule-interpolated pseudo-position logic
 # ---------------------------------------------------------------------------
+
 
 def _lerp(a: float, b: float, t: float) -> float:
     return a + (b - a) * t
@@ -159,10 +161,10 @@ def _schedule_pseudo_vehicles(line_name: str, now: datetime | None = None) -> li
         seconds = max(0, min(seconds, 86399))
         return f"{seconds // 3600:02d}:{(seconds % 3600) // 60:02d}:{seconds % 60:02d}"
 
-    win_start = _fmt(now_s - 2700)   # 45 min back
-    win_end = _fmt(now_s + 3600)     # 60 min ahead
+    win_start = _fmt(now_s - 2700)  # 45 min back
+    win_end = _fmt(now_s + 3600)  # 60 min ahead
 
-    rows = db.execute_query(
+    rows = db.execute_snapshot_query(
         """
         SELECT t.trip_id, t.trip_headsign, t.direction_id,
                st.stop_sequence, st.arrival_time, st.departure_time,
@@ -210,34 +212,35 @@ def _schedule_pseudo_vehicles(line_name: str, now: datetime | None = None) -> li
                 b = stops[i + 1]
                 lat = _lerp(float(a["stop_lat"]), float(b["stop_lat"]), fraction)
                 lng = _lerp(float(a["stop_lon"]), float(b["stop_lon"]), fraction)
-                vehicles.append({
-                    "id": f"{line_name}_{trip_id[:12]}_{i}",
-                    "type": _guess_vehicle_type(line_name),
-                    "line": line_name,
-                    "routeId": line_name,
-                    "trip_id": trip_id,
-                    "lat": round(lat, 6),
-                    "lng": round(lng, 6),
-                    "coordinates": [round(lng, 6), round(lat, 6)],
-                    "direction": "R" if direction_id in (1, "1") else "H",
-                    "towards": headsign or b["stop_name"],
-                    "next_station": b["stop_name"],
-                    "delay": 0,
-                    "countdown": max(0, (arr_s - now_s) // 60),
-                    "timestamp": now.isoformat(),
-                    "platform": "",
-                    "barrier_free": True,
-                    "interpolated": True,
-                    "schedule_based": True,
-                    "segment_from": a["stop_name"],
-                    "segment_to": b["stop_name"],
-                    "segment_fraction": round(fraction, 3),
-                })
+                vehicles.append(
+                    {
+                        "id": f"{line_name}_{trip_id[:12]}_{i}",
+                        "type": _guess_vehicle_type(line_name),
+                        "line": line_name,
+                        "routeId": line_name,
+                        "trip_id": trip_id,
+                        "lat": round(lat, 6),
+                        "lng": round(lng, 6),
+                        "coordinates": [round(lng, 6), round(lat, 6)],
+                        "direction": "R" if direction_id in (1, "1") else "H",
+                        "towards": headsign or b["stop_name"],
+                        "next_station": b["stop_name"],
+                        "delay": 0,
+                        "countdown": max(0, (arr_s - now_s) // 60),
+                        "timestamp": now.isoformat(),
+                        "platform": "",
+                        "barrier_free": True,
+                        "interpolated": True,
+                        "schedule_based": True,
+                        "segment_from": a["stop_name"],
+                        "segment_to": b["stop_name"],
+                        "segment_fraction": round(fraction, 3),
+                    }
+                )
                 break  # one marker per trip
 
     if vehicles:
-        logger.info("Schedule-interpolated %d pseudo-vehicles for line %s",
-                    len(vehicles), line_name)
+        logger.info("Schedule-interpolated %d pseudo-vehicles for line %s", len(vehicles), line_name)
     return vehicles
 
 
@@ -339,8 +342,7 @@ def _countdown_pseudo_vehicles(line_name: str) -> list[dict[str, Any]]:
         time.sleep(0.05)  # be gentle
 
     if len(stop_countdowns) < 2:
-        logger.info("Insufficient countdown data for line %s (%d stops)", line_name,
-                    len(stop_countdowns))
+        logger.info("Insufficient countdown data for line %s (%d stops)", line_name, len(stop_countdowns))
         return []
 
     vehicles: list[dict[str, Any]] = []
@@ -371,28 +373,29 @@ def _countdown_pseudo_vehicles(line_name: str) -> list[dict[str, Any]]:
         lat_a, lng_a = stop_coords[n]
         lat_b, lng_b = stop_coords[n1]
 
-        vehicles.append({
-            "id": f"{line_name}_seg{n}_{n1}",
-            "type": _guess_vehicle_type(line_name),
-            "line": line_name,
-            "routeId": line_name,
-            "lat": round(_lerp(lat_a, lat_b, fraction), 6),
-            "lng": round(_lerp(lng_a, lng_b, fraction), 6),
-            "coordinates": [round(_lerp(lng_a, lng_b, fraction), 6),
-                            round(_lerp(lat_a, lat_b, fraction), 6)],
-            "direction": "H",
-            "towards": stop_names.get(n1, ""),
-            "next_station": stop_names.get(n1, ""),
-            "delay": 0,
-            "countdown": int(cd_n1),
-            "timestamp": datetime.utcnow().isoformat(),
-            "platform": "",
-            "barrier_free": True,
-            "interpolated": True,
-            "segment_from": stop_names.get(n, ""),
-            "segment_to": stop_names.get(n1, ""),
-            "segment_fraction": round(fraction, 3),
-        })
+        vehicles.append(
+            {
+                "id": f"{line_name}_seg{n}_{n1}",
+                "type": _guess_vehicle_type(line_name),
+                "line": line_name,
+                "routeId": line_name,
+                "lat": round(_lerp(lat_a, lat_b, fraction), 6),
+                "lng": round(_lerp(lng_a, lng_b, fraction), 6),
+                "coordinates": [round(_lerp(lng_a, lng_b, fraction), 6), round(_lerp(lat_a, lat_b, fraction), 6)],
+                "direction": "H",
+                "towards": stop_names.get(n1, ""),
+                "next_station": stop_names.get(n1, ""),
+                "delay": 0,
+                "countdown": int(cd_n1),
+                "timestamp": datetime.utcnow().isoformat(),
+                "platform": "",
+                "barrier_free": True,
+                "interpolated": True,
+                "segment_from": stop_names.get(n, ""),
+                "segment_to": stop_names.get(n1, ""),
+                "segment_fraction": round(fraction, 3),
+            }
+        )
 
     logger.info("Interpolated %d pseudo-vehicles for line %s", len(vehicles), line_name)
     return vehicles
@@ -401,6 +404,7 @@ def _countdown_pseudo_vehicles(line_name: str) -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 # Shared response parser
 # ---------------------------------------------------------------------------
+
 
 def _calculate_delay(departure_time: dict[str, Any]) -> int:
     try:
@@ -422,9 +426,7 @@ def _parse_monitor_response(
 ) -> None:
     """Parse a /monitor JSON response into vehicle dicts, appending to `out`."""
     for monitor in data.get("data", {}).get("monitors", []):
-        coords = (monitor.get("locationStop", {})
-                  .get("geometry", {})
-                  .get("coordinates", [0, 0]))
+        coords = monitor.get("locationStop", {}).get("geometry", {}).get("coordinates", [0, 0])
         props = monitor.get("locationStop", {}).get("properties", {})
         stop_name = props.get("title", "")
         rbl_id = props.get("attributes", {}).get("rbl", "?")
@@ -436,30 +438,32 @@ def _parse_monitor_response(
             line_type = line_data.get("type", "unknown")
             for dep in (line_data.get("departures") or {}).get("departure", []):
                 dep_time = dep.get("departureTime", {})
-                out.append({
-                    "id": f"{line_name}_{rbl_id}_{len(out)}",
-                    "type": line_type.replace("pt", "").lower(),
-                    "line": line_name,
-                    "routeId": line_name,
-                    "lat": coords[1] if len(coords) > 1 else 0,
-                    "lng": coords[0] if coords else 0,
-                    "coordinates": [coords[0] if coords else 0,
-                                    coords[1] if len(coords) > 1 else 0],
-                    "direction": line_data.get("direction", "H"),
-                    "towards": line_data.get("towards", ""),
-                    "next_station": stop_name,
-                    "delay": _calculate_delay(dep_time),
-                    "timestamp": datetime.utcnow().isoformat(),
-                    "countdown": dep_time.get("countdown", 0),
-                    "platform": line_data.get("platform", ""),
-                    "barrier_free": line_data.get("barrierFree", False),
-                    "interpolated": False,
-                })
+                out.append(
+                    {
+                        "id": f"{line_name}_{rbl_id}_{len(out)}",
+                        "type": line_type.replace("pt", "").lower(),
+                        "line": line_name,
+                        "routeId": line_name,
+                        "lat": coords[1] if len(coords) > 1 else 0,
+                        "lng": coords[0] if coords else 0,
+                        "coordinates": [coords[0] if coords else 0, coords[1] if len(coords) > 1 else 0],
+                        "direction": line_data.get("direction", "H"),
+                        "towards": line_data.get("towards", ""),
+                        "next_station": stop_name,
+                        "delay": _calculate_delay(dep_time),
+                        "timestamp": datetime.utcnow().isoformat(),
+                        "countdown": dep_time.get("countdown", 0),
+                        "platform": line_data.get("platform", ""),
+                        "barrier_free": line_data.get("barrierFree", False),
+                        "interpolated": False,
+                    }
+                )
 
 
 # ---------------------------------------------------------------------------
 # RBL resolution helper
 # ---------------------------------------------------------------------------
+
 
 def _determine_rbls_for_lines(line_filters: set[str] | None) -> list[str]:
     if not line_filters:
@@ -487,6 +491,7 @@ def _determine_rbls_for_lines(line_filters: set[str] | None) -> list[str]:
 # ---------------------------------------------------------------------------
 # Snapshot refresh
 # ---------------------------------------------------------------------------
+
 
 def _refresh_vehicle_snapshot(
     station: str | None,
@@ -552,6 +557,7 @@ def _refresh_vehicle_snapshot(
 # Public API
 # ---------------------------------------------------------------------------
 
+
 def collect_vehicle_data(
     vehicle_type: str = "all",
     line: str | None = None,
@@ -580,9 +586,7 @@ def collect_vehicle_data(
                 snapshot = _vehicle_snapshot_cache.get(cache_key)
                 age = (time.monotonic() - snapshot["fetched_at"]) if snapshot else VEHICLE_CACHE_TTL + 1
             if age > VEHICLE_CACHE_TTL:
-                raw_snapshot = _refresh_vehicle_snapshot(
-                    station, set(normalized_lines) if normalized_lines else None
-                )
+                raw_snapshot = _refresh_vehicle_snapshot(station, set(normalized_lines) if normalized_lines else None)
                 with _vehicle_cache_lock:
                     _vehicle_snapshot_cache[cache_key] = raw_snapshot
             else:
@@ -590,8 +594,7 @@ def collect_vehicle_data(
     elif snapshot:
         raw_snapshot = snapshot
     else:
-        raw_snapshot = {"vehicles": [], "successful_requests": 0,
-                        "failed_requests": 0, "fetched_at": time.monotonic()}
+        raw_snapshot = {"vehicles": [], "successful_requests": 0, "failed_requests": 0, "fetched_at": time.monotonic()}
 
     vehicles = raw_snapshot["vehicles"]
 
@@ -603,8 +606,9 @@ def collect_vehicle_data(
         lf = set(normalized_lines)
         vehicles = [v for v in vehicles if v.get("line", "").upper() in lf]
 
-    logger.info("Vehicle snapshot: %d returned (type=%s lines=%s)",
-                len(vehicles), vehicle_type, normalized_lines or "all")
+    logger.info(
+        "Vehicle snapshot: %d returned (type=%s lines=%s)", len(vehicles), vehicle_type, normalized_lines or "all"
+    )
     if not vehicles:
         logger.warning("Returning 0 vehicles")
 
@@ -638,9 +642,16 @@ def get_vehicle_summary(
         lines_seen[ln] = lines_seen.get(ln, 0) + 1
         delay = v.get("delay") or 0
         if delay > 0:
-            delayed.append({"line": ln, "next_station": v.get("next_station", ""),
-                            "delay": delay, "countdown": v.get("countdown"),
-                            "timestamp": v.get("timestamp"), "type": vt})
+            delayed.append(
+                {
+                    "line": ln,
+                    "next_station": v.get("next_station", ""),
+                    "delay": delay,
+                    "countdown": v.get("countdown"),
+                    "timestamp": v.get("timestamp"),
+                    "type": vt,
+                }
+            )
 
     delayed.sort(key=lambda e: e["delay"], reverse=True)
 
@@ -648,18 +659,17 @@ def get_vehicle_summary(
     try:
         fallback = data_loader.load_lines()
         if not line_catalog:
-            line_catalog = [{"name": l.name, "type": l.type, "color": l.color}
-                            for l in fallback]
-    except Exception:
-        pass
+            line_catalog = [{"name": l.name, "type": l.type, "color": l.color} for l in fallback]
+    except Exception as exc:
+        logger.debug("Line catalog fallback failed: %s", exc)
     catalog = {str(item.get("name", "")).upper(): item for item in line_catalog}
 
     line_details = []
     for ln, count in sorted(lines_seen.items(), key=lambda x: x[1], reverse=True):
         lk = catalog.get(ln.upper()) or {}
-        line_details.append({"name": ln, "count": count,
-                              "type": lk.get("type", "Unknown"),
-                              "color": f"#{lk.get('color', '2F855A')}"})
+        line_details.append(
+            {"name": ln, "count": count, "type": lk.get("type", "Unknown"), "color": f"#{lk.get('color', '2F855A')}"}
+        )
 
     return {
         "vehicles_total": len(vehicles),

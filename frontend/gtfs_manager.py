@@ -49,9 +49,7 @@ load_gtfs_to_db = load_module.load_gtfs_to_db
 
 # Default configuration (can be overridden via environment)
 DEFAULT_CITY = os.getenv("GTFS_CITY", "vienna")
-DEFAULT_GTFS_URL = os.getenv(
-    "GTFS_URL", "https://www.wienerlinien.at/ogd_realtime/doku/ogd/gtfs/gtfs.zip"
-)
+DEFAULT_GTFS_URL = os.getenv("GTFS_URL", "https://www.wienerlinien.at/ogd_realtime/doku/ogd/gtfs/gtfs.zip")
 
 
 def _now_utc() -> datetime:
@@ -68,9 +66,7 @@ class GTFSManager:
     def __init__(self) -> None:
         self.logger = logging.getLogger("gtfs_manager")
         self.test_mode = os.getenv("WIENER_LINIEN_TEST_MODE", "").strip() == "1"
-        self.refresh_interval = timedelta(
-            days=int(os.getenv("GTFS_REFRESH_INTERVAL_DAYS", str(GTFS_MAX_AGE_DAYS)))
-        )
+        self.refresh_interval = timedelta(days=int(os.getenv("GTFS_REFRESH_INTERVAL_DAYS", str(GTFS_MAX_AGE_DAYS))))
         self.metadata_path = Path(DATA_DIR) / "gtfs_metadata.json"
         self._lock = threading.Lock()
         self._background_thread: threading.Thread | None = None
@@ -127,8 +123,8 @@ class GTFSManager:
                 with db.engine.connect() as conn:
                     conn.execute("SELECT 1")
                 return True
-        except Exception:
-            pass
+        except Exception as exc:
+            self.logger.debug("DB connectivity check failed: %s", exc)
         return False
 
     # ------------------------------------------------------------------
@@ -181,7 +177,7 @@ class GTFSManager:
 
     def _database_has_routes(self) -> bool:
         try:
-            result = db.execute_query("SELECT COUNT(*) AS count FROM routes")
+            result = db.execute_snapshot_query("SELECT COUNT(*) AS count FROM routes")
             return bool(result and result[0].get("count", 0) > 0)
         except Exception as exc:  # pragma: no cover - safety net
             self.logger.warning("Unable to count routes: %s", exc)
@@ -222,7 +218,7 @@ class GTFSManager:
     # def _generate_markdown(self) -> None:
     #     """Legacy method - no longer needed since we read directly from database."""
 
-    def _load_metadata(self) -> Dict[str, Any] | None:
+    def _load_metadata(self) -> dict[str, Any] | None:
         if not self.metadata_path.exists():
             return None
         try:

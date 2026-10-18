@@ -44,9 +44,7 @@ class RateLimiter:
         minute_ago = now - 60
 
         # Clean old requests
-        self.requests[api_key] = [
-            req_time for req_time in self.requests[api_key] if req_time > minute_ago
-        ]
+        self.requests[api_key] = [req_time for req_time in self.requests[api_key] if req_time > minute_ago]
 
         # Check limit
         if len(self.requests[api_key]) >= self.requests_per_minute:
@@ -69,7 +67,7 @@ class RateLimiter:
 rate_limiter = RateLimiter(requests_per_minute=60)
 
 
-async def verify_api_key(x_api_key: Optional[str] = Header(None, alias="X-API-Key")) -> str:
+async def verify_api_key(x_api_key: str | None = Header(None, alias="X-API-Key")) -> str:
     """Verify API key from request header.
 
     Args:
@@ -133,9 +131,7 @@ async def api_info() -> JSONResponse:
 
 
 @router.get("/departures")
-async def public_departures(
-    station: str, limit: int = 5, api_key: str = Depends(verify_api_key)
-) -> JSONResponse:
+async def public_departures(station: str, limit: int = 5, api_key: str = Depends(verify_api_key)) -> JSONResponse:
     """Get real-time departures for a station (Public API).
 
     Args:
@@ -169,7 +165,7 @@ async def public_departures(
 
 @router.get("/stations")
 async def public_stations(
-    query: Optional[str] = None, limit: int = 10, api_key: str = Depends(verify_api_key)
+    query: str | None = None, limit: int = 10, api_key: str = Depends(verify_api_key)
 ) -> JSONResponse:
     """Search stations (Public API).
 
@@ -186,7 +182,7 @@ async def public_stations(
 
         if query:
             # Search by name
-            results = db.execute_query(
+            results = db.execute_snapshot_query(
                 """
             SELECT stop_id, stop_name, stop_lat, stop_lon
             FROM stops
@@ -197,7 +193,7 @@ async def public_stations(
             )
         else:
             # All stations
-            results = db.execute_query(
+            results = db.execute_snapshot_query(
                 """
             SELECT stop_id, stop_name, stop_lat, stop_lon
             FROM stops
@@ -209,8 +205,7 @@ async def public_stations(
             )
 
         stations = [
-            {"id": r["stop_id"], "name": r["stop_name"], "lat": r["stop_lat"], "lng": r["stop_lon"]}
-            for r in results
+            {"id": r["stop_id"], "name": r["stop_name"], "lat": r["stop_lat"], "lng": r["stop_lon"]} for r in results
         ]
 
         return JSONResponse(
@@ -255,13 +250,9 @@ async def public_journey(
         to_info = find_station_by_name(to_station)
 
         if not from_info:
-            raise HTTPException(
-                status_code=404, detail=f"Origin station '{from_station}' not found"
-            )
+            raise HTTPException(status_code=404, detail=f"Origin station '{from_station}' not found")
         if not to_info:
-            raise HTTPException(
-                status_code=404, detail=f"Destination station '{to_station}' not found"
-            )
+            raise HTTPException(status_code=404, detail=f"Destination station '{to_station}' not found")
 
         # Plan journey
         planner = get_journey_planner()

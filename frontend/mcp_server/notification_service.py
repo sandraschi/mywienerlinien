@@ -146,21 +146,18 @@ class SmartNotificationService:
                 WHERE s.stop_name = :station_name
                 LIMIT 5
                 """
-                results = self.db.execute_query(query, {"station_name": station.get("name")})
+                results = self.db.execute_snapshot_query(query, {"station_name": station.get("name")})
                 for row in results:
                     lines.add(row["route_short_name"])
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.debug("Lines lookup for notifications failed: %s", exc)
 
         # Check predictions for each line
         for line in lines:
             try:
                 prediction = self.predictor.predict_delay(line, datetime.now())
 
-                if (
-                    prediction
-                    and prediction.predicted_delay_minutes >= self.DELAY_THRESHOLD_MINUTES
-                ):
+                if prediction and prediction.predicted_delay_minutes >= self.DELAY_THRESHOLD_MINUTES:
                     notification = self._create_delay_notification(prediction)
                     notifications.append(notification)
 
@@ -219,8 +216,7 @@ class SmartNotificationService:
             priority=NotificationPriority.MEDIUM,
             title="💡 Better Route Available",
             message=(
-                f"{original_line} has delays. "
-                f"Take {alternative_line} instead - saves {time_saved_minutes} minutes!"
+                f"{original_line} has delays. Take {alternative_line} instead - saves {time_saved_minutes} minutes!"
             ),
             line=original_line,
             station=None,
@@ -276,9 +272,7 @@ class SmartNotificationService:
             logger.error(f"Error sending notification: {e}", exc_info=True)
             return False
 
-    def get_active_notifications(
-        self, user_favorites: list[str] | None = None
-    ) -> list[Notification]:
+    def get_active_notifications(self, user_favorites: list[str] | None = None) -> list[Notification]:
         """Get active notifications for user.
 
         Args:
@@ -336,7 +330,5 @@ def get_notification_service(db_manager, prediction_service, historical_collecto
     """Get or create notification service instance."""
     global _notification_service
     if _notification_service is None:
-        _notification_service = SmartNotificationService(
-            db_manager, prediction_service, historical_collector
-        )
+        _notification_service = SmartNotificationService(db_manager, prediction_service, historical_collector)
     return _notification_service
