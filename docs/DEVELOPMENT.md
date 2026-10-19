@@ -6,7 +6,7 @@ For first-timer wrappee setup see `docs/ONBOARDING.md`.
 ## Onboarding status
 
 Onboarding N/A is NOT applicable to this repo. A wrappee exists (Wiener Linien
-OGD API plus Docker Desktop for PostGIS), so `docs/ONBOARDING.md` is mandatory
+OGD API), so `docs/ONBOARDING.md` is mandatory
 per the fleet onboarding standard. Do not mark this repo exempt.
 
 ## Two workflows
@@ -16,8 +16,8 @@ per the fleet onboarding standard. Do not mark this repo exempt.
 Best for Python and dashboard code changes. The MCP server also runs this way.
 
 ```powershell
-# 1. Start PostGIS + observability in Docker (needed for the DB)
-docker compose up -d db
+# 1. Start observability in Docker (optional; no database container exists)
+docker compose up -d grafana loki
 
 # 2. Install deps once
 uv sync --extra dev
@@ -30,15 +30,15 @@ uv sync --extra dev
 just serve
 ```
 
-Native processes connect to the Docker DB via
-`DATABASE_URL=postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien`.
+Native processes read local SQLite files: `data/app.db` (auto-created) plus
+the gtfs-mcp snapshot (`GTFS_SNAPSHOT_PATH`, sibling default).
 
 ### Option B - Full Docker stack (closest to production)
 
-Best for verifying compose wiring, Grafana, Loki, and the GTFS loader.
+Best for verifying compose wiring, Grafana, and Loki.
 
 ```powershell
-# Start everything: db + frontend map + grafana + loki + promtail
+# Start everything: frontend map + grafana + loki + promtail
 docker compose up -d
 
 # Map: http://localhost:3079, Grafana: http://localhost:3140
@@ -47,9 +47,6 @@ docker compose logs -f frontend
 
 # Fast restart after code changes (uses layer cache, about 10 s)
 docker compose restart frontend
-
-# Load or refresh GTFS data into PostGIS
-docker compose run --rm -e GTFS_FORCE_REFRESH=1 gtfs-loader
 ```
 
 Full rebuilds (`docker compose build frontend`) are only needed when
@@ -61,7 +58,7 @@ stdio transport needs direct process communication, so the MCP server runs on
 the host even when everything else is in Docker:
 
 ```powershell
-$env:DATABASE_URL = "postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien"
+$env:APP_DB_PATH = "D:/Dev/repos/mywienerlinien/data/app.db"
 uv run vienna-transit-mcp
 # or: uv run python -m wienerlinien_mcp.server  (from src/ layout)
 ```
@@ -69,7 +66,7 @@ uv run vienna-transit-mcp
 Claude Desktop config uses `python -m frontend.mcp_server.server` with
 `PYTHONPATH=D:/Dev/repos/mywienerlinien` in older setups and
 `wienerlinien_mcp.server:mcp` (`uv run vienna-transit-mcp`) in the current
-`pyproject.toml` entry point. Both need the same `DATABASE_URL`.
+`pyproject.toml` entry point. Both read the same `APP_DB_PATH`.
 
 ## justfile recipes
 
@@ -113,11 +110,11 @@ and ruff line-length 120. Pre-commit runs ruff before each commit; run
 
 ## GTFS data note for developers
 
-The first GTFS import takes 15-30 minutes and writes millions of rows
-(stops, routes, trips, stop_times) into PostGIS. Later runs are incremental
-unless `GTFS_FORCE_REFRESH=1`. Do not interrupt the loader mid-import; if you
-must, drop and re-run rather than debugging a half-loaded schema. See
-`docs/TROUBLESHOOTING.md` for staleness and schema symptoms.
+The Vienna snapshot is built by gtfs-mcp (offline parse ~1 min, snapshot
+write a few minutes for 8.2M stop_times) into
+`<gtfs-mcp>/data/snapshots/vienna.db`, read directly via `GTFS_SNAPSHOT_PATH`.
+Snapshot refreshes are atomic (tmp + replace), so readers never see half a
+feed. See `docs/TROUBLESHOOTING.md` for staleness symptoms.
 
 ## Repo layout cheat sheet
 

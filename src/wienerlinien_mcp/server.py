@@ -11,7 +11,6 @@ Usage:
 """
 
 import logging
-import os
 import sys
 from pathlib import Path
 
@@ -32,9 +31,14 @@ try:
 
         pass
 
-    # Only init if DATABASE_URL is set and db not already initialized
-    if os.getenv("DATABASE_URL") and db.engine is None:
+    # App tables live in local app.db (auto-created); schedule reads use the
+    # gtfs-mcp snapshot when resolvable. Neither needs a database server.
+    if db.engine is None:
         db.init_app(_MCPApp())
+    try:
+        db.init_snapshot()
+    except Exception as exc:
+        logging.getLogger("wienerlinien_mcp").warning(f"Snapshot not connected: {exc}")
 except Exception as e:
     logging.getLogger("wienerlinien_mcp").warning(f"Database init skipped: {e}")
 

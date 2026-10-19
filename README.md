@@ -1,12 +1,13 @@
 # Vienna Transit - Dual Standard Application
 
+<!-- markdownlint-disable MD033 MD013 - shields.io badge soup has no markdown form -->
 <p align="center">
   <a href="https://github.com/casey/just"><img src="https://img.shields.io/badge/just-ready_to_go-7c5cfc?style=flat-square&logo=just&logoColor=white" alt="Just"></a>
   <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Ruff"></a>
   <a href="https://python.org"><img src="https://img.shields.io/badge/Python-3.13+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python"></a>
   <a href="https://github.com/PrefectHQ/fastmcp"><img src="https://img.shields.io/badge/FastMCP-3.2-7c5cfc?style=flat-square" alt="FastMCP"></a>
 </p>
-
+<!-- markdownlint-enable MD033 MD013 -->
 
 > 📖 **[Installation Guide](INSTALL.md)** — quick start, manual setup, and troubleshooting
 
@@ -15,24 +16,28 @@
 **Version:** 2.0.1 (Phase 1-5 Complete + Schema Migration)
 
 A comprehensive Vienna public transport application with **two complementary interfaces**:
-- ** Web Application**: Interactive real-time map with departure information
-- ** MCP Server**: AI assistant integration for Claude Desktop (SOTA compliant)
 
-**Important Note**: Due to Wiener Linien API limitations, the map shows **departure events at stops** rather than real-time GPS vehicle positions. This is the  real-time information available from the official API.
+- **Web Application**: Interactive real-time map with departure information
+- **MCP Server**: AI assistant integration for Claude Desktop (SOTA compliant)
 
-Both interfaces share the same backend logic and data sources, providing a unified experience across web and AI platforms.
+**Important Note**: Due to Wiener Linien API limitations, the map shows
+**departure events at stops** rather than real-time GPS vehicle positions.
+This is the real-time information available from the official API.
+
+Both interfaces share the same backend logic and data sources, providing a
+unified experience across web and AI platforms.
 
 ## Related: gtfs-mcp
 
 This app is a consumer of Wiener Linien GTFS data and has a sibling server,
 **[gtfs-mcp](https://github.com/sandraschi/gtfs-mcp)** (FastMCP 3.4, ports
 10913/10912), which downloads, parses, and serves the same kind of GTFS
-schedule data with SQLite persistence and 7 MCP tools. The two repos are
+schedule data with SQLite persistence and 16 MCP tools. The two repos are
 separate for historic reasons but share the Vienna feed:
 
 | | mywienerlinien | gtfs-mcp |
 |---|---|---|
-| Data store | PostgreSQL/PostGIS | SQLite |
+| Data store | SQLite (`data/app.db` + gtfs-mcp snapshot) | SQLite |
 | Purpose | Live map + departures + MCP server | General GTFS schedule server + MCP tools |
 | Feed | Wiener Linien OGD GTFS zip | Any agency (Vienna is the default) |
 
@@ -56,36 +61,32 @@ cd mywienerlinien
 just
 ```
 
-This opens an interactive dashboard showing all available commands. Run `just bootstrap` to install dependencies, then `just serve` or `just dev` to start.
+This opens an interactive dashboard showing all available commands. Run
+`just bootstrap` to install dependencies, then `just serve` or `just dev`
+to start.
 
 ### Manual Setup
 
 If you don't have `just` installed:
 
-##  Quick Start
+## Quick Start (manual)
 
-### Docker (Recommended)
+### Docker (observability + map)
 
 ```powershell
-# Start all services (db + frontend + grafana + loki + promtail)
+# Start Grafana/Loki/map frontend (no database container since Phase 3)
 docker compose up -d
 
 # Frontend: http://localhost:3079
 # Grafana: http://localhost:3140
-# PostgreSQL: localhost:5433
 
-# Load / refresh the GTFS data (Wiener Linien feed) into PostGIS:
-docker compose run --rm -e GTFS_FORCE_REFRESH=1 gtfs-loader
-
-# Loader runs automatically when the feed is stale (GTFS_REFRESH_DAYS, default 365)
+# Schedule data comes from the gtfs-mcp snapshot file (see GTFS section);
+# app tables live in data/app.db, created on first boot. No import step.
 ```
 
-The images are **self-contained** (frontend app, scripts, models, db init SQL
-and requirements are baked in - no host bind mounts). Persistent state lives
-in named volumes (`postgres_data`, `wienerlinien_data`, `gtfs_data`). The GTFS
-zip for the loader lives in the `gtfs_data` volume; `docker compose run
---rm gtfs-loader` re-downloads it from the Wiener Linien OGD endpoint when
-forced.
+The images are **self-contained** (frontend app, scripts and requirements
+are baked in - no host bind mounts). Persistent state lives in named volumes
+(`wienerlinien_data`, `gtfs_data`).
 
 > **Note (Docker Desktop)**: bind mounts under the repo are avoided because
 > Docker Desktop on some machines cannot create new D: bind mounts
@@ -105,16 +106,17 @@ forced.
 
 ---
 
-##  SOTA Features
+## SOTA Features
 
 ### MCP Server (10/10 SOTA Score)
 
- **FastMCP 3.1.0 Compliant**
+#### FastMCP 3.4 Compliant
+
 - **12 Production-Ready Tools**: All fully implemented with real features
 - **5 AI Prompts**: Comprehensive guidance for Claude
 - **5 Resources**: Transit system reference data
-- ** Ultra-Fast Startup**: 3-5 seconds (vs. 67 seconds previously)
-- ** Multi-City Ready**: Phase 6 tools for city management
+- **Ultra-Fast Startup**: 3-5 seconds (vs. 67 seconds previously)
+- **Multi-City Ready**: Phase 6 tools for city management
 - **Real GTFS Routing**: A* pathfinding with multi-transfer support
 - **ML Predictions**: Delay forecasting with Random Forest (Phase 3C)
 - **Multi-City Support**: Framework for multiple cities (Phase 4)
@@ -123,27 +125,31 @@ See `SOTA_CHECKLIST.md` for detailed compliance report.
 
 ---
 
-##  Recent Updates (December 2025)
+## Recent Updates (December 2025)
 
-###  **Database Schema Migration Complete**
+### **Database Schema Migration Complete**
+
 - **Fixed critical schema mismatch** between application code and database
-- **Migrated cities table** from old schema (`name`, `country`) to new Phase 4 schema (`city_code`, `city_name`, `map_center_lat`, etc.)
+- **Migrated cities table** from old schema (`name`, `country`) to new
+  Phase 4 schema (`city_code`, `city_name`, `map_center_lat`, etc.)
 - **Applied Vienna city configuration** with proper coordinates (48.2082, 16.3738) and metadata
 - **Enhanced health check** with improved timeout handling (30s timeout, 40s start period)
 
-###  **Full Data Loading Verified**
+### **Full Data Loading Verified**
+
 - **4,684 stops** - Complete Vienna transit station network
 - **1,138 routes** - All metro, tram, and bus lines
 - **562,609 trips** - Comprehensive scheduling data
 - **10,629,882 stop times** - Complete timetable database
 - **Real-time vehicle tracking** - 51+ active vehicles currently monitored
 
-###  **System Status: Fully Operational**
+### **System Status: Fully Operational**
+
 - **Backend APIs**: All endpoints responding with live data
 - **WebSocket connections**: Active real-time updates
 - **MCP Server**: 12 tools, 5 prompts, 5 resources - ready for Claude Desktop
 - **Database**: PostgreSQL/PostGIS with spatial indexing
-- **Monitoring**: Grafana dashboards at http://localhost:3140
+- **Monitoring**: Grafana dashboards at <http://localhost:3140>
 
 **The application is now production-ready with complete Vienna transit data and all features functional!**
 
@@ -151,7 +157,8 @@ See `SOTA_CHECKLIST.md` for detailed compliance report.
 
 ## Architecture Overview
 
-###  FastAPI Web Application
+### FastAPI Web Application
+
 - **Purpose**: Human-friendly web interface for real-time transit visualization
 - **Transport**: HTTP/WebSocket
 - **Location**: `frontend/app.py`
@@ -167,11 +174,12 @@ See `SOTA_CHECKLIST.md` for detailed compliance report.
   - Advanced filtering and sorting
   - Analytics dashboard (Chart.js visualizations)
 
-###  FastMCP MCP Server (Runs Natively, NOT in Docker)
+### FastMCP MCP Server (Runs Natively, NOT in Docker)
+
 - **Purpose**: AI assistant integration for natural language transit queries
 - **Transport**: stdio (for Claude Desktop)
 - **Location**: `frontend/mcp_server/`
-- **Execution**: Runs natively on host (connects to Docker database)
+- **Execution**: Runs natively on host (reads local SQLite files)
 - **Why Native**: stdio transport requires direct process communication
 - **Features**:
   - **9 core tools**: Departures, search, journey planning, status, help, alerts, timetable, nearby, server status
@@ -184,10 +192,12 @@ See `SOTA_CHECKLIST.md` for detailed compliance report.
   - **Multi-city architecture** (Phase 4)
   - **Production error handling**
 
-###  Shared Backend
+### Shared Backend
+
 Both interfaces use the same core modules:
+
 - `data_loader.py` - GTFS data loading and station management
-- `database.py` - PostgreSQL/PostGIS database layer
+- `database.py` - SQLite database layer (app.db + gtfs-mcp snapshot)
 - `vehicle_service.py` - Real-time vehicle data collection
 - `disruption_alerts.py` - Service disruption monitoring
 - `routing_service.py` - A* pathfinding for journey planning
@@ -198,16 +208,17 @@ Both interfaces use the same core modules:
 
 ---
 
-##  Phase Implementation Status
+## Phase Implementation Status
 
-###  Phase 1: Core Infrastructure (Complete)
+### Phase 1: Core Infrastructure (Complete)
+
 - GTFS data loading and processing
 - Real-time vehicle tracking
 - Interactive map with 198 lines
-- PostgreSQL/PostGIS database
-- Docker containerization
+- SQLite data layer (snapshot + app.db, no database server)
 
-###  Phase 2: PWA & Favorites (Complete)
+### Phase 2: PWA & Favorites (Complete)
+
 - Progressive Web App support
 - Service worker for offline capability
 - App manifest for installability
@@ -215,35 +226,40 @@ Both interfaces use the same core modules:
 - Mobile optimization
 - Geolocation integration
 
-###  Phase 3A: Advanced Routing (Complete)
+### Phase 3A: Advanced Routing (Complete)
+
 - A* pathfinding algorithm
 - Transit graph construction
 - Multi-transfer support
 - Real-time delay integration
 - Journey comparison
 
-###  Phase 3B: Advanced Filtering (Complete)
+### Phase 3B: Advanced Filtering (Complete)
+
 - Line type filters (metro, tram, bus)
 - Direction filters
 - Zone filters
 - Accessibility filters
 - Schedule-based filters
 
-###  Phase 3C: ML & Analytics (Complete)
+### Phase 3C: ML & Analytics (Complete)
+
 - Historical data collection
 - ML delay predictions (Random Forest/Gradient Boosting)
 - Analytics dashboard with Chart.js
 - Smart notifications
 - Model training scripts
 
-###  Phase 4: Multi-City Support (Complete)
+### Phase 4: Multi-City Support (Complete)
+
 - City configuration framework
 - Database migrations for cities table
 - City switching API
 - Support for multiple Austrian cities
 - Public API with rate limiting
 
-###  Phase 5: Integration Features (Complete)
+### Phase 5: Integration Features (Complete)
+
 - Weather integration (OpenWeatherMap)
 - Calendar integration
 - Social features (user-generated content)
@@ -251,20 +267,25 @@ Both interfaces use the same core modules:
 
 ---
 
-##  Installation
+## Installation
 
 ### Prerequisites
+
 - [uv](https://docs.astral.sh/uv/) installed (RECOMMENDED)
 - Python 3.12+
 
-###  Quick Start
+### Quick Start (uvx)
+
 Run immediately via `uvx`:
+
 ```bash
 uvx vienna-transit-mcp
 ```
 
-###  Claude Desktop Integration
+### Claude Desktop Integration
+
 Add to your `claude_desktop_config.json`:
+
 ```json
 "mcpServers": {
   "vienna-transit-mcp": {
@@ -273,10 +294,12 @@ Add to your `claude_desktop_config.json`:
   }
 }
 ```
-### Prerequisites
-- Python 3.9 or higher
-- Docker & Docker Compose
-- PostgreSQL 16+ with PostGIS (via Docker)
+
+### MCP prerequisites
+
+- Python 3.12+ and `uv`
+- Docker & Docker Compose (only for Grafana/Loki/map frontend - no database container)
+- gtfs-mcp checkout next to this repo (for the Vienna snapshot file)
 
 ### Quick Install
 
@@ -294,7 +317,7 @@ pip install -e .
 
 ---
 
-##  Usage
+## Usage
 
 ### 1. Docker (Production + Development)
 
@@ -328,12 +351,15 @@ See `DOCKER_DEV_GUIDE.md` for comprehensive development workflow.
 
 ### 3. MCP Server (Claude Desktop / Cursor IDE - Native Execution)
 
-**Important:** 
+**Important:**
+
 - MCP server runs natively (NOT in Docker)
 - Entry point: `frontend.mcp_server.server` (module execution)
 - Connects to Docker database on `localhost:5433`
 
-**Why Native:** MCP uses stdio transport which requires direct process communication. Docker stdio plumbing is complex and fragile. Native execution is simpler.
+**Why Native:** MCP uses stdio transport which requires direct process
+communication. Docker stdio plumbing is complex and fragile. Native execution
+is simpler.
 
 #### For Cursor IDE
 
@@ -360,7 +386,7 @@ Add to `claude_desktop_config.json`:
       "env": {
         "PYTHONPATH": "D:/Dev/repos/mywienerlinien",
         "PYTHONUNBUFFERED": "1",
-        "DATABASE_URL": "postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien"
+        "APP_DB_PATH": "D:/Dev/repos/mywienerlinien/data/app.db"
       }
     }
   }
@@ -371,74 +397,86 @@ Add to `claude_desktop_config.json`:
 
 ---
 
-##  MCP Tools (12 Total)
+## MCP Tools (12 Total)
 
 ### Essential Tools
+
 1. **`help`** - Get help with MCP tools and Vienna transit
 2. **`server_status`** - Check MCP server health and configuration
 
 ### Multi-City Management (Phase 6)
-3. **`list_cities`** - List all available transit cities and their status
-4. **`switch_to_city`** - Switch active city for transit queries
-5. **`city_transit_stats`** - Get comprehensive statistics for a city's transit system
+
+1. **`list_cities`** - List all available transit cities and their status
+2. **`switch_to_city`** - Switch active city for transit queries
+3. **`city_transit_stats`** - Get comprehensive statistics for a city's transit system
 
 ### Search & Discovery
-6. **`station_search`** - Find stations by name (fuzzy matching)
-7. **`nearby_stops`** - Find stations near a location (geolocation)
+
+1. **`station_search`** - Find stations by name (fuzzy matching)
+2. **`nearby_stops`** - Find stations near a location (geolocation)
 
 ### Real-time Information
-8. **`next_departures`** - Get real-time departures from any station
-9. **`traffic_alerts`** - Check service disruptions and alerts
-10. **`line_status`** - Get status of specific transit lines
+
+1. **`next_departures`** - Get real-time departures from any station
+2. **`traffic_alerts`** - Check service disruptions and alerts
+3. **`line_status`** - Get status of specific transit lines
 
 ### Schedule & Planning
-11. **`stop_timetable`** - Get full schedule for a station
-12. **`journey_planner`** - Plan optimal routes with A* pathfinding
+
+1. **`stop_timetable`** - Get full schedule for a station
+2. **`journey_planner`** - Plan optimal routes with A* pathfinding
 
 ---
 
-##  Current Status
+## Current Status
 
 ### Database
-- **GTFS Import**: 25-50x faster (13 hours  15-30 minutes)
-- **Performance**: Optimized triggers, indexes, bulk inserts
-- **Phase 4 Migration**: Cities table and multi-city schema
+
+- **GTFS snapshot**: written by gtfs-mcp (`data/snapshots/vienna.db`, ~1 GB,
+  8.2M stop_times), read directly — no import step, no database server
+- **App tables**: local `data/app.db` (WAL, auto-created)
+- **Performance**: indexed snapshot; bulk reads cached by the data loader
 
 ### Real-time Feeds
+
 - **Vehicle Tracking**: Fully operational (198 lines)
 - **RBL Mapping**: Enriched GTFS stops with monitor IDs
 - **API Throttling**: Respects Wiener Linien rate limits
 - **Delay Integration**: Real-time delays in routing
 
 ### ML Features (Phase 3C)
+
 - **Historical Data**: Vehicle snapshots and journey records
 - **Prediction Models**: Random Forest/Gradient Boosting
 - **Analytics**: Dashboard with visualizations
 - **Training**: CLI tool for model training
 
 ### Ports (Local)
-- Frontend: http://localhost:3079 (Docker) or :3080 (native)
-- Grafana: http://localhost:3140
-- PostgreSQL: localhost:5433
+
+- Frontend: <http://localhost:3079> (Docker) or :3080 (native)
+- Grafana: <http://localhost:3140>
 - Loki: localhost:3193
 
 ---
 
-##  Docker Development Tips
+## Docker Development Tips
 
-###  Hot-Reload (Zero Rebuild!)
+### Hot-Reload (Zero Rebuild!)
+
 ```powershell
 # Edit any .py/.html/.css file
 # Changes appear in 1 second! No rebuild needed!
 ```
 
-###  Regular Rebuilds (10 seconds)
+### Regular Rebuilds (10 seconds)
+
 ```powershell
 # For Python code changes
 docker compose restart frontend  # Fast! Uses cache!
 ```
 
-###  Full Rebuild (ONLY for dependency changes!)
+### Full Rebuild (ONLY for dependency changes!)
+
 ```powershell
 # ONLY when requirements.txt changes!
 docker compose down
@@ -446,37 +484,40 @@ docker compose build frontend
 docker compose up -d
 ```
 
-** NEVER use `--no-cache` for code changes!** (Wastes 15+ minutes)
+**NEVER use `--no-cache` for code changes!** (Wastes 15+ minutes)
 
 See `DOCKER_DEV_GUIDE.md` and `DOCKER_GUIDE_COMPLETE.html` for details.
 
 ---
 
-##  Testing
+## Testing
 
 ### MCP Server Testing
+
 ```powershell
 # Test import
 python test_mcp.py
 
-# Run with database
-$env:DATABASE_URL = "postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien"
+# Run with local SQLite state
+$env:APP_DB_PATH = "D:/Dev/repos/mywienerlinien/data/app.db"
 python -m frontend.mcp_server.server
 ```
 
 See `docs/MCP_TESTING_GUIDE.md` for comprehensive test scenarios.
 
 ### Web Application Testing
-1. Open http://localhost:3079
+
+1. Open <http://localhost:3079>
 2. Verify all 198 lines visible on map
 3. Test filters (metro, tram, bus)
 4. Test real-time updates
 
 ---
 
-##  Documentation
+## Documentation
 
 ### Core Documentation
+
 - `README.md` - This file (overview and setup)
 - `frontend/mcp_server/README.md` - MCP server details
 - `SOTA_CHECKLIST.md` - SOTA compliance report
@@ -484,29 +525,34 @@ See `docs/MCP_TESTING_GUIDE.md` for comprehensive test scenarios.
 - `docs/RULEBOOK.md` - Development guidelines
 
 ### Docker Documentation
+
 - `DOCKER_DEV_GUIDE.md` - Local development guide
 - `DOCKER_GUIDE_COMPLETE.html` - Interactive guide (with TOC)
 - `DOCKER_UI_GUIDE.md` - Docker Desktop UI workaround
 
 ### Phase Documentation
+
 - `docs/gtfs-loader-fix.md` - GTFS performance optimization
 - `docs/STATUS-2025-01-15.md` - Implementation status
 - `todo.md` - Feature roadmap
 
 ### API Documentation
+
 - `docs/PUBLIC_API.md` - Public API documentation
 - `docs/mcp-architecture.md` - MCP architecture details
 
 ---
 
-##  Wiener Linien API
+## Wiener Linien API
 
 ### Endpoints
+
 - `/monitor` - Real-time departures with vehicle positions
 - `/trafficInfoList` - Service disruptions
 - `/newsList` - News and announcements
 
 ### Fair Use Policy
+
 - Query only necessary stops
 - Minimum 15-second intervals
 - Respect rate limits (implemented with caching)
@@ -515,9 +561,10 @@ See `docs/MCP_TESTING_GUIDE.md` for comprehensive test scenarios.
 
 ---
 
-##  Development Guidelines
+## Development Guidelines
 
 ### Code Quality
+
 ```powershell
 # Linting with Ruff
 ruff check .
@@ -531,6 +578,7 @@ mypy frontend/mcp_server/ --ignore-missing-imports
 ```
 
 ### Pre-commit Hooks
+
 ```powershell
 # Install
 pip install pre-commit
@@ -543,6 +591,7 @@ pre-commit run --all-files
 All code must pass ruff checks with zero warnings.
 
 ### Key Rules
+
 - Comprehensive error handling
 - Proper logging for critical operations
 - Respect API rate limits
@@ -553,9 +602,10 @@ See `docs/RULEBOOK.md` for complete guidelines.
 
 ---
 
-##  Deployment
+## Deployment
 
 ### Docker Production
+
 ```powershell
 # Production build
 docker compose -f docker-compose.prod.yml up -d
@@ -565,15 +615,16 @@ docker compose -f docker-compose.yml up -d
 ```
 
 ### Environment Variables
+
 ```bash
-DATABASE_URL=postgresql://user:pass@host:5433/wienerlinien
+APP_DB_PATH=D:/Dev/repos/mywienerlinien/data/app.db
 APP_ENV=production
 OPENWEATHER_API_KEY=your_key_here
 ```
 
 ---
 
-##  Contributing
+## Contributing
 
 1. Read the [Rulebook](docs/RULEBOOK.md)
 2. Follow code quality standards
@@ -583,27 +634,27 @@ OPENWEATHER_API_KEY=your_key_here
 
 ---
 
-
 ## 🛡️ Industrial Quality Stack
 
 This project adheres to **SOTA 14.1** industrial standards for high-fidelity agentic orchestration:
 
-- **Python (Core)**: [Ruff](https://astral.sh/ruff) for linting and formatting. Zero-tolerance for `print` statements in core handlers (`T201`).
+- **Python (Core)**: [Ruff](https://astral.sh/ruff) for linting and formatting.
+  Zero-tolerance for `print` statements in core handlers (`T201`).
 - **Webapp (UI)**: [Biome](https://biomejs.dev/) for sub-millisecond linting. Strict `noConsoleLog` enforcement.
 - **Protocol Compliance**: Hardened `stdout/stderr` isolation to ensure crash-resistant JSON-RPC communication.
 - **Automation**: [Justfile](./justfile) recipes for all fleet operations (`just lint`, `just fix`, `just dev`).
 - **Security**: Automated audits via `bandit` and `safety`.
 
-##  License
+## License
 
 Part of the Annoyinator Barnacle Projects collection.
 
-**Data Source:** Wiener Linien - https://www.wienerlinien.at/open-data  
+**Data Source:** Wiener Linien - <https://www.wienerlinien.at/open-data>  
 **License:** Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 ---
 
-##  Acknowledgments
+## Acknowledgments
 
 - **Wiener Linien** for open data API
 - **FastMCP** for MCP protocol implementation

@@ -45,27 +45,24 @@ uv run python -c "import fastmcp, fastapi, pydantic; print(fastmcp.__version__)"
 Do not downgrade FastMCP to silence an import error; fix the import. Never
 mix pydantic v1 and v2 in the same server.
 
-## 3. GTFS loader staleness or half-loaded schema
+## 3. GTFS snapshot staleness or missing file
 
-Symptoms: departures work but `journey_planner` returns nothing; stop counts
-look wrong; loader exits instantly saying feed is fresh when it is not.
+Symptom: departures work but `journey_planner` returns nothing; the map is
+empty while `/api/health` is ok.
 
-Cause: the loader compares feed metadata in `GTFS_METADATA_DIR` against
-`GTFS_REFRESH_DAYS` (default 365). A stale marker or an interrupted first
-import (15-30 min for ~10M stop_times) leaves a partial schema.
+Cause: schedule data comes from the gtfs-mcp snapshot file
+(`GTFS_SNAPSHOT_PATH`, sibling default). A missing file or a stale snapshot
+(Vienna feed moves; check `_meta.written_at` inside the file) starves every
+schedule read at once.
 
 Fix:
 
 ```powershell
-# Force a full refresh
-docker compose run --rm -e GTFS_FORCE_REFRESH=1 gtfs-loader
-docker compose logs -f gtfs-loader
+# Where does the app look?
+# (empty = sibling ../gtfs-mcp/data/snapshots/vienna.db if that file exists)
+$env:GTFS_SNAPSHOT_PATH
+# Refresh: add the feed again in gtfs-mcp (snapshot rewrites atomically)
 ```
-
-Check row counts after import (expect ~4.6k stops, ~1.1k routes, ~560k
-trips). If the schema itself mismatches (e.g. old `cities(name, country)`
-vs new `cities(city_code, city_name, ...)`), re-run migrations before the
-loader; the backend health check does not catch this.
 
 ## 4. CORS errors in the dashboard
 
@@ -87,7 +84,7 @@ already covers `localhost`, `127.0.0.1`, `10.x`, `192.168.x`, Tailscale
 `100.x`, and `tauri.localhost`, so a failure after this step means the port
 itself is wrong, not the pattern.
 
-## 5. Port conflicts (11170, 10896, 3079, 5433, 3140, 3193)
+## 5. Port conflicts (11170, 10896, 3079, 3140, 3193)
 
 Symptom: `start.ps1` reports the port in use, or the backend binds but the
 dashboard shows stale data from another repo.
@@ -96,40 +93,36 @@ Fix: find the owner before killing anything; several fleet repos share the
 10700-11000 reservoir.
 
 ```powershell
-netstat -ano | Select-String "11170|10896|3079|5433"
+netstat -ano | Select-String "11170|10896|3079"
 # then either stop the owning compose stack or, for fleet ports:
 just kill-all   # only if INSTALL.md documents it for this repo state
 ```
 
 `start.ps1` clears `BackendPort`/`FrontendPort` before binding; a conflict
-that survives a launcher restart means a non-fleet process (often a second
-Postgres on 5432 vs this repo's 5433) owns the port.
+that survives a launcher restart means a non-fleet process owns the port.
 
-## 6. DB connection refused on 5433
+## 6. Empty data: snapshot or app.db missing
 
-Symptom: backend or MCP server logs `connection refused` or `timeout` for
-`localhost:5433`; dashboard loads but shows no data.
+Symptom: backend healthy (`/api/health` ok) but map/stations/journeys empty,
+or tools report DB-unreachable.
 
 Checklist in order:
 
-1. Is Docker Desktop running and the `db` service up?
-   `docker compose ps` should show `db` healthy with port `5433->5432`.
-2. Is `DATABASE_URL` pointing at 5433? Native default is
-   `postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien`.
-   Port 5432 is a different (often local) Postgres.
-3. Did the DB finish initializing? PostGIS init plus GTFS import can take
-   15-30 min on first run; `docker compose logs db` shows progress.
-4. Is the MCP server exporting the same URL? Claude Desktop and Cursor each
-   need it in their own config/env; setting it in one terminal does not
+1. Does the snapshot file exist? Check `GTFS_SNAPSHOT_PATH`, else the
+   sibling default `../gtfs-mcp/data/snapshots/vienna.db`.
+2. Does `data/app.db` exist? It is auto-created on first boot; a custom
+   `APP_DB_PATH` must point at a writable directory.
+3. Is the MCP server exporting the same paths? Claude Desktop and Cursor each
+   need them in their own config/env; setting them in one terminal does not
    propagate to the launched client.
 
 Quick probe:
 
 ```powershell
-docker compose ps db
-Test-NetConnection 127.0.0.1 -Port 5433
+Test-Path $env:GTFS_SNAPSHOT_PATH
+Test-Path ./data/app.db
 curl http://127.0.0.1:11170/api/health
 ```
 
-If the last line returns `{"status":"ok"}` but data is empty, the DB is up
-and the GTFS import is the problem; go back to section 3.
+If the last line returns `{"status":"ok"}` but data is empty, the backend
+is up and the snapshot file is the problem; go back to section 3.

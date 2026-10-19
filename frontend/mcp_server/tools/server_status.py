@@ -52,7 +52,7 @@ def register_server_status_tool(mcp: FastMCP) -> None:
             ServerStatus: Detailed health information including:
                 - status: Overall health (healthy, degraded, unhealthy)
                 - api_status: Wiener Linien API connectivity
-                - database_status: PostgreSQL connection status
+                - database_status: SQLite files status
                 - gtfs_data_age: When GTFS data was last updated
                 - cache_stats: What data is currently cached
                 - version: Server version number

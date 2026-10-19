@@ -370,7 +370,7 @@ server_status()
 
 - **status**: Overall health (healthy, degraded, unhealthy)
 - **api_status**: Wiener Linien API reachable
-- **database_status**: PostgreSQL connected
+- **database_status**: SQLite files reachable (app.db + snapshot)
 - **data_freshness**: Age of GTFS data
 - **cache_stats**: Cache performance
 - **version**: Server version
@@ -919,7 +919,7 @@ service_id: "SAT_NORMAL" # Regular Saturday
 
 ## How This MCP Server Uses GTFS
 
-1. **Database**: GTFS loaded into PostgreSQL
+1. **Database**: GTFS snapshot file (SQLite, written by gtfs-mcp)
 2. **stop_timetable**: Queries stop_times + calendar
 3. **journey_planner**: Uses trips + stop_times
 4. **station_search**: Uses stops table
@@ -1236,8 +1236,8 @@ This Vienna Transit MCP server bridges **AI assistants** with
            │ REST API                     │ SQL
            ▼                              ▼
 ┌─────────────────────┐      ┌─────────────────────┐
-│   Wiener Linien     │      │     PostgreSQL      │
-│   Real-time API     │      │    (GTFS Data)      │
+│   Wiener Linien     │      │   SQLite snapshot   │
+│   Real-time API     │      │  (snapshot file)    │
 └─────────────────────┘      └─────────────────────┘
 ```
 
@@ -1249,7 +1249,7 @@ This Vienna Transit MCP server bridges **AI assistants** with
 - Traffic alerts
 - Disruption info
 
-### 2. PostgreSQL + GTFS
+### 2. SQLite snapshot + GTFS
 - Static schedules
 - Stop locations
 - Route information
@@ -1280,13 +1280,13 @@ async def tool_name(params) -> ResponseModel:
 |------|-------------|---------|
 | `help` | Static text | Documentation |
 | `server_status` | All sources | Health monitoring |
-| `station_search` | PostgreSQL | Find stops |
-| `nearby_stops` | PostgreSQL | Geolocation |
+| `station_search` | Snapshot   | Find stops |
+| `nearby_stops` | Snapshot   | Geolocation |
 | `next_departures` | Real-time API | Live arrivals |
 | `traffic_alerts` | Real-time API | Disruptions |
 | `line_status` | Real-time API | Service status |
-| `stop_timetable` | PostgreSQL + calendar.txt | Schedules |
-| `journey_planner` | PostgreSQL | Route planning |
+| `stop_timetable` | Snapshot + calendar.txt   | Schedules |
+| `journey_planner` | Snapshot   | Route planning |
 
 ## Response Models
 
