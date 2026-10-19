@@ -37,7 +37,7 @@ run:
 serve:
     uv run uvicorn server:app --host 127.0.0.1 --port 11170 --app-dir web_sota/backend
 
-# Serve the native Leaflet map (fleet port 10722; postgres must run: docker compose up -d db)
+# Serve the native Leaflet map (fleet port 10722; needs the gtfs-mcp snapshot, not Docker)
 map:
     powershell.exe -NoProfile -File "{{justfile_directory()}}/start-map.ps1"
 

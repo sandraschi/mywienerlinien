@@ -1,5 +1,11 @@
 # Loading GTFS Data for Other Cities
 
+> Retired (Phase 3, 2026-10-18): the scripts below
+> (`download_wienerlinien_data.py`, `load_gtfs_to_db.py`) are deleted. Feed
+> refresh lives in gtfs-mcp now (`add_feed` + presets); per-city data reaches
+> this app via `export_feed` into `scripts/gtfs_data/cities/`. This guide is
+> kept for history only.
+
 This guide explains how to load GTFS data from cities other than Vienna.
 
 ## Quick Start
@@ -55,33 +61,38 @@ The following cities are pre-configured:
 
 ### General Sources
 
-1. **Transitland** - https://www.transit.land/feeds
+1. **Transitland** - <https://www.transit.land/feeds>
    - Aggregates GTFS feeds from around the world
    - Search by city or agency name
 
-2. **GTFS Data Exchange** - https://www.gtfs-data-exchange.com/
+2. **GTFS Data Exchange** - <https://www.gtfs-data-exchange.com/>
    - Directory of GTFS feeds
 
-3. **MobilityData** - https://database.mobilitydata.org/
+3. **MobilityData** - <https://database.mobilitydata.org/>
    - Comprehensive database of transit feeds
 
 ### City-Specific Sources
 
 **Munich/Germany:**
-- https://gtfs.de/en/feeds/ - Germany-wide feeds (daily updates)
+
+- <https://gtfs.de/en/feeds/> - Germany-wide feeds (daily updates)
 
 **London:**
-- https://www.transit.land/feeds - Search for "London"
+
+- <https://www.transit.land/feeds> - Search for "London"
 - Transport for London (TfL) open data portal
 
 **Tokyo:**
-- https://challenge2025.odpt.org/en/opendata.html
+
+- <https://challenge2025.odpt.org/en/opendata.html>
 - May require API key registration
 
 **New York:**
-- https://www.nyc.gov/assets/mta/downloads/gtfs/google_transit.zip
+
+- <https://www.nyc.gov/assets/mta/downloads/gtfs/google_transit.zip>
 
 **Paris:**
+
 - Île-de-France Mobilités open data portal
 
 ## Configuration Details
@@ -117,16 +128,19 @@ Edit `scripts/city_config.py` and add a new entry:
 ### Step-by-Step
 
 1. **Download GTFS data:**
+
    ```powershell
    python scripts\download_wienerlinien_data.py --city london
    ```
 
 2. **Load to database:**
+
    ```powershell
    python scripts\load_gtfs_to_db.py scripts\gtfs_data\london-gtfs.zip
    ```
 
 3. **Verify data:**
+
    ```powershell
    docker exec wienerlinien-db psql -U wienerlinien -d wienerlinien -c "SELECT COUNT(*) FROM routes; SELECT COUNT(*) FROM stops;"
    ```
@@ -143,6 +157,7 @@ environment:
 ```
 
 Then run:
+
 ```powershell
 docker compose up gtfs-loader --profile loader
 ```
@@ -245,4 +260,3 @@ After loading data for a new city:
 - [GTFS Specification](https://gtfs.org/schedule/reference/)
 - [GTFS-RT Specification](https://gtfs.org/realtime/reference/) (for real-time data)
 - [MobilityData GTFS Best Practices](https://gtfs.org/best-practices/)
-

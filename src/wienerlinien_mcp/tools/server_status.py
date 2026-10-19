@@ -28,7 +28,7 @@ class ServerStatus(BaseModel):
 
     status: str = Field(..., description="Overall status: healthy, degraded, unhealthy")
     api_status: str = Field(..., description="Wiener Linien API: connected, timeout, unavailable")
-    database_status: str = Field(..., description="PostgreSQL: connected, disconnected")
+    database_status: str = Field(..., description="SQLite: connected, disconnected")
     gtfs_data_age: str | None = Field(None, description="Age of GTFS data")
     cache_stats: CacheStats = Field(..., description="Cache performance")
     version: str = Field(..., description="MCP server version")

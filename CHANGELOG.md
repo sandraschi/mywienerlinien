@@ -2,6 +2,20 @@
 
 All notable changes to mywienerlinien are documented here.
 
+## [Unreleased] - 2026-10-18 (SPEC Phase 3: pipeline deletion)
+
+### Removed
+- **GTFS pipeline deleted**: `frontend/gtfs_manager.py`,
+  `scripts/download_wienerlinien_data.py`, `load_gtfs_to_db.py`,
+  `rbl_mapper.py`, `process_gtfs.py`, `gtfs_scheduled_loader.py`,
+  `gtfs_markdown_generator.py`, `gtfs_to_markdown.py`, `gtfs_parser.py`,
+  `test_gtfs_loader_performance.py`, docker loader scripts, `models/`,
+  `db/` Dockerfile + init scripts, `requirements-db.txt`, compose
+  `gtfs-loader` service. App startup checks snapshot presence instead of
+  bootstrapping downloads. `loading-other-cities.md` kept with a retired
+  banner (documents deleted scripts).
+- **GTFS libs dropped**: `gtfs-kit`, `partridge` (loader-only).
+
 ## [Unreleased] - 2026-10-18 (full-SQLite cutover, SPEC Phase 2)
 
 ### Changed

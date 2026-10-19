@@ -40,7 +40,6 @@ frontend/app.py
 frontend/static/
 frontend/templates/
 frontend/websocket_manager.py
-frontend/gtfs_manager.py
 frontend/gtfs_service.py
 frontend/disruption_alerts.py
 frontend/models/
@@ -55,4 +54,3 @@ frontend/requirements-db.txt
 frontend/requirements-mcp.txt
 frontend/find_missing_coords.py
 frontend/test_*.py
-

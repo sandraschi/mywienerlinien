@@ -96,7 +96,7 @@ def register_routes_tool(mcp: FastMCP) -> None:
                 WHERE UPPER(r.route_short_name) = :line
             """
 
-            # Postgres named parameters (db.execute_query uses sqlalchemy text())
+            # Named parameters (db.execute_query uses sqlalchemy text())
             route_result = db.execute_query(route_query, {"line": line_upper})
             if not route_result:
                 # Try partial match if exact match fails

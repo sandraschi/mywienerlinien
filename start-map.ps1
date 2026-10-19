@@ -5,7 +5,6 @@ $ScriptRoot = Split-Path -Parent $PSCommandPath
 $MapPort = 10722
 
 $env:PYTHONPATH = $ScriptRoot
-$env:DATABASE_URL = if ($env:DATABASE_URL) { $env:DATABASE_URL } else { "postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien" }
 $env:PORT = "$MapPort"
 
 Write-Host 'Starting mywienerlinien map (native, no Docker)...' -ForegroundColor Cyan
@@ -15,16 +14,10 @@ Set-Location $ScriptRoot
 Get-NetTCPConnection -LocalPort $MapPort -ErrorAction SilentlyContinue |
     ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }
 
-# Postgres must be up: DB stays containerized (named volume, no bind mounts)
-$pgReady = $false
-try {
-    $tcp = New-Object Net.Sockets.TcpClient
-    $iar = $tcp.BeginConnect("127.0.0.1", 5433, $null, $null)
-    $pgReady = $iar.AsyncWaitHandle.WaitOne(3000)
-    $tcp.Close()
-} catch { $pgReady = $false }
-if (-not $pgReady) {
-    throw "Postgres is not reachable on 127.0.0.1:5433. Start it with: docker compose up -d db"
+# Schedule data must exist: gtfs-mcp snapshot file (no database server).
+$snapPath = if ($env:GTFS_SNAPSHOT_PATH) { $env:GTFS_SNAPSHOT_PATH } else { Join-Path $ScriptRoot '..' 'gtfs-mcp' 'data' 'snapshots' 'vienna.db' }
+if (-not (Test-Path $snapPath)) {
+    throw "GTFS snapshot not found at $snapPath. Add the Vienna feed in gtfs-mcp or set GTFS_SNAPSHOT_PATH."
 }
 
 $childStyle = if ($Headless) { 'Hidden' } else { 'Normal' }

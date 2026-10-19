@@ -54,7 +54,6 @@ frontend/app.py
 frontend/static/
 frontend/templates/
 frontend/websocket_manager.py
-frontend/gtfs_manager.py
 frontend/gtfs_service.py
 frontend/disruption_alerts.py
 frontend/models/

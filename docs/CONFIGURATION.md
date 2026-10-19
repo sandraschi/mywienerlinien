@@ -13,10 +13,7 @@ Copy `.env.example` to `.env` and fill in values before running.
 | `WEB_PORT` | Port for the `web_sota` FastAPI backend (`server:app`). Read by `server.py` and `fleet-start.config.ps1`. | `11170` |
 | `FRONTEND_PORTS` | Comma-separated list of allowed frontend origins for CORS. Backend builds `allow_origins` from this. | `10896,3079,3080` |
 | `OPENWEATHER_API_KEY` | Optional key for Phase 5 weather integration. Empty means weather features return a not-configured notice. | empty |
-| `GTFS_FORCE_REFRESH` | Set to `1` to force the GTFS loader to re-download and re-import on next run, even if feed is fresh. | `0` |
-| `GTFS_REFRESH_DAYS` | Staleness threshold in days. Loader runs automatically when cached feed metadata is older than this. | `365` |
-| `GTFS_ZIP_PATH` | Path to the Wiener Linien GTFS zip inside the loader context. In Docker this is a volume path. | `/app/scripts/gtfs_data/wienerlinien-gtfs.zip` |
-| `GTFS_METADATA_DIR` | Directory holding GTFS metadata (feed date, hash, import marker). Loader checks this for staleness. | `/app/scripts/gtfs_data` |
+| `GTFS_FORCE_REFRESH` / `GTFS_REFRESH_DAYS` / `GTFS_ZIP_PATH` / `GTFS_METADATA_DIR` | Retired with the Phase 3 pipeline deletion. Feed refresh lives in gtfs-mcp now; schedule reads come from `GTFS_SNAPSHOT_PATH`. | — |
 | `GRAFANA_PASSWORD` | Admin password for the Grafana container. Empty falls back to the compose default; set it in real deployments. | empty (compose default) |
 | `WIENER_LINIEN_TEST_MODE` | When set (e.g. `1`), realtime OGD calls are stubbed for offline tests. Leave empty for live API calls. | empty (live) |
 
@@ -75,7 +72,6 @@ a health-probe timeout.
 3. Set `WEB_PORT=11170` so `server.py`, `just serve`, and `fleet-start.config.ps1` agree.
 4. Fill `GRAFANA_PASSWORD` on shared machines; leave it empty only for local throwaway stacks.
 5. Add `OPENWEATHER_API_KEY` only if you need weather cards; transit tools do not read it.
-6. Leave `GTFS_FORCE_REFRESH=0` for normal runs; set `=1` for one loader run, then set it back.
 
 ## Docker compose mapping
 
@@ -86,10 +82,8 @@ a health-probe timeout.
   either.
 - Grafana publishes 3140, Loki listens on 3193. Neither needs env vars in
   `.env.example` because their ports are fixed in `docker-compose.yml`.
-- The `gtfs-loader` profile reads `GTFS_ZIP_PATH`, `GTFS_METADATA_DIR`,
-  `GTFS_FORCE_REFRESH`, and `GTFS_REFRESH_DAYS` from the environment. It
-  writes the zip and metadata into the `gtfs_data` named volume, not into the
-  repo tree.
+- The `gtfs-loader` compose profile was removed in Phase 3 with the
+  pipeline scripts; feed refresh lives in gtfs-mcp (`add_feed`).
 - Named volumes (`wienerlinien_data`, `gtfs_data`) survive
   `docker compose down`. The retired `postgres_data` volume is kept (not read)
   so historical rows are not destroyed. Use `docker compose down -v` only when

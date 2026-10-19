@@ -16,7 +16,7 @@ if (-not $dbRunning) {
 Write-Host "✅ Database running" -ForegroundColor Green
 
 # Set environment variables
-$env:DATABASE_URL = "postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien"
+$env:APP_DB_PATH = if ($env:APP_DB_PATH) { $env:APP_DB_PATH } else { Join-Path $ScriptRoot 'data' 'app.db' }
 $env:APP_ENV = "development"
 
 # Check if venv exists
@@ -40,4 +40,3 @@ Write-Host "   URL: http://localhost:3080`n" -ForegroundColor Green
 cd frontend
 & .\.venv\Scripts\Activate.ps1
 uvicorn app:app --host 0.0.0.0 --port 3080 --reload
-

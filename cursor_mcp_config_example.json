@@ -9,7 +9,7 @@
       "env": {
         "PYTHONPATH": "D:/Dev/repos/mywienerlinien",
         "PYTHONUNBUFFERED": "1",
-        "DATABASE_URL": "postgresql://wienerlinien:wienerlinien@localhost:5433/wienerlinien"
+        "APP_DB_PATH": "D:/Dev/repos/mywienerlinien/data/app.db"
       }
     }
   }
