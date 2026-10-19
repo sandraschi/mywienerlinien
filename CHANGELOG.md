@@ -1,6 +1,21 @@
 # Changelog
 
-All notable changes to mywienerlinien are documented here.
+All notable changes to publictransport-mcp are documented here.
+
+## [Unreleased] - 2026-10-19 (SPEC Phase 4: rename to publictransport-mcp)
+
+### Changed
+- **Rename**: repo `mywienerlinien` -> `publictransport-mcp` (GitHub +
+  codemod, one atomic commit); package `wienerlinien_mcp` ->
+  `publictransport_mcp`; server/entry `vienna-transit[-mcp]` ->
+  `publictransport[-mcp]`; skills dirs + triggers preserved verbatim.
+- Env vars renamed with fallback aliases: `PUBLICtransport_GTFS_CITIES`
+  (old `MYWIENERLINIEN_GTFS_CITIES` honored); gtfs-mcp side
+  `GTFS_MCP_PUBLICtransport_ROOT` (old honored), export target defaults to
+  `publictransport-mcp` (`mywienerlinien` accepted).
+- Local checkout dir rename still pending (blocked by a live vite dev
+  server); `starts/publictransport-mcp-start.bat` falls back to the old dir
+  until then. MCPB prompt bundle repack still open (stale env line).
 
 ## [Unreleased] - 2026-10-18 (SPEC Phase 3: pipeline deletion)
 
