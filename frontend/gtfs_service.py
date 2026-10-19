@@ -26,8 +26,13 @@ def extracted_dir() -> Path:
 
 
 def data_cities_root() -> Path:
-    """Root of per-city gtfs-mcp exports (override via MYWIENERLINIEN_GTFS_CITIES)."""
-    override = os.environ.get("MYWIENERLINIEN_GTFS_CITIES", "").strip()
+    """Root of per-city gtfs-mcp exports.
+
+    Override via PUBLICtransport_GTFS_CITIES (deprecated alias
+    MYWIENERLINIEN_GTFS_CITIES still honored).
+    """
+    override = os.environ.get("PUBLICtransport_GTFS_CITIES", "").strip()
+    override = override or os.environ.get("MYWIENERLINIEN_GTFS_CITIES", "").strip()
     if override:
         return Path(override).expanduser()
     return _REPO_ROOT / "scripts" / "gtfs_data" / "cities"

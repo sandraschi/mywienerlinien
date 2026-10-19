@@ -31,8 +31,20 @@ def data_tree(tmp_path, monkeypatch):
     )
     (cities / "empty").mkdir(parents=True)  # no manifest: not a city
     monkeypatch.setattr("frontend.gtfs_service._REPO_ROOT", root)
+    monkeypatch.delenv("PUBLICtransport_GTFS_CITIES", raising=False)
     monkeypatch.delenv("MYWIENERLINIEN_GTFS_CITIES", raising=False)
     return root
+
+
+def test_env_alias_old_name_still_honored(tmp_path, monkeypatch):
+    other = tmp_path / "legacy"
+    (other / "graz").mkdir(parents=True)
+    ((other / "graz") / "manifest.json").write_text("{}")
+    monkeypatch.delenv("PUBLICtransport_GTFS_CITIES", raising=False)
+    monkeypatch.setenv("MYWIENERLINIEN_GTFS_CITIES", str(other))
+    from frontend.gtfs_service import data_cities_root as _root
+
+    assert _root() == other
 
 
 def test_vienna_resolves_to_legacy_extracted(data_tree):
@@ -44,6 +56,7 @@ def test_vienna_resolves_to_legacy_extracted(data_tree):
 def test_vienna_missing_data_resolves_none(tmp_path, monkeypatch):
     root = tmp_path / "repo"
     monkeypatch.setattr("frontend.gtfs_service._REPO_ROOT", root)
+    monkeypatch.delenv("PUBLICtransport_GTFS_CITIES", raising=False)
     monkeypatch.delenv("MYWIENERLINIEN_GTFS_CITIES", raising=False)
     assert resolve_data_city("vienna") is None
 
@@ -67,7 +80,7 @@ def test_env_override_repoints_cities_root(tmp_path, monkeypatch):
     other = tmp_path / "alt"
     (other / "graz").mkdir(parents=True)
     ((other / "graz") / "manifest.json").write_text("{}")
-    monkeypatch.setenv("MYWIENERLINIEN_GTFS_CITIES", str(other))
+    monkeypatch.setenv("PUBLICtransport_GTFS_CITIES", str(other))
     assert data_cities_root() == other
     assert resolve_data_city("graz") is not None
 
@@ -86,7 +99,7 @@ def test_api_cities_reports_data_loaded(app_client, tmp_path, monkeypatch):
     munich = cities / "munich"
     munich.mkdir(parents=True)
     (munich / "manifest.json").write_text(json.dumps({"feed_id": "munich", "counts": {}}))
-    monkeypatch.setenv("MYWIENERLINIEN_GTFS_CITIES", str(cities))
+    monkeypatch.setenv("PUBLICtransport_GTFS_CITIES", str(cities))
     response = app_client.get("/api/cities")
     assert response.status_code == 200
     entries = {c["key"]: c for c in response.json()["cities"]}
