@@ -97,7 +97,11 @@ def test_historical_reliability_python_stats(appdb, tmp_path):
     from frontend.mcp_server.historical_data import HistoricalDataCollector
 
     collector = HistoricalDataCollector(appdb, storage_dir=tmp_path)
-    now = datetime.now()
+    # Anchor inside one wall-clock hour: analyze_delay_patterns groups by
+    # (line, dow, hour) with HAVING COUNT >= 10, so spanning rows would flake
+    # near an hour boundary.
+    anchor = (datetime.now() - timedelta(hours=2)).replace(minute=20, second=0, microsecond=0)
+    now = anchor
     for i in range(12):
         appdb.execute_query(
             """
