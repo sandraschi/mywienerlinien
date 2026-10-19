@@ -24,9 +24,8 @@ try:
     from .api.analytics import router as analytics_router
     from .api.public_api import router as public_api_router
     from .data_loader import data_loader
-    from .database import db
+    from .database import db, resolve_snapshot_path
     from .disruption_alerts import disruption_monitor
-    from .gtfs_manager import manager as gtfs_manager
     from .vehicle_service import (
         clear_vehicle_cache,
         collect_vehicle_data,
@@ -35,9 +34,8 @@ try:
     from .websocket_manager import get_websocket_manager, init_websocket_manager
 except ImportError:  # pragma: no cover - runtime fallback when package context missing
     from data_loader import data_loader  # type: ignore
-    from database import db  # type: ignore
+    from database import db, resolve_snapshot_path  # type: ignore
     from disruption_alerts import disruption_monitor  # type: ignore
-    from gtfs_manager import manager as gtfs_manager  # type: ignore
     from vehicle_service import (  # type: ignore
         clear_vehicle_cache,
         collect_vehicle_data,
@@ -1064,14 +1062,21 @@ def initialize_app() -> None:
             raise
 
     if not TEST_MODE:
+        # No pipeline anymore (Phase 3): schedule data comes from the
+        # gtfs-mcp snapshot file. Loud in prod, quiet in dev — same
+        # tolerance contract the old bootstrap had.
         try:
-            gtfs_manager.ensure_data_ready()
+            if resolve_snapshot_path() is None:
+                raise RuntimeError(
+                    "GTFS snapshot not found: add the Vienna feed in gtfs-mcp "
+                    "(writes <data_dir>/snapshots/vienna.db) or set GTFS_SNAPSHOT_PATH"
+                )
         except Exception as exc:  # pragma: no cover - startup critical
             if dev_mode:
-                logger.warning("GTFS bootstrap failed (continuing in dev mode): %s", exc)
+                logger.warning("GTFS snapshot missing (continuing in dev mode): %s", exc)
                 # Don't raise in dev mode - allow app to start without GTFS data
             else:
-                logger.error("GTFS bootstrap failed: %s", exc, exc_info=True)
+                logger.error("GTFS snapshot missing: %s", exc, exc_info=True)
                 raise
 
     # Start the disruption monitor (incidents from the OGD trafficInfoList).

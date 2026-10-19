@@ -1,10 +1,9 @@
 """
-Database module: PostgreSQL for app tables, SQLite snapshot for GTFS static data.
+Database module: local SQLite app tables + gtfs-mcp snapshot for GTFS static data.
 
-GTFS schedule reads (routes, stops, shapes, ...) run against the normalized
-snapshot gtfs-mcp writes (<gtfs-mcp data_dir>/snapshots/<feed>.db, SPEC
-delegation Phase 1) — no Postgres required for the map. App tables (vehicles,
-api keys, notifications, ...) stay on PostgreSQL until the app.db migration.
+No database server required: app tables live in data/app.db (WAL,
+auto-created), schedule reads in the snapshot file. The legacy Postgres path
+is gone (see CHANGELOG: full-SQLite cutover).
 """
 
 # Configure logging

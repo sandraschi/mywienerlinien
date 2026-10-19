@@ -259,7 +259,7 @@ def _interpolate_vehicles_for_line(line_name: str) -> list[dict[str, Any]]:
     """
     Build pseudo-realtime vehicle positions for *line_name*.
 
-    Preferred source: the GTFS schedule (stop_times in Postgres). For each
+    Preferred source: the GTFS schedule (stop_times in the snapshot). For each
     trip that is between two stops right now, place a marker interpolated
     between the bracketing stop coordinates. This works at any headway.
 
@@ -499,7 +499,7 @@ def _refresh_vehicle_snapshot(
 ) -> dict[str, Any]:
     """
     Primary mode (line_filters set): interpolate pseudo-positions along the
-    full line route from the GTFS schedule (stop_times in Postgres) - no
+    full line route from the GTFS schedule (stop_times in the snapshot) - no
     dependency on the live WL API.
 
     Default mode (no filters): schedule-interpolated pseudo-vehicles for the
