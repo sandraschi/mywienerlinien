@@ -1,11 +1,11 @@
-# MyWienerLinien Rebuild Script
+# Publictransport Rebuild Script
 # Output redirected to rebuild_output.txt
 
 $ErrorActionPreference = "Continue"
 $output = "D:\Dev\repos\publictransport-mcp\rebuild_output.txt"
 
 "=====================================" | Out-File $output
-"MyWienerLinien Rebuild - $(Get-Date)" | Out-File $output -Append
+"Publictransport Rebuild - $(Get-Date)" | Out-File $output -Append
 "=====================================" | Out-File $output -Append
 "" | Out-File $output -Append
 

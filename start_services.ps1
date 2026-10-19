@@ -1,8 +1,8 @@
-# Start MyWienerLinien Services - Redirects to file
+# Start Publictransport Services - Redirects to file
 $output = "D:\Dev\repos\publictransport-mcp\start_output.txt"
 
 "=====================================" | Out-File $output
-"Starting MyWienerLinien - $(Get-Date)" | Out-File $output -Append
+"Starting Publictransport - $(Get-Date)" | Out-File $output -Append
 "=====================================" | Out-File $output -Append
 "" | Out-File $output -Append
 

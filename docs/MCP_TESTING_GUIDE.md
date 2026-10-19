@@ -20,7 +20,7 @@ The Vienna Transit MCP Server now features:
 
 1. Claude Desktop installed
 2. MCP server configured in `claude_desktop_config.json`
-3. MyWienerLinien frontend running (database accessible)
+3. Publictransport frontend running (database accessible)
 
 ### Configuration
 

@@ -1,7 +1,7 @@
 # Continuous App Monitor - Updates file every 5 seconds
 $output = "D:\Dev\repos\publictransport-mcp\monitor_output.txt"
 
-Write-Host "🔄 Monitoring MyWienerLinien... (Ctrl+C to stop)" -ForegroundColor Cyan
+Write-Host "🔄 Monitoring Publictransport... (Ctrl+C to stop)" -ForegroundColor Cyan
 Write-Host "Output: monitor_output.txt" -ForegroundColor Yellow
 
 while ($true) {

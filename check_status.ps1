@@ -2,7 +2,7 @@
 $output = "D:\Dev\repos\publictransport-mcp\status_output.txt"
 
 "=====================================" | Out-File $output
-"MyWienerLinien Status - $(Get-Date)" | Out-File $output -Append
+"Publictransport Status - $(Get-Date)" | Out-File $output -Append
 "=====================================" | Out-File $output -Append
 "" | Out-File $output -Append
 

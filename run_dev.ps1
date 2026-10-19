@@ -1,7 +1,7 @@
 # Quick Development Runner
 # Run frontend outside Docker for instant hot-reload
 
-Write-Host "`n🚀 MyWienerLinien Dev Mode" -ForegroundColor Cyan
+Write-Host "`n🚀 Publictransport Dev Mode" -ForegroundColor Cyan
 Write-Host "========================================`n" -ForegroundColor Cyan
 
 # Check if database is running

@@ -1,4 +1,4 @@
-# MyWienerLinien Public API Documentation
+# Publictransport Public API Documentation
 
 **Version**: 1.0.0  
 **Base URL**: `http://localhost:3079/api/v1`  
@@ -9,7 +9,7 @@
 
 ## Overview
 
-The MyWienerLinien Public API provides programmatic access to Vienna (and
+The Publictransport Public API provides programmatic access to Vienna (and
 Austrian) public transport data, including real-time departures, journey
 planning, ML delay predictions, and analytics.
 
@@ -538,4 +538,4 @@ Display upcoming departures on smart displays.
 
 ---
 
-**MyWienerLinien Public API** - Powered by GTFS, A*, and Machine Learning 🚀
+**Publictransport Public API** - Powered by GTFS, A*, and Machine Learning 🚀
