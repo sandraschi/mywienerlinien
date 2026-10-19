@@ -1,13 +1,13 @@
 param([switch]$Headless, [switch]$NoBrowser)
 $ErrorActionPreference = "Stop"
 $ScriptRoot = Split-Path -Parent $PSCommandPath
-# Fleet port: 10722 = mywienerlinien Frontend (native Leaflet map, no Docker)
+# Fleet port: 10722 = publictransport-mcp Frontend (native Leaflet map, no Docker)
 $MapPort = 10722
 
 $env:PYTHONPATH = $ScriptRoot
 $env:PORT = "$MapPort"
 
-Write-Host 'Starting mywienerlinien map (native, no Docker)...' -ForegroundColor Cyan
+Write-Host 'Starting publictransport-mcp map (native, no Docker)...' -ForegroundColor Cyan
 Set-Location $ScriptRoot
 
 # Port zombie clearing before bind (fleet standard)

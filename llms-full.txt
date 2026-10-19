@@ -1,10 +1,10 @@
-# mywienerlinien — llms-full.txt
+# publictransport-mcp — llms-full.txt
 
 ## What it is
 
 Dual-interface Vienna transit app. Web dashboard (Vite, port 10896) + FastAPI backend (port 11170,
 `web_sota/backend/server.py`, fleet-start UvicornTarget `server:app`) + Docker stack (map on 3079,
-Grafana on 3140, no database container) + MCP server (`src/wienerlinien_mcp/server.py`, stdio for Claude Desktop).
+Grafana on 3140, no database container) + MCP server (`src/publictransport_mcp/server.py`, stdio for Claude Desktop).
 
 ## MCP tools (12, FastMCP, stdio)
 
@@ -15,11 +15,11 @@ Realtime: `next_departures`, `traffic_alerts`, `line_status` (+ status variants)
 Schedule/planning: `stop_timetable` (+ line timetable), `journey_planner` (A* multi-transfer),
 `routes` info.
 
-Prompts (5): see `src/wienerlinien_mcp/prompts.py`. Resources (5): `vienna-transit://network/overview`,
+Prompts (5): see `src/publictransport_mcp/prompts.py`. Resources (5): `publictransport://network/overview`,
 `.../stations/major`, `.../lines/metro`, `.../operating-hours`, `.../fares`.
 
 Claude Desktop config: command `python`, args `["-m", "frontend.mcp_server.server"]`,
-env `PYTHONPATH=D:/Dev/repos/mywienerlinien`, `APP_DB_PATH=<repo>/data/app.db`,
+env `PYTHONPATH=D:/Dev/repos/publictransport-mcp`, `APP_DB_PATH=<repo>/data/app.db`,
 `GTFS_SNAPSHOT_PATH=<gtfs-mcp>/data/snapshots/vienna.db`.
 
 ## REST endpoints
@@ -53,6 +53,6 @@ State: local SQLite (`data/app.db` WAL + gtfs-mcp snapshot file) — no database
 
 ## Key files
 
-`src/wienerlinien_mcp/server.py` (MCP entry), `web_sota/backend/server.py` (web API),
+`src/publictransport_mcp/server.py` (MCP entry), `web_sota/backend/server.py` (web API),
 `web_sota/src/` (dashboard), `frontend/app.py` (legacy Docker app), `docker-compose.yml`,
 `mcpb/` (Claude Desktop bundle), `justfile` (`just serve|test|lint|fmt|mcpb-pack`).

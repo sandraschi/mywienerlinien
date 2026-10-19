@@ -1,7 +1,7 @@
-# Tools - mywienerlinien
+# Tools - publictransport-mcp
 
-MCP surface (`src/wienerlinien_mcp/server.py`, transport stdio, server name
-`vienna-transit`) plus the `web_sota` REST API (`web_sota/backend/server.py`).
+MCP surface (`src/publictransport_mcp/server.py`, transport stdio, server name
+`publictransport`) plus the `web_sota` REST API (`web_sota/backend/server.py`).
 
 ## MCP tools (20)
 
@@ -54,11 +54,11 @@ return text (markdown or JSON-ready strings).
 
 | URI | Content |
 |---|---|
-| `vienna-transit://network/overview` | Network structure: 5 U-Bahn lines, 30+ tram lines, buses, night buses, Zone 100 |
-| `vienna-transit://stations/major` | Major hubs: Stephansplatz, Hauptbahnhof, Schwedenplatz, Karlsplatz, Praterstern, Westbahnhof, others |
-| `vienna-transit://lines/metro` | Per-line routes, colors, frequencies, key stations; U5 under construction |
-| `vienna-transit://operating-hours` | Regular hours (~05:00-00:30), night buses, peak windows |
-| `vienna-transit://fares` | Single EUR 2.40, 24h EUR 8.00, weekly EUR 17.10, validation rules |
+| `publictransport://network/overview` | Network structure: 5 U-Bahn lines, 30+ tram lines, buses, night buses, Zone 100 |
+| `publictransport://stations/major` | Major hubs: Stephansplatz, Hauptbahnhof, Schwedenplatz, Karlsplatz, Praterstern, Westbahnhof, others |
+| `publictransport://lines/metro` | Per-line routes, colors, frequencies, key stations; U5 under construction |
+| `publictransport://operating-hours` | Regular hours (~05:00-00:30), night buses, peak windows |
+| `publictransport://fares` | Single EUR 2.40, 24h EUR 8.00, weekly EUR 17.10, validation rules |
 
 ## REST endpoints (`web_sota/backend/server.py`)
 
@@ -124,7 +124,7 @@ Nearby discovery:
 ## Transport and error contract
 
 - MCP transport is stdio: the server speaks JSON-RPC over stdout, so it must
-  run as a plain host process (`uv run vienna-transit-mcp`), never inside
+  run as a plain host process (`uv run publictransport-mcp`), never inside
   `docker compose`.
 - Every tool returns a dict with at least `success` (bool) and `message`
   (str). Failures carry the reason in `message` (e.g. unknown station, DB

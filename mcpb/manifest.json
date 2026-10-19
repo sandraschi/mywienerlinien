@@ -1,6 +1,6 @@
 {
   "manifest_version": "0.2",
-  "name": "vienna-transit-mcp",
+  "name": "publictransport-mcp",
   "version": "1.0.0",
   "description": "Vienna Transit MCP Server - FastMCP 2.13 compliant MCP server for Vienna public transport information",
   "author": {
@@ -56,4 +56,3 @@
     "python": ">=3.9"
   }
 }
-

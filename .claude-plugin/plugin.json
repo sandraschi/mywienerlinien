@@ -1,5 +1,5 @@
 {
-  "name": "mywienerlinien",
+  "name": "publictransport-mcp",
   "description": "Vienna Transit MCP server (departures, journey planning, disruptions)",
   "version": "2.0.1",
   "hooks": "../hooks/hooks.json"

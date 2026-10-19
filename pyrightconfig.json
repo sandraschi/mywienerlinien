@@ -1,7 +1,7 @@
 {
   "typeCheckingMode": "basic",
   "extraPaths": ["src", "frontend"],
-  "exclude": ["src/wienerlinien_mcp_abandoned", ".venv"],
+  "exclude": ["src/publictransport_mcp_abandoned", ".venv"],
   "reportMissingImports": true,
   "reportUnknownMemberType": false,
   "reportUnknownVariableType": false,

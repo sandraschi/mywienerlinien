@@ -22,11 +22,11 @@ class Station(BaseModel):
     )
 
     name: str = Field(..., description="Station name")
-    rbl: Optional[str] = Field(None, description="Station RBL code (Vienna-specific)")
+    rbl: str | None = Field(None, description="Station RBL code (Vienna-specific)")
     type: str = Field(..., description="Station type (metro, tram, bus)")
-    zone: Optional[str] = Field(None, description="Fare zone")
-    lat: Optional[float] = Field(None, description="Latitude")
-    lng: Optional[float] = Field(None, description="Longitude")
+    zone: str | None = Field(None, description="Fare zone")
+    lat: float | None = Field(None, description="Latitude")
+    lng: float | None = Field(None, description="Longitude")
 
 
 class StationSearchResponse(BaseModel):

@@ -9,11 +9,11 @@ context about the transit system. They complement tools by providing reference
 information that helps assistants provide more accurate and helpful responses.
 
 This module registers several resources:
-- vienna-transit://network/overview: High-level network structure
-- vienna-transit://stations/major: List of major stations
-- vienna-transit://lines/metro: Metro line information
-- vienna-transit://operating-hours: Service hours and schedules
-- vienna-transit://fares: Fare and ticket information
+- publictransport://network/overview: High-level network structure
+- publictransport://stations/major: List of major stations
+- publictransport://lines/metro: Metro line information
+- publictransport://operating-hours: Service hours and schedules
+- publictransport://fares: Fare and ticket information
 
 Resources are registered with the FastMCP server and can be accessed by
 AI assistants through the MCP protocol using their URIs.
@@ -51,7 +51,7 @@ def register_resources(mcp: FastMCP) -> list:
     """
     resource_refs = []
 
-    @mcp.resource("vienna-transit://network/overview")
+    @mcp.resource("publictransport://network/overview")
     async def network_overview() -> str:
         """Overview of Vienna's public transport network.
 
@@ -111,7 +111,7 @@ Vienna's public transport is operated by Wiener Linien and consists of:
 
     resource_refs.append(network_overview)
 
-    @mcp.resource("vienna-transit://stations/major")
+    @mcp.resource("publictransport://stations/major")
     async def major_stations() -> str:
         """List of major Vienna transit stations.
 
@@ -174,7 +174,7 @@ Vienna's public transport is operated by Wiener Linien and consists of:
 
     resource_refs.append(major_stations)
 
-    @mcp.resource("vienna-transit://lines/metro")
+    @mcp.resource("publictransport://lines/metro")
     async def metro_lines() -> str:
         """Information about Vienna's metro (U-Bahn) lines.
 
@@ -224,7 +224,7 @@ Vienna's public transport is operated by Wiener Linien and consists of:
 
     resource_refs.append(metro_lines)
 
-    @mcp.resource("vienna-transit://operating-hours")
+    @mcp.resource("publictransport://operating-hours")
     async def operating_hours() -> str:
         """Operating hours for Vienna public transport.
 
@@ -272,7 +272,7 @@ Vienna's public transport is operated by Wiener Linien and consists of:
 
     resource_refs.append(operating_hours)
 
-    @mcp.resource("vienna-transit://fares")
+    @mcp.resource("publictransport://fares")
     async def fare_information() -> str:
         """Fare information for Vienna public transport.
 

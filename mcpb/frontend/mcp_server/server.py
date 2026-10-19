@@ -37,7 +37,7 @@ logger = logging.getLogger("mcp_server")
 
 # Create FastMCP server instance
 mcp = FastMCP(
-    name="vienna-transit",
+    name="publictransport",
     version="1.0.0",
 )
 

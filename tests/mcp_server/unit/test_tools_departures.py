@@ -20,9 +20,7 @@ def _fix_fixture_names(mock_data_loader):
     mutate). conftest.py itself is out of scope for this task.
     """
     stations = mock_data_loader.load_stations()
-    for station, real_name in zip(
-        stations, ("Stephansplatz", "Hauptbahnhof", "Schwedenplatz")
-    ):
+    for station, real_name in zip(stations, ("Stephansplatz", "Hauptbahnhof", "Schwedenplatz"), strict=False):
         station.name = real_name
     return stations
 
@@ -62,9 +60,7 @@ async def test_next_departures_success(mock_data_loader):
     ]
 
     with patch("mcp_server.tools.departures.data_loader", mock_data_loader):
-        with patch(
-            "mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict
-        ):
+        with patch("mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict):
             with patch(
                 "mcp_server.tools.departures.collect_vehicle_data",
                 return_value={"vehicles": mock_vehicles},
@@ -76,9 +72,7 @@ async def test_next_departures_success(mock_data_loader):
                 register_departures_tool(test_mcp)
 
                 async with Client(test_mcp) as client:
-                    result = await client.call_tool(
-                        "next_departures", {"station": "Stephansplatz", "max_results": 5}
-                    )
+                    result = await client.call_tool("next_departures", {"station": "Stephansplatz", "max_results": 5})
                     data = result.structured_content
 
                     # Assertions
@@ -105,9 +99,7 @@ async def test_next_departures_station_not_found(mock_data_loader):
 
             async with Client(test_mcp) as client:
                 with pytest.raises(ToolError, match="not found"):
-                    await client.call_tool(
-                        "next_departures", {"station": "NonExistentStation", "max_results": 5}
-                    )
+                    await client.call_tool("next_departures", {"station": "NonExistentStation", "max_results": 5})
 
 
 @pytest.mark.asyncio
@@ -120,9 +112,7 @@ async def test_next_departures_max_results_validation(mock_data_loader):
     }
 
     with patch("mcp_server.tools.departures.data_loader", mock_data_loader):
-        with patch(
-            "mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict
-        ):
+        with patch("mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict):
             with patch(
                 "mcp_server.tools.departures.collect_vehicle_data",
                 return_value={"vehicles": []},
@@ -135,14 +125,10 @@ async def test_next_departures_max_results_validation(mock_data_loader):
                 async with Client(test_mcp) as client:
                     # Test that max_results is clamped to valid range
                     # The tool should accept any value and clamp it internally
-                    result = await client.call_tool(
-                        "next_departures", {"station": "Stephansplatz", "max_results": 10}
-                    )
+                    result = await client.call_tool("next_departures", {"station": "Stephansplatz", "max_results": 10})
                     assert isinstance(result.structured_content, dict)
 
-                    result = await client.call_tool(
-                        "next_departures", {"station": "Stephansplatz", "max_results": 1}
-                    )
+                    result = await client.call_tool("next_departures", {"station": "Stephansplatz", "max_results": 1})
                     assert isinstance(result.structured_content, dict)
 
 
@@ -156,9 +142,7 @@ async def test_next_departures_api_error_handling(mock_data_loader):
     }
 
     with patch("mcp_server.tools.departures.data_loader", mock_data_loader):
-        with patch(
-            "mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict
-        ):
+        with patch("mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict):
             with patch(
                 "mcp_server.tools.departures.collect_vehicle_data",
                 side_effect=Exception("API Error"),
@@ -170,9 +154,7 @@ async def test_next_departures_api_error_handling(mock_data_loader):
 
                 async with Client(test_mcp) as client:
                     with pytest.raises(ToolError, match="Failed to fetch"):
-                        await client.call_tool(
-                            "next_departures", {"station": "Stephansplatz", "max_results": 5}
-                        )
+                        await client.call_tool("next_departures", {"station": "Stephansplatz", "max_results": 5})
 
 
 @pytest.mark.asyncio
@@ -187,9 +169,7 @@ async def test_next_departures_partial_station_name(mock_data_loader):
     }
 
     with patch("mcp_server.tools.departures.data_loader", mock_data_loader):
-        with patch(
-            "mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict
-        ):
+        with patch("mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict):
             with patch(
                 "mcp_server.tools.departures.collect_vehicle_data",
                 return_value={"vehicles": []},
@@ -201,9 +181,7 @@ async def test_next_departures_partial_station_name(mock_data_loader):
 
                 async with Client(test_mcp) as client:
                     # Test with partial name
-                    result = await client.call_tool(
-                        "next_departures", {"station": "Stephans", "max_results": 5}
-                    )
+                    result = await client.call_tool("next_departures", {"station": "Stephans", "max_results": 5})
                     assert result.structured_content["station_name"] == mock_station.name
 
 
@@ -217,21 +195,15 @@ async def test_next_departures_empty_response(mock_data_loader):
     }
 
     with patch("mcp_server.tools.departures.data_loader", mock_data_loader):
-        with patch(
-            "mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict
-        ):
-            with patch(
-                "mcp_server.tools.departures.collect_vehicle_data", return_value={"vehicles": []}
-            ):
+        with patch("mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict):
+            with patch("mcp_server.tools.departures.collect_vehicle_data", return_value={"vehicles": []}):
                 from mcp_server.tools.departures import register_departures_tool
 
                 test_mcp = FastMCP(name="test", version="1.0.0")
                 register_departures_tool(test_mcp)
 
                 async with Client(test_mcp) as client:
-                    result = await client.call_tool(
-                        "next_departures", {"station": "Stephansplatz", "max_results": 5}
-                    )
+                    result = await client.call_tool("next_departures", {"station": "Stephansplatz", "max_results": 5})
                     data = result.structured_content
 
                     assert data["station_name"] == "Stephansplatz"
@@ -261,9 +233,7 @@ async def test_next_departures_max_results_limit(mock_data_loader):
     ]
 
     with patch("mcp_server.tools.departures.data_loader", mock_data_loader):
-        with patch(
-            "mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict
-        ):
+        with patch("mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict):
             with patch(
                 "mcp_server.tools.departures.collect_vehicle_data",
                 return_value={"vehicles": mock_vehicles},
@@ -274,9 +244,7 @@ async def test_next_departures_max_results_limit(mock_data_loader):
                 register_departures_tool(test_mcp)
 
                 async with Client(test_mcp) as client:
-                    result = await client.call_tool(
-                        "next_departures", {"station": "Stephansplatz", "max_results": 5}
-                    )
+                    result = await client.call_tool("next_departures", {"station": "Stephansplatz", "max_results": 5})
 
                     assert len(result.structured_content["departures"]) == 5
 
@@ -304,9 +272,7 @@ async def test_next_departures_countdown_calculation(mock_data_loader):
     ]
 
     with patch("mcp_server.tools.departures.data_loader", mock_data_loader):
-        with patch(
-            "mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict
-        ):
+        with patch("mcp_server.tools.departures.find_station_by_name", return_value=mock_station_dict):
             with patch(
                 "mcp_server.tools.departures.collect_vehicle_data",
                 return_value={"vehicles": mock_vehicles},
@@ -317,9 +283,7 @@ async def test_next_departures_countdown_calculation(mock_data_loader):
                 register_departures_tool(test_mcp)
 
                 async with Client(test_mcp) as client:
-                    result = await client.call_tool(
-                        "next_departures", {"station": "Stephansplatz", "max_results": 5}
-                    )
+                    result = await client.call_tool("next_departures", {"station": "Stephansplatz", "max_results": 5})
                     data = result.structured_content
 
                     assert len(data["departures"]) == 1

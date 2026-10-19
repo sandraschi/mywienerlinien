@@ -1,5 +1,5 @@
 # Docker Status Checker - Redirects to file
-$output = "D:\Dev\repos\mywienerlinien\status_output.txt"
+$output = "D:\Dev\repos\publictransport-mcp\status_output.txt"
 
 "=====================================" | Out-File $output
 "MyWienerLinien Status - $(Get-Date)" | Out-File $output -Append
@@ -55,4 +55,3 @@ try {
 "=====================================" | Out-File $output -Append
 
 Write-Host "✅ Status check complete! Read: status_output.txt" -ForegroundColor Green
-

@@ -5,9 +5,9 @@ This server provides MCP tools for Vienna public transport information.
 It runs with stdio transport for Claude Desktop integration.
 
 Usage:
-    python -m wienerlinien_mcp.server
+    python -m publictransport_mcp.server
     # Or with FastMCP CLI:
-    fastmcp dev wienerlinien_mcp.server:mcp
+    fastmcp dev publictransport_mcp.server:mcp
 """
 
 import logging
@@ -35,42 +35,42 @@ try:
     try:
         db.init_snapshot()
     except Exception as exc:
-        logging.getLogger("wienerlinien_mcp").warning(f"Snapshot not connected: {exc}")
+        logging.getLogger("publictransport_mcp").warning(f"Snapshot not connected: {exc}")
 except Exception as e:
-    logging.getLogger("wienerlinien_mcp").warning(f"Database init skipped: {e}")
+    logging.getLogger("publictransport_mcp").warning(f"Database init skipped: {e}")
 
 # Import tools
 # Import prompts and resources
-from wienerlinien_mcp.prompts import register_prompts
-from wienerlinien_mcp.resources import register_resources
-from wienerlinien_mcp.tools.alerts import register_traffic_alerts_tool
-from wienerlinien_mcp.tools.cities import register_cities_tools
-from wienerlinien_mcp.tools.departures import register_departures_tool
-from wienerlinien_mcp.tools.help import register_help_tool
-from wienerlinien_mcp.tools.journey import register_journey_tool
-from wienerlinien_mcp.tools.nearby import register_nearby_stops_tool
-from wienerlinien_mcp.tools.server_status import register_server_status_tool
-from wienerlinien_mcp.tools.stations import register_station_search_tool
-from wienerlinien_mcp.tools.status import register_status_tool
-from wienerlinien_mcp.tools.timetable import register_stop_timetable_tool
+from publictransport_mcp.prompts import register_prompts
+from publictransport_mcp.resources import register_resources
+from publictransport_mcp.tools.alerts import register_traffic_alerts_tool
+from publictransport_mcp.tools.cities import register_cities_tools
+from publictransport_mcp.tools.departures import register_departures_tool
+from publictransport_mcp.tools.help import register_help_tool
+from publictransport_mcp.tools.journey import register_journey_tool
+from publictransport_mcp.tools.nearby import register_nearby_stops_tool
+from publictransport_mcp.tools.server_status import register_server_status_tool
+from publictransport_mcp.tools.stations import register_station_search_tool
+from publictransport_mcp.tools.status import register_status_tool
+from publictransport_mcp.tools.timetable import register_stop_timetable_tool
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
-logger = logging.getLogger("wienerlinien_mcp")
+logger = logging.getLogger("publictransport_mcp")
 
 # Create FastMCP server instance
 mcp = FastMCP(
-    name="vienna-transit",
+    name="publictransport",
     version="1.0.0",
 )
 
 # Note: Middleware support may vary by FastMCP version
 # Middleware registration commented out until FastMCP 2.13 middleware API is confirmed
-# from wienerlinien_mcp.middleware.logging import register_logging_middleware
-# from wienerlinien_mcp.middleware.error_handler import register_error_handler_middleware
+# from publictransport_mcp.middleware.logging import register_logging_middleware
+# from publictransport_mcp.middleware.error_handler import register_error_handler_middleware
 # register_error_handler_middleware(mcp)
 # register_logging_middleware(mcp)
 

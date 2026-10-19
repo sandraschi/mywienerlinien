@@ -1,4 +1,4 @@
-# Troubleshooting - mywienerlinien
+# Troubleshooting - publictransport-mcp
 
 Symptom-first fixes. For setup from zero see `docs/ONBOARDING.md`; for env
 reference see `docs/CONFIGURATION.md`.
@@ -8,7 +8,7 @@ reference see `docs/CONFIGURATION.md`.
 Symptom: `pytest` fails at collection with `ModuleNotFoundError: No module
 named 'frontend...'` or imports resolving to the wrong tree.
 
-Cause: two import roots coexist (`src/` layout for `wienerlinien_mcp` and the
+Cause: two import roots coexist (`src/` layout for `publictransport_mcp` and the
 legacy `frontend/` package). Running pytest from the wrong directory or with a
 stale `PYTHONPATH` picks up the wrong one.
 
@@ -16,8 +16,8 @@ Fix:
 
 ```powershell
 # Run from the repo root, always
-cd D:\Dev\repos\mywienerlinien
-$env:PYTHONPATH = "D:\Dev\repos\mywienerlinien;D:\Dev\repos\mywienerlinien\src"
+cd D:\Dev\repos\publictransport-mcp
+$env:PYTHONPATH = "D:\Dev\repos\publictransport-mcp;D:\Dev\repos\publictransport-mcp\src"
 uv run pytest tests/ -q
 ```
 
@@ -33,7 +33,7 @@ Symptom: `uv sync` resolves but `uvicorn` or `fastmcp` import fails, or
 Facts: `pyproject.toml` pins `fastapi>=0.110.2`, `SQLAlchemy==2.0.23`,
 `fastmcp>=3.4.4,<4`, `pydantic>=2.5.0`. FastMCP 3.x middleware APIs moved;
 this repo deliberately leaves middleware registration commented out in
-`src/wienerlinien_mcp/server.py` until the 2.13+ API is confirmed.
+`src/publictransport_mcp/server.py` until the 2.13+ API is confirmed.
 
 Fix:
 

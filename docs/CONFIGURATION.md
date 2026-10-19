@@ -1,4 +1,4 @@
-# Configuration - mywienerlinien
+# Configuration - publictransport-mcp
 
 Reference for every environment variable, port, and fleet-start field.
 Copy `.env.example` to `.env` and fill in values before running.
@@ -47,7 +47,7 @@ File: `fleet-start.config.ps1` at the repo root. `start.ps1` is fleet-standard a
 
 | Field | Value in this repo | Meaning |
 |---|---|---|
-| `Name` | `mywienerlinien` | Fleet repo key. Must match the repo directory name. |
+| `Name` | `publictransport-mcp` | Fleet repo key. Must match the repo directory name. |
 | `BackendPort` | `11170` | Port the launcher probes and clears before binding the backend. |
 | `FrontendPort` | `10896` | Port the launcher probes for the Vite dashboard. |
 | `HealthPath` | `/health` | Liveness probe path. Backend `server.py` serves both `/health` and `/api/health` with `{"status": "ok"}`. |
@@ -93,7 +93,7 @@ a health-probe timeout.
 
 - PowerShell terminal: `$env:APP_DB_PATH = "D:/data/app.db"` lasts for that
   session only. Persist it in `.env` for repeat runs.
-- Claude Desktop: the `env` block of the `vienna-transit` server entry can set
+- Claude Desktop: the `env` block of the `publictransport` server entry can set
   the same `APP_DB_PATH` (and `GTFS_SNAPSHOT_PATH` for schedule data). The
   Desktop client does not read your terminal env.
 - Cursor IDE: uses the system Python env; install the package there

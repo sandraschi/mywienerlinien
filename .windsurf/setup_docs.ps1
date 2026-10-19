@@ -1,6 +1,6 @@
 # Setup script for Docsify documentation
-$docsDir = "d:\\Dev\\repos\\mywienerlinien\\.windsurf\\docs"
-$devDir = "d:\\Dev\\repos\\mywienerlinien\\.windsurf\\docs-dev"
+$docsDir = "d:\\Dev\\repos\\publictransport-mcp\\.windsurf\\docs"
+$devDir = "d:\\Dev\\repos\\publictransport-mcp\\.windsurf\\docs-dev"
 
 # Create dev directory if it doesn't exist
 if (-not (Test-Path $devDir)) {
@@ -65,9 +65,9 @@ if (-not (Test-Path "$docsDir\node_modules")) {
       plugins: [
         function(hook, vm) {
           hook.beforeEach(function(html) {
-            return html + '\n\n' + 
-              '<div class="last-updated">' + 
-              'Last updated: ' + new Date().toLocaleString() + 
+            return html + '\n\n' +
+              '<div class="last-updated">' +
+              'Last updated: ' + new Date().toLocaleString() +
               '</div>';
           });
         }
@@ -126,9 +126,9 @@ if (-not (Test-Path "$docsDir\node_modules")) {
       plugins: [
         function(hook, vm) {
           hook.beforeEach(function(html) {
-            return html + '\n\n' + 
-              '<div class="last-updated" style="color: #ff6b6b; font-size: 0.8em;">' + 
-              'DEV VERSION - Last updated: ' + new Date().toLocaleString() + 
+            return html + '\n\n' +
+              '<div class="last-updated" style="color: #ff6b6b; font-size: 0.8em;">' +
+              'DEV VERSION - Last updated: ' + new Date().toLocaleString() +
               '</div>';
           });
         }

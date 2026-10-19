@@ -66,9 +66,7 @@ class GTFSProcessor:
         """Load the GTFS feed from the specified path."""
         logger.info(f"Loading GTFS feed from {self.gtfs_path}")
         self.feed = gk.read_feed(self.gtfs_path, dist_units="km")
-        logger.info(
-            f"Loaded feed with {len(self.feed.routes)} routes and {len(self.feed.stops)} stops"
-        )
+        logger.info(f"Loaded feed with {len(self.feed.routes)} routes and {len(self.feed.stops)} stops")
 
     def process_routes(self):
         """Process routes and generate markdown files."""
@@ -130,9 +128,7 @@ class GTFSProcessor:
                     continue
 
                 # Get stop times for these trips
-                stop_times = self.feed.stop_times[
-                    self.feed.stop_times["trip_id"].isin(trips["trip_id"])
-                ]
+                stop_times = self.feed.stop_times[self.feed.stop_times["trip_id"].isin(trips["trip_id"])]
 
                 if stop_times.empty:
                     logger.warning(f"No stop times found for route {route_name}")
@@ -206,9 +202,9 @@ class GTFSProcessor:
         stops = stops[stops["location_type"] == 0]  # Only physical stops, not stations
 
         # Add route types to stops
-        stop_routes = self.feed.stop_times.merge(
-            self.feed.trips[["trip_id", "route_id"]], on="trip_id"
-        ).merge(self.feed.routes[["route_id", "route_type"]], on="route_id")
+        stop_routes = self.feed.stop_times.merge(self.feed.trips[["trip_id", "route_id"]], on="trip_id").merge(
+            self.feed.routes[["route_id", "route_type"]], on="route_id"
+        )
 
         stop_route_types = stop_routes.groupby("stop_id")["route_type"].unique()
         stops["route_types"] = stops["stop_id"].map(stop_route_types)
@@ -283,12 +279,8 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Process GTFS data for Wiener Linien")
-    parser.add_argument(
-        "--gtfs", type=str, default="gtfs_data/gtfs.zip", help="Path to GTFS zip file"
-    )
-    parser.add_argument(
-        "--output", type=str, default="../frontend/data", help="Output directory for markdown files"
-    )
+    parser.add_argument("--gtfs", type=str, default="gtfs_data/gtfs.zip", help="Path to GTFS zip file")
+    parser.add_argument("--output", type=str, default="../frontend/data", help="Output directory for markdown files")
 
     args = parser.parse_args()
 

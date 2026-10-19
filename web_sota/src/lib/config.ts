@@ -9,4 +9,4 @@ export const MAP_URL = import.meta.env.VITE_MAP_URL ?? "http://localhost:10722";
 
 export const DOCS_URL =
 	import.meta.env.VITE_DOCS_URL ??
-	"https://github.com/sandraschi/mywienerlinien";
+	"https://github.com/sandraschi/publictransport-mcp";

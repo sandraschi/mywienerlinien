@@ -2,8 +2,8 @@
 # It creates new files with a _fixed.md suffix and leaves original files untouched.
 
 $ErrorActionPreference = "Stop"
-$LogFile = "d:\\Dev\\repos\\mywienerlinien\\.windsurf\\logs\\rewrite_links_ps.log"
-$DocsRoot = "d:\\Dev\\repos\\mywienerlinien\\.windsurf\\docs"
+$LogFile = "d:\\Dev\\repos\\publictransport-mcp\\.windsurf\\logs\\rewrite_links_ps.log"
+$DocsRoot = "d:\\Dev\\repos\\publictransport-mcp\\.windsurf\\docs"
 
 # Clear previous log file for a clean run
 if (Test-Path $LogFile) {

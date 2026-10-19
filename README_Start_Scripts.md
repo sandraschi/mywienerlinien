@@ -29,12 +29,14 @@ start.bat 3  # Start both applications
 ## Available Scripts
 
 ### 1. `start.bat` - Windows Batch File
+
 - **Interactive menu** with numbered options
 - **Color-coded** output for better readability
 - **Easy navigation** between different actions
 - **Automatic directory management**
 
 ### 2. `start.ps1` - PowerShell Script
+
 - **Interactive menu** with colored output
 - **Command-line parameters** for automation
 - **Better error handling** and logging
@@ -98,13 +100,13 @@ start.bat
 
 Once started, the applications will be available at:
 
-- **Wiener Linien App**: http://localhost:3080
+- **Wiener Linien App**: <http://localhost:3080>
   - Main application interface
   - Real-time vehicle tracking
   - Disruption alerts
   - API endpoints
 
-- **Docsify Documentation**: http://localhost:3301
+- **Docsify Documentation**: <http://localhost:3301>
   - Comprehensive documentation
   - Search functionality
   - Theme toggle (light/dark)
@@ -113,26 +115,31 @@ Once started, the applications will be available at:
 ## Features
 
 ### 🎯 **Unified Management**
+
 - Single interface to manage both applications
 - Consistent commands across both apps
 - Automatic directory navigation
 
 ### 🔄 **Health Monitoring**
+
 - Real-time status checking
 - Health check integration
 - Automatic restart on failure
 
 ### 📊 **Logging & Debugging**
+
 - Live log viewing
 - Separate log streams for each app
 - Error tracking and reporting
 
 ### 🏗️ **Build Management**
+
 - One-click rebuilds
 - Individual or combined builds
 - Clean rebuilds with cache clearing
 
 ### 🎨 **User Experience**
+
 - Color-coded output
 - Clear status messages
 - Interactive menus
@@ -151,36 +158,41 @@ Before using the start scripts, ensure you have:
 ### Script Won't Run
 
 1. **Check file permissions**:
+
    ```cmd
    # For PowerShell
    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
    ```
 
 2. **Verify Docker is running**:
+
    ```cmd
    docker --version
    docker-compose --version
    ```
 
 3. **Check file paths**:
-   - Ensure you're in the root directory (`mywienerlinien`)
+   - Ensure you're in the root directory (`publictransport-mcp`)
    - Verify `frontend/` and `.windsurf/docs/` directories exist
 
 ### Applications Won't Start
 
 1. **Check port availability**:
+
    ```cmd
    netstat -an | findstr :3080
    netstat -an | findstr :3301
    ```
 
 2. **Check Docker status**:
+
    ```cmd
    docker ps
    docker-compose ps
    ```
 
 3. **View application logs**:
+
    ```cmd
    # Use option 8 in the menu
    # Or run directly:
@@ -190,6 +202,7 @@ Before using the start scripts, ensure you have:
 ### Build Issues
 
 1. **Clean and rebuild**:
+
    ```cmd
    # Use option 9 in the menu
    # Or run directly:
@@ -197,11 +210,13 @@ Before using the start scripts, ensure you have:
    ```
 
 2. **Check Docker disk space**:
+
    ```cmd
    docker system df
    ```
 
 3. **Clear Docker cache**:
+
    ```cmd
    docker system prune -a
    ```
@@ -255,8 +270,8 @@ If you encounter issues:
 
 ## File Structure
 
-```
-mywienerlinien/
+```text
+publictransport-mcp/
 ├── start.bat              # Windows batch file
 ├── start.ps1              # PowerShell script
 ├── README_Start_Scripts.md # This file
@@ -268,4 +283,4 @@ mywienerlinien/
     └── docs/
         ├── docker-compose.yml
         └── ...
-``` 
+```

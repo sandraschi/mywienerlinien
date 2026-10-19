@@ -8,7 +8,7 @@ Docker version 29.1.3, build f52814d
 [2/5] Listing existing containers...
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
-[3/5] Stopping old mywienerlinien containers...
+[3/5] Stopping old publictransport-mcp containers...
  Container wienerlinien-frontend  Stopping
  Container grafana  Stopping
  Container promtail  Stopping
@@ -22,15 +22,15 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
  Container wienerlinien-frontend  Stopped
  Container wienerlinien-frontend  Removing
  Container wienerlinien-frontend  Removed
- Container wienerlinien-db  Stopping
- Container wienerlinien-db  Stopped
- Container wienerlinien-db  Removing
+ Container publictransport-db  Stopping
+ Container publictransport-db  Stopped
+ Container publictransport-db  Removing
  Container loki  Stopped
  Container loki  Removing
- Container wienerlinien-db  Removed
+ Container publictransport-db  Removed
  Container loki  Removed
- Network mywienerlinien_wienerlinien-network  Removing
- Network mywienerlinien_wienerlinien-network  Removed
+ Network publictransport-mcp_wienerlinien-network  Removing
+ Network publictransport-mcp_wienerlinien-network  Removed
 
 [4/5] Building frontend container (this may take 5-10 minutes)...
 #1 [internal] load local bake definitions
@@ -246,7 +246,7 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 #9 11.22 debconf: falling back to frontend: Noninteractive
 #9 15.40 Fetched 94.7 MB in 5s (19.9 MB/s)
 #9 15.46 Selecting previously unselected package libexpat1:amd64.
-#9 15.46 (Reading database ... 
+#9 15.46 (Reading database ...
 (Reading database ... 5%
 (Reading database ... 10%
 (Reading database ... 15%
@@ -280,7 +280,7 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 #9 16.03 Setting up libexpat1:amd64 (2.7.1-2) ...
 #9 16.06 Setting up python3.13-minimal (3.13.5-2) ...
 #9 17.23 Selecting previously unselected package python3-minimal.
-#9 17.23 (Reading database ... 
+#9 17.23 (Reading database ...
 (Reading database ... 5%
 (Reading database ... 10%
 (Reading database ... 15%
@@ -318,7 +318,7 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 #9 17.66 Unpacking libpython3-stdlib:amd64 (3.13.5-1) ...
 #9 17.71 Setting up python3-minimal (3.13.5-1) ...
 #9 17.97 Selecting previously unselected package python3.
-#9 17.97 (Reading database ... 
+#9 17.97 (Reading database ...
 (Reading database ... 5%
 (Reading database ... 10%
 (Reading database ... 15%

@@ -18,7 +18,7 @@ except ImportError:
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from disruption_alerts import disruption_monitor
 
-    from wienerlinien_mcp.models.status import LineStatusResponse, ServiceStatus
+    from publictransport_mcp.models.status import LineStatusResponse, ServiceStatus
 
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,5 @@
 # Start MyWienerLinien Services - Redirects to file
-$output = "D:\Dev\repos\mywienerlinien\start_output.txt"
+$output = "D:\Dev\repos\publictransport-mcp\start_output.txt"
 
 "=====================================" | Out-File $output
 "Starting MyWienerLinien - $(Get-Date)" | Out-File $output -Append
@@ -38,4 +38,3 @@ try {
 "=====================================" | Out-File $output -Append
 
 Write-Host "✅ Startup script complete! Read: start_output.txt" -ForegroundColor Green
-

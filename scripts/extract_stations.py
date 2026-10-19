@@ -117,9 +117,7 @@ def generate_station_markdown(station: dict, routes: list[dict]) -> str:
                 routes_by_type[route_type],
                 key=lambda x: (x.get("route_short_name", ""), x.get("route_long_name", "")),
             ):
-                name = route.get("route_short_name") or route.get(
-                    "route_long_name", "Unnamed Route"
-                )
+                name = route.get("route_short_name") or route.get("route_long_name", "Unnamed Route")
                 lines.append(f"- {name}")
 
     return "\n".join(lines)
@@ -170,9 +168,7 @@ def main():
             if i % 100 == 0 or i == len(stations):
                 logger.info("Processed %d/%d stations", i, len(stations))
 
-        logger.info(
-            "Successfully generated %d station markdown files in %s", len(stations), output_dir
-        )
+        logger.info("Successfully generated %d station markdown files in %s", len(stations), output_dir)
 
     finally:
         conn.close()

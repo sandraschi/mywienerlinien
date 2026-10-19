@@ -1,6 +1,6 @@
 ---
-name: vienna-transit
-description: Query Vienna public-transport departures, journeys, and disruptions via the mywienerlinien MCP server.
+name: publictransport
+description: Query Vienna public-transport departures, journeys, and disruptions via the publictransport-mcp MCP server.
 ---
 
 # Vienna Transit skill

@@ -35,7 +35,7 @@ This app is a consumer of Wiener Linien GTFS data and has a sibling server,
 schedule data with SQLite persistence and 16 MCP tools. The two repos are
 separate for historic reasons but share the Vienna feed:
 
-| | mywienerlinien | gtfs-mcp |
+| | publictransport-mcp | gtfs-mcp |
 |---|---|---|
 | Data store | SQLite (`data/app.db` + gtfs-mcp snapshot) | SQLite |
 | Purpose | Live map + departures + MCP server | General GTFS schedule server + MCP tools |
@@ -56,8 +56,8 @@ and the next bracket is entered. Best with single lines at frequent headways
 ## Quick Start
 
 ```powershell
-git clone https://github.com/sandraschi/mywienerlinien
-cd mywienerlinien
+git clone https://github.com/sandraschi/publictransport-mcp
+cd publictransport-mcp
 just
 ```
 
@@ -279,7 +279,7 @@ Both interfaces use the same core modules:
 Run immediately via `uvx`:
 
 ```bash
-uvx vienna-transit-mcp
+uvx publictransport-mcp
 ```
 
 ### Claude Desktop Integration
@@ -288,9 +288,9 @@ Add to your `claude_desktop_config.json`:
 
 ```json
 "mcpServers": {
-  "vienna-transit-mcp": {
+  "publictransport-mcp": {
     "command": "uv",
-    "args": ["--directory", "D:/Dev/repos/mywienerlinien", "run", "vienna-transit-mcp"]
+    "args": ["--directory", "D:/Dev/repos/publictransport-mcp", "run", "publictransport-mcp"]
   }
 }
 ```
@@ -305,8 +305,8 @@ Add to your `claude_desktop_config.json`:
 
 ```powershell
 # Clone repository
-git clone https://github.com/yourusername/mywienerlinien.git
-cd mywienerlinien
+git clone https://github.com/yourusername/publictransport-mcp.git
+cd publictransport-mcp
 
 # Start with Docker (recommended)
 docker compose up -d
@@ -380,13 +380,13 @@ Add to `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "vienna-transit": {
+    "publictransport": {
       "command": "python",
       "args": ["-m", "frontend.mcp_server.server"],
       "env": {
-        "PYTHONPATH": "D:/Dev/repos/mywienerlinien",
+        "PYTHONPATH": "D:/Dev/repos/publictransport-mcp",
         "PYTHONUNBUFFERED": "1",
-        "APP_DB_PATH": "D:/Dev/repos/mywienerlinien/data/app.db"
+        "APP_DB_PATH": "D:/Dev/repos/publictransport-mcp/data/app.db"
       }
     }
   }
@@ -499,7 +499,7 @@ See `DOCKER_DEV_GUIDE.md` and `DOCKER_GUIDE_COMPLETE.html` for details.
 python test_mcp.py
 
 # Run with local SQLite state
-$env:APP_DB_PATH = "D:/Dev/repos/mywienerlinien/data/app.db"
+$env:APP_DB_PATH = "D:/Dev/repos/publictransport-mcp/data/app.db"
 python -m frontend.mcp_server.server
 ```
 
@@ -617,7 +617,7 @@ docker compose -f docker-compose.yml up -d
 ### Environment Variables
 
 ```bash
-APP_DB_PATH=D:/Dev/repos/mywienerlinien/data/app.db
+APP_DB_PATH=D:/Dev/repos/publictransport-mcp/data/app.db
 APP_ENV=production
 OPENWEATHER_API_KEY=your_key_here
 ```

@@ -1,6 +1,6 @@
 # fix_links_dry_run.ps1
 
-$docsRoot = "d:\Dev\repos\mywienerlinien\.windsurf\docs"
+$docsRoot = "d:\Dev\repos\publictransport-mcp\.windsurf\docs"
 $linkRegex = '\[([^\]]*)\]\(([^)]*)\)' # Simpler regex to capture all links
 
 Write-Host "Starting link analysis (dry run)..."
@@ -8,9 +8,9 @@ Write-Host "Starting link analysis (dry run)..."
 Get-ChildItem -Path $docsRoot -Recurse -Filter "*.md" | Where-Object { $_.Name -ne '_sidebar.md' } | ForEach-Object {
     $file = $_;
     $originalContent = Get-Content -Path $file.FullName -Raw
-    
+
     $matches = [regex]::Matches($originalContent, $linkRegex)
-    
+
     if ($matches.Count -gt 0) {
         $foundChangeInFile = $false
         foreach ($match in $matches) {
@@ -20,7 +20,7 @@ Get-ChildItem -Path $docsRoot -Recurse -Filter "*.md" | Where-Object { $_.Name -
 
             # Check if it's a relative link to a markdown file that needs fixing
             if ($linkTarget.EndsWith('.md') -and !$linkTarget.StartsWith('http') -and !$linkTarget.StartsWith('/')) {
-                
+
                 $containingDir = Split-Path -Path $file.FullName -Parent
                 $absoluteTargetPath = $null
                 try {
@@ -30,10 +30,10 @@ Get-ChildItem -Path $docsRoot -Recurse -Filter "*.md" | Where-Object { $_.Name -
                     Write-Warning "Could not resolve link '$linkTarget' in file $($file.FullName)"
                     continue
                 }
-                
+
                 if ($null -ne $absoluteTargetPath) {
                     $newRelativePath = (Get-Item -Path $absoluteTargetPath).FullName.Replace($docsRoot, '').Replace('\', '/')
-                    
+
                     if ($newRelativePath.StartsWith('/')) {
                         $newRelativePath = $newRelativePath.Substring(1)
                     }

@@ -29,12 +29,12 @@ Add to `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "vienna-transit": {
+    "publictransport": {
       "command": "python",
       "args": ["-m", "frontend.mcp_server.server"],
-      "cwd": "D:\\Dev\\repos\\mywienerlinien",
+      "cwd": "D:\\Dev\\repos\\publictransport-mcp",
       "env": {
-        "APP_DB_PATH": "D:/Dev/repos/mywienerlinien/data/app.db"
+        "APP_DB_PATH": "D:/Dev/repos/publictransport-mcp/data/app.db"
       }
     }
   }
@@ -354,7 +354,7 @@ pip install fastmcp>=2.13.0
 Test MCP server directly:
 
 ```powershell
-cd D:\Dev\repos\mywienerlinien
+cd D:\Dev\repos\publictransport-mcp
 python -m frontend.mcp_server.server
 
 # In another terminal, use MCP Inspector or manual stdio

@@ -23,7 +23,7 @@ except ImportError:
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from database import db
 
-    from wienerlinien_mcp.city_manager import get_city_manager
+    from publictransport_mcp.city_manager import get_city_manager
 
 logger = logging.getLogger(__name__)
 
@@ -302,10 +302,10 @@ async def get_city_info(city_code: str) -> CityInfo:
 
 
 # Tool registration function
-def register_cities_tools(wienerlinien_mcp):
+def register_cities_tools(publictransport_mcp):
     """Register multi-city management tools with the MCP server."""
 
-    @wienerlinien_mcp.tool(annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True))
+    @publictransport_mcp.tool(annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True))
     async def list_cities() -> str:
         """List all available transit cities and their status.
 
@@ -352,7 +352,7 @@ def register_cities_tools(wienerlinien_mcp):
             logger.error(f"List cities tool failed: {e}")
             return f"Error retrieving city list: {e!s}"
 
-    @wienerlinien_mcp.tool(annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True))
+    @publictransport_mcp.tool(annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True))
     async def switch_to_city(
         city_code: Annotated[
             str, Field(description="City code to switch to (e.g. vienna, graz). Use list_cities for options.")
@@ -394,7 +394,7 @@ def register_cities_tools(wienerlinien_mcp):
             logger.error(f"Switch city tool failed: {e}")
             return f"❌ **Error**: Failed to switch city: {e!s}"
 
-    @wienerlinien_mcp.tool(annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True))
+    @publictransport_mcp.tool(annotations=ToolAnnotations(idempotentHint=True, openWorldHint=True))
     async def city_transit_stats(
         city_code: Annotated[
             str | None, Field(description="City code to report on (e.g. vienna). Omit for the current city.")

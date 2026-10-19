@@ -124,7 +124,7 @@ async def api_info() -> JSONResponse:
                 "predictions": "/api/v1/predictions",
                 "cities": "/api/v1/cities",
             },
-            "get_api_key": "Contact: admin@mywienerlinien.com (placeholder)",
+            "get_api_key": "Contact: admin@publictransport-mcp.com (placeholder)",
             "timestamp": datetime.now().isoformat(),
         }
     )
@@ -144,7 +144,7 @@ async def public_departures(station: str, limit: int = 5, api_key: str = Depends
     """
     try:
         # Import MCP tool
-        from wienerlinien_mcp.tools.departures import get_next_departures_internal
+        from publictransport_mcp.tools.departures import get_next_departures_internal
 
         departures = await get_next_departures_internal(station, min(10, max(1, limit)))
 
@@ -242,8 +242,8 @@ async def public_journey(
         Journey plan with routes
     """
     try:
-        from wienerlinien_mcp.tools.journey import get_journey_planner
-        from wienerlinien_mcp.utils import find_station_by_name
+        from publictransport_mcp.tools.journey import get_journey_planner
+        from publictransport_mcp.utils import find_station_by_name
 
         # Find stations
         from_info = find_station_by_name(from_station)
@@ -320,7 +320,7 @@ async def public_prediction(line: str, api_key: str = Depends(verify_api_key)) -
         try:
             from frontend.mcp_server.prediction_service import get_prediction_service
         except ImportError:
-            from wienerlinien_mcp.prediction_service import get_prediction_service  # type: ignore
+            from publictransport_mcp.prediction_service import get_prediction_service  # type: ignore
 
         predictor = get_prediction_service()
         prediction = predictor.predict_delay(line, datetime.now(), use_fallback=True)

@@ -4,7 +4,7 @@ import logging
 
 from fastmcp import FastMCP
 
-logger = logging.getLogger("wienerlinien_mcp")
+logger = logging.getLogger("publictransport_mcp")
 
 
 def register_logging_middleware(mcp: FastMCP) -> None:

@@ -4,7 +4,7 @@ import logging
 
 from fastmcp import FastMCP
 
-logger = logging.getLogger("wienerlinien_mcp")
+logger = logging.getLogger("publictransport_mcp")
 
 
 def register_error_handler_middleware(mcp: FastMCP) -> None:
@@ -22,4 +22,4 @@ def register_error_handler_middleware(mcp: FastMCP) -> None:
         except Exception as e:
             # Internal errors - log and return generic message
             logger.error(f"Internal error: {e}", exc_info=True)
-            raise RuntimeError(f"An error occurred: {str(e)}") from e
+            raise RuntimeError(f"An error occurred: {e!s}") from e

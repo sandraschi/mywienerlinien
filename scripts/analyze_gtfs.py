@@ -14,7 +14,7 @@ from datetime import datetime
 from pathlib import Path
 
 # Absolute log path: a bare filename lands in the host's cwd (BUG-063)
-LOG_DIR = Path(os.environ.get("LOCALAPPDATA") or Path.home()) / "mywienerlinien" / "logs"
+LOG_DIR = Path(os.environ.get("LOCALAPPDATA") or Path.home()) / "publictransport-mcp" / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 # Set up logging

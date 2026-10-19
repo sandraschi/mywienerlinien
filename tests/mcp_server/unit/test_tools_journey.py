@@ -18,9 +18,7 @@ def _fix_fixture_names(mock_data_loader):
     conftest.py is out of scope, so assign real strings here.
     """
     stations = mock_data_loader.load_stations()
-    for station, real_name in zip(
-        stations, ("Stephansplatz", "Hauptbahnhof", "Schwedenplatz")
-    ):
+    for station, real_name in zip(stations, ("Stephansplatz", "Hauptbahnhof", "Schwedenplatz"), strict=False):
         station.name = real_name
     return stations
 
@@ -90,9 +88,7 @@ async def test_journey_planner_success(mock_data_loader):
 
     stub_planner = _make_stub_planner(from_station_dict["name"], to_station_dict["name"])
 
-    with patch(
-        "mcp_server.tools.journey.find_station_by_name", side_effect=find_station_side_effect
-    ):
+    with patch("mcp_server.tools.journey.find_station_by_name", side_effect=find_station_side_effect):
         with patch("mcp_server.tools.journey.get_journey_planner", return_value=stub_planner):
             from mcp_server.tools.journey import register_journey_tool
 
@@ -165,9 +161,7 @@ async def test_journey_planner_with_departure_time(mock_data_loader):
     departure_time = "2025-01-15T14:30:00Z"
     stub_planner = _make_stub_planner(from_station_dict["name"], to_station_dict["name"])
 
-    with patch(
-        "mcp_server.tools.journey.find_station_by_name", side_effect=find_station_side_effect
-    ):
+    with patch("mcp_server.tools.journey.find_station_by_name", side_effect=find_station_side_effect):
         with patch("mcp_server.tools.journey.get_journey_planner", return_value=stub_planner):
             from mcp_server.tools.journey import register_journey_tool
 
@@ -217,9 +211,7 @@ async def test_journey_planner_direct_route(mock_data_loader):
 
     stub_planner = _make_stub_planner(from_station_dict["name"], to_station_dict["name"])
 
-    with patch(
-        "mcp_server.tools.journey.find_station_by_name", side_effect=find_station_side_effect
-    ):
+    with patch("mcp_server.tools.journey.find_station_by_name", side_effect=find_station_side_effect):
         with patch("mcp_server.tools.journey.get_journey_planner", return_value=stub_planner):
             from mcp_server.tools.journey import register_journey_tool
 
@@ -271,9 +263,7 @@ async def test_journey_planner_invalid_departure_time(mock_data_loader):
     invalid_time = "invalid-time-format"
     stub_planner = _make_stub_planner(from_station_dict["name"], to_station_dict["name"])
 
-    with patch(
-        "mcp_server.tools.journey.find_station_by_name", side_effect=find_station_side_effect
-    ):
+    with patch("mcp_server.tools.journey.find_station_by_name", side_effect=find_station_side_effect):
         with patch("mcp_server.tools.journey.get_journey_planner", return_value=stub_planner):
             from mcp_server.tools.journey import register_journey_tool
 

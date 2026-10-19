@@ -1,7 +1,7 @@
 # Manual link fix for README.md
 
 # Configuration
-$docsDir = "D:\Dev\repos\mywienerlinien\.windsurf\docs"
+$docsDir = "D:\Dev\repos\publictransport-mcp\.windsurf\docs"
 $readmePath = Join-Path -Path $docsDir -ChildPath "README.md"
 $backupPath = "$readmePath.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss').md"
 
@@ -58,7 +58,7 @@ $replacements = @{
     "/9_misc/resources" = "9_misc/resources/README.md"
     "/9_misc/proposed_rules" = "9_misc/proposed_rules/README.md"
     "/9_misc/archive" = "9_misc/archive/README.md"
-    
+
     # Other specific links
     "wiener_linien/WIENER_LINIEN_API_GUIDE.md" = "7_projects/wiener_linien/WIENER_LINIEN_API_GUIDE.md"
     "wiener_linien/gtfs.md" = "7_projects/wiener_linien/gtfs.md"
@@ -84,7 +84,7 @@ foreach ($oldLink in $replacements.Keys) {
             "($newLink)"
         }
     })
-    
+
     Write-Host "Replaced: $oldLink -> $newLink" -ForegroundColor Yellow
 }
 

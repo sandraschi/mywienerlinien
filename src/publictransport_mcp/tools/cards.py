@@ -18,7 +18,7 @@ from prefab_ui.app import PrefabApp
 from prefab_ui.components import Card, CardContent, CardHeader, Text
 from pydantic import Field
 
-from wienerlinien_mcp.tools.departures import get_next_departures_internal
+from publictransport_mcp.tools.departures import get_next_departures_internal
 
 logger = logging.getLogger(__name__)
 

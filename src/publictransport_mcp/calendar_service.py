@@ -130,7 +130,7 @@ class CalendarIntegrationService:
             required_arrival = appointment.start_time - timedelta(minutes=buffer_minutes)
 
             # Plan journey
-            from wienerlinien_mcp.utils import find_station_by_name
+            from publictransport_mcp.utils import find_station_by_name
 
             from_info = find_station_by_name(origin_station)
             to_info = find_station_by_name(destination_station)

@@ -2,13 +2,13 @@
 
 - Status: Phase 3 done (2026-10-18; pipeline deleted, no Postgres refs in code)
 - Owner: Sandra Schipal
-- Scope: `mywienerlinien` + `gtfs-mcp` (read-only changes to gtfs-mcp in Phase 1)
+- Scope: `publictransport-mcp` + `gtfs-mcp` (read-only changes to gtfs-mcp in Phase 1)
 - Out of scope for tonight: Phase 0 (map verification on the current stack) is
   already in flight and is NOT blocked by this SPEC.
 
 ## 1. Problem
 
-`mywienerlinien` (a pre-standards 2025 project) carries ~20 GTFS scripts plus a
+`publictransport-mcp` (a pre-standards 2025 project) carries ~20 GTFS scripts plus a
 bespoke Postgres schema that duplicates `gtfs-mcp`, which is newer, SOTA-shaped
 (FastMCP 3.4, annotated tools, windows CI), and already SQLite-based. Fleet rule:
 one capability lives in exactly one repo. GTFS feed infrastructure belongs to
@@ -118,8 +118,8 @@ already re-pointed. Postgres container stays until Phase 3.
 ### Phase 4 — rename to publictransport-mcp
 
 Explicit checklist (rename PR, not drive-by): GitHub repo rename (+ redirect),
-local dir, `pyproject` name + package `wienerlinien_mcp` → `publictransport_mcp`
-(+ all imports), MCP server name `vienna-transit` → keep per-city instances or
+local dir, `pyproject` name + package `publictransport_mcp` → `publictransport_mcp`
+(+ all imports), MCP server name `publictransport` → keep per-city instances or
 `public-transport`, fleet-start config, WEBAPP_PORTS.md, all docs + llms files,
 Claude Desktop + `.mcpb` manifest + glama.json, CI paths, start scripts.
 Multi-city support is already real code, so the name is honest. Do this LAST,

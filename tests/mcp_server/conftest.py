@@ -9,16 +9,16 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 import pytest
 from fastmcp import FastMCP
 
-# Live code lives in src/wienerlinien_mcp; tests address it as the top-level
+# Live code lives in src/publictransport_mcp; tests address it as the top-level
 # `mcp_server` package name via a module alias (the frontend/mcp_server copy
 # is legacy and not what ships in the package). frontend/ stays on sys.path
 # because live tool modules fall back to `import data_loader` (frontend copy).
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "frontend"))
 
-import wienerlinien_mcp
+import publictransport_mcp
 
-sys.modules.setdefault("mcp_server", wienerlinien_mcp)
+sys.modules.setdefault("mcp_server", publictransport_mcp)
 
 from mcp_server.models.departures import Departure, DepartureResponse
 from mcp_server.models.journey import JourneyPlan, JourneySegment
@@ -29,7 +29,7 @@ from mcp_server.models.status import LineStatusResponse, ServiceStatus
 @pytest.fixture
 def mock_mcp_server() -> FastMCP:
     """Create a mock FastMCP server instance for testing."""
-    return FastMCP(name="test-vienna-transit", version="1.0.0")
+    return FastMCP(name="test-publictransport", version="1.0.0")
 
 
 @pytest.fixture

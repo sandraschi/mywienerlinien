@@ -22,7 +22,7 @@ def _load_calendar_services(day_type: str) -> set[str]:
     gtfs_paths = [
         Path(__file__).parent.parent.parent.parent / "scripts" / "gtfs_data" / "extracted" / "calendar.txt",
         Path("scripts/gtfs_data/extracted/calendar.txt"),
-        Path("D:/Dev/repos/mywienerlinien/scripts/gtfs_data/extracted/calendar.txt"),
+        Path("D:/Dev/repos/publictransport-mcp/scripts/gtfs_data/extracted/calendar.txt"),
     ]
 
     calendar_path = None

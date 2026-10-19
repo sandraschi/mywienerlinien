@@ -25,7 +25,7 @@ async def test_api_error_handling():
     # 3. Verify error handling and responses
 
     # For now, we verify the server is set up correctly
-    assert mcp.name == "vienna-transit"
+    assert mcp.name == "publictransport"
 
 
 @pytest.mark.asyncio
@@ -42,7 +42,7 @@ async def test_api_timeout_handling():
     # 3. Verify appropriate error responses
 
     # For now, we verify the server is set up correctly
-    assert mcp.name == "vienna-transit"
+    assert mcp.name == "publictransport"
 
 
 @pytest.mark.asyncio
@@ -59,4 +59,4 @@ async def test_api_rate_limiting_simulation():
     # 3. Verify appropriate retry or error responses
 
     # For now, we verify the server is set up correctly
-    assert mcp.name == "vienna-transit"
+    assert mcp.name == "publictransport"

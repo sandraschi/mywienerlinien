@@ -5,9 +5,9 @@ This server provides MCP tools for Vienna public transport information.
 It runs with stdio transport for Claude Desktop integration.
 
 Usage:
-    python -m wienerlinien_mcp.server
+    python -m publictransport_mcp.server
     # Or with FastMCP CLI:
-    fastmcp dev wienerlinien_mcp.server:mcp
+    fastmcp dev publictransport_mcp.server:mcp
 """
 
 import logging
@@ -23,21 +23,21 @@ if str(_frontend_path) not in sys.path:
     sys.path.insert(0, str(_frontend_path))
 
 # Import tools
-from wienerlinien_mcp.middleware.error_handler import register_error_handler_middleware
+from publictransport_mcp.middleware.error_handler import register_error_handler_middleware
 
 # Import middleware
-from wienerlinien_mcp.middleware.logging import register_logging_middleware
-from wienerlinien_mcp.tools.departures import register_departures_tool
-from wienerlinien_mcp.tools.journey import register_journey_tool
-from wienerlinien_mcp.tools.stations import register_station_search_tool
-from wienerlinien_mcp.tools.status import register_status_tool
+from publictransport_mcp.middleware.logging import register_logging_middleware
+from publictransport_mcp.tools.departures import register_departures_tool
+from publictransport_mcp.tools.journey import register_journey_tool
+from publictransport_mcp.tools.stations import register_station_search_tool
+from publictransport_mcp.tools.status import register_status_tool
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
-logger = logging.getLogger("wienerlinien_mcp")
+logger = logging.getLogger("publictransport_mcp")
 
 # Create FastMCP server instance
 mcp = FastMCP(

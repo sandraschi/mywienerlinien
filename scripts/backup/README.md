@@ -28,7 +28,7 @@ A configurable Python script to back up multiple Git repositories to timestamped
   "repositories": [
     {
       "name": "wienerlinien",
-      "path": "D:\\Dev\\repos\\mywienerlinien",
+      "path": "D:\\Dev\\repos\\publictransport-mcp",
       "enabled": true,
       "exclude_dirs": ["venv", ".git", "__pycache__", "node_modules"],
       "exclude_extensions": [".pyc", ".pyo", ".pyd", ".log", ".tmp"]
@@ -65,23 +65,26 @@ python scripts/backup/backup_script.py
 3. Set the trigger to "Daily" and configure to repeat every 4 hours
 4. Set the action to:
    - Program/script: `pythonw.exe`
-   - Add arguments: `"D:\Dev\repos\mywienerlinien\scripts\backup\backup_script.py"`
-   - Start in: `D:\Dev\repos\mywienerlinien`
+   - Add arguments: `"D:\Dev\repos\publictransport-mcp\scripts\backup\backup_script.py"`
+   - Start in: `D:\Dev\repos\publictransport-mcp`
 5. Set the task to run whether the user is logged in or not
 6. Save the task
 
 ## Testing
 
 1. Run the script manually to verify it works:
+
    ```powershell
    python scripts/backup/backup_script.py
    ```
+
 2. Check the backup directory for the new backup
 3. Check the log file for any errors
 
 ## Logging
 
 Logs are written to both the console and the specified log file. Each log entry includes:
+
 - Timestamp
 - Log level (INFO, WARNING, ERROR)
 - Message
@@ -89,6 +92,7 @@ Logs are written to both the console and the specified log file. Each log entry 
 ## Error Handling
 
 The script will:
+
 - Skip repositories that don't exist
 - Log errors but continue with other repositories
 - Create backup directories if they don't exist

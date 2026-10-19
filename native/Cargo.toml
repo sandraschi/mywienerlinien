@@ -1,7 +1,7 @@
 [package]
-name = "mywienerlinien-native"
+name = "publictransport-mcp-native"
 version = "0.1.0"
-description = "Tauri desktop shell for mywienerlinien operator UI"
+description = "Tauri desktop shell for publictransport-mcp operator UI"
 edition = "2021"
 
 [build-dependencies]

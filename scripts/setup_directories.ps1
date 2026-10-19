@@ -1,7 +1,7 @@
 # Create required directories if they don't exist
 $directories = @(
-    "D:\Dev\repos\mywienerlinien\.windsurf\logs",
-    "D:\Dev\repos\mywienerlinien\docs\gtfs"
+    "D:\Dev\repos\publictransport-mcp\.windsurf\logs",
+    "D:\Dev\repos\publictransport-mcp\docs\gtfs"
 )
 
 foreach ($dir in $directories) {
@@ -19,7 +19,7 @@ foreach ($dir in $directories) {
 }
 
 # Verify write permissions to the logs directory
-$testFile = Join-Path "D:\Dev\repos\mywienerlinien\.windsurf\logs" "test_permissions.tmp"
+$testFile = Join-Path "D:\Dev\repos\publictransport-mcp\.windsurf\logs" "test_permissions.tmp"
 try {
     [System.IO.File]::WriteAllText($testFile, "test")
     Remove-Item -Path $testFile -Force

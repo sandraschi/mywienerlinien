@@ -1,5 +1,5 @@
 # Fix Docker Context - Try all contexts
-$output = "D:\Dev\repos\mywienerlinien\context_fix_output.txt"
+$output = "D:\Dev\repos\publictransport-mcp\context_fix_output.txt"
 
 "=====================================" | Out-File $output
 "Docker Context Fix - $(Get-Date)" | Out-File $output -Append
@@ -28,4 +28,3 @@ if ($LASTEXITCODE -ne 0) {
 "=====================================" | Out-File $output -Append
 
 Write-Host "✅ Context fix attempt complete! Read: context_fix_output.txt" -ForegroundColor Green
-

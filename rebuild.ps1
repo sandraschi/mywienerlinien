@@ -2,7 +2,7 @@
 # Output redirected to rebuild_output.txt
 
 $ErrorActionPreference = "Continue"
-$output = "D:\Dev\repos\mywienerlinien\rebuild_output.txt"
+$output = "D:\Dev\repos\publictransport-mcp\rebuild_output.txt"
 
 "=====================================" | Out-File $output
 "MyWienerLinien Rebuild - $(Get-Date)" | Out-File $output -Append
@@ -16,11 +16,11 @@ docker --version 2>&1 | Out-File $output -Append
 
 # Test 2: List existing containers
 "[2/5] Listing existing containers..." | Out-File $output -Append
-docker ps -a --filter "name=mywienerlinien" 2>&1 | Out-File $output -Append
+docker ps -a --filter "name=publictransport-mcp" 2>&1 | Out-File $output -Append
 "" | Out-File $output -Append
 
 # Test 3: Stop old containers
-"[3/5] Stopping old mywienerlinien containers..." | Out-File $output -Append
+"[3/5] Stopping old publictransport-mcp containers..." | Out-File $output -Append
 docker compose down 2>&1 | Out-File $output -Append
 "" | Out-File $output -Append
 
@@ -48,4 +48,3 @@ docker compose ps 2>&1 | Out-File $output -Append
 "=====================================" | Out-File $output -Append
 
 Write-Host "`n✅ Script complete! Output saved to: $output" -ForegroundColor Green
-

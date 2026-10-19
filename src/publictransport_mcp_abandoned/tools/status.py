@@ -14,7 +14,7 @@ if str(_frontend_path) not in sys.path:
 
 from disruption_alerts import disruption_monitor
 
-from wienerlinien_mcp.models.status import LineStatusResponse, ServiceStatus
+from publictransport_mcp.models.status import LineStatusResponse, ServiceStatus
 
 logger = logging.getLogger(__name__)
 

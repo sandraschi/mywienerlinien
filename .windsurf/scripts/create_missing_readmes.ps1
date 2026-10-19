@@ -2,7 +2,7 @@
 # Also updates existing READMEs to include links to all Markdown files and subdirectories
 
 # Configuration
-$docsDir = "D:\Dev\repos\mywienerlinien\.windsurf\docs"
+$docsDir = "D:\Dev\repos\publictransport-mcp\.windsurf\docs"
 $excludeFiles = @("_sidebar.md", "README.md", ".DS_Store", "Thumbs.db")
 $excludeDirs = @(".git", "node_modules", "_assets", "_media", "_static", "plugins", "css", "js", "img", "images")
 
@@ -22,30 +22,30 @@ function Update-Readme {
         [string]$directory,
         [switch]$Force = $false
     )
-    
+
     $readmePath = Join-Path -Path $directory -ChildPath "README.md"
     $dirName = (Get-Item $directory).Name -replace '_', ' '
     $title = Format-Title $dirName
-    
+
     # Get all markdown files in the directory (excluding excluded files)
-    $markdownFiles = Get-ChildItem -Path $directory -File -Filter "*.md" | 
+    $markdownFiles = Get-ChildItem -Path $directory -File -Filter "*.md" |
         Where-Object { $excludeFiles -notcontains $_.Name }
-    
+
     # Get all subdirectories (excluding excluded directories)
-    $subDirs = Get-ChildItem -Path $directory -Directory | 
+    $subDirs = Get-ChildItem -Path $directory -Directory |
         Where-Object { $excludeDirs -notcontains $_.Name }
-    
+
     # Generate markdown content
     $content = @("# $title\n")
-    
+
     # Add description
     $description = "files and subdirectories related to $($dirName.ToLower())"
     $content += "This directory contains $description.\n"
-    
+
     # Add table of contents
     $content += "\n## Contents\n"
     $content += "<!-- toc -->\n"
-    
+
     # Add files section if there are markdown files
     if ($markdownFiles.Count -gt 0) {
         $content += "\n### Files\n"
@@ -55,7 +55,7 @@ function Update-Readme {
             $content += "- [$fileTitle]($relativePath)\n"
         }
     }
-    
+
     # Add subdirectories section if there are subdirectories
     if ($subDirs.Count -gt 0) {
         $content += "\n### Subdirectories\n"
@@ -65,7 +65,7 @@ function Update-Readme {
             $content += "- [$dirTitle]($relativePath)\n"
         }
     }
-    
+
     # Add navigation section
     $content += @"
 
@@ -91,10 +91,10 @@ $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
             return
         }
     }
-    
+
     # Write the content to the README file
     $content | Out-File -FilePath $readmePath -Encoding utf8 -NoNewline
-    
+
     if (Test-Path -Path $readmePath) {
         Write-Host "Updated: $readmePath" -ForegroundColor Green
     } else {
@@ -104,8 +104,8 @@ $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
 
 # Get all directories under docs (including the root)
 $directories = @(Get-Item -Path $docsDir)
-$directories += Get-ChildItem -Path $docsDir -Directory -Recurse | 
-    Where-Object { 
+$directories += Get-ChildItem -Path $docsDir -Directory -Recurse |
+    Where-Object {
         $shouldInclude = $true
         foreach ($exclude in $excludeDirs) {
             if ($_.FullName -like "*\$exclude" -or $_.FullName -like "*\$exclude\*") {

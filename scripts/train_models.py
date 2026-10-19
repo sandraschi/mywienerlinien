@@ -18,9 +18,7 @@ from frontend.database import db
 from frontend.mcp_server.historical_data import get_historical_collector
 from frontend.mcp_server.prediction_service import ML_AVAILABLE, get_prediction_service
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -94,12 +92,10 @@ def main():
     if args.all:
         # Get all lines from database
         try:
-            results = db.execute_query(
-                "SELECT DISTINCT line FROM historical_vehicles ORDER BY line"
-            )
+            results = db.execute_query("SELECT DISTINCT line FROM historical_vehicles ORDER BY line")
             lines = [row["line"] for row in results]
             logger.info(f"Found {len(lines)} lines in historical data")
-        except:
+        except Exception:
             logger.error("Failed to get lines from database")
             return 1
     else:

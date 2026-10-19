@@ -18,7 +18,7 @@ async def test_server_initialization():
 
     # Assert server is created
     assert mcp is not None
-    assert mcp.name == "vienna-transit"
+    assert mcp.name == "publictransport"
 
     # Assert prompts are registered
     assert len(_prompt_refs) == 5
@@ -45,7 +45,7 @@ async def test_tool_workflow_departures_to_station_search():
     # 3. Or test via the actual MCP server interface
 
     # For now, we verify the server is set up correctly
-    assert mcp.name == "vienna-transit"
+    assert mcp.name == "publictransport"
 
 
 @pytest.mark.asyncio
@@ -62,7 +62,7 @@ async def test_tool_workflow_journey_planning():
     # 3. Test with mocked or real API responses
 
     # For now, we verify the server is set up correctly
-    assert mcp.name == "vienna-transit"
+    assert mcp.name == "publictransport"
 
 
 @pytest.mark.asyncio
@@ -99,4 +99,4 @@ async def test_error_handling_workflow():
     # 3. Test edge cases and invalid inputs
 
     # For now, we verify the server is set up correctly
-    assert mcp.name == "vienna-transit"
+    assert mcp.name == "publictransport"

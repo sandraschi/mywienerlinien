@@ -180,9 +180,7 @@ class WebSocketManager:
             client = self.connected_clients.get(sid, {})
             filters = client.get("filters", {}) if client else {}
             requested_lines = (
-                sorted(filters.get("lines") or [])
-                if isinstance(filters.get("lines"), (set, list))
-                else None
+                sorted(filters.get("lines") or []) if isinstance(filters.get("lines"), (set, list)) else None
             )
         else:
             aggregated: set[str] = set()
@@ -266,9 +264,7 @@ class WebSocketManager:
         await self.sio.emit("system_status", payload, to=sid)
 
     @staticmethod
-    def _apply_filters(
-        vehicles: list[dict[str, Any]], filters: dict[str, Any]
-    ) -> list[dict[str, Any]]:
+    def _apply_filters(vehicles: list[dict[str, Any]], filters: dict[str, Any]) -> list[dict[str, Any]]:
         if not vehicles:
             return []
 
@@ -276,20 +272,12 @@ class WebSocketManager:
 
         vehicle_type = (filters or {}).get("vehicle_type")
         if isinstance(vehicle_type, str) and vehicle_type and vehicle_type.lower() != "all":
-            filtered = [
-                vehicle
-                for vehicle in filtered
-                if vehicle.get("type", "").lower() == vehicle_type.lower()
-            ]
+            filtered = [vehicle for vehicle in filtered if vehicle.get("type", "").lower() == vehicle_type.lower()]
 
         line_filters = (filters or {}).get("lines")
         if line_filters:
             normalized_lines = {str(line).upper() for line in line_filters}
-            filtered = [
-                vehicle
-                for vehicle in filtered
-                if vehicle.get("line", "").upper() in normalized_lines
-            ]
+            filtered = [vehicle for vehicle in filtered if vehicle.get("line", "").upper() in normalized_lines]
 
         return filtered
 

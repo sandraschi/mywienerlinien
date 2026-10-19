@@ -1,7 +1,7 @@
-# Per-repo fleet start config for mywienerlinien
+# Per-repo fleet start config for publictransport-mcp
 # Edit ports/backend target here - start.ps1 is fleet-standard.
 @{
-    Name         = 'mywienerlinien'
+    Name         = 'publictransport-mcp'
     BackendPort  = 11170
     FrontendPort = 10896
     HealthPath   = '/health'

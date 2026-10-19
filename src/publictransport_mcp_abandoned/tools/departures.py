@@ -15,11 +15,11 @@ if str(_frontend_path) not in sys.path:
 
 from data_loader import data_loader
 from database import db
+from publictransport_mcp.models.disruptions import Disruption, DisruptionResponse, DisruptionSummaryResponse
 from vehicle_service import collect_vehicle_data
-from wienerlinien_mcp.models.disruptions import Disruption, DisruptionResponse, DisruptionSummaryResponse
 
-from wienerlinien_mcp.models.departures import Departure, DepartureResponse, TimetableResponse
-from wienerlinien_mcp.utils import find_station_by_name
+from publictransport_mcp.models.departures import Departure, DepartureResponse, TimetableResponse
+from publictransport_mcp.utils import find_station_by_name
 
 # Import disruption monitor
 try:

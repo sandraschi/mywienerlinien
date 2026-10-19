@@ -5,7 +5,7 @@ import logging
 from fastmcp import FastMCP
 from fastmcp.server.middleware import CallNext, Middleware, MiddlewareContext
 
-logger = logging.getLogger("wienerlinien_mcp")
+logger = logging.getLogger("publictransport_mcp")
 
 
 class ErrorHandlerMiddleware(Middleware):

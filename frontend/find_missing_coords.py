@@ -23,9 +23,7 @@ def find_stations_without_coords():
         by_type.setdefault(station.type, []).append(station)
 
     # Print summary
-    print(
-        f"Found {len(missing_coords)} stations without coordinates out of {len(stations)} total stations"
-    )
+    print(f"Found {len(missing_coords)} stations without coordinates out of {len(stations)} total stations")
     print("\nBreakdown by type:")
     for stype, stns in by_type.items():
         print(f"- {stype}: {len(stns)} stations")

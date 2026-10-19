@@ -6,7 +6,7 @@ Write-Host "========================================`n" -ForegroundColor Cyan
 
 # Check if database is running
 Write-Host "📊 Checking database..." -ForegroundColor Yellow
-$dbRunning = docker ps --filter "name=wienerlinien-db" --filter "status=running" --format "{{.Names}}"
+$dbRunning = docker ps --filter "name=publictransport-db" --filter "status=running" --format "{{.Names}}"
 if (-not $dbRunning) {
     Write-Host "❌ Database not running. Starting..." -ForegroundColor Red
     docker compose up -d db

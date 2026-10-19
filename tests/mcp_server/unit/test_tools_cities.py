@@ -45,9 +45,7 @@ def mock_city_manager():
     manager.current_city = "vienna"
     manager.switch_city = Mock(return_value=True)
     manager.get_city_info = Mock(
-        side_effect=lambda city_code: next(
-            (c for c in mock_city_list if c["code"] == city_code), None
-        )
+        side_effect=lambda city_code: next((c for c in mock_city_list if c["code"] == city_code), None)
     )
 
     # Mock statistics
@@ -58,7 +56,7 @@ def mock_city_manager():
         "total_routes": 1138,
         "total_trips": 562609,
         "active_vehicles": 51,
-        "last_updated": "2025-12-17T13:27:24.577399"
+        "last_updated": "2025-12-17T13:27:24.577399",
     }
     manager.get_city_statistics = Mock(return_value=mock_stats)
 
@@ -100,9 +98,10 @@ async def test_list_cities_success(mock_city_manager, mock_db):
     test_mcp = FastMCP(name="test", version="1.0.0")
     register_cities_tools(test_mcp)
 
-    with patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager), \
-         patch("mcp_server.tools.cities.db", mock_db):
-
+    with (
+        patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager),
+        patch("mcp_server.tools.cities.db", mock_db),
+    ):
         async with Client(test_mcp) as client:
             result = await client.call_tool("list_cities", {})
             text = result.structured_content["result"]
@@ -125,9 +124,10 @@ async def test_list_cities_empty(mock_city_manager, mock_db):
     test_mcp = FastMCP(name="test", version="1.0.0")
     register_cities_tools(test_mcp)
 
-    with patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager), \
-         patch("mcp_server.tools.cities.db", mock_db):
-
+    with (
+        patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager),
+        patch("mcp_server.tools.cities.db", mock_db),
+    ):
         async with Client(test_mcp) as client:
             result = await client.call_tool("list_cities", {})
             text = result.structured_content["result"]
@@ -144,9 +144,10 @@ async def test_switch_to_city_success(mock_city_manager, mock_db):
     test_mcp = FastMCP(name="test", version="1.0.0")
     register_cities_tools(test_mcp)
 
-    with patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager), \
-         patch("mcp_server.tools.cities.db", mock_db):
-
+    with (
+        patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager),
+        patch("mcp_server.tools.cities.db", mock_db),
+    ):
         async with Client(test_mcp) as client:
             result = await client.call_tool("switch_to_city", {"city_code": "graz"})
             text = result.structured_content["result"]
@@ -166,9 +167,10 @@ async def test_switch_to_city_invalid(mock_city_manager, mock_db):
     test_mcp = FastMCP(name="test", version="1.0.0")
     register_cities_tools(test_mcp)
 
-    with patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager), \
-         patch("mcp_server.tools.cities.db", mock_db):
-
+    with (
+        patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager),
+        patch("mcp_server.tools.cities.db", mock_db),
+    ):
         async with Client(test_mcp) as client:
             result = await client.call_tool("switch_to_city", {"city_code": "invalid_city"})
             text = result.structured_content["result"]
@@ -188,9 +190,10 @@ async def test_switch_to_city_failure(mock_city_manager, mock_db):
     test_mcp = FastMCP(name="test", version="1.0.0")
     register_cities_tools(test_mcp)
 
-    with patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager), \
-         patch("mcp_server.tools.cities.db", mock_db):
-
+    with (
+        patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager),
+        patch("mcp_server.tools.cities.db", mock_db),
+    ):
         async with Client(test_mcp) as client:
             result = await client.call_tool("switch_to_city", {"city_code": "vienna"})
             text = result.structured_content["result"]
@@ -211,9 +214,10 @@ async def test_city_transit_stats_success(mock_city_manager, mock_db):
     test_mcp = FastMCP(name="test", version="1.0.0")
     register_cities_tools(test_mcp)
 
-    with patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager), \
-         patch("mcp_server.tools.cities.db", mock_db):
-
+    with (
+        patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager),
+        patch("mcp_server.tools.cities.db", mock_db),
+    ):
         async with Client(test_mcp) as client:
             result = await client.call_tool("city_transit_stats", {"city_code": "vienna"})
             text = result.structured_content["result"]
@@ -236,9 +240,10 @@ async def test_city_transit_stats_default_city(mock_city_manager, mock_db):
     test_mcp = FastMCP(name="test", version="1.0.0")
     register_cities_tools(test_mcp)
 
-    with patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager), \
-         patch("mcp_server.tools.cities.db", mock_db):
-
+    with (
+        patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager),
+        patch("mcp_server.tools.cities.db", mock_db),
+    ):
         async with Client(test_mcp) as client:
             result = await client.call_tool("city_transit_stats", {})  # No city_code provided
             text = result.structured_content["result"]
@@ -255,13 +260,12 @@ async def test_city_transit_stats_invalid_city(mock_city_manager, mock_db):
     test_mcp = FastMCP(name="test", version="1.0.0")
     register_cities_tools(test_mcp)
 
-    with patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager), \
-         patch("mcp_server.tools.cities.db", mock_db):
-
+    with (
+        patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager),
+        patch("mcp_server.tools.cities.db", mock_db),
+    ):
         async with Client(test_mcp) as client:
-            result = await client.call_tool(
-                "city_transit_stats", {"city_code": "invalid_city"}
-            )
+            result = await client.call_tool("city_transit_stats", {"city_code": "invalid_city"})
             text = result.structured_content["result"]
 
             assert isinstance(text, str)
@@ -279,9 +283,10 @@ async def test_city_transit_stats_db_error(mock_city_manager, mock_db):
     test_mcp = FastMCP(name="test", version="1.0.0")
     register_cities_tools(test_mcp)
 
-    with patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager), \
-         patch("mcp_server.tools.cities.db", mock_db):
-
+    with (
+        patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager),
+        patch("mcp_server.tools.cities.db", mock_db),
+    ):
         async with Client(test_mcp) as client:
             result = await client.call_tool("city_transit_stats", {"city_code": "vienna"})
             text = result.structured_content["result"]
@@ -310,9 +315,10 @@ async def test_city_transit_stats_fallback_values(mock_city_manager, mock_db):
     test_mcp = FastMCP(name="test", version="1.0.0")
     register_cities_tools(test_mcp)
 
-    with patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager), \
-         patch("mcp_server.tools.cities.db", mock_db):
-
+    with (
+        patch("mcp_server.tools.cities.get_city_manager", return_value=mock_city_manager),
+        patch("mcp_server.tools.cities.db", mock_db),
+    ):
         async with Client(test_mcp) as client:
             result = await client.call_tool("city_transit_stats", {"city_code": "vienna"})
             text = result.structured_content["result"]

@@ -1,4 +1,4 @@
-# Development - mywienerlinien
+# Development - publictransport-mcp
 
 How to run, iterate, lint, and test. For install steps see `INSTALL.md`.
 For first-timer wrappee setup see `docs/ONBOARDING.md`.
@@ -58,14 +58,14 @@ stdio transport needs direct process communication, so the MCP server runs on
 the host even when everything else is in Docker:
 
 ```powershell
-$env:APP_DB_PATH = "D:/Dev/repos/mywienerlinien/data/app.db"
-uv run vienna-transit-mcp
-# or: uv run python -m wienerlinien_mcp.server  (from src/ layout)
+$env:APP_DB_PATH = "D:/Dev/repos/publictransport-mcp/data/app.db"
+uv run publictransport-mcp
+# or: uv run python -m publictransport_mcp.server  (from src/ layout)
 ```
 
 Claude Desktop config uses `python -m frontend.mcp_server.server` with
-`PYTHONPATH=D:/Dev/repos/mywienerlinien` in older setups and
-`wienerlinien_mcp.server:mcp` (`uv run vienna-transit-mcp`) in the current
+`PYTHONPATH=D:/Dev/repos/publictransport-mcp` in older setups and
+`publictransport_mcp.server:mcp` (`uv run publictransport-mcp`) in the current
 `pyproject.toml` entry point. Both read the same `APP_DB_PATH`.
 
 ## justfile recipes
@@ -76,7 +76,7 @@ Run `just` with no args to list recipes. The ones that matter daily:
 |---|---|---|
 | `just bootstrap` | `uv sync --extra dev` + `pre-commit install` | First-time setup |
 | `just serve` | `uv run uvicorn server:app --host 127.0.0.1 --port 11170 --app-dir web_sota/backend` | Fleet backend on 11170 |
-| `just run` | `uv run mywienerlinien` | Run the MCP/package entry point |
+| `just run` | `uv run publictransport-mcp` | Run the MCP/package entry point |
 | `just test` | `uv run pytest tests/ -q` | Full test suite, quiet |
 | `just lint` | `uv run ruff check .` | Repo-wide lint |
 | `just fmt` | `uv run ruff check src/ --fix` + `uv run ruff format src/` | Auto-fix + format `src/` |
@@ -118,8 +118,8 @@ feed. See `docs/TROUBLESHOOTING.md` for staleness symptoms.
 
 ## Repo layout cheat sheet
 
-- `src/wienerlinien_mcp/server.py` - MCP entry (`vienna-transit-mcp`)
-- `src/wienerlinien_mcp/tools/`, `prompts.py`, `resources.py` - MCP surface
+- `src/publictransport_mcp/server.py` - MCP entry (`publictransport-mcp`)
+- `src/publictransport_mcp/tools/`, `prompts.py`, `resources.py` - MCP surface
 - `web_sota/backend/server.py` - FastAPI backend (`server:app`, port 11170)
 - `web_sota/src/` - Vite dashboard (port 10896)
 - `frontend/app.py` - legacy Docker frontend (port 3079/3080)

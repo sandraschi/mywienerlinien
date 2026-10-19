@@ -1,7 +1,7 @@
 # Script to fix the final broken links in README.md
 
 # Configuration
-$docsDir = "D:\Dev\repos\mywienerlinien\.windsurf\docs"
+$docsDir = "D:\Dev\repos\publictransport-mcp\.windsurf\docs"
 $readmePath = Join-Path -Path $docsDir -ChildPath "README.md"
 $backupPath = "$readmePath.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss').md"
 
@@ -27,13 +27,13 @@ $missingDirs = @(
 foreach ($dir in $missingDirs) {
     $fullPath = Join-Path -Path $docsDir -ChildPath $dir
     $readmePath = Join-Path -Path $fullPath -ChildPath "README.md"
-    
+
     # Create directory if it doesn't exist
     if (-not (Test-Path -Path $fullPath -PathType Container)) {
         New-Item -ItemType Directory -Path $fullPath -Force | Out-Null
         Write-Host "Created directory: $dir" -ForegroundColor Green
     }
-    
+
     # Create README.md if it doesn't exist
     if (-not (Test-Path -Path $readmePath -PathType Leaf)) {
         $title = ($dir -split '[\\/]' | Select-Object -Last 1) -replace '_', ' ' -replace '\b(\p{L})', { $_.Value.ToUpper() }
@@ -44,7 +44,7 @@ This directory contains $($title.ToLower()) resources and documentation.
 ## Contents
 
 <!-- Add a brief description of the contents of this directory -->"
-        
+
         $content | Out-File -FilePath $readmePath -Encoding utf8 -NoNewline
         Write-Host "Created README.md in: $dir" -ForegroundColor Green
     }
@@ -106,7 +106,7 @@ This directory contains templates for various types of documentation.
 
 .DESCRIPTION
     This script helps with importing Grafana dashboards from JSON files.
-    
+
 .NOTES
     File Name: import_dashboard.ps1
     Author: Your Name
@@ -116,9 +116,9 @@ This directory contains templates for various types of documentation.
 param (
     [Parameter(Mandatory=$true)]
     [string]$DashboardPath,
-    
+
     [string]$GrafanaUrl = "http://localhost:3000",
-    
+
     [Parameter(Mandatory=$true)]
     [string]$ApiKey
 )
@@ -131,13 +131,13 @@ Write-Host "Dashboard import functionality will be implemented here" -Foreground
 foreach ($file in $missingFiles) {
     $fullPath = Join-Path -Path $docsDir -ChildPath $file.Path
     $dirPath = Split-Path -Path $fullPath -Parent
-    
+
     # Create parent directory if it doesn't exist
     if (-not (Test-Path -Path $dirPath -PathType Container)) {
         New-Item -ItemType Directory -Path $dirPath -Force | Out-Null
         Write-Host "Created directory: $($file.Path | Split-Path -Parent)" -ForegroundColor Green
     }
-    
+
     # Create file if it doesn't exist
     if (-not (Test-Path -Path $fullPath -PathType Leaf)) {
         $file.Content | Out-File -FilePath $fullPath -Encoding utf8 -NoNewline

@@ -1,8 +1,8 @@
 {
     "$schema": "https://schema.tauri.app/config/2",
-    "productName": "Mywienerlinien MCP",
+    "productName": "Publictransport MCP",
     "version": "0.1.0",
-    "identifier": "com.sandraschi.mywienerlinien",
+    "identifier": "com.sandraschi.publictransport-mcp",
     "build": {
         "frontendDist": "../webapp/dist"
     },
@@ -10,7 +10,7 @@
         "windows": [
             {
                 "label": "main",
-                "title": "Mywienerlinien MCP",
+                "title": "Publictransport MCP",
                 "width": 1280,
                 "height": 860,
                 "minWidth": 700,
@@ -27,7 +27,7 @@
         "targets": ["nsis"],
         "icon": ["icons/icon.png", "icons/icon.ico"],
         "resources": [
-            "resources/mywienerlinien-backend.exe",
+            "resources/publictransport-mcp-backend.exe",
             "resources/.env.example"],
         "windows": {
             "webviewInstallMode": {
@@ -41,5 +41,3 @@
     },
     "plugins": {}
 }
-
-

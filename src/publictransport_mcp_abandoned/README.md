@@ -23,10 +23,10 @@ pip install fastmcp>=2.13.0 pydantic>=2.5.0
 
 ```powershell
 # From project root
-python -m wienerlinien_mcp.server
+python -m publictransport_mcp.server
 
 # Or with FastMCP CLI (if installed)
-fastmcp dev wienerlinien_mcp.server:mcp
+fastmcp dev publictransport_mcp.server:mcp
 ```
 
 ### Claude Desktop Configuration
@@ -38,8 +38,8 @@ Add to `claude_desktop_config.json`:
   "mcpServers": {
     "wienerlinien-transit": {
       "command": "python",
-      "args": ["-m", "wienerlinien_mcp.server"],
-      "cwd": "D:\\Dev\\repos\\mywienerlinien"
+      "args": ["-m", "publictransport_mcp.server"],
+      "cwd": "D:\\Dev\\repos\\publictransport-mcp"
     }
   }
 }
@@ -48,35 +48,43 @@ Add to `claude_desktop_config.json`:
 ## Available Tools
 
 ### 1. `next_departures`
+
 Get next departures from a Vienna transit station.
 
 **Parameters:**
+
 - `station` (str): Station name (e.g., "Stephansplatz")
 - `max_results` (int, optional): Maximum departures (1-10, default: 5)
 
 **Returns:** List of departures with line, destination, time, delay
 
 ### 2. `station_search`
+
 Find Vienna transit stations by name.
 
 **Parameters:**
+
 - `query` (str): Search query (partial match supported)
 - `limit` (int, optional): Maximum results (1-20, default: 10)
 
 **Returns:** List of matching stations
 
 ### 3. `line_status`
+
 Check Vienna transit service status and disruptions.
 
 **Parameters:**
+
 - `line_name` (str, optional): Line filter (e.g., "U1", "D")
 
 **Returns:** List of service status entries
 
 ### 4. `journey_planner`
+
 Plan optimal journey between Vienna stations.
 
 **Parameters:**
+
 - `from_station` (str): Origin station
 - `to_station` (str): Destination station
 - `departure_time` (str, optional): ISO format timestamp
@@ -86,6 +94,7 @@ Plan optimal journey between Vienna stations.
 ## Architecture
 
 This MCP server runs alongside the FastAPI web server:
+
 - **FastMCP**: stdio transport for Claude Desktop
 - **FastAPI**: HTTP transport for web UI
 - **Shared Backend**: Both use same database and API clients
@@ -98,7 +107,7 @@ See `docs/mcp-architecture.md` for details.
 
 ```powershell
 # Test with MCP Inspector (if available)
-mcp-inspector python -m wienerlinien_mcp.server
+mcp-inspector python -m publictransport_mcp.server
 
 # Or test manually with Claude Desktop
 ```
@@ -116,6 +125,3 @@ mcp-inspector python -m wienerlinien_mcp.server
 - FastMCP 2.13.0+
 - Pydantic 2.5.0+
 - Access to Wiener Linien API (via shared backend)
-
-
-

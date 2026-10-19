@@ -4,7 +4,7 @@
 $ErrorActionPreference = "Stop"
 
 # Define paths
-$repoPath = "d:\Dev\repos\mywienerlinien"
+$repoPath = "d:\Dev\repos\publictransport-mcp"
 $backupDir = Join-Path $repoPath "backup"
 
 # Create backup directory if it doesn't exist
@@ -24,12 +24,12 @@ $largeFiles = @(
 foreach ($file in $largeFiles) {
     $sourcePath = Join-Path $repoPath $file
     $backupPath = Join-Path $backupDir (Split-Path $file -Leaf)
-    
+
     if (Test-Path $sourcePath) {
         # Backup the file
         Copy-Item -Path $sourcePath -Destination $backupPath -Force
         Write-Host "Backed up $file to $backupPath"
-        
+
         # Remove the file from git tracking
         git rm --cached $sourcePath
         Write-Host "Removed $file from git tracking"

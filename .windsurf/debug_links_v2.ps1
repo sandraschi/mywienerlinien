@@ -3,7 +3,7 @@
 
 $ErrorActionPreference = "Stop"
 
-$docsRoot = "d:\Dev\repos\mywienerlinien\.windsurf\docs"
+$docsRoot = "d:\Dev\repos\publictransport-mcp\.windsurf\docs"
 # Corrected Regex:
 # \[          - matches the literal [
 # ([^\]]+)   - captures one or more characters that are not a ]
@@ -13,7 +13,7 @@ $docsRoot = "d:\Dev\repos\mywienerlinien\.windsurf\docs"
 # \)          - matches the literal )
 $linkRegex = "\[([^\]]+)\]\(([^)]+)\)"
 
-$testFile = "d:\Dev\repos\mywienerlinien\.windsurf\docs\ai\persons\demis_hassabis.md"
+$testFile = "d:\Dev\repos\publictransport-mcp\.windsurf\docs\ai\persons\demis_hassabis.md"
 
 Write-Host "--- STARTING DIAGNOSTIC RUN ---"
 Write-Host "Analyzing file: $testFile"
@@ -46,17 +46,17 @@ foreach ($match in $matches) {
     # Check if it's a relative link to a markdown file that needs fixing
     if ($linkTarget.EndsWith('.md') -and !$linkTarget.StartsWith('http') -and !$linkTarget.StartsWith('/')) {
         Write-Host "  - Verdict: Is a relative MD file. Proceeding with analysis."
-        
+
         $containingDir = Split-Path -Path $testFile -Parent
         $path_to_resolve = Join-Path -Path $containingDir -ChildPath $linkTarget
-        
+
         Write-Host "  - Path to resolve: '$path_to_resolve'"
 
         $absoluteTargetPath = $null
         if (Test-Path $path_to_resolve) {
             $absoluteTargetPath = (Resolve-Path -Path $path_to_resolve).Path
             Write-Host "  - Resolved absolute path: '$absoluteTargetPath'"
-            
+
             $newRelativePath = $absoluteTargetPath.Replace($docsRoot, '').Replace('\', '/')
             if ($newRelativePath.StartsWith('/')) {
                 $newRelativePath = $newRelativePath.Substring(1)

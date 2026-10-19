@@ -1,7 +1,7 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
   "maintainers": ["sandraschi"],
-  "name": "mywienerlinien",
+  "name": "publictransport-mcp",
   "description": "FastMCP 3.4 server for Vienna public transport: live departures, journey planning, disruptions, timetables, and nearby stops, plus a live web dashboard.",
   "type": "mcp_server",
   "status": "beta",

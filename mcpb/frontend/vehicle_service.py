@@ -49,7 +49,7 @@ def fetch_vehicle_data(rbl_number: str) -> dict[str, Any] | None:
         url = "https://www.wienerlinien.at/ogd_realtime/monitor"
         params = {
             "rbl": rbl_number,
-            "sender": "mywienerlinien.live-map@example.com",
+            "sender": "publictransport-mcp.live-map@example.com",
         }
         response = requests.get(url, params=params, timeout=10)
         response.raise_for_status()
@@ -118,9 +118,7 @@ def collect_vehicle_data(
             age = VEHICLE_CACHE_TTL + 1
 
         if age > VEHICLE_CACHE_TTL:
-            raw_snapshot = _refresh_vehicle_snapshot(
-                station, set(normalized_lines) if normalized_lines else None
-            )
+            raw_snapshot = _refresh_vehicle_snapshot(station, set(normalized_lines) if normalized_lines else None)
             _vehicle_snapshot_cache[cache_key] = raw_snapshot
         else:
             raw_snapshot = snapshot  # type: ignore[assignment]
@@ -129,16 +127,12 @@ def collect_vehicle_data(
 
     if vehicle_type and vehicle_type != "all":
         vehicle_type_normalized = vehicle_type.lower()
-        vehicles = [
-            vehicle for vehicle in vehicles if vehicle["type"].lower() == vehicle_type_normalized
-        ]
+        vehicles = [vehicle for vehicle in vehicles if vehicle["type"].lower() == vehicle_type_normalized]
 
     line_filters: set[str] = set(normalized_lines)
 
     if line_filters:
-        vehicles = [
-            vehicle for vehicle in vehicles if vehicle.get("line", "").upper() in line_filters
-        ]
+        vehicles = [vehicle for vehicle in vehicles if vehicle.get("line", "").upper() in line_filters]
 
     logger.info(
         "Vehicle snapshot filtered",
@@ -287,11 +281,7 @@ def _refresh_vehicle_snapshot(station: str | None, line_filters: set[str] | None
                         if not vehicle_info:
                             continue
                         departure_time = departure.get("departureTime", {})
-                        coordinates = (
-                            monitor.get("locationStop", {})
-                            .get("geometry", {})
-                            .get("coordinates", [0, 0])
-                        )
+                        coordinates = monitor.get("locationStop", {}).get("geometry", {}).get("coordinates", [0, 0])
                         properties = monitor.get("locationStop", {}).get("properties", {})
                         vehicle_entry = {
                             "id": f"{line_name}_{rbl}_{len(vehicles)}",

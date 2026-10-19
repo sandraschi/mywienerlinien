@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from fastmcp import Client
-
 from mcp_server.prompts import register_prompts
 
 

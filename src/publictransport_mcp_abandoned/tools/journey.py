@@ -13,8 +13,8 @@ _frontend_path = _project_root / "frontend"
 if str(_frontend_path) not in sys.path:
     sys.path.insert(0, str(_frontend_path))
 
-from wienerlinien_mcp.models.journey import JourneyPlan
-from wienerlinien_mcp.utils import find_station_by_name
+from publictransport_mcp.models.journey import JourneyPlan
+from publictransport_mcp.utils import find_station_by_name
 
 logger = logging.getLogger(__name__)
 

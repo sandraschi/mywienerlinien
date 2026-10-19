@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from fastmcp import Client
 
-from wienerlinien_mcp.server import mcp
+from publictransport_mcp.server import mcp
 
 
 async def main() -> None:

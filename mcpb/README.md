@@ -4,7 +4,7 @@ FastMCP 2.13 compliant MCP server package for Vienna public transport informatio
 
 ## Package Information
 
-- **Name**: vienna-transit-mcp
+- **Name**: publictransport-mcp
 - **Version**: 1.0.0
 - **Platforms**: Windows, macOS, Linux
 - **Python**: >=3.9
@@ -34,14 +34,17 @@ FastMCP 2.13 compliant MCP server package for Vienna public transport informatio
 
 1. Extract the package to a directory
 2. Install dependencies:
+
    ```bash
    pip install -r requirements.txt
    ```
+
 3. Configure in Claude Desktop `claude_desktop_config.json`:
+
    ```json
    {
      "mcpServers": {
-       "vienna-transit": {
+       "publictransport": {
          "command": "python",
          "args": ["-m", "frontend.mcp_server.server"],
          "cwd": "/path/to/extracted/package"
@@ -62,35 +65,43 @@ Configure via Claude Desktop settings panel:
 ## Available Tools
 
 ### 1. `next_departures`
+
 Get next departures from a Vienna transit station.
 
 **Parameters:**
+
 - `station` (str): Station name (e.g., "Stephansplatz")
 - `max_results` (int, optional): Maximum departures (1-10, default: 5)
 
 **Returns:** List of departures with line, destination, time, delay
 
 ### 2. `station_search`
+
 Find Vienna transit stations by name.
 
 **Parameters:**
+
 - `query` (str): Search query (partial match supported)
 - `limit` (int, optional): Maximum results (1-20, default: 10)
 
 **Returns:** List of matching stations
 
 ### 3. `line_status`
+
 Check Vienna transit service status and disruptions.
 
 **Parameters:**
+
 - `line_name` (str, optional): Line filter (e.g., "U1", "D")
 
 **Returns:** List of service status entries
 
 ### 4. `journey_planner`
+
 Plan optimal journey between Vienna stations.
 
 **Parameters:**
+
 - `from_station` (str): Origin station
 - `to_station` (str): Destination station
 - `departure_time` (str, optional): ISO format timestamp
@@ -105,38 +116,38 @@ Plan optimal journey between Vienna stations.
 
 ## Available Resources
 
-1. **vienna-transit://network/overview**: Network structure overview
-2. **vienna-transit://stations/major**: Major stations list
-3. **vienna-transit://lines/metro**: Metro line information
-4. **vienna-transit://operating-hours**: Operating hours
-5. **vienna-transit://fares**: Fare information
+1. **publictransport://network/overview**: Network structure overview
+2. **publictransport://stations/major**: Major stations list
+3. **publictransport://lines/metro**: Metro line information
+4. **publictransport://operating-hours**: Operating hours
+5. **publictransport://fares**: Fare information
 
 ## Usage Examples
 
 ### Checking Departures
 
-```
+```text
 User: "When is the next U-Bahn from Stephansplatz?"
 Claude: [Uses next_departures tool]
 ```
 
 ### Finding Stations
 
-```
+```text
 User: "Where is the station for Hauptbahnhof?"
 Claude: [Uses station_search tool]
 ```
 
 ### Journey Planning
 
-```
+```text
 User: "How do I get from Stephansplatz to Prater?"
 Claude: [Uses journey_planner tool]
 ```
 
 ### Service Status
 
-```
+```text
 User: "Is the U1 line running normally?"
 Claude: [Uses line_status tool]
 ```
@@ -162,6 +173,6 @@ MIT License - See main project LICENSE file
 ## Data Source
 
 Data provided by Wiener Linien Open Data API:
-- https://www.wienerlinien.at/open-data
-- License: Creative Commons Attribution 4.0 International (CC BY 4.0)
 
+- <https://www.wienerlinien.at/open-data>
+- License: Creative Commons Attribution 4.0 International (CC BY 4.0)

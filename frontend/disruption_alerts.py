@@ -61,17 +61,17 @@ class DisruptionAlert:
     status: DisruptionStatus
     title: str
     description: str
-    affected_stations: List[str]
-    affected_lines: List[str]
+    affected_stations: list[str]
+    affected_lines: list[str]
     start_time: datetime
-    end_time: Optional[datetime]
-    estimated_duration: Optional[timedelta]
+    end_time: datetime | None
+    estimated_duration: timedelta | None
     created_at: datetime
     updated_at: datetime
     source: str
-    external_id: Optional[str] = None
-    url: Optional[str] = None
-    contact_info: Optional[str] = None
+    external_id: str | None = None
+    url: str | None = None
+    contact_info: str | None = None
 
 
 class DisruptionMonitor:
@@ -79,8 +79,8 @@ class DisruptionMonitor:
 
     def __init__(self):
         """Initialize the disruption monitor."""
-        self.disruptions: Dict[str, DisruptionAlert] = {}
-        self.subscribers: List[callable] = []
+        self.disruptions: dict[str, DisruptionAlert] = {}
+        self.subscribers: list[callable] = []
         self.running = False
         self.monitor_thread = None
         self.last_check = None
@@ -146,7 +146,7 @@ class DisruptionMonitor:
         except Exception as e:
             logger.error(f"Error checking disruptions: {e}")
 
-    def _fetch_traffic_info(self) -> Optional[Dict[str, Any]]:
+    def _fetch_traffic_info(self) -> dict[str, Any] | None:
         """Fetch traffic information from the API."""
         try:
             url = f"{self.api_base_url}/trafficInfoList"
@@ -160,7 +160,7 @@ class DisruptionMonitor:
             logger.error(f"Error processing traffic info: {e}")
             return None
 
-    def _fetch_news(self) -> Optional[Dict[str, Any]]:
+    def _fetch_news(self) -> dict[str, Any] | None:
         """Fetch news and announcements from the API."""
         try:
             url = f"{self.api_base_url}/newsList"
@@ -174,7 +174,7 @@ class DisruptionMonitor:
             logger.error(f"Error processing news: {e}")
             return None
 
-    def _process_traffic_info(self, traffic_info: Dict[str, Any]):
+    def _process_traffic_info(self, traffic_info: dict[str, Any]):
         """Process traffic information and extract disruptions."""
         try:
             if "data" in traffic_info and "trafficInfos" in traffic_info["data"]:
@@ -183,7 +183,7 @@ class DisruptionMonitor:
         except Exception as e:
             logger.error(f"Error processing traffic info: {e}")
 
-    def _process_news_info(self, news_info: Dict[str, Any]):
+    def _process_news_info(self, news_info: dict[str, Any]):
         """Process news information and extract disruptions."""
         try:
             if "data" in news_info and "news" in news_info["data"]:
@@ -193,7 +193,7 @@ class DisruptionMonitor:
             logger.error(f"Error processing news info: {e}")
 
     @staticmethod
-    def _parse_api_datetime(value: Any) -> Optional[datetime]:
+    def _parse_api_datetime(value: Any) -> datetime | None:
         """Tolerant datetime parsing for the OGD API (ISO or 'DD.MM.YYYY HH:MM').
 
         Returns a naive datetime in the local (container) time so it compares
@@ -202,7 +202,7 @@ class DisruptionMonitor:
         if not value:
             return None
         text = str(value).strip().replace("Z", "+00:00")
-        parsed: Optional[datetime] = None
+        parsed: datetime | None = None
         try:
             parsed = datetime.fromisoformat(text)
         except ValueError:
@@ -220,7 +220,7 @@ class DisruptionMonitor:
             parsed = parsed.astimezone().replace(tzinfo=None)
         return parsed
 
-    def _create_disruption_from_traffic_info(self, info: Dict[str, Any]):
+    def _create_disruption_from_traffic_info(self, info: dict[str, Any]):
         """Create a disruption alert from traffic information (OGD V1.4 shape)."""
         try:
             # V1.4 trafficInfos identify items by `name` (e.g. 'ftazS_488').
@@ -237,11 +237,7 @@ class DisruptionMonitor:
                 for ref in (refs.get("lines") or [])
                 if ref.get("name") or ref.get("shortName")
             ]
-            stops = [
-                ref.get("name") or ""
-                for ref in (refs.get("stops") or [])
-                if ref.get("name")
-            ]
+            stops = [ref.get("name") or "" for ref in (refs.get("stops") or []) if ref.get("name")]
             time_info = info.get("time") or {}
             start_time = self._parse_api_datetime(time_info.get("start"))
             end_time = self._parse_api_datetime(time_info.get("end"))
@@ -275,7 +271,7 @@ class DisruptionMonitor:
         except Exception as e:
             logger.error(f"Error creating disruption from traffic info: {e}")
 
-    def _create_disruption_from_news(self, news: Dict[str, Any]):
+    def _create_disruption_from_news(self, news: dict[str, Any]):
         """Create a disruption alert from news information."""
         try:
             # Check if news is related to disruptions
@@ -299,9 +295,7 @@ class DisruptionMonitor:
                 description=news.get("content", ""),
                 affected_stations=news.get("affectedStations", []),
                 affected_lines=news.get("affectedLines", []),
-                start_time=datetime.fromisoformat(
-                    news.get("publishedAt", datetime.now().isoformat())
-                ),
+                start_time=datetime.fromisoformat(news.get("publishedAt", datetime.now().isoformat())),
                 end_time=None,
                 estimated_duration=None,
                 created_at=datetime.now(),
@@ -319,7 +313,7 @@ class DisruptionMonitor:
         except Exception as e:
             logger.error(f"Error creating disruption from news: {e}")
 
-    def _update_existing_disruption(self, disruption_id: str, info: Dict[str, Any]):
+    def _update_existing_disruption(self, disruption_id: str, info: dict[str, Any]):
         """Update an existing disruption with new information."""
         try:
             if disruption_id in self.disruptions:
@@ -338,23 +332,18 @@ class DisruptionMonitor:
         except Exception as e:
             logger.error(f"Error updating existing disruption: {e}")
 
-    def _determine_disruption_type(self, info: Dict[str, Any]) -> DisruptionType:
+    def _determine_disruption_type(self, info: dict[str, Any]) -> DisruptionType:
         """Determine the type of disruption from the information."""
         description = info.get("description", "").lower()
         title = info.get("title", "").lower()
 
         if any(word in description or word in title for word in ["delay", "verspätung"]):
             return DisruptionType.DELAY
-        elif any(
-            word in description or word in title
-            for word in ["cancellation", "cancelled", "storniert"]
-        ):
+        elif any(word in description or word in title for word in ["cancellation", "cancelled", "storniert"]):
             return DisruptionType.CANCELLATION
         elif any(word in description or word in title for word in ["detour", "umleitung"]):
             return DisruptionType.DETOUR
-        elif any(
-            word in description or word in title for word in ["closure", "closed", "geschlossen"]
-        ):
+        elif any(word in description or word in title for word in ["closure", "closed", "geschlossen"]):
             return DisruptionType.CLOSURE
         elif any(word in description or word in title for word in ["technical", "technisch"]):
             return DisruptionType.TECHNICAL
@@ -367,30 +356,22 @@ class DisruptionMonitor:
         else:
             return DisruptionType.OTHER
 
-    def _determine_severity(self, info: Dict[str, Any]) -> DisruptionSeverity:
+    def _determine_severity(self, info: dict[str, Any]) -> DisruptionSeverity:
         """Determine the severity of a disruption."""
         description = info.get("description", "").lower()
         title = info.get("title", "").lower()
 
         # Check for severity indicators in text
-        if any(
-            word in description or word in title
-            for word in ["critical", "kritisch", "severe", "schwer"]
-        ):
+        if any(word in description or word in title for word in ["critical", "kritisch", "severe", "schwer"]):
             return DisruptionSeverity.CRITICAL
-        elif any(
-            word in description or word in title
-            for word in ["major", "groß", "significant", "erheblich"]
-        ):
+        elif any(word in description or word in title for word in ["major", "groß", "significant", "erheblich"]):
             return DisruptionSeverity.HIGH
-        elif any(
-            word in description or word in title for word in ["minor", "klein", "slight", "leicht"]
-        ):
+        elif any(word in description or word in title for word in ["minor", "klein", "slight", "leicht"]):
             return DisruptionSeverity.LOW
         else:
             return DisruptionSeverity.MEDIUM
 
-    def _determine_status(self, info: Dict[str, Any]) -> DisruptionStatus:
+    def _determine_status(self, info: dict[str, Any]) -> DisruptionStatus:
         """Determine the status of a disruption."""
         status = info.get("status", "").lower()
 
@@ -403,7 +384,7 @@ class DisruptionMonitor:
         else:
             return DisruptionStatus.ACTIVE
 
-    def _is_disruption_news(self, news: Dict[str, Any]) -> bool:
+    def _is_disruption_news(self, news: dict[str, Any]) -> bool:
         """Check if news is related to disruptions."""
         content = news.get("content", "").lower()
         title = news.get("title", "").lower()
@@ -425,7 +406,7 @@ class DisruptionMonitor:
 
         return any(keyword in content or keyword in title for keyword in disruption_keywords)
 
-    def _parse_duration(self, duration_str: Optional[str]) -> Optional[timedelta]:
+    def _parse_duration(self, duration_str: str | None) -> timedelta | None:
         """Parse duration string into timedelta."""
         if not duration_str:
             return None
@@ -457,10 +438,7 @@ class DisruptionMonitor:
             to_remove = []
 
             for disruption_id, disruption in self.disruptions.items():
-                if (
-                    disruption.status == DisruptionStatus.RESOLVED
-                    and disruption.updated_at < cutoff_time
-                ):
+                if disruption.status == DisruptionStatus.RESOLVED and disruption.updated_at < cutoff_time:
                     to_remove.append(disruption_id)
 
             for disruption_id in to_remove:
@@ -506,27 +484,27 @@ class DisruptionMonitor:
         if callback in self.subscribers:
             self.subscribers.remove(callback)
 
-    def get_active_disruptions(self) -> List[DisruptionAlert]:
+    def get_active_disruptions(self) -> list[DisruptionAlert]:
         """Get all active disruptions."""
         return [d for d in self.disruptions.values() if d.status == DisruptionStatus.ACTIVE]
 
-    def get_disruptions_by_line(self, line: str) -> List[DisruptionAlert]:
+    def get_disruptions_by_line(self, line: str) -> list[DisruptionAlert]:
         """Get disruptions affecting a specific line."""
         return [d for d in self.disruptions.values() if line in d.affected_lines or line == d.line]
 
-    def get_disruptions_by_station(self, station: str) -> List[DisruptionAlert]:
+    def get_disruptions_by_station(self, station: str) -> list[DisruptionAlert]:
         """Get disruptions affecting a specific station."""
         return [d for d in self.disruptions.values() if station in d.affected_stations]
 
-    def get_disruptions_by_severity(self, severity: DisruptionSeverity) -> List[DisruptionAlert]:
+    def get_disruptions_by_severity(self, severity: DisruptionSeverity) -> list[DisruptionAlert]:
         """Get disruptions of a specific severity."""
         return [d for d in self.disruptions.values() if d.severity == severity]
 
-    def get_disruption_by_id(self, disruption_id: str) -> Optional[DisruptionAlert]:
+    def get_disruption_by_id(self, disruption_id: str) -> DisruptionAlert | None:
         """Get a specific disruption by ID."""
         return self.disruptions.get(disruption_id)
 
-    def get_disruption_summary(self) -> Dict[str, Any]:
+    def get_disruption_summary(self) -> dict[str, Any]:
         """Get a summary of current disruptions."""
         active_disruptions = self.get_active_disruptions()
 
@@ -537,14 +515,13 @@ class DisruptionMonitor:
                 for severity in DisruptionSeverity
             },
             "by_type": {
-                dtype.value: len([d for d in active_disruptions if d.type == dtype])
-                for dtype in DisruptionType
+                dtype.value: len([d for d in active_disruptions if d.type == dtype]) for dtype in DisruptionType
             },
             "most_affected_lines": self._get_most_affected_lines(active_disruptions),
             "last_updated": datetime.now().isoformat(),
         }
 
-    def _get_most_affected_lines(self, disruptions: List[DisruptionAlert]) -> List[str]:
+    def _get_most_affected_lines(self, disruptions: list[DisruptionAlert]) -> list[str]:
         """Get the most affected lines."""
         line_counts = {}
         for disruption in disruptions:

@@ -14,7 +14,7 @@ if str(_frontend_path) not in sys.path:
 
 from data_loader import data_loader
 
-from wienerlinien_mcp.models.stations import Station, StationSearchResponse
+from publictransport_mcp.models.stations import Station, StationSearchResponse
 
 logger = logging.getLogger(__name__)
 

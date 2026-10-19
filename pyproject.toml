@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "vienna-transit-mcp"
+name = "publictransport-mcp"
 version = "1.1.0"
 description = "Vienna Transit MCP Server - FastMCP 3.1.0x compliant MCP server for Vienna public transport information"
 readme = "README.md"
@@ -59,11 +59,11 @@ dev = [
 ]
 
 [project.scripts]
-vienna-transit-mcp = "wienerlinien_mcp.server:mcp.run"
+publictransport-mcp = "publictransport_mcp.server:mcp.run"
 
 [tool.setuptools]
 package-dir = {"" = "src", "frontend" = "frontend"}
-packages = ["wienerlinien_mcp", "wienerlinien_mcp.tools", "wienerlinien_mcp.models", "wienerlinien_mcp.middleware"]
+packages = ["publictransport_mcp", "publictransport_mcp.tools", "publictransport_mcp.models", "publictransport_mcp.middleware"]
 
 [tool.setuptools.package-data]
 "*" = ["*.md", "*.txt", "*.json"]
@@ -100,6 +100,10 @@ ignore = ["S104", "S310", "S311", "S314", "S608", "S108", "S603", "S301", "S103"
 "tests/**" = ["T20"]
 "test_*/**" = ["T20"]
 "mcpb/**" = ["T20"]
+# Ad-hoc dev scripts with print-as-output (not core handlers)
+"frontend/test_*.py" = ["T20"]
+"frontend/find_*.py" = ["T20"]
+".windsurf/**" = ["T20"]
 
 [tool.ruff.format]
 quote-style = "double"

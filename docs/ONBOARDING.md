@@ -1,9 +1,9 @@
-# Onboarding - mywienerlinien
+# Onboarding - publictransport-mcp
 
 ## What this is for
 
 Vienna public transport in two places: a live map + departures dashboard and
-a Claude Desktop MCP server (`vienna-transit`, 12 tools) that answers
+a Claude Desktop MCP server (`publictransport`, 12 tools) that answers
 natural-language transit questions. It plans GTFS-based journeys with A*
 pathfinding, shows real-time departures per stop, and surfaces Wiener Linien
 disruptions. It does not show live GPS vehicle positions, because Wiener
@@ -36,8 +36,8 @@ Linien publishes none; map markers are schedule-interpolated between stops.
 1. Clone and enter the repo:
 
    ```powershell
-   git clone https://github.com/sandraschi/mywienerlinien
-   cd mywienerlinien
+   git clone https://github.com/sandraschi/publictransport-mcp
+   cd publictransport-mcp
    ```
 
 2. Copy the env template and check the ports:
@@ -67,9 +67,9 @@ Linien publishes none; map markers are schedule-interpolated between stops.
    ```
 
 6. Optional native hot-reload dashboard: `.\run_dev.ps1` (port 3080).
-7. Optional MCP in Claude Desktop: add server `vienna-transit` with command
-   `uv`, args `--directory D:/Dev/repos/mywienerlinien run vienna-transit-mcp`,
-   env `APP_DB_PATH=D:/Dev/repos/mywienerlinien/data/app.db` (+ optional
+7. Optional MCP in Claude Desktop: add server `publictransport` with command
+   `uv`, args `--directory D:/Dev/repos/publictransport-mcp run publictransport-mcp`,
+   env `APP_DB_PATH=D:/Dev/repos/publictransport-mcp/data/app.db` (+ optional
    `GTFS_SNAPSHOT_PATH` pointing at the gtfs-mcp snapshot for schedule tools).
    See `INSTALL.md` for the JSON snippet.
 
@@ -82,7 +82,7 @@ Linien publishes none; map markers are schedule-interpolated between stops.
   `volumes: ./...` entries to fix a path problem; you will re-trigger the bug.
 - MCP server runs natively, not in Docker: stdio transport needs direct
   process communication. Do not `dockerize` the MCP entry; run
-  `uv run vienna-transit-mcp` on the host with `APP_DB_PATH` pointed at the
+  `uv run publictransport-mcp` on the host with `APP_DB_PATH` pointed at the
   repo `data/` dir (default already does this).
 - GTFS data comes from the snapshot file, not an import: a missing/empty map
   means `GTFS_SNAPSHOT_PATH` resolves nowhere (see step 4). An interrupted
@@ -104,7 +104,7 @@ Linien publishes none; map markers are schedule-interpolated between stops.
   ```
 
 - Status with version and uptime: `GET 127.0.0.1:11170/api/status` returns
-  `service: mywienerlinien-webapi`, `version: 2.0.1`.
+  `service: publictransport-mcp-webapi`, `version: 2.0.1`.
 - Map loads natively at `http://localhost:10722/` (`just map` or
   `.\start-map.ps1`; needs the gtfs-mcp snapshot, step 4)
   with departures visible for a known stop (e.g. Stephansplatz).

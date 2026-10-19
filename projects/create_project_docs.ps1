@@ -1,7 +1,7 @@
 # create_project_docs.ps1 - Script to generate consistent documentation for all projects
 
 # Base directory for project documentation
-$docsBase = "d:\Dev\repos\mywienerlinien\.windsurf\docs\7_projects"
+$docsBase = "d:\Dev\repos\publictransport-mcp\.windsurf\docs\7_projects"
 
 # Project configurations
 $projects = @{
@@ -32,14 +32,14 @@ foreach ($project in $projects.GetEnumerator()) {
     $projectName = $project.Key
     $projectConfig = $project.Value
     $projectDir = Join-Path $docsBase $projectName
-    
+
     Write-Host "Creating documentation for: $projectName" -ForegroundColor Cyan
-    
+
     # Ensure project directory exists
     if (-not (Test-Path $projectDir)) {
         New-Item -ItemType Directory -Path $projectDir -Force | Out-Null
     }
-    
+
     # Create/Update PRD.md
     $prdContent = @"
 # $projectName - Product Requirements Document (PRD)
@@ -83,7 +83,7 @@ $($projectConfig.repo)
 "@
 
     $prdContent | Out-File -FilePath (Join-Path $projectDir "PRD.md") -Encoding utf8 -Force
-    
+
     # Create/Update README.md
     $readmeContent = @"
 # $projectName

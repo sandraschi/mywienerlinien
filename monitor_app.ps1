@@ -1,5 +1,5 @@
 # Continuous App Monitor - Updates file every 5 seconds
-$output = "D:\Dev\repos\mywienerlinien\monitor_output.txt"
+$output = "D:\Dev\repos\publictransport-mcp\monitor_output.txt"
 
 Write-Host "🔄 Monitoring MyWienerLinien... (Ctrl+C to stop)" -ForegroundColor Cyan
 Write-Host "Output: monitor_output.txt" -ForegroundColor Yellow
@@ -9,7 +9,7 @@ while ($true) {
     "Monitor Update - $(Get-Date -Format 'HH:mm:ss')" | Out-File $output -Append
     "=====================================" | Out-File $output -Append
     "" | Out-File $output -Append
-    
+
     # Quick endpoint test
     "Endpoint Status:" | Out-File $output -Append
     try {
@@ -20,11 +20,10 @@ while ($true) {
         "❌ App not responding: $($_.Exception.Message)" | Out-File $output -Append
     }
     "" | Out-File $output -Append
-    
+
     # Frontend logs (last 5 lines)
     "Latest Frontend Logs:" | Out-File $output -Append
     docker logs wienerlinien-frontend --tail 5 2>&1 | Out-File $output -Append
-    
+
     Start-Sleep -Seconds 5
 }
-

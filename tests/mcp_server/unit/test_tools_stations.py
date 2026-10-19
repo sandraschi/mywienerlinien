@@ -18,9 +18,7 @@ def _fix_fixture_names(mock_data_loader):
     TypeError). Assign real strings here; conftest.py is out of scope.
     """
     stations = mock_data_loader.load_stations()
-    for station, real_name in zip(
-        stations, ("Stephansplatz", "Hauptbahnhof", "Schwedenplatz")
-    ):
+    for station, real_name in zip(stations, ("Stephansplatz", "Hauptbahnhof", "Schwedenplatz"), strict=False):
         station.name = real_name
     return stations
 
@@ -43,9 +41,7 @@ async def test_station_search_success(mock_data_loader):
 
     with patch("mcp_server.tools.stations.data_loader", mock_data_loader):
         async with Client(test_mcp) as client:
-            result = await client.call_tool(
-                "station_search", {"query": "Stephans", "limit": 10}
-            )
+            result = await client.call_tool("station_search", {"query": "Stephans", "limit": 10})
             data = result.structured_content
 
             assert data["query"] == "Stephans"
@@ -67,9 +63,7 @@ async def test_station_search_no_results(mock_data_loader):
 
     with patch("mcp_server.tools.stations.data_loader", mock_data_loader):
         async with Client(test_mcp) as client:
-            result = await client.call_tool(
-                "station_search", {"query": "NonExistent", "limit": 10}
-            )
+            result = await client.call_tool("station_search", {"query": "NonExistent", "limit": 10})
             data = result.structured_content
 
             assert data["count"] == 0
@@ -90,9 +84,7 @@ async def test_station_search_limit_enforcement(mock_data_loader):
 
     with patch("mcp_server.tools.stations.data_loader", mock_data_loader):
         async with Client(test_mcp) as client:
-            result = await client.call_tool(
-                "station_search", {"query": "Station", "limit": 5}
-            )
+            result = await client.call_tool("station_search", {"query": "Station", "limit": 5})
             data = result.structured_content
 
             assert len(data["results"]) <= 5
@@ -111,25 +103,13 @@ async def test_station_search_case_insensitive(mock_data_loader):
     with patch("mcp_server.tools.stations.data_loader", mock_data_loader):
         async with Client(test_mcp) as client:
             # Execute with different cases
-            result_lower = await client.call_tool(
-                "station_search", {"query": "stephans", "limit": 10}
-            )
-            result_upper = await client.call_tool(
-                "station_search", {"query": "STEPHANS", "limit": 10}
-            )
-            result_mixed = await client.call_tool(
-                "station_search", {"query": "StEpHaNs", "limit": 10}
-            )
+            result_lower = await client.call_tool("station_search", {"query": "stephans", "limit": 10})
+            result_upper = await client.call_tool("station_search", {"query": "STEPHANS", "limit": 10})
+            result_mixed = await client.call_tool("station_search", {"query": "StEpHaNs", "limit": 10})
 
             # Assert - All should return same results
-            assert (
-                result_lower.structured_content["count"]
-                == result_upper.structured_content["count"]
-            )
-            assert (
-                result_upper.structured_content["count"]
-                == result_mixed.structured_content["count"]
-            )
+            assert result_lower.structured_content["count"] == result_upper.structured_content["count"]
+            assert result_upper.structured_content["count"] == result_mixed.structured_content["count"]
 
 
 @pytest.mark.asyncio
@@ -143,9 +123,7 @@ async def test_station_search_partial_match(mock_data_loader):
 
     with patch("mcp_server.tools.stations.data_loader", mock_data_loader):
         async with Client(test_mcp) as client:
-            result = await client.call_tool(
-                "station_search", {"query": "Haupt", "limit": 10}
-            )
+            result = await client.call_tool("station_search", {"query": "Haupt", "limit": 10})
             data = result.structured_content
 
             assert data["count"] > 0
@@ -169,9 +147,7 @@ async def test_station_search_exact_match_priority(mock_data_loader):
 
     with patch("mcp_server.tools.stations.data_loader", mock_data_loader):
         async with Client(test_mcp) as client:
-            result = await client.call_tool(
-                "station_search", {"query": "Stephansplatz", "limit": 10}
-            )
+            result = await client.call_tool("station_search", {"query": "Stephansplatz", "limit": 10})
             data = result.structured_content
 
             # Exact match should be first
@@ -190,15 +166,11 @@ async def test_station_search_limit_validation(mock_data_loader):
     with patch("mcp_server.tools.stations.data_loader", mock_data_loader):
         async with Client(test_mcp) as client:
             # Test limit at max boundary - should be accepted
-            result = await client.call_tool(
-                "station_search", {"query": "Station", "limit": 20}
-            )
+            result = await client.call_tool("station_search", {"query": "Station", "limit": 20})
             assert len(result.structured_content["results"]) <= 20  # Max limit
 
             # Test limit at min boundary - should be accepted
-            result = await client.call_tool(
-                "station_search", {"query": "Station", "limit": 1}
-            )
+            result = await client.call_tool("station_search", {"query": "Station", "limit": 1})
             assert len(result.structured_content["results"]) >= 0  # Min limit
 
 
@@ -216,6 +188,4 @@ async def test_station_search_error_handling():
     with patch("mcp_server.tools.stations.data_loader", mock_data_loader):
         async with Client(test_mcp) as client:
             with pytest.raises(ToolError, match="Failed to search"):
-                await client.call_tool(
-                    "station_search", {"query": "Stephans", "limit": 10}
-                )
+                await client.call_tool("station_search", {"query": "Stephans", "limit": 10})

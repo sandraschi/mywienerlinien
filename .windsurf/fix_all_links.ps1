@@ -1,6 +1,6 @@
 # Script to fix all markdown links in the documentation
-$docsRoot = "d:\\Dev\\repos\\mywienerlinien\\.windsurf\\docs"
-$logFile = "d:\\Dev\\repos\\mywienerlinien\\.windsurf\\logs\\link_fix_summary_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
+$docsRoot = "d:\\Dev\\repos\\publictransport-mcp\\.windsurf\\docs"
+$logFile = "d:\\Dev\\repos\\publictransport-mcp\\.windsurf\\logs\\link_fix_summary_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
 $changedFiles = 0
 $totalLinksFixed = 0
 
@@ -15,20 +15,20 @@ function Process-MarkdownFile {
     param (
         [string]$filePath
     )
-    
+
     $content = Get-Content -Path $filePath -Raw
     $originalContent = $content
     $changesMade = 0
     $fileLog = @()
-    
+
     # Find all markdown links
     $matches = [regex]::Matches($content, '\[([^\]]+)\]\(((?!http|#)([^)]+)\.md)\)')
-    
+
     foreach ($match in $matches) {
         $fullMatch = $match.Groups[0].Value
         $linkText = $match.Groups[1].Value
         $linkTarget = $match.Groups[2].Value
-        
+
         # Skip if already has leading slash
         if ($linkTarget -notmatch '^/') {
             $newLink = "[$linkText](/$linkTarget)" -replace '\.md$', ''
@@ -38,7 +38,7 @@ function Process-MarkdownFile {
             $script:totalLinksFixed++
         }
     }
-    
+
     # Only write if changes were made
     if ($changesMade -gt 0) {
         # Create backup
@@ -46,10 +46,10 @@ function Process-MarkdownFile {
         if (-not (Test-Path $backupPath)) {
             Copy-Item -Path $filePath -Destination $backupPath -Force
         }
-        
+
         # Write changes
         $content | Out-File -FilePath $filePath -Encoding utf8 -NoNewline
-        
+
         $script:changedFiles++
         return @{
             Path = $filePath
@@ -57,7 +57,7 @@ function Process-MarkdownFile {
             Log = $fileLog
         }
     }
-    
+
     return $null
 }
 

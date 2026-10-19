@@ -1,7 +1,7 @@
 # Script to fix remaining broken links in README.md
 
 # Configuration
-$docsDir = "D:\Dev\repos\mywienerlinien\.windsurf\docs"
+$docsDir = "D:\Dev\repos\publictransport-mcp\.windsurf\docs"
 $readmePath = Join-Path -Path $docsDir -ChildPath "README.md"
 $backupPath = "$readmePath.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss').md"
 

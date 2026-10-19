@@ -9,7 +9,9 @@
 
 ## Overview
 
-The MyWienerLinien Public API provides programmatic access to Vienna (and Austrian) public transport data, including real-time departures, journey planning, ML delay predictions, and analytics.
+The MyWienerLinien Public API provides programmatic access to Vienna (and
+Austrian) public transport data, including real-time departures, journey
+planning, ML delay predictions, and analytics.
 
 ### Features
 
@@ -35,6 +37,7 @@ X-API-Key: your-api-key-here
 ### Getting an API Key
 
 **Development/Testing:**
+
 ```bash
 # Generate a test key (admin access required)
 curl -X POST http://localhost:3079/admin/api-keys \
@@ -43,7 +46,7 @@ curl -X POST http://localhost:3079/admin/api-keys \
 ```
 
 **Production:**
-Contact: admin@mywienerlinien.com (or self-service portal - TBD)
+Contact: <admin@publictransport-mcp.com> (or self-service portal - TBD)
 
 ---
 
@@ -54,6 +57,7 @@ Contact: admin@mywienerlinien.com (or self-service portal - TBD)
 - **Exceeded**: Returns 429 status with `Retry-After` header
 
 **Example Response Headers:**
+
 ```http
 X-RateLimit-Limit: 60
 X-RateLimit-Remaining: 45
@@ -66,16 +70,18 @@ X-RateLimit-Reset: 1638360000
 
 ### 1. API Information
 
-**GET /api/v1/**
+#### GET /api/v1/
 
 Get API information and available endpoints.
 
 **Request:**
+
 ```bash
 curl http://localhost:3079/api/v1/
 ```
 
 **Response:**
+
 ```json
 {
   "name": "Wiener Linien Live Map Public API",
@@ -97,21 +103,24 @@ curl http://localhost:3079/api/v1/
 
 ### 2. Real-time Departures
 
-**GET /api/v1/departures**
+#### GET /api/v1/departures
 
 Get next departures from a station.
 
 **Parameters:**
+
 - `station` (required): Station name
 - `limit` (optional): Maximum departures (1-10, default: 5)
 
 **Request:**
+
 ```bash
 curl "http://localhost:3079/api/v1/departures?station=Stephansplatz&limit=5" \
   -H "X-API-Key: your-api-key"
 ```
 
 **Response:**
+
 ```json
 {
   "station": "Stephansplatz",
@@ -135,21 +144,24 @@ curl "http://localhost:3079/api/v1/departures?station=Stephansplatz&limit=5" \
 
 ### 3. Station Search
 
-**GET /api/v1/stations**
+#### GET /api/v1/stations
 
 Search for stations by name.
 
 **Parameters:**
+
 - `query` (optional): Search query (partial match, returns all if None)
 - `limit` (optional): Maximum results (1-50, default: 10)
 
 **Request:**
+
 ```bash
 curl "http://localhost:3079/api/v1/stations?query=Stephans&limit=10" \
   -H "X-API-Key: your-api-key"
 ```
 
 **Response:**
+
 ```json
 {
   "stations": [
@@ -171,22 +183,25 @@ curl "http://localhost:3079/api/v1/stations?query=Stephans&limit=10" \
 
 ### 4. Journey Planning
 
-**GET /api/v1/journey**
+#### GET /api/v1/journey
 
 Plan journey between two stations with A* routing.
 
 **Parameters:**
+
 - `from_station` (required): Origin station name
 - `to_station` (required): Destination station name
 - `alternatives` (optional): Number of route options (1-5, default: 3)
 
 **Request:**
+
 ```bash
 curl "http://localhost:3079/api/v1/journey?from_station=Stephansplatz&to_station=Praterstern&alternatives=3" \
   -H "X-API-Key: your-api-key"
 ```
 
 **Response:**
+
 ```json
 {
   "routes": [
@@ -217,20 +232,23 @@ curl "http://localhost:3079/api/v1/journey?from_station=Stephansplatz&to_station
 
 ### 5. ML Delay Predictions
 
-**GET /api/v1/predictions/{line}**
+#### GET /api/v1/predictions/{line}
 
 Get machine learning delay prediction for a line.
 
 **Parameters:**
+
 - `line` (path): Line code (e.g., "U1", "U3")
 
 **Request:**
+
 ```bash
 curl "http://localhost:3079/api/v1/predictions/U1" \
   -H "X-API-Key: your-api-key"
 ```
 
 **Response:**
+
 ```json
 {
   "line": "U1",
@@ -246,6 +264,7 @@ curl "http://localhost:3079/api/v1/predictions/U1" \
 ## Error Responses
 
 ### 401 Unauthorized
+
 ```json
 {
   "detail": "API key required. Get your key at /api/v1/docs"
@@ -253,14 +272,17 @@ curl "http://localhost:3079/api/v1/predictions/U1" \
 ```
 
 ### 429 Rate Limit Exceeded
+
 ```json
 {
   "detail": "Rate limit exceeded. Try again in 45 seconds."
 }
 ```
+
 **Headers**: `Retry-After: 45`
 
 ### 404 Not Found
+
 ```json
 {
   "detail": "Station 'InvalidStation' not found"
@@ -268,6 +290,7 @@ curl "http://localhost:3079/api/v1/predictions/U1" \
 ```
 
 ### 500 Internal Server Error
+
 ```json
 {
   "detail": "Journey planning failed: [error details]"
@@ -291,9 +314,11 @@ Contact for higher limits.
 ## Best Practices
 
 ### 1. Cache Responses
+
 Cache station lists and static data locally. Only query real-time data (departures, predictions) frequently.
 
 ### 2. Handle Rate Limits
+
 ```python
 import time
 response = requests.get(url, headers=headers)
@@ -304,9 +329,11 @@ if response.status_code == 429:
 ```
 
 ### 3. Use Batch Requests
+
 When possible, fetch multiple stations/lines in one request.
 
 ### 4. Monitor Usage
+
 Track your API usage via dashboard (coming soon).
 
 ---
@@ -434,18 +461,23 @@ curl -X POST "http://localhost:3079/api/cities/graz/switch" \
 ## Use Cases
 
 ### 1. Transit App Integration
+
 Build a mobile/web app using real-time Vienna transit data.
 
 ### 2. Smart Home Integration
+
 "Alexa, when's the next U3 from Stephansplatz?"
 
 ### 3. Travel Planning Tools
+
 Integrate Austrian city transit into travel apps.
 
 ### 4. Research & Analytics
+
 Analyze transit patterns, delays, reliability.
 
 ### 5. IoT Displays
+
 Display upcoming departures on smart displays.
 
 ---
@@ -454,14 +486,15 @@ Display upcoming departures on smart displays.
 
 - **Documentation**: This file + `/api/v1/docs`
 - **Issues**: GitHub Issues
-- **Email**: admin@mywienerlinien.com (placeholder)
-- **Status**: https://status.mywienerlinien.com (future)
+- **Email**: <admin@publictransport-mcp.com> (placeholder)
+- **Status**: <https://status.publictransport-mcp.com> (future)
 
 ---
 
 ## Changelog
 
 ### v1.0.0 (2025-12-03) - Phase 4
+
 - Initial public API release
 - Real-time departures endpoint
 - Station search endpoint
@@ -488,6 +521,7 @@ Display upcoming departures on smart displays.
 ## Roadmap
 
 ### v1.1 (Q1 2025)
+
 - [ ] WebSocket real-time updates
 - [ ] Batch request endpoint
 - [ ] Historical data export API
@@ -495,6 +529,7 @@ Display upcoming departures on smart displays.
 - [ ] Swagger/OpenAPI 3.0 spec
 
 ### v1.2 (Q2 2025)
+
 - [ ] OAuth2 authentication
 - [ ] User dashboard
 - [ ] Usage analytics
@@ -504,4 +539,3 @@ Display upcoming departures on smart displays.
 ---
 
 **MyWienerLinien Public API** - Powered by GTFS, A*, and Machine Learning 🚀
-

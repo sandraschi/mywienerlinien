@@ -16,9 +16,10 @@ except ImportError:
 
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from data_loader import data_loader
-    from wienerlinien_mcp.models.departures import Departure, DepartureResponse
-    from wienerlinien_mcp.utils import find_station_by_name
     from vehicle_service import collect_vehicle_data
+
+    from publictransport_mcp.models.departures import Departure, DepartureResponse
+    from publictransport_mcp.utils import find_station_by_name
 
 logger = logging.getLogger(__name__)
 
@@ -89,8 +90,7 @@ def register_departures_tool(mcp: FastMCP) -> None:
                 suggestions = [
                     s.name
                     for s in stations
-                    if station.lower() in s.name.lower()
-                    or s.name.lower().startswith(station.lower()[:3])
+                    if station.lower() in s.name.lower() or s.name.lower().startswith(station.lower()[:3])
                 ][:5]
 
                 error_msg = f"Station '{station}' not found."
@@ -152,4 +152,4 @@ def register_departures_tool(mcp: FastMCP) -> None:
             raise
         except Exception as e:
             logger.error(f"Error fetching departures: {e}", exc_info=True)
-            raise RuntimeError(f"Failed to fetch departures: {str(e)}") from e
+            raise RuntimeError(f"Failed to fetch departures: {e!s}") from e

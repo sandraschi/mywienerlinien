@@ -13,7 +13,7 @@ class DummyStation:
     rbl: str
 
 
-def make_station_list(count: int = 5, base: int = 1000) -> List[DummyStation]:
+def make_station_list(count: int = 5, base: int = 1000) -> list[DummyStation]:
     """Create a list of dummy stations with four-digit RBL codes."""
 
     return [DummyStation(f"{base + index}") for index in range(count)]

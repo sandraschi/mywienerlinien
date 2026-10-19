@@ -12,9 +12,9 @@ use tauri::{AppHandle, Emitter, Manager};
 pub struct BackendProcess(pub Mutex<Option<Child>>);
 
 // -- PER-REPO: Customize these constants --
-const BACKEND_NAME: &str = "mywienerlinien-backend.exe";
+const BACKEND_NAME: &str = "publictransport-mcp-backend.exe";
 const BACKEND_PORT: u16 = 11170;
-const BACKEND_TAG: &str = "mywienerlinien-backend-x86_64-pc-windows-msvc.exe";
+const BACKEND_TAG: &str = "publictransport-mcp-backend-x86_64-pc-windows-msvc.exe";
 const ENV_PORT: &str = "MYWIENERLINIEN_PORT";
 const ENV_HOST: &str = "MYWIENERLINIEN_HOST";
 const ENV_TAURI: &str = "MYWIENERLINIEN_TAURI";
@@ -184,4 +184,3 @@ fn watch_backend_stream<R: std::io::Read + Send + 'static>(stream: R, app: AppHa
         }
     }
 }
-

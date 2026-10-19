@@ -1,8 +1,8 @@
 # Simple test script for broken link checking
 
 # Configuration
-$rootDir = "D:\Dev\repos\mywienerlinien\docs"
-$logsDir = "D:\Dev\repos\mywienerlinien\.windsurf\logs"
+$rootDir = "D:\Dev\repos\publictransport-mcp\docs"
+$logsDir = "D:\Dev\repos\publictransport-mcp\.windsurf\logs"
 $logFile = "test_fix_links_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
 $logPath = Join-Path -Path $logsDir -ChildPath $logFile
 
@@ -16,10 +16,10 @@ function Write-Log {
     param([string]$Message)
     $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
     $logMessage = "[$timestamp] $Message"
-    
+
     # Write to console
     Write-Host $logMessage -ForegroundColor Cyan
-    
+
     # Write to log file
     $logMessage | Out-File -FilePath $logPath -Append -Encoding utf8
 }
@@ -42,16 +42,16 @@ if (-not (Test-Path -Path $rootDir)) {
 try {
     $markdownFiles = Get-ChildItem -Path $rootDir -Filter '*.md' -Recurse -File -ErrorAction Stop
     $fileCount = $markdownFiles.Count
-    
+
     Write-Log "Found $fileCount markdown files in $rootDir"
-    
+
     if ($fileCount -gt 0) {
         Write-Log "First 5 files:"
         $markdownFiles | Select-Object -First 5 | ForEach-Object {
             Write-Log "  - $($_.FullName)"
         }
     }
-    
+
     Write-Log "Test script completed successfully."
 }
 catch {

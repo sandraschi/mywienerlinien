@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Optional
 logger = logging.getLogger(__name__)
 
 
-def _normalize_hex_color(value: Optional[str]) -> str:
+def _normalize_hex_color(value: str | None) -> str:
     if not value:
         return "#3F51B5"
     cleaned = str(value).strip().lstrip("#")
@@ -32,8 +32,8 @@ class Station:
     rbl: str
     type: str
     zone: str
-    lat: Optional[float] = None
-    lng: Optional[float] = None
+    lat: float | None = None
+    lng: float | None = None
 
 
 @dataclass
@@ -60,8 +60,8 @@ class Route:
     length: str
     stations: int
     description: str
-    coordinates: List[List[float]]
-    stops: List[Dict[str, Any]]
+    coordinates: list[list[float]]
+    stops: list[dict[str, Any]]
 
 
 @dataclass
@@ -73,9 +73,9 @@ class Disruption:
     type: str
     severity: str
     description: str
-    affected_stations: List[str]
+    affected_stations: list[str]
     start_time: datetime
-    end_time: Optional[datetime]
+    end_time: datetime | None
     status: str
 
 
@@ -91,7 +91,7 @@ class DataLoader:
         self._disruptions_cache = None
         self._last_loaded = {}
 
-    def load_lines(self, force_reload: bool = False) -> List[Line]:
+    def load_lines(self, force_reload: bool = False) -> list[Line]:
         """Load all transport lines from the database."""
         if not force_reload and self._lines_cache is not None:
             return self._lines_cache
@@ -151,7 +151,7 @@ class DataLoader:
 
         return self._lines_cache
 
-    def get_line_by_name(self, line_name: str) -> Optional[Line]:
+    def get_line_by_name(self, line_name: str) -> Line | None:
         """Return a line definition by its short name from the database."""
         if not line_name:
             return None
@@ -162,7 +162,7 @@ class DataLoader:
                 return line
         return None
 
-    def get_gtfs_line_catalog(self) -> List[Dict[str, Any]]:
+    def get_gtfs_line_catalog(self) -> list[dict[str, Any]]:
         """Return line catalog merged with GTFS metadata from the database."""
         ROUTE_TYPE_NAMES_local = None
         db_local = None
@@ -190,7 +190,7 @@ class DataLoader:
             logger.error("Failed to load routes from database: %s", exc)
             return []
 
-        catalog: List[Dict[str, Any]] = []
+        catalog: list[dict[str, Any]] = []
         seen: set[str] = set()
 
         for route in routes:
@@ -223,7 +223,7 @@ class DataLoader:
 
         return sorted(catalog, key=lambda entry: entry["name"])
 
-    def get_gtfs_route(self, line_name: str) -> Optional[Dict[str, Any]]:
+    def get_gtfs_route(self, line_name: str) -> dict[str, Any] | None:
         db_target = None
         try:
             from .database import db as db_rel
@@ -246,7 +246,7 @@ class DataLoader:
             logger.error("Failed to load route data for %s: %s", line_name, exc)
             return None
 
-    def get_gtfs_line_stations(self, line_name: str) -> List[Dict[str, Any]]:
+    def get_gtfs_line_stations(self, line_name: str) -> list[dict[str, Any]]:
         db_target = None
         try:
             from .database import db as db_rel
@@ -269,7 +269,7 @@ class DataLoader:
             logger.error("Failed to load stations for %s: %s", line_name, exc)
             return []
 
-    def load_stations(self, force_reload: bool = False) -> List[Station]:
+    def load_stations(self, force_reload: bool = False) -> list[Station]:
         """Load station data from the database."""
         if not force_reload and self._stations_cache is not None:
             return self._stations_cache
@@ -326,7 +326,7 @@ class DataLoader:
 
         return self._stations_cache
 
-    def load_routes(self, force_reload: bool = False) -> List[Route]:
+    def load_routes(self, force_reload: bool = False) -> list[Route]:
         """Load all routes from the database."""
         if not force_reload and self._routes_cache is not None:
             return self._routes_cache
@@ -399,7 +399,7 @@ class DataLoader:
 
         return self._routes_cache
 
-    def get_station_by_rbl(self, rbl: str) -> Optional[Station]:
+    def get_station_by_rbl(self, rbl: str) -> Station | None:
         """Get a specific station by RBL number."""
         stations = self.load_stations()
         for station in stations:
@@ -407,7 +407,7 @@ class DataLoader:
                 return station
         return None
 
-    def get_route_by_line(self, line_name: str) -> Optional[Route]:
+    def get_route_by_line(self, line_name: str) -> Route | None:
         """Get a specific route by line name."""
         routes = self.load_routes()
         for route in routes:
@@ -415,12 +415,12 @@ class DataLoader:
                 return route
         return None
 
-    def get_lines_by_type(self, line_type: str) -> List[Line]:
+    def get_lines_by_type(self, line_type: str) -> list[Line]:
         """Get all lines of a specific type."""
         lines = self.load_lines()
         return [line for line in lines if line.type.lower() == line_type.lower()]
 
-    def get_stations_by_type(self, station_type: str) -> List[Station]:
+    def get_stations_by_type(self, station_type: str) -> list[Station]:
         """Get all stations of a specific type."""
         stations = self.load_stations()
         return [station for station in stations if station.type.lower() == station_type.lower()]
@@ -434,11 +434,10 @@ class DataLoader:
         self._last_loaded = {}
         logger.info("Data cache cleared")
 
-    def get_cache_status(self) -> Dict[str, Any]:
+    def get_cache_status(self) -> dict[str, Any]:
         """Get the status of cached data."""
         serialized_last_loaded = {
-            key: value.isoformat() if isinstance(value, datetime) else value
-            for key, value in self._last_loaded.items()
+            key: value.isoformat() if isinstance(value, datetime) else value for key, value in self._last_loaded.items()
         }
         return {
             "lines_loaded": self._lines_cache is not None,

@@ -1,4 +1,4 @@
-# mywienerlinien — llms.txt
+# publictransport-mcp — llms.txt
 
 Vienna public-transport app: live map + departures (FastAPI) + MCP server (FastMCP) for Claude Desktop.
 Data: Wiener Linien OGD GTFS (gtfs-mcp snapshot, SQLite) + app tables

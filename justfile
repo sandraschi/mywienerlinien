@@ -31,7 +31,7 @@ audit-deps:
 
 # Run the Wiener Linien MCP server
 run:
-    uv run mywienerlinien
+    uv run publictransport-mcp
 
 # Serve the web_sota FastAPI backend (fleet-start UvicornTarget: server:app, port 11170)
 serve:

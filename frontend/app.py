@@ -654,7 +654,7 @@ async def get_system_status() -> JSONResponse:
 @fastapi_app.get("/api/health")
 async def get_health_status() -> JSONResponse:
     """Fast health check endpoint for container health checks."""
-    return JSONResponse({"status": "healthy", "service": "mywienerlinien"})
+    return JSONResponse({"status": "healthy", "service": "publictransport-mcp"})
 
 
 class LaunchRequest(BaseModel):
@@ -928,10 +928,10 @@ async def plan_journey(request: Request) -> JSONResponse:
 
         # Import routing services
         try:
-            from wienerlinien_mcp.routing_service import RouteSegment
-            from wienerlinien_mcp.utils import find_station_by_name
+            from publictransport_mcp.routing_service import RouteSegment
+            from publictransport_mcp.utils import find_station_by_name
         except ImportError:
-            from frontend.wienerlinien_mcp.utils import find_station_by_name
+            from frontend.publictransport_mcp.utils import find_station_by_name
 
         # Find stations
         from_info = find_station_by_name(from_station)
@@ -943,7 +943,7 @@ async def plan_journey(request: Request) -> JSONResponse:
             raise HTTPException(status_code=404, detail=f"Destination station '{to_station}' not found")
 
         # Get journey planner (lazy loaded with A* support)
-        from wienerlinien_mcp.tools.journey import get_journey_planner
+        from publictransport_mcp.tools.journey import get_journey_planner
 
         planner = get_journey_planner()
 
@@ -963,7 +963,7 @@ async def plan_journey(request: Request) -> JSONResponse:
             try:
                 import vehicle_service
 
-                from wienerlinien_mcp.realtime_service import get_realtime_service
+                from publictransport_mcp.realtime_service import get_realtime_service
 
                 realtime_svc = get_realtime_service(vehicle_service)
                 realtime_updates = realtime_svc.get_realtime_updates()

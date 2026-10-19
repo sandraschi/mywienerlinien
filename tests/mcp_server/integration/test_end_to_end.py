@@ -25,7 +25,7 @@ async def test_complete_departure_check_workflow():
     # 3. Verify complete workflow from user query to response
 
     # For now, we verify the server is set up correctly
-    assert mcp.name == "vienna-transit"
+    assert mcp.name == "publictransport"
 
 
 @pytest.mark.asyncio
@@ -43,7 +43,7 @@ async def test_complete_journey_planning_workflow():
     # 4. Verify journey plan is valid
 
     # For now, we verify the server is set up correctly
-    assert mcp.name == "vienna-transit"
+    assert mcp.name == "publictransport"
 
 
 @pytest.mark.asyncio
@@ -60,7 +60,7 @@ async def test_status_check_workflow():
     # 3. Verify status responses are correct
 
     # For now, we verify the server is set up correctly
-    assert mcp.name == "vienna-transit"
+    assert mcp.name == "publictransport"
 
 
 @pytest.mark.asyncio

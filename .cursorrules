@@ -43,7 +43,7 @@
 - Design patterns for MCP servers and development
 
 ### Projects (`docs/projects/`)
-- myai, veogen, mywienerlinien, autohotkey
+- myai, veogen, publictransport-mcp, autohotkey
 
 ### Monitoring (`monitoring/`)
 - Prometheus/Grafana/Loki stack
@@ -110,10 +110,9 @@ docker compose up -d  # Edit, save, done ✅
 
 **When in doubt:** Read the central README and navigate from there.
 
-## Session Context (mywienerlinien)
+## Session Context (publictransport-mcp)
 
 Before starting work: call MCP `next_departures` + `traffic_alerts` for the stop/line
 (never hardcode departures); check backend `GET 127.0.0.1:11170/api/health`.
 Dashboard code lives in `web_sota/src`, API in `web_sota/backend/server.py`.
 At end of work: `uv run ruff check src/` clean, pytest collected, CHANGELOG.md updated.
-

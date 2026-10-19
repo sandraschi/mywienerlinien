@@ -3,6 +3,7 @@
 ## Overview
 
 We have a **dual-standard architecture** that supports both:
+
 1. **FastMCP Server** (stdio transport) - For Claude Desktop MCP integration
 2. **FastAPI Server** (HTTP transport) - For web UI and REST API
 
@@ -10,7 +11,7 @@ Both servers share the same backend code (database, API clients, data loaders).
 
 ## Architecture Diagram
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                    Shared Backend                        │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
@@ -40,6 +41,7 @@ Both servers share the same backend code (database, API clients, data loaders).
 ## Transport Standards
 
 ### FastMCP Server (stdio)
+
 - **Transport**: stdio (standard input/output)
 - **Protocol**: MCP (Model Context Protocol)
 - **Clients**: Claude Desktop, MCP Inspector
@@ -47,6 +49,7 @@ Both servers share the same backend code (database, API clients, data loaders).
 - **Use Case**: AI assistant integration
 
 ### FastAPI Server (HTTP)
+
 - **Transport**: HTTP/WebSocket
 - **Protocol**: REST API + WebSocket
 - **Clients**: Web browsers, mobile apps, API consumers
@@ -56,6 +59,7 @@ Both servers share the same backend code (database, API clients, data loaders).
 ## Code Sharing Strategy
 
 ### Shared Modules
+
 Both servers import from the same modules:
 
 ```python
@@ -69,12 +73,14 @@ from disruption_alerts import disruption_monitor
 ### Server-Specific Code
 
 **FastMCP Server** (`mcp_server/`):
+
 - MCP tool implementations
 - Pydantic models for MCP responses
 - Middleware for MCP protocol
 - stdio transport handling
 
 **FastAPI Server** (`app.py`):
+
 - REST API endpoints
 - WebSocket handlers
 - HTML templates
@@ -83,6 +89,7 @@ from disruption_alerts import disruption_monitor
 ## Running Both Servers
 
 ### Option 1: Separate Processes (Recommended)
+
 ```powershell
 # Terminal 1: FastAPI web server
 python frontend/app.py
@@ -92,7 +99,9 @@ python -m frontend.mcp_server.server
 ```
 
 ### Option 2: Single Process (Future)
+
 Could use a process manager to run both, but they're independent:
+
 - FastMCP uses stdio (no port needed)
 - FastAPI uses HTTP (port 3080)
 - No conflicts
@@ -102,10 +111,10 @@ Could use a process manager to run both, but they're independent:
 ```json
 {
   "mcpServers": {
-    "vienna-transit": {
+    "publictransport": {
       "command": "python",
       "args": ["-m", "frontend.mcp_server.server"],
-      "cwd": "D:\\Dev\\repos\\mywienerlinien"
+      "cwd": "D:\\Dev\\repos\\publictransport-mcp"
     }
   }
 }
@@ -114,21 +123,25 @@ Could use a process manager to run both, but they're independent:
 ## Benefits of Dual Standard
 
 ✅ **Separation of Concerns**
+
 - MCP tools optimized for AI assistants
 - Web UI optimized for human users
 - Different protocols for different use cases
 
 ✅ **Code Reuse**
+
 - Same backend logic
 - Same data sources
 - Same business logic
 
 ✅ **Independent Deployment**
+
 - Can update MCP server without affecting web UI
 - Can scale independently
 - Different release cycles
 
 ✅ **Best of Both Worlds**
+
 - MCP: Natural language AI integration
 - FastAPI: Rich web interface with real-time updates
 
@@ -145,16 +158,19 @@ Could use a process manager to run both, but they're independent:
 ## Alternative Approaches Considered
 
 ### ❌ Single FastMCP Server with HTTP Transport
+
 - Problem: FastMCP HTTP is for MCP-over-HTTP, not web pages
 - Would lose web UI functionality
 - Not suitable for serving HTML/JS
 
 ### ❌ Convert Everything to FastAPI
+
 - Problem: No stdio transport for Claude Desktop
 - Would require MCP proxy/adapter
 - More complex than needed
 
 ### ✅ Dual Standard (Chosen)
+
 - Best of both worlds
 - Clean separation
 - No compromises
@@ -177,4 +193,3 @@ Could use a process manager to run both, but they're independent:
 - Shared backend imports working correctly
 - All tools registered and middleware configured
 - Dependencies installed (fastmcp>=2.13.0, pydantic>=2.5.0)
-

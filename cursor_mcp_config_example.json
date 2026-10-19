@@ -1,15 +1,15 @@
 {
   "mcpServers": {
-    "vienna-transit": {
+    "publictransport": {
       "command": "python",
       "args": [
         "-m",
         "frontend.mcp_server.server"
       ],
       "env": {
-        "PYTHONPATH": "D:/Dev/repos/mywienerlinien",
+        "PYTHONPATH": "D:/Dev/repos/publictransport-mcp",
         "PYTHONUNBUFFERED": "1",
-        "APP_DB_PATH": "D:/Dev/repos/mywienerlinien/data/app.db"
+        "APP_DB_PATH": "D:/Dev/repos/publictransport-mcp/data/app.db"
       }
     }
   }

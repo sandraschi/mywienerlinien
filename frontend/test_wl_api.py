@@ -57,9 +57,7 @@ def main() -> None:
         print(f"Coordinates: {coords}")
 
         for j, line in enumerate(monitor.get("lines", [])):
-            print(
-                f"\n  Line {j + 1}: {line.get('name', 'N/A')} towards {line.get('towards', 'N/A')}"
-            )
+            print(f"\n  Line {j + 1}: {line.get('name', 'N/A')} towards {line.get('towards', 'N/A')}")
             print(f"  Type: {line.get('type', 'unknown')}")
 
             departures = line.get("departures", {}).get("departure", [])

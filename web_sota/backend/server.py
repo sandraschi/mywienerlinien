@@ -14,15 +14,15 @@ import platform
 import sys
 import time
 from contextlib import asynccontextmanager
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
+import httpx
 from fastapi import FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
-import httpx
 
 from web_sota.backend.log_buffer import activity_log
 from web_sota.backend.routes.logging import router as logging_router
@@ -47,15 +47,15 @@ WL_BASE = "https://www.wienerlinien.at/ogd_realtime"
 STARTED_AT = time.time()
 
 FRONTEND_PORTS = (os.getenv("FRONTEND_PORTS", "10896,3079,3080")).split(",")
-_EXPLICIT_ORIGINS = [
-    f"http://localhost:{p.strip()}" for p in FRONTEND_PORTS if p.strip()
-] + [
-    f"http://127.0.0.1:{p.strip()}" for p in FRONTEND_PORTS if p.strip()
-] + [
-    "tauri://localhost",
-    "http://tauri.localhost",
-    "https://tauri.localhost",
-]
+_EXPLICIT_ORIGINS = (
+    [f"http://localhost:{p.strip()}" for p in FRONTEND_PORTS if p.strip()]
+    + [f"http://127.0.0.1:{p.strip()}" for p in FRONTEND_PORTS if p.strip()]
+    + [
+        "tauri://localhost",
+        "http://tauri.localhost",
+        "https://tauri.localhost",
+    ]
+)
 
 # Unconditional regex: loopback + LAN + Tailscale CGNAT + Tauri WebView.
 _ORIGIN_REGEX = (
@@ -97,7 +97,7 @@ async def health():
 async def status():
     return {
         "status": "ok",
-        "service": "mywienerlinien-webapi",
+        "service": "publictransport-mcp-webapi",
         "version": "2.0.1",
         "uptime_seconds": round(time.time() - STARTED_AT, 1),
     }
@@ -128,7 +128,7 @@ async def skills():
 async def capabilities():
     routes = sorted({r.path for r in app.routes if hasattr(r, "path")})
     return {
-        "name": "mywienerlinien",
+        "name": "publictransport-mcp",
         "version": "2.0.1",
         "backend_port": int(os.getenv("WEB_PORT", "11170")),
         "endpoints": routes,
@@ -140,7 +140,7 @@ async def capabilities():
 async def diagnostics():
     """CUA-NSIS smoke-test surface: tool list, system info, errors."""
     return {
-        "service": "mywienerlinien-webapi",
+        "service": "publictransport-mcp-webapi",
         "status": "ok",
         "uptime_seconds": round(time.time() - STARTED_AT, 1),
         "python": platform.python_version(),
@@ -164,22 +164,70 @@ async def llm_providers():
             if resp.status_code == 200:
                 data = resp.json()
                 models = [m["name"] for m in data.get("models", [])]
-                providers.append({"id": "ollama", "label": "Ollama", "base_url": "http://127.0.0.1:11434/v1", "models": models, "needs_key": False})
+                providers.append(
+                    {
+                        "id": "ollama",
+                        "label": "Ollama",
+                        "base_url": "http://127.0.0.1:11434/v1",
+                        "models": models,
+                        "needs_key": False,
+                    }
+                )
             else:
-                providers.append({"id": "ollama", "label": "Ollama", "base_url": "http://127.0.0.1:11434/v1", "models": [], "needs_key": False})
+                providers.append(
+                    {
+                        "id": "ollama",
+                        "label": "Ollama",
+                        "base_url": "http://127.0.0.1:11434/v1",
+                        "models": [],
+                        "needs_key": False,
+                    }
+                )
     except Exception:
-        providers.append({"id": "ollama", "label": "Ollama", "base_url": "http://127.0.0.1:11434/v1", "models": [], "needs_key": False})
+        providers.append(
+            {
+                "id": "ollama",
+                "label": "Ollama",
+                "base_url": "http://127.0.0.1:11434/v1",
+                "models": [],
+                "needs_key": False,
+            }
+        )
     try:
         async with httpx.AsyncClient(timeout=3.0) as client:
             resp = await client.get("http://127.0.0.1:1234/v1/models")
             if resp.status_code == 200:
                 data = resp.json()
                 models = [m["id"] for m in data.get("data", [])]
-                providers.append({"id": "lmstudio", "label": "LM Studio", "base_url": "http://127.0.0.1:1234/v1", "models": models, "needs_key": False})
+                providers.append(
+                    {
+                        "id": "lmstudio",
+                        "label": "LM Studio",
+                        "base_url": "http://127.0.0.1:1234/v1",
+                        "models": models,
+                        "needs_key": False,
+                    }
+                )
             else:
-                providers.append({"id": "lmstudio", "label": "LM Studio", "base_url": "http://127.0.0.1:1234/v1", "models": [], "needs_key": False})
+                providers.append(
+                    {
+                        "id": "lmstudio",
+                        "label": "LM Studio",
+                        "base_url": "http://127.0.0.1:1234/v1",
+                        "models": [],
+                        "needs_key": False,
+                    }
+                )
     except Exception:
-        providers.append({"id": "lmstudio", "label": "LM Studio", "base_url": "http://127.0.0.1:1234/v1", "models": [], "needs_key": False})
+        providers.append(
+            {
+                "id": "lmstudio",
+                "label": "LM Studio",
+                "base_url": "http://127.0.0.1:1234/v1",
+                "models": [],
+                "needs_key": False,
+            }
+        )
     return {"providers": providers}
 
 
@@ -212,10 +260,13 @@ async def llm_chat(body: dict):
     base = "http://127.0.0.1:1234/v1" if provider == "lmstudio" else "http://127.0.0.1:11434/v1"
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
-            resp = await client.post(f"{base}/chat/completions", json={
-                "model": model,
-                "messages": [{"role": "user", "content": prompt}],
-            })
+            resp = await client.post(
+                f"{base}/chat/completions",
+                json={
+                    "model": model,
+                    "messages": [{"role": "user", "content": prompt}],
+                },
+            )
             if resp.status_code == 200:
                 data = resp.json()
                 return {"response": data["choices"][0]["message"]["content"]}
@@ -252,23 +303,24 @@ async def departures(rbl: str = Query(..., description="Wiener Linien RBL stop c
         for line in mon.get("lines", []) or []:
             line_name = line.get("name", "?")
             line_towards = line.get("towards")
-            deps = ((line.get("departures") or {}).get("departure") or [])
+            deps = (line.get("departures") or {}).get("departure") or []
             if isinstance(deps, dict):
                 deps = [deps]
             for dep in deps:
                 times = dep.get("departureTime", {}) or {}
                 vehicle = dep.get("vehicle", {}) or {}
-                out.append({
-                    "line": line_name,
-                    "destination": vehicle.get("towards") or line_towards or "?",
-                    "countdown": times.get("countdown"),
-                    "time_planned": times.get("timePlanned"),
-                    "time_real": times.get("timeReal"),
-                    "platform": dep.get("platform"),
-                    "stop": stop_title,
-                })
-    return {"rbl": rbl, "departures": out, "count": len(out),
-            "timestamp": datetime.now(timezone.utc).isoformat()}
+                out.append(
+                    {
+                        "line": line_name,
+                        "destination": vehicle.get("towards") or line_towards or "?",
+                        "countdown": times.get("countdown"),
+                        "time_planned": times.get("timePlanned"),
+                        "time_real": times.get("timeReal"),
+                        "platform": dep.get("platform"),
+                        "stop": stop_title,
+                    }
+                )
+    return {"rbl": rbl, "departures": out, "count": len(out), "timestamp": datetime.now(UTC).isoformat()}
 
 
 @app.get("/api/disruptions")
@@ -286,19 +338,20 @@ async def disruptions():
         attrs = item.get("attributes", {}) or {}
         times = item.get("time", {}) or {}
         cat = item.get("refTrafficInfoCategoryId")
-        alerts.append({
-            "id": str(item.get("name", "")),
-            "title": str(item.get("title", "")),
-            "description": str(item.get("description", "")),
-            "reason": str(attrs.get("reason", "") or ""),
-            "lines": [str(x) for x in (attrs.get("relatedLines") or [])],
-            "status": str(attrs.get("status", "") or ""),
-            "start_time": str(times.get("start", "") or ""),
-            "end_time": str(times.get("end", "") or ""),
-            "severity": "info" if cat == 1 else "medium",
-        })
-    return {"alerts": alerts, "count": len(alerts),
-            "timestamp": datetime.now(timezone.utc).isoformat()}
+        alerts.append(
+            {
+                "id": str(item.get("name", "")),
+                "title": str(item.get("title", "")),
+                "description": str(item.get("description", "")),
+                "reason": str(attrs.get("reason", "") or ""),
+                "lines": [str(x) for x in (attrs.get("relatedLines") or [])],
+                "status": str(attrs.get("status", "") or ""),
+                "start_time": str(times.get("start", "") or ""),
+                "end_time": str(times.get("end", "") or ""),
+                "severity": "info" if cat == 1 else "medium",
+            }
+        )
+    return {"alerts": alerts, "count": len(alerts), "timestamp": datetime.now(UTC).isoformat()}
 
 
 @app.get("/api/news")
@@ -312,10 +365,11 @@ async def news():
     except Exception as e:
         return JSONResponse(status_code=502, content={"pois": [], "count": 0, "error": str(e)})
     pois = payload.get("data", {}).get("pois", []) or []
-    items = [{"name": str(p.get("name", "")), "title": str(p.get("title", "")),
-              "description": str(p.get("description", ""))} for p in pois]
-    return {"pois": items, "count": len(items),
-            "timestamp": datetime.now(timezone.utc).isoformat()}
+    items = [
+        {"name": str(p.get("name", "")), "title": str(p.get("title", "")), "description": str(p.get("description", ""))}
+        for p in pois
+    ]
+    return {"pois": items, "count": len(items), "timestamp": datetime.now(UTC).isoformat()}
 
 
 @app.post("/api/webhooks/inbound")
@@ -354,11 +408,18 @@ async def webhooks_inbound(request: Request):
 @app.get("/api/fleet/apps")
 async def fleet_apps():
     """Fleet Apps Hub registry (static; unknown apps belong to Experimental)."""
-    return {"apps": [
-        {"id": "mywienerlinien", "name": "MyWienerLinien",
-         "description": "Vienna transit departures, disruptions, lines + MCP server.",
-         "backend_port": 11170, "frontend_port": 10896, "status": "live"},
-    ]}
+    return {
+        "apps": [
+            {
+                "id": "publictransport-mcp",
+                "name": "Publictransport",
+                "description": "Vienna transit departures, disruptions, lines + MCP server.",
+                "backend_port": 11170,
+                "frontend_port": 10896,
+                "status": "live",
+            },
+        ]
+    }
 
 
 @app.post("/api/chat/stream")
@@ -372,11 +433,15 @@ async def chat_stream(body: dict):
     async def gen():
         try:
             async with httpx.AsyncClient(timeout=60.0) as client:
-                async with client.stream("POST", f"{base}/chat/completions", json={
-                    "model": model,
-                    "messages": [{"role": "user", "content": prompt}],
-                    "stream": True,
-                }) as resp:
+                async with client.stream(
+                    "POST",
+                    f"{base}/chat/completions",
+                    json={
+                        "model": model,
+                        "messages": [{"role": "user", "content": prompt}],
+                        "stream": True,
+                    },
+                ) as resp:
                     if resp.status_code != 200:
                         yield f'data: {{"error": "Provider HTTP {resp.status_code}"}}\n\n'
                     else:
@@ -404,4 +469,5 @@ async def shutdown():
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=int(os.getenv("WEB_PORT", "11170")))
