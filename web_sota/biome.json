@@ -12,7 +12,7 @@
 			"style": { "noNonNullAssertion": "off" }
 		}
 	},
-  "formatter": { "enabled": true },
-  "css": { "parser": { "tailwindDirectives": true } },
+	"formatter": { "enabled": true },
+	"css": { "parser": { "tailwindDirectives": true } },
 	"overrides": [{ "includes": ["**/*.css"], "linter": { "enabled": false } }]
 }
